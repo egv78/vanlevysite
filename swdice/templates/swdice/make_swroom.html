@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Make a Room</title>
+{% endblock %}
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+<!-- include navbar_Profile_button -->
+{% block navbar_EditProfile_button %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Make a new Star Wars Room</h1>
+    <p></p>
+    <form method="post" autocomplete="off">
+        {% csrf_token %}
+        <table>
+            <col width="240">
+            <col width="120">
+            <tr>
+                <td><strong>Room Name:</strong>
+                <br>This will be the title of your room.</td>
+                <td>{{form.name}} <br>
+                    {% if request.method.post %}
+                    <strong>{{ form.name.errors }}</strong>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Make Open?</strong>
+                <br>An Open room negates any passcode.  Anyone can enter the room.</td>
+                <td> <br>{{form.open_to_all}} <br>
+                    <strong>{{ form.open_to_all.errors }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Passcode:</strong>
+                <br>A player trying to enter this room will need to provide this passcode.
+                <br>Passcodes are not stored in an encrypted db.
+                <br><strong>Don't use your site password.</strong></td>
+                <td>{{form.passcode}} <br>
+                    <strong>{{ form.passcode.errors }}</strong>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <button type="submit" class="btn btn-secondary">Make my room</button>
+        {% if request.method.post %}
+            <br><strong>time errors: {{ form.created_on.errors }}</strong>
+            <br><strong>user errors: {{ form.created_by.errors }}</strong>
+        {% endif %}
+    </form>
+
+
+</div>
+{% endblock %}

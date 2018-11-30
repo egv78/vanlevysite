@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>About SW Dice Roller</title>
+{% endblock %}
+
+<!-- include navbar_Room_button -->
+
+{% block navbar_EditProfile_button %}
+{% endblock %}
+<!-- include navbar_Profile_button -->
+
+{% block body %}
+<div class="container">
+    <p></p>
+    <h2>About the SW Dice Roller</h2>
+    <p>
+        Words here about SW Dice Roller.
+    </p>
+    <ul>
+        <li><a href ="{% url 'vanlevy:home' %}">Van Levy Homepage</a></li>
+        <li><a href ="{% url 'accounts:about' %}">Accounts</a></li>
+        <li><a href ="{% url 'swdice:dockingbay' %}">SW Dice Roller Docking Bay</a></li>
+    </ul>
+</div>
+{% endblock %}

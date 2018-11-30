@@ -1,0 +1,72 @@
+.sml-input {
+    width: 30px;
+    font-size: 1.5em;
+    margin: 5px 0px;
+}
+
+.med-input {
+    width: 60px;
+    font-size: 1.5em;
+    background-color: #f8f9fa;
+    border-style: none;
+}
+
+.roll-caption {
+    width: 220px;
+    padding: 7px 5px;
+    margin: 5px 3px;
+}
+
+.big-font {
+    font-size: 1.5em;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.dice-container {
+    width: 120px;
+    height: 60px;
+    padding: 3px 6px;
+    margin: 10px 0px 0px 0xp;
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    float: left;
+}
+
+.dice-container-long {
+    width: 240px;
+    height: 60px;
+    padding: 3px 6px;
+    margin: 10px 0px 0px 0xp;
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    float: left;
+}
+
+.clearBoth {
+    clear:both;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+.outline-me {
+    border: 1px solid black;
+}
+
+.align-right {
+    float: right;
+    margin: 15px 0px 0px 0xp;
+}
+
+.top_margin {
+    margin: 10px 0px 0px 0xp;
+}

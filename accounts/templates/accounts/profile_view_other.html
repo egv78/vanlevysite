@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Profile</title>
+{% endblock %}
+
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+<!-- include navbar_Profile_button -->
+{% block navbar_Profile_button_wording %}Back to My Profile{% endblock %}
+
+
+{% block body %}
+<br>
+<div class="container">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3>Login Info:</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p><strong>Username:</strong> {{user}}</p>
+            </div>
+            <!--<div class="col">-->
+                <!--<p><strong>Email:</strong> {{user.email}}</p>-->
+            <!--</div>-->
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <!-- One of two columns -->
+                <h1>Profile</h1>
+                <p><strong>First Name:</strong> {{user.userprofile.user_first_name}}</p>
+                <p><strong>Last Name:</strong> {{user.userprofile.user_last_name}}</p>
+                <p><strong>Bio:</strong> {{ user.userprofile.user_bio }}</p>
+                <p><strong>Description:</strong> {{user.userprofile.user_description}}</p>
+                {% if user.userprofile.user_image  %}
+                    <p><img src="{{ user.userprofile.user_image.url }}" width="240"></p>
+                {% else %}
+                    <p><strong>No image uploaded</strong></p>
+                {% endif %}
+            </div>
+            <div class="col">
+                <!-- Two of two columns -->
+                <h1>Avatars</h1>
+                {% if user.userprofile.avatar_image %}
+                    <p><img src="{{ user.userprofile.avatar_image.url }}" width="240"></p>
+                {% else %}
+                    <p><strong>No image uploaded</strong></p>
+                {% endif %}
+                <p><strong>Avatar Name:</strong> {{ user.userprofile.avatar_name }}</p>
+                <p><strong>Avatar Description:</strong> {{ user.userprofile.avatar_description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

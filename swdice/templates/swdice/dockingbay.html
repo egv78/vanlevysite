@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Docking Bay</title>
+{% endblock %}
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+<!-- include navbar_Profile_button -->
+{% block navbar_EditProfile_button %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Hail, {% if user.userprofile.user_first_name %}
+        {{user.userprofile.user_first_name}}
+        {% else %}
+        {{user.username}}
+        {% endif %}
+        !
+    </h1>
+    <p>
+        This is your personal docking bay.
+    </p>
+    <p>From here, you will be able to join a room and make rooms.</p>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4>
+                    {% if my_rooms_list %}
+                        Rooms I've been in:
+                    {% else %}
+                        You have not yet entered a room.
+                    {% endif %}
+                </h4>
+                {% if my_rooms_list %}
+                <table>
+                    <col width="10%">
+                    <col width="60%">
+                    <col width="25%">
+                    <col width="5%">
+                    <tr>
+                        <td>
+                            <strong>ID</strong>
+                        </td>
+                        <td>
+                            <strong>Name</strong>
+                        </td>
+                        <td>
+                            <strong>Avatar</strong>
+                        </td>
+                        <td>
+                            <strong>Open?</strong>
+                        </td>
+                    </tr>
+                    {% for room in my_rooms_list %}
+                    <tr>
+                        <td>
+                            {{ room.id }}
+                        </td>
+                        <td>
+                            <a href="{% url 'swdice:swroom' room.id %}">{{ room.name }}</a>
+                        </td>
+                        <td>
+                            {{ my_avatars_list|get_item:room.id }}
+                        </td>
+                        <td>
+                            {% if room.open_to_all %}
+                                X
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                    Once you've been in a room, this will be a list of direct links to get back in.
+                {% endif %}
+
+            </div>
+            <div class="col">
+                <h4>Enter a room using passcode</h4>
+                <form method="post"  autocomplete="off">
+                    {% csrf_token %}
+                    <table>
+                        <col width="240">
+                        <col width="120">
+                        <tr>
+                            <td><strong>Room ID:</strong>
+                            <br>This will be a number.</td>
+                            <td>{{form.room_number}} <br>
+                                <strong>{{ form.room_number.errors }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Passcode:</strong>
+                            <br>If the room is open, or you've been in it before, leave this blank.</td>
+                            <td>{{form.passcode}} <br>
+                                <strong>{{ form.passcode.errors }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Avatar:</strong>
+                            <br>Select your avatar.</td>
+                            <td>{{form.default_avatar}} <br>
+                                <strong>{{ form.default_avatar.errors }}</strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit">Enter Room</button>
+                </form>
+                <hr>
+                <h4>Make a room</h4>
+                <a href="{% url 'swdice:makeroom' %}">Make a Room</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

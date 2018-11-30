@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head%}
+        <meta charset="UTF-8">
+        <title>Base</title>
+    {% endblock %}
+</head>
+<body>
+{% block navbar %}
+    <br>
+    <div class="container">
+         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #001452">
+             <a class="navbar-brand" href="{% url 'vanlevy:home' %}"><h4>Van Levy</h4></a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <!--this ul needs to be here for some reason-->
+                  </ul>
+              {% block navbar_buttons %}
+                   <ul class="navbar-nav navbar-right">
+
+                   {% block navbar_VanLevy_Links %}
+                       <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Navigate
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                              {% block link_about %}<a class="dropdown-item" href="{% url 'vanlevy:about' %}">About</a>{% endblock %}
+                              {% block link_account %}<a class="dropdown-item" href="{% url 'accounts:about' %}">Accounts</a>{% endblock %}
+                              {% block link_dice_sw %}<a class="dropdown-item" href="{% url 'swdice:about' %}">Dice Roller - SW</a>{% endblock %}
+                              {% block link_resources %}<a class="dropdown-item" href="{% url 'vanlevy:resources' %}">Our Resources</a>{% endblock %}
+                              {% block link_cool_stuff %}<div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{% url 'vanlevy:cool_stuff' %}">Other People's Cool Stuff</a>{% endblock %}
+                            </div>
+                        </li>
+
+                   {% endblock %}
+
+                   {% block navbar_Profile_Button %}
+                   {% endblock %}
+
+              {% endblock %}
+
+         </nav>
+    </div>
+{% endblock %}
+
+{% block body %}
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+
+</html>

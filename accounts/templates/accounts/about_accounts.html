@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>About Accounts</title>
+{% endblock %}
+
+{% block Title_link_auth %}{% url 'accounts:about' %}{% endblock %}
+{% block Title_link_not_auth %}{% url 'accounts:about' %}{% endblock %}
+{% block Title %}Accounts{% endblock %}
+<!-- include navbar_Room_button -->
+
+{% block navbar_EditProfile_button %}
+{% endblock %}
+<!-- include navbar_Profile_button -->
+
+{% block body %}
+<br>
+<div class="container">
+    <p></p>
+    <h2>About the Van Levy Accounts</h2>
+    <p>
+        Words here about managing accounts, awesomeness.
+    </p>
+    <ul>
+        <li><a href ="{% url 'vanlevy:home' %}">Van Levy Homepage</a></li>
+        <li><a href ="{% url 'accounts:about' %}">Accounts</a></li>
+        <li><a href ="{% url 'swdice:dockingbay' %}">SW Dice Roller Docking Bay</a></li>
+    </ul>
+</div>
+{% endblock %}

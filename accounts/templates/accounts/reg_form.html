@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+{% endblock %}
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+{% block navbar_Register_button %}
+{% endblock %}
+<!-- include navbar_Login_button -->
+
+
+{% block body %}
+<div class="container">
+    <br>
+    {% if user.is_authenticated %}
+        <h2>You are logged in as {{user.first_name}}.</h2>
+        <br>
+        <p>To create a new account, please <a href="{% url 'accounts:logout' %}">logout</a> and then register.</p>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

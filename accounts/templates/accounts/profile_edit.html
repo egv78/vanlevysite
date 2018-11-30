@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+{% endblock %}
+
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+
+
+{% block body %}
+<br>
+<div class="container">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Profile</h1>
+
+                You are logged in as <strong>{{user}}</strong>.
+                <br>Emails cannot be changed at this time.
+                <p></p>
+                <form method="post", enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td><strong>First Name:</strong></td><td>{{profile_form.user_first_name}} </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Last Name:</strong></td><td>{{profile_form.user_last_name}} </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bio:</strong></td><td>{{profile_form.user_bio}} </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Description:</strong></td><td>{{profile_form.user_description}} </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Image:</strong></td><td>{{profile_form.user_image}} </td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <button type="submit">Submit Changes</button>
+                </form>
+                <p><br></p>
+            </div>
+
+
+        </div>
+    </div>
+    <p></p><br><p></p><br>
+
+</div>
+
+{% endblock %}

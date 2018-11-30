@@ -1,0 +1,61 @@
+{% extends 'vl_base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>VanLevy About</title>
+    <style>
+        #background {
+            background-color: #FFFFFF;
+            display: flex; /* equal height of the children */
+            justify-content: space-between;
+        }
+        #van {
+            width: 49%;
+            background-color: #FFFFFF;
+            padding: 10px;
+            float: left;
+        }
+        #dave {
+            width: 49%;
+            background-color: #FFFFFF;
+            padding: 10px;
+            float: right;
+        }
+        #about {
+            clear: both;
+            background-color: #CCCCCC;
+        }
+    </style>
+{% endblock %}
+
+{% block link_about %}{% endblock %}
+{% block body %}
+    <div class="container">
+        <br>
+        <h1>About</h1>
+        <div id="background">
+            <div id="van">
+                <img src="/media/profile_image/DwarfAvatar.jpg" style="width: 200px; float: left; margin: 10px;">
+                <p style="padding: 10px;">
+                    I'm Van!
+                    <br>
+                    I do things.
+                </p>
+            </div>
+            <div id="dave">
+                <img src="/media/profile_image/Dave_avatar.jpg" style="width: 200px; float: right; margin: 10px;">
+                <p style="padding: 10px;">
+                    I'm Dave!  I put the Levy in Van-Levy.
+                    <br>
+                    I also do things.
+                </p>
+            </div>
+        </div>
+        <p style="clear: both"></p>
+        <div id="about">
+            <p style="padding: 10px;">
+                Together, we made this website.
+            </p>
+        </div>
+    </div>
+{% endblock %}

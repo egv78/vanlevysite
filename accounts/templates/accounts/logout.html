@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Logout</title>
+{% endblock %}
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+{% block navbar_Profile_button %}
+{% endblock %}
+<!-- include navbar_Login_button -->
+{% block navbar_Logout_button %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <br>
+        <h2>You have logged out.</h2>
+        <p>
+            Thanks for playing!
+        </p>
+        <p>
+            <a href="{% url 'accounts:login' %}">Log back in?</a>
+        </p>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Delete Avatar</title>
+{% endblock %}
+
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+
+
+{% block body %}
+<br>
+<div class="container">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <!-- One of two columns -->
+                <h1>Profile</h1>
+            </div>
+            <div class="col">
+                <!-- Two of two columns -->
+                <h1>Avatar</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- One of two columns -->
+                <p><strong>First Name:</strong> {{user.userprofile.user_first_name}}</p>
+                <p><strong>Last Name:</strong> {{user.userprofile.user_last_name}}</p>
+                <p><strong>Bio:</strong> {{ user.userprofile.user_bio }}</p>
+                <p><strong>Description:</strong> {{user.userprofile.user_description}}</p>
+                {% if user.userprofile.user_image %}
+                    <p><img src="{{ user.userprofile.user_image.url }}" width="240"></p>
+                {% else %}
+                    <p><strong>No image uploaded</strong></p>
+                {% endif %}
+            </div>
+            <div class="col">
+                <!-- Two of two columns -->
+                <p><strong>Name:</strong> {{avatar_data.avatar_name}}</p>
+                <p><strong>Description:</strong> {{avatar_data.avatar_description}}</p>
+                <p>
+                    {% if avatar_data.avatar_image %}
+                        <img src="{{ avatar_data.avatar_image.url }}" width="150">
+                    {% else %}
+                        This Avatar has no image.
+                    {% endif %}
+                </p>
+                <p>&nbsp</p>
+                <p>Are you REALLY sure that you want to delete this Avatar?</p>
+                <p>Once this is done, you can't undo it!</p>
+                <p>&nbsp</p>
+                <p><strong>Delete </strong><em>{{avatar_data.avatar_name}}?</em></p>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ avatar_form.deleted }}
+                    <p></p>
+                    <button type="submit">
+                        I'm sure.<br>
+                        FEED THIS AVATAR TO THE SARLAAC!<br>
+                        (I mean, 'Delete this Avatar'.)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
