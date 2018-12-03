@@ -43,9 +43,13 @@
                 {% else %}
                     <p><strong>No image uploaded</strong></p>
                 {% endif %}
-                <a href="{% url 'accounts:edit_profile' %}"><button type="button">Edit Profile</button></a>
+                <a href="{% url 'accounts:edit_profile' %}"><button type="button" class="btn btn-primary">
+                    Edit Profile
+                </button></a>
                 <p></p>
-                <a href="{% url 'accounts:password' %}"><button type="button">Change Password</button></a>
+                <a href="{% url 'accounts:password' %}"><button type="button" class="btn btn-secondary">
+                    Change Password
+                </button></a>
 
             </div>
             <div class="col">
@@ -60,7 +64,9 @@
                             <p><strong>{{ avatar.avatar_name }}</strong> </p>
                             <p>{{ avatar.avatar_description }}</p>
                             <a href="{% url 'accounts:edit_avatar' avatar.id %}">
-                                <button type="button" class="btn-sml">Edit {{ avatar.avatar_name }}</button>
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    Edit {{ avatar.avatar_name }}
+                                </button>
                             </a>
                             <!---->
                         </div>
@@ -76,11 +82,15 @@
                     {% endfor %}
                     <hr>
                     <p></p>
-                    <a href="{% url 'accounts:create_avatar' %}"><button type="button">Create a new Avatar</button></a>
+                    <a href="{% url 'accounts:create_avatar' %}"><button type="button" class="btn btn-secondary">
+                        Create a new Avatar
+                    </button></a>
                 {% else %}
                     <p><strong>You have not created any avatars.</strong></p>
                     <p></p>
-                    <a href="{% url 'accounts:create_avatar' %}"><button type="button">Create your first Avatar</button></a>
+                    <a href="{% url 'accounts:create_avatar' %}"><button type="button"  class="btn btn-primary">
+                        Create your first Avatar
+                    </button></a>
 
                 {% endif %}
 

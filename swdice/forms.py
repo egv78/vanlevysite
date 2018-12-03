@@ -103,7 +103,7 @@ class SW_Dice_Roll(forms.ModelForm):
     ))
     additional_triumph = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Triumphs", 'value': 0, 'required': False, 'id': "triumphs",
+            'max': 9, 'min': 0, 'title': "Triumphs", 'value': 0, 'required': False, 'id': "triumph",
             'label': "Triumphs", 'class': "sml-input"
         }
     ))
@@ -139,13 +139,13 @@ class SW_Dice_Roll(forms.ModelForm):
     ))
     additional_light_pips = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Light Pops", 'value': 0, 'required': False, 'id': "lightpips",
+            'max': 9, 'min': 0, 'title': "Light Pops", 'value': 0, 'required': False, 'id': "lightpip",
             'label': "Light Pips", 'class': "sml-input"
         }
     ))
     additional_dark_pips = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Dark Pips", 'value': 0, 'required': False, 'id': "darkpips",
+            'max': 9, 'min': 0, 'title': "Dark Pips", 'value': 0, 'required': False, 'id': "darkpip",
             'label': "Dark Pips", 'class': "sml-input"
         }
     ))

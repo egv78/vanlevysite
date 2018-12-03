@@ -12,29 +12,6 @@
 <!--exclude space-->
 {% endblock %}
 
-{% block navbar_Rooms_button %}
-<!--exclude DockingBay-->
-{% endblock %}
-
-{% block right_side_buttons %}
-    <ul class="navbar-nav navbar-right">
-        <li class="nav-item"><strong>GM:</strong> {{ gm_name }}</li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigate
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-              {% block dockingbay %}<a class="dropdown-item" href="{% url 'swdice:dockingbay' %}">Docking Bay</a>{% endblock %}
-              {% block profile %}<a class="dropdown-item" href="{% url 'accounts:view_profile' %}">Profile</a>{% endblock %}
-              {% block logout %}<div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>{% endblock %}
-            </div>
-        </li>
-    </ul>
-
-{% endblock %}
-
 {% block navbar_space_part_2 %}
 <!--exclude space-->
 {% endblock %}
@@ -44,136 +21,450 @@
 <br>
     <div class="row">
         <div class="col-9">
-            <table style="background-color: #f8f9fa; width:720px; margin: 0px 0px 5px 0px;">
-                <tr>
-                <form id="destiny" method="POST">
-                {% csrf_token %}
-                    <td style="width:12px;">
-                        <button type="submit" class="btn btn-light btn-sm" name="add_dark">&#9650</button>
-                        <br>
-                        <button type="submit" class="btn btn-light btn-sm" name="rem_dark">&#9660</button>
-                    </td>
-                    <td style="width:33px;">
-                        <button type="submit" class="btn btn-secondary outline-me" name="use_dark" id="use_dark">
-                            Use<br>Dark
+            <div class="container-fluid" id="destiny_area">
+                <table id="destiny_table">
+                    <tr>
+                    <form id="destiny" method="POST">
+                    {% csrf_token %}
+                        <td style="width:12px;">
+                            <button type="submit" class="btn btn-light btn-sm" name="add_dark">&#9650</button>
+                            <br>
+                            <button type="submit" class="btn btn-light btn-sm" name="rem_dark">&#9660</button>
+                        </td>
+                        <td style="width:33px;">
+                            <button type="submit" class="btn btn-secondary outline-me" name="use_dark" id="use_dark">
+                                Use<br>Dark
+                            </button>
+                        </td>
+                        <td>
+                            <span class="container-fluid" id="destiny_box">
+                            {% if dark_pips == 0  and light_pips == 0 %}
+                            There are no Destiny Points
+                            {% endif %}
+                            {% for i in dark_pips|get_range %}
+                                <img src="/media/sw_images/Pips/black.png" width="40" title="Use Dark">
+                            {% endfor %}
+                            {% for i in light_pips|get_range %}
+                                <img src="/media/sw_images/Pips/white.png" width="40" title="Use Light">
+                            {% endfor %}
+                            </span>
+                        </td>
+                        <td style="width:36px;">
+                            <button type="submit" class="btn btn-outline-dark" name="use_light" id="use_light">
+                                Use<br>Light
+                            </button>
+                        </td>
+                        <td style="width:12px;">
+                            <button type="submit" class="btn btn-light btn-sm" name="add_light">&#9650</button>
+                            <br>
+                            <button type="submit" class="btn btn-light btn-sm" name="rem_light">&#9660</button>
+                        </td>
+                    </form>
+                    </tr>
+                </table>
+            </div>
+            <div class="container-fluid" id="dice_box">
+                <form id="dice" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/boost.png" width="40">
+                                    {{ dice_form.num_boost_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('boost')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('boost')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/ability.png" width="40">
+                                    {{ dice_form.num_ability_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('ability')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('ability')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/proficiency.png" width="40">
+                                    {{ dice_form.num_proficiency_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('proficiency')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('proficiency')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container-fluid dice-container-long">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/D100.png" width="80">
+                                    <span class="big-font"> d</span>
+                                    {{ dice_form.numerical_dice_sides }}
+                                    {{ dice_form.num_numerical_dice }}
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('numerical')"
+                                            class="btn btn-light btn-sm">&#9650</button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('numerical')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="container-fluid dice-container">
+                        <button type="button" id="show_pips_button"
+                                class="btn btn-outline-secondary btn-sm align-right"
+                                onclick="showAutoPips()">
+                            Extra Pips
                         </button>
-                    </td>
-                    <td>
-                        <span class="container-fluid" id="destiny_box">
-                        {% if dark_pips == 0  and light_pips == 0 %}
-                        There are no Destiny Points
-                        {% endif %}
-                        {% for i in dark_pips|get_range %}
-                            <img src="/media/sw_images/Pips/black.png" width="40" title="Use Dark">
-                        {% endfor %}
-                        {% for i in light_pips|get_range %}
-                            <img src="/media/sw_images/Pips/white.png" width="40" title="Use Light">
-                        {% endfor %}
-                        </span>
-                    </td>
-                    <td style="width:36px;">
-                        <button type="submit" class="btn btn-outline-dark" name="use_light" id="use_light">
-                            Use<br>Light
+                        <button type="button" id="hide_pips_button"
+                                class="btn btn-outline-secondary btn-sm align-right"
+                                onclick="hideAutoPips()" style="display:none">
+                            Hide
                         </button>
-                    </td>
-                    <td style="width:12px;">
-                        <button type="submit" class="btn btn-light btn-sm" name="add_light">&#9650</button>
-                        <br>
-                        <button type="submit" class="btn btn-light btn-sm" name="rem_light">&#9660</button>
-                    </td>
+                    </div>
+                    <br class="clearBoth">
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/setback.png" width="40">
+                                    {{ dice_form.num_setback_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('setback')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('setback')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/difficulty.png" width="40">
+                                    {{ dice_form.num_difficulty_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('difficulty')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('difficulty')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/challenge.png" width="40">
+                                    {{ dice_form.num_challenge_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('challenge')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('challenge')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Dice/force.png" width="40">
+                                    {{ dice_form.num_force_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('force')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('force')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container-fluid dice-container-long">
+                        {{ dice_form.caption }}
+                    </div>
+
+                    <br class="clearBoth">
+
+                    <div id="hidden_fields" style="display:none">
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add01.jpg" title='Automatic Triumph'>
+                                    {{ dice_form.additional_triumph }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('triumph')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('triumph')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add03.jpg" title='Automatic Success'>
+                                    {{ dice_form.additional_success }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('success')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('success')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add05.jpg" title='Automatic Advantage'>
+                                    {{ dice_form.additional_advantage }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('advantage')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('advantage')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add07.jpg" title='Automatic Light'>
+                                    {{ dice_form.additional_light_pips }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('lightpip')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('lightpip')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <br class="clearBoth">
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add02.jpg" title='Automatic Despair'>
+                                    {{ dice_form.additional_despair }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('despair')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('despair')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add04.jpg" title='Automatic Failure'>
+                                    {{ dice_form.additional_failure }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('failure')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('failure')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add06.jpg" title='Automatic Threat'>
+                                    {{ dice_form.additional_threat }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('threat')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('threat')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <div class="container-fluid dice-container">
+                            <table>
+                            <tr>
+                                <td>
+                                    <img src="/media/sw_images/Faces/Add08.jpg" title='Automatic Dark'>
+                                    {{ dice_form.additional_dark_pips }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('darkpip')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('darkpip')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                        <br class="clearBoth">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-warning btn-lg top-margin" name="roll_dice">
+                        <strong>Roll 'Em!</strong>
+                    </button>
                 </form>
-                </tr>
-            </table>
-            <form id="dice" method="post" autocomplete="off">
-                {% csrf_token %}
-                <div class="container-fluid dice-container">
-                    <img src="/media/sw_images/Dice/boost.png" width="40">{{ dice_form.num_boost_dice }}
-                </div>
-                <div class="container-fluid dice-container">
-                    <img src="/media/sw_images/Dice/ability.png" width="40">{{ dice_form.num_ability_dice }}
-                </div>
-                <div class="container-fluid dice-container">
-                    <img src="/media/sw_images/Dice/proficiency.png" width="40">{{ dice_form.num_proficiency_dice }}
-                </div>
-                <div class="container-fluid dice-container-long">
-                    <img src="/media/sw_images/Dice/D100.png" width="80"><span class="big-font"> d</span>
-                            {{ dice_form.numerical_dice_sides }}
-                {{ dice_form.num_numerical_dice }}
-                </div>
-
-                <div class="container-fluid dice-container">
-                    <button type="button" id="show_pips_button"
-                            class="btn btn-outline-secondary btn-sm align-right"
-                            onclick="showAutoPips()">
-                        Extra Pips
-                    </button>
-                    <button type="button" id="hide_pips_button"
-                            class="btn btn-outline-secondary btn-sm align-right"
-                            onclick="hideAutoPips()" style="display:none">
-                        Hide
-                    </button>
-                </div>
-                <br class="clearBoth">
-                <div class="container-fluid dice-container">
-                    <img src="/media/sw_images/Dice/setback.png" width="40">{{ dice_form.num_setback_dice }}
-                </div>
-                <div class="container-fluid dice-container">
-                    <img src="/media/sw_images/Dice/difficulty.png" width="40">{{ dice_form.num_difficulty_dice }}
-                </div>
-                <div class="container-fluid dice-container">
-                    <img src="/media/sw_images/Dice/challenge.png" width="40">{{ dice_form.num_challenge_dice }}
-                </div>
-                <div class="container-fluid dice-container">
-                    <img src="/media/sw_images/Dice/force.png" width="40">{{ dice_form.num_force_dice }}
-                </div>
-                <div class="container-fluid dice-container-long">
-                    {{ dice_form.caption }}
-                </div>
-
-                <br class="clearBoth">
-
-                <div id="hidden_fields" style="display:none">
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add01.jpg" title='Automatic Threat'>
-                        {{ dice_form.additional_triumph }}
-                    </div>
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add03.jpg" title='Automatic Success'>
-                        {{ dice_form.additional_success }}
-                    </div>
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add05.jpg" title='Automatic Advantage'>
-                        {{ dice_form.additional_advantage }}
-                    </div>
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add07.jpg" title='Automatic Light'>
-                        {{ dice_form.additional_light_pips }}
-                    </div>
-                    <br class="clearBoth">
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add02.jpg" title='Automatic Despair'>
-                        {{ dice_form.additional_despair }}
-                    </div>
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add04.jpg" title='Automatic Failure'>
-                        {{ dice_form.additional_failure }}
-                    </div>
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add06.jpg" title='Automatic Threat'>
-                        {{ dice_form.additional_threat }}
-                    </div>
-                    <div class="container-fluid dice-container">
-                        <img src="/media/sw_images/Faces/Add08.jpg" title='Automatic Dark'>
-                        {{ dice_form.additional_dark_pips }}
-                    </div>
-                    <br class="clearBoth">
-                </div>
-                <button type="submit" class="btn btn-warning btn-lg top-margin" name="roll_dice">
-                    <strong>Roll 'Em!</strong>
-                </button>
-            </form>
-            <hr>
+            </div>
             <div class="container-fluid" id="action_log" style="padding:0">
+                <hr>
                 {% if action_log is empty %}
                     <p>This room has no actions.</p>
                 {% else %}
@@ -314,7 +605,8 @@
         </div>
     </div>
 </div>
-
+{% block base_scripts %}
+{% endblock %}
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
@@ -329,15 +621,13 @@ function showAutoPips() {
     document.getElementById('show_pips_button').style.display='none'
     document.getElementById('hide_pips_button').style.display='block'
 }
-</script>
-<script>
+
 function hideAutoPips() {
     document.getElementById('hidden_fields').style.display='none'
     document.getElementById('show_pips_button').style.display='block'
     document.getElementById('hide_pips_button').style.display='none'
 }
-</script>
-<script>
+
 $(function() {
     function refresh_action_log(){
         var url_actions = document.URL + ' #action_log'
@@ -366,6 +656,14 @@ $(function() {
     refresh_chat_log();
     refresh_destiny_box();
 })
+
+    function addOne(id) {
+        document.getElementById(id).stepUp(1);
+    }
+    function subtractOne(id) {
+        document.getElementById(id).stepDown(1);
+    }
 </script>
 
 {% endblock %}
+<!--body-->

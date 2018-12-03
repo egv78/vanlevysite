@@ -40,41 +40,52 @@
 
           {% block right_side_buttons %}
             <ul class="navbar-nav navbar-right">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Navigate
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
                 {% if user.is_authenticated %}
                     {% block navbar_Rooms_button %}
-                      <li class="nav-item active">
-                          <a class="nav-link" href="{% url 'swdice:dockingbay' %}">Docking Bay<span class="sr-only">(current)</span></a>
-                      </li>
+                        <a class="dropdown-item" href="{% url 'swdice:dockingbay' %}">
+                            Docking Bay
+                        </a>
                     {% endblock %}
                     {% block navbar_Profile_button %}
-                      <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'accounts:view_profile' %}">
+                        <a class="dropdown-item" href="{% url 'accounts:view_profile' %}">
                             {% block navbar_Profile_button_wording %}Profile{% endblock %}
-                            <span class="sr-only">(current)</span></a>
-                      </li>
-                      {% endblock %}
+                        </a>
+                    {% endblock %}
                     {% block navbar_Logout_button %}
-                      <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'accounts:logout' %}">Logout<span class="sr-only">(current)</span></a>
-                      </li>
-                      {% endblock %}
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                            Logout
+                        </a>
+                    {% endblock %}
                 {% else %}
-                      {% block navbar_Login_button %}
-                          <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'accounts:login' %}">Login<span class="sr-only">(current)</span></a>
-                          </li>
-                      {% endblock %}
-                      {% block navbar_Register_button %}
-                          <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'accounts:register' %}">Register<span class="sr-only">(current)</span></a>
-                          </li>
-                      {% endblock %}
-                      {% block navbar_ResetPassword_button %}
-                          <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'accounts:password_reset' %}">Reset Password<span class="sr-only">(current)</span></a>
-                          </li>
-                      {% endblock %}
+                    {% block navbar_Login_button %}
+                        <a class="dropdown-item" href="{% url 'accounts:login' %}">
+                            Login
+                        </a>
+                    {% endblock %}
+                    {% block navbar_Register_button %}
+                        <a class="dropdown-item" href="{% url 'accounts:register' %}">
+                            Register
+                        </a>
+                    {% endblock %}
+                    {% block navbar_ResetPassword_button %}
+                        <a class="dropdown-item" href="{% url 'accounts:password_reset' %}">
+                            Reset Password
+                        </a>
+                    {% endblock %}
                 {% endif %}
+                    {% block sw_about %}
+                    <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'swdice:about' %}">
+                            About
+                        </a>
+                    {% endblock %}
+                </div>
             </ul>
           {% endblock %}
       </div>
@@ -88,10 +99,14 @@
     {% block body %}
     {% endblock %}
 
+{% block base_scripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+{% endblock %}
 </body>
 
-<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
--->
 </html>

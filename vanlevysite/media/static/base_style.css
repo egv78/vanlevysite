@@ -12,7 +12,7 @@
 }
 
 .roll-caption {
-    width: 220px;
+    width: 240px;
     padding: 7px 5px;
     margin: 5px 3px;
 }
@@ -23,9 +23,15 @@
     font-weight: bold;
 }
 
+table#destiny_table {
+    background-color: #f8f9fa;
+    width: 780px;
+    margin: 0px 0px 5px 0px;
+}
+
 .dice-container {
-    width: 120px;
-    height: 60px;
+    width: 130px;
+    height: 75px;
     padding: 3px 6px;
     margin: 10px 0px 0px 0xp;
     background-color: #f8f9fa;
@@ -34,8 +40,8 @@
 }
 
 .dice-container-long {
-    width: 240px;
-    height: 60px;
+    width: 260px;
+    height: 75px;
     padding: 3px 6px;
     margin: 10px 0px 0px 0xp;
     background-color: #f8f9fa;

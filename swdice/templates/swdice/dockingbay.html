@@ -82,6 +82,9 @@
             </div>
             <div class="col">
                 <h4>Enter a room using passcode</h4>
+                <p><strong>-or change your avatar-</strong></p>
+                <p>To change your avatar, type the Room ID and select your Avatar from the drop-down.
+                    You do not need to re-enter the passcode.</p>
                 <form method="post"  autocomplete="off">
                     {% csrf_token %}
                     <table>
@@ -108,8 +111,14 @@
                                 <strong>{{ form.default_avatar.errors }}</strong>
                             </td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm">Enter Room</button>
+                            </td>
+                        </tr>
+
                     </table>
-                    <button type="submit">Enter Room</button>
                 </form>
                 <hr>
                 <h4>Make a room</h4>
