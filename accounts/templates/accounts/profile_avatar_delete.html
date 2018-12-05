@@ -57,14 +57,30 @@
                     {% csrf_token %}
                     {{ avatar_form.deleted }}
                     <p></p>
-                    <button type="submit">
-                        I'm sure.<br>
-                        FEED THIS AVATAR TO THE SARLAAC!<br>
-                        (I mean, 'Delete this Avatar'.)
+                    <button type="submit" id="delete_button" class="btn btn-outline-success">
+                        Never mind.<br>Return to Profile page
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block page_scripts %}
+<script>
+$("#id_deleted").click(function () {
+    var button = $("#delete_button");
+    if (document.getElementById('id_deleted_0').checked) {
+        console.log("True")
+        button.removeClass('btn btn-outline-success');
+        button.addClass('btn btn-outline-danger');
+        button.html('I am sure.<br>FEED THIS AVATAR TO THE SARLAAC!<br>(I mean, Delete this Avatar.)');
+    } else {
+        console.log("False")
+        button.removeClass('btn btn-outline-danger');
+        button.addClass('btn btn-outline-success');
+        button.html('Never mind.<br>Return to Profile page');
+    };
+});
+</script>
 {% endblock %}
