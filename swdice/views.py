@@ -27,8 +27,11 @@ def split_string(string):
 
 
 def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user=True, avatar=None):
+    if SWRoomToUser.objects.filter(user_id_id=user_id, room_id_id=room_id):
+        link_instance = SWRoomToUser.objects.filter(user_id_id=user_id, room_id_id=room_id)[0]
+    else:
+        link_instance = SWRoomToUser()
     now = datetime.datetime.now()
-    link_instance = SWRoomToUser()
     link_instance.room_id_id = room_id
     link_instance.user_id = VanLevyUser(pk=user_id)
     link_instance.admitted = True
@@ -94,8 +97,8 @@ def save_dice_pool(user, avatar, room, image_url, caption="",
     new_dice_pool.results_dark_pips = net_results[6]
     new_dice_pool.results_light_pips = net_results[7]
     numerical_meanings = range(1, (numerical_dice_sides + 1))
-    NUMERICAL = Die("Numerical", numerical_meanings, "")
-    numerical_string, numerical_results = NUMERICAL.roll(num_numerical_dice)
+    numerical_die = Die("Numerical", numerical_meanings, "")
+    numerical_string, numerical_results = numerical_die.roll(num_numerical_dice)
     new_dice_pool.results_numerical = numerical_string
     sum_results = 0
     for number in net_results:
@@ -141,9 +144,9 @@ def make_sw_room(request):
             instance.save()
             user_id = request.user.id
             room_id = instance.id
-            make_user_room_link(room_id, user_id, True, False, True, "0")
+            make_user_room_link(room_id, user_id, True, False, True, "")
             destiny = SWRoomDestiny()
-            destiny.room_id = room_id
+            destiny.room_id_id = room_id
             destiny.dark_pips = 0
             destiny.light_pips = 0
             destiny.save()
@@ -193,7 +196,12 @@ class DockingBay(FormMixin, TemplateView):
             if room.default_avatar_is_user == 1:
                 my_avatars_list[room.room_id_id] = avatars[0]
             else:
-                my_avatars_list[room.room_id_id] = avatars[room.avatar_id_id]
+                try:
+                    my_avatars_list[room.room_id_id] = avatars[room.avatar_id_id]
+                except:
+                    my_avatars_list[room.room_id_id] = avatars[0]
+                    game_master = room.game_master
+                    make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, "")
 
         form = Enter_SW_Room(**kwargs)
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list}
@@ -441,8 +449,8 @@ class ViewRoom(FormMixin, TemplateView):
                 else:
                     icon_src = ""
 
-            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):         # can remove next re-initialization
-                destiny = SWRoomDestiny()
+            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
+                destiny = SWRoomDestiny()                                       # maybe not
                 destiny.room_id_id = swroom_id
                 destiny.dark_pips = 0
                 destiny.light_pips = 0
