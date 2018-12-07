@@ -1,5 +1,4 @@
 from django import forms
-from django.db import models
 from accounts.models import UserProfile
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
@@ -21,6 +20,12 @@ class RegistrationForm(UserCreationForm):
                   'password1',
                   'password2')
 
+    def clean(self):
+        if User.objects.filter(email=self.cleaned_data['email']).exists():
+            error_msg = 'This email already has an account.  Would you like to reset your password?'
+            self.add_error('email', error_msg)
+        return self.cleaned_data
+
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
@@ -28,7 +33,7 @@ class RegistrationForm(UserCreationForm):
         if commit:
             user.save()
 
-        return(user)
+        return user
 
 
 class EditUserForm(forms.ModelForm):

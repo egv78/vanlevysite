@@ -19,6 +19,10 @@ def register(request):
         if form.is_valid():
             form.save()
             return redirect(reverse('accounts:register_success'))
+        else:
+            form = RegistrationForm(request.POST or None)
+            args = {'form': form}
+            return render(request, template_name, args)
     else:
         form = RegistrationForm()
 

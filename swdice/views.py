@@ -40,7 +40,7 @@ def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user
     link_instance.date_link_created = now
     link_instance.date_admitted = now
     link_instance.default_avatar_is_user = avatar_is_user
-    link_instance.avatar_id_id = "" if avatar is None else avatar
+    link_instance.avatar_id_id = "" if avatar is None or int(avatar) == 0 else avatar
     if gm:
         link_instance.date_made_gm = now
     link_instance.save()
@@ -218,7 +218,10 @@ class DockingBay(FormMixin, TemplateView):
             avatar_id = form.cleaned_data['default_avatar']
             instance = form.save(commit=False)
 
-            use_user_id = True if avatar_id == 0 else False
+            use_user_id = True if int(avatar_id) == 0 else False
+            print('avatar_id')
+            print(avatar_id)
+            print(avatar_id == 0)
 
             room = SWRoom.objects.get(pk=swroom_id)
             if room:
@@ -242,7 +245,7 @@ class DockingBay(FormMixin, TemplateView):
                     if room_is_open or (passcode_candidate == passcode_correct):
                         game_master = False
                         banned = False
-                        # print(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
+                        print(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
                         make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
                         return redirect('swdice:swroom', swroom_id)
         else:
