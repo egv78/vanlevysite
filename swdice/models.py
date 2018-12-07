@@ -11,6 +11,13 @@ class SWRoom(models.Model):
     created_by = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
     open_to_all = models.BooleanField(choices=BOOL_CHOICES, default=False)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "S.W. Room"
+        verbose_name_plural = "S.W. Rooms"
+
 
 class SWRoomToUser(models.Model):
     room_id = models.ForeignKey(SWRoom, on_delete=models.CASCADE)
@@ -24,6 +31,10 @@ class SWRoomToUser(models.Model):
     date_banned = models.DateTimeField(blank=True, null=True)
     default_avatar_is_user = models.BooleanField(default=True)
     avatar_id = models.ForeignKey(Avatar, on_delete=models.CASCADE, default="", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "S.W. Room to User Link"
+        verbose_name_plural = "S.W. Room to User Links"
 
 
 # need to implement saving at some point?

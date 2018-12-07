@@ -75,3 +75,9 @@ class Avatar(models.Model):
     avatar_image = models.ImageField(upload_to='avatar_image', blank=True)
     created_on = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(choices=BOOL_CHOICES, default=False)
+
+    def __str__(self):
+        if self.avatar_name == '':
+            return self.user.username
+        else:
+            return self.avatar_name
