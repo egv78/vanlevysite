@@ -32,6 +32,10 @@ class SWRoomToUser(models.Model):
     default_avatar_is_user = models.BooleanField(default=True)
     avatar_id = models.ForeignKey(Avatar, on_delete=models.CASCADE, default="", blank=True, null=True)
 
+    def __str__(self):
+        name_string = "ROOM #" + str(self.room_id.name) + "# to USER *" + str(self.user_id.username) + "*"
+        return name_string
+
     class Meta:
         verbose_name = "S.W. Room to User Link"
         verbose_name_plural = "S.W. Room to User Links"
