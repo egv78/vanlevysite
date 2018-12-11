@@ -65,6 +65,18 @@ class EditAvatarForm(forms.ModelForm):
 
     class Meta:
         model = Avatar
+        fields = ('avatar_name',
+                  'avatar_description',
+                  'avatar_image'
+                  )
+
+
+class DeleteAvatarForm(forms.ModelForm):
+    avatar_description = forms.CharField(required=False, label='Description')
+    avatar_image = forms.ImageField(required=False)
+
+    class Meta:
+        model = Avatar
         widgets = {'deleted': forms.RadioSelect}
         fields = ('avatar_name',
                   'avatar_description',

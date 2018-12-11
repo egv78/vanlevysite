@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .models import VanLevyUser, Avatar
-from accounts.forms import RegistrationForm, EditProfileForm, EditUserForm, EditAvatarForm
+from accounts.forms import RegistrationForm, EditProfileForm, EditUserForm, EditAvatarForm, DeleteAvatarForm
 import datetime
 
 
@@ -21,6 +21,7 @@ def register(request):
             return redirect(reverse('accounts:register_success'))
         else:
             form = RegistrationForm(request.POST or None)
+            print("Form BUGGED")
             args = {'form': form}
             return render(request, template_name, args)
     else:
@@ -75,11 +76,16 @@ def edit_avatar(request, avatar_id=0):
         timestamp = this_avatar.created_on
         should_leave = not(this_avatar.user_id == current_user_id)
         avatar_form = EditAvatarForm(instance=this_avatar)
-    else:
+    elif "edit" in request.path:
         timestamp = datetime.datetime.now()
         should_leave = False
         initial_args = {'user_id': current_user_id, 'created_on': timestamp}
         avatar_form = EditAvatarForm(initial_args)
+    else:
+        timestamp = datetime.datetime.now()
+        should_leave = False
+        initial_args = {'user_id': current_user_id, 'created_on': timestamp}
+        avatar_form = DeleteAvatarForm(initial_args)
 
     if should_leave:  # make sure user can't type an avatar id into web browser
         return redirect('accounts:view_profile')
@@ -87,10 +93,12 @@ def edit_avatar(request, avatar_id=0):
         if request.method == 'POST' or request.method == 'FILES':
             if avatar_id == 0:  # create
                 avatar_form = EditAvatarForm(request.POST, request.FILES)
+                avatar_form.deleted = False
+                print(avatar_form)
             elif "edit" in request.path:
                 avatar_form = EditAvatarForm(request.POST, request.FILES, instance=this_avatar)
             elif "delete" in request.path:
-                avatar_form = EditAvatarForm(request.POST, request.FILES, instance=this_avatar)
+                avatar_form = DeleteAvatarForm(request.POST, request.FILES, instance=this_avatar)
 
             if avatar_form.is_valid():
                 avatar_post = avatar_form.save(commit=False)
@@ -102,7 +110,9 @@ def edit_avatar(request, avatar_id=0):
                 return redirect('accounts:view_profile')
             else:
                 print("form has problems")
-                return redirect('accounts:view_profile')
+                message = "There is a problem."
+                args = {'error_message': message}
+                return redirect('accounts:create_avatar')
 
         else:  # request.method == GET
             if "create" in request.path:
@@ -115,7 +125,7 @@ def edit_avatar(request, avatar_id=0):
                 template_name = 'accounts/profile_avatar_edit.html'
                 args = {'avatar_form': avatar_form}
             elif "delete" in request.path:
-                avatar_form = EditAvatarForm(instance=this_avatar)
+                avatar_form = DeleteAvatarForm(instance=this_avatar)
                 template_name = 'accounts/profile_avatar_delete.html'
                 args = {'avatar_form': avatar_form, 'avatar_data': this_avatar}
             else:

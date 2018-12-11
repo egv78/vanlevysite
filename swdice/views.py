@@ -26,7 +26,7 @@ def split_string(string):
     return faces_list
 
 
-def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user=True, avatar=None):
+def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user=True, avatar=0):
     if SWRoomToUser.objects.filter(user_id_id=user_id, room_id_id=room_id):
         link_instance = SWRoomToUser.objects.filter(user_id_id=user_id, room_id_id=room_id)[0]
     else:
@@ -40,7 +40,17 @@ def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user
     link_instance.date_link_created = now
     link_instance.date_admitted = now
     link_instance.default_avatar_is_user = avatar_is_user
-    link_instance.avatar_id_id = "" if avatar is None or int(avatar) == 0 else avatar
+    # if avatar is None:
+    #     avatar = 0
+    print("Make Link")
+    print(avatar)
+    if int(avatar) == 0:
+        link_instance.avatar_id_id = ""
+        print("blank")
+    else:
+        link_instance.avatar_id_id = int(avatar)
+        print(avatar)
+
     if gm:
         link_instance.date_made_gm = now
     link_instance.save()
@@ -144,7 +154,7 @@ def make_sw_room(request):
             instance.save()
             user_id = request.user.id
             room_id = instance.id
-            make_user_room_link(room_id, user_id, True, False, True, "")
+            make_user_room_link(room_id, user_id, True, False, True, 0)
             destiny = SWRoomDestiny()
             destiny.room_id_id = room_id
             destiny.dark_pips = 0
@@ -201,7 +211,7 @@ class DockingBay(FormMixin, TemplateView):
                 except:
                     my_avatars_list[room.room_id_id] = avatars[0]
                     game_master = room.game_master
-                    make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, "")
+                    make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, 0)
 
         form = Enter_SW_Room(**kwargs)
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list}
@@ -394,7 +404,10 @@ class ViewRoom(FormMixin, TemplateView):
             room_is_open = room.open_to_all
             room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
             gm_link = room_users_link_list.filter(game_master=1)
-            gm_id = gm_link[0].user_id_id
+            if len(gm_link) > 0:
+                gm_id = gm_link[0].user_id_id
+            else:
+                gm_id = ""
             current_user_id = request.user.id
             user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
             if len(user_to_room_link_candidate) > 0:
@@ -403,7 +416,7 @@ class ViewRoom(FormMixin, TemplateView):
                 user_to_room_link = False
 
             if room_is_open and not user_to_room_link:
-                make_user_room_link(swroom_id, current_user_id, False, False, True, None)
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
                 should_be_here = True
             elif not user_to_room_link:
                 should_be_here = False
@@ -460,7 +473,10 @@ class ViewRoom(FormMixin, TemplateView):
                 destiny.save()
             room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
 
-            gm_name = "you" if gm_id == request.user.id else VanLevyUser.objects.filter(pk=gm_id)[0].username
+            if len(gm_link) > 0:
+                gm_name = "you" if gm_id == request.user.id else VanLevyUser.objects.filter(pk=gm_id)[0].username
+            else:
+                gm_name = "No one"
             chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
             action_log = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')[:150]
             form = SW_Room_Chat_Form()

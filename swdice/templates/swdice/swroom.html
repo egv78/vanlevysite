@@ -17,6 +17,7 @@
 {% endblock %}
 
 {% block body %}
+{% load static %}
 <div class="container-fluid">
 <br>
     <div class="row">
@@ -42,10 +43,10 @@
                             There are no Destiny Points
                             {% endif %}
                             {% for i in dark_pips|get_range %}
-                                <img src="/media/sw_images/Pips/black.png" width="40" title="Use Dark">
+                                <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Use Dark">
                             {% endfor %}
                             {% for i in light_pips|get_range %}
-                                <img src="/media/sw_images/Pips/white.png" width="40" title="Use Light">
+                                <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Use Light">
                             {% endfor %}
                             </span>
                         </td>
@@ -70,7 +71,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/boost.png" width="40">
+                                    <img src="{% static 'swdice/Dice/boost.png' %}" width="40">
                                     {{ dice_form.num_boost_dice }}
                                 </td>
                                 <td>
@@ -93,7 +94,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/ability.png" width="40">
+                                    <img src="{% static 'swdice/Dice/ability.png' %}" width="40">
                                     {{ dice_form.num_ability_dice }}
                                 </td>
                                 <td>
@@ -116,7 +117,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/proficiency.png" width="40">
+                                    <img src="{% static 'swdice/Dice/proficiency.png' %}" width="40">
                                     {{ dice_form.num_proficiency_dice }}
                                 </td>
                                 <td>
@@ -139,7 +140,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/D100.png" width="80">
+                                    <img src="{% static 'swdice/Dice/D100.png' %}" width="80">
                                     <span class="big-font"> d</span>
                                     {{ dice_form.numerical_dice_sides }}
                                     {{ dice_form.num_numerical_dice }}
@@ -175,7 +176,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/setback.png" width="40">
+                                    <img src="{% static 'swdice/Dice/setback.png' %}" width="40">
                                     {{ dice_form.num_setback_dice }}
                                 </td>
                                 <td>
@@ -198,7 +199,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/difficulty.png" width="40">
+                                    <img src="{% static 'swdice/Dice/difficulty.png' %}" width="40">
                                     {{ dice_form.num_difficulty_dice }}
                                 </td>
                                 <td>
@@ -221,7 +222,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/challenge.png" width="40">
+                                    <img src="{% static 'swdice/Dice/challenge.png' %}" width="40">
                                     {{ dice_form.num_challenge_dice }}
                                 </td>
                                 <td>
@@ -244,7 +245,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Dice/force.png" width="40">
+                                    <img src="{% static 'swdice/Dice/force.png' %}" width="40">
                                     {{ dice_form.num_force_dice }}
                                 </td>
                                 <td>
@@ -274,7 +275,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add01.jpg" title='Automatic Triumph'>
+                                    <img src="{% static 'swdice/Faces/Add01.jpg' %}" title='Automatic Triumph'>
                                     {{ dice_form.additional_triumph }}
                                 </td>
                                 <td>
@@ -297,7 +298,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add03.jpg" title='Automatic Success'>
+                                    <img src="{% static 'swdice/Faces/Add03.jpg' %}" title='Automatic Success'>
                                     {{ dice_form.additional_success }}
                                 </td>
                                 <td>
@@ -320,7 +321,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add05.jpg" title='Automatic Advantage'>
+                                    <img src="{% static 'swdice/Faces/Add05.jpg' %}" title='Automatic Advantage'>
                                     {{ dice_form.additional_advantage }}
                                 </td>
                                 <td>
@@ -343,7 +344,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add07.jpg" title='Automatic Light'>
+                                    <img src="{% static 'swdice/Faces/Add07.jpg' %}" title='Automatic Light'>
                                     {{ dice_form.additional_light_pips }}
                                 </td>
                                 <td>
@@ -367,7 +368,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add02.jpg" title='Automatic Despair'>
+                                    <img src="{% static 'swdice/Faces/Add02.jpg' %}" title='Automatic Despair'>
                                     {{ dice_form.additional_despair }}
                                 </td>
                                 <td>
@@ -390,7 +391,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add04.jpg" title='Automatic Failure'>
+                                    <img src="{% static 'swdice/Faces/Add04.jpg' %}" title='Automatic Failure'>
                                     {{ dice_form.additional_failure }}
                                 </td>
                                 <td>
@@ -413,7 +414,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add06.jpg" title='Automatic Threat'>
+                                    <img src="{% static 'swdice/Faces/Add06.jpg' %}" title='Automatic Threat'>
                                     {{ dice_form.additional_threat }}
                                 </td>
                                 <td>
@@ -436,7 +437,7 @@
                             <table>
                             <tr>
                                 <td>
-                                    <img src="/media/sw_images/Faces/Add08.jpg" title='Automatic Dark'>
+                                    <img src="{% static 'swdice/Faces/Add08.jpg' %}" title='Automatic Dark'>
                                     {{ dice_form.additional_dark_pips }}
                                 </td>
                                 <td>
@@ -486,7 +487,9 @@
                                 <!--Individual Faces-->
                             {% for face in action.faces_summary|split_string %}
                                 {% if face %}
-                                <img src="/media/sw_images/Faces/{{face}}.jpg" title="{{face}}">
+                                {% with 'swdice/Faces/'|add:face|add:'.jpg' as face_image %}
+                                <img src="{% static face_image %}" title="{{face}}">
+                                {% endwith %}
                                 {% endif %}
                             {% endfor %}
                             {% if action.results_numerical %}
@@ -503,42 +506,42 @@
                                 {% endif %}
                             {% if action.results_triumph > 0 %}
                                 {% for i in action.results_triumph|get_range %}
-                                <img src="/media/sw_images/Results/Tri01.jpg" title="{{action.results_triumph}} Triumph">
+                                <img src="{% static 'swdice/Results/Tri01.jpg' %}" title="{{action.results_triumph}} Triumph">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_despair > 0 %}
                                 {% for i in action.results_despair|get_range %}
-                                <img src="/media/sw_images/Results/Des01.jpg" title="{{action.results_despair}} Despair">
+                                <img src="{% static 'swdice/Results/Des01.jpg' %}" title="{{action.results_despair}} Despair">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_success > 0 %}
                                 {% for i in action.results_success|get_range %}
-                                <img src="/media/sw_images/Results/Suc01.jpg" title="{{action.results_success}} Success">
+                                <img src="{% static 'swdice/Results/Suc01.jpg' %}" title="{{action.results_success}} Success">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_failure > 0 %}
                                 {% for i in action.results_failure|get_range %}
-                                <img src="/media/sw_images/Results/Fai01.jpg" title="{{action.results_failure}} Failure">
+                                <img src="{% static 'swdice/Results/Fai01.jpg' %}" title="{{action.results_failure}} Failure">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_advantage > 0 %}
                                 {% for i in action.results_advantage|get_range %}
-                                <img src="/media/sw_images/Results/Adv01.jpg" title="{{action.results_advantage}} Advantage">
+                                <img src="{% static 'swdice/Results/Adv01.jpg' %}" title="{{action.results_advantage}} Advantage">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_threat > 0 %}
                                 {% for i in action.results_threat|get_range %}
-                                <img src="/media/sw_images/Results/Thr01.jpg" title="{{action.results_threat}} Threat">
+                                <img src="{% static 'swdice/Results/Thr01.jpg' %}" title="{{action.results_threat}} Threat">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_light_pips > 0 %}
                                 {% for i in action.results_light_pips|get_range %}
-                                <img src="/media/sw_images/Results/Lig01.jpg" title="{{action.results_light_pips}} Light Pips">
+                                <img src="{% static 'swdice/Results/Lig01.jpg' %}" title="{{action.results_light_pips}} Light Pips">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_dark_pips > 0 %}
                                 {% for i in action.results_dark_pips|get_range %}
-                                <img src="/media/sw_images/Results/Dar01.jpg" title="{{action.results_dark_pips}} Dark Pips">
+                                <img src="{% static 'swdice/Results/Dar01.jpg' %}" title="{{action.results_dark_pips}} Dark Pips">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_cancel %}

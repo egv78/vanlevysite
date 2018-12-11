@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--<link rel="stylesheet" type="text/css" href="/media/static/reset_css.css" />-->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous" />
 
-    <link rel="stylesheet" type="text/css" href="/media/static/base_style.css" />
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/base_style.css' %}" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block head%}
