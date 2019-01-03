@@ -30,7 +30,7 @@ STATIC_ROOT = 'http://www.vanlevy.com.s3-website.us-east-2.amazonaws.com/'
 
 # MEDIA FILES
 
-INSTALLED_APPS += 'storages'
+# INSTALLED_APPS += 'storages'
 
 # DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
 
