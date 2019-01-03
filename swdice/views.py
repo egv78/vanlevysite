@@ -274,8 +274,10 @@ class ViewRoom(FormMixin, TemplateView):
         avatar = room_to_user_link.avatar_id
         if avatar is None:
             image_url = current_user.userprofile.user_image.url
-        else:
+        elif avatar.avatar_image:
             image_url = avatar.avatar_image.url
+        else:
+            image_url = ''
 
         if request.method == "POST" and "chat" in request.POST:
             form = SW_Room_Chat_Form(request.POST)

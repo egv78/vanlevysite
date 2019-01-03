@@ -1,2 +1,4 @@
 -r base.txt
 whitenoise
+boto3
+django-storages
