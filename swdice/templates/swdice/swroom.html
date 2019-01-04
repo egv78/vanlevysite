@@ -1,15 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'sw_base.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
     <title>SW Room</title>
 {% endblock %}
 
-{% block Title_link_auth %}#{% endblock %}
-{% block Title %}<span class="d-inline-block text-truncate" style="max-width: 750px;">{{room.name}}</span>{% endblock %}
-
 {% block navbar_space_part_1 %}
 <!--exclude space-->
+{% endblock %}
+
+{% block brand %}
+<span class="d-inline-block text-truncate" style="max-width: 750px; color:white; font-size: 150%;">
+    {{room.name}}
+</span>
 {% endblock %}
 
 {% block navbar_space_part_2 %}
@@ -618,6 +621,7 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+{% block page_scripts %}
 <script>
 function showAutoPips() {
     document.getElementById('hidden_fields').style.display='block'
@@ -667,6 +671,8 @@ function subtractOne(id) {
     document.getElementById(id).stepDown(1);
 }
 </script>
+
+{% endblock %} <!--page_scripts-->
 
 {% endblock %}
 <!--body-->

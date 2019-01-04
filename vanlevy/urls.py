@@ -6,7 +6,7 @@ from . import views
 app_name = 'vanlevy'
 
 urlpatterns = [
-    path('', views.vl_home_view, name='home'),
+    path('', views.vl_home_view, name='blank'),
     path('home/', views.vl_home_view, name='home'),
     path('about/', views.vl_about_view, name='vl_about'),
     path('resources/', views.vl_resources_view, name='resources'),

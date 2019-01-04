@@ -1,0 +1,12 @@
+{% extends 'vl_base.html' %}
+
+{% block navbar_characteristics %}
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #252525">
+{% endblock %}
+
+{% block brand %}
+    <a class="navbar-brand" href="{% url 'swdice:about' %}">
+        <h4>SW Dice Roller{% block subtitle %}{% endblock %}</h4>
+    </a>
+{% endblock %}
+

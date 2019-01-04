@@ -1,15 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'sw_base.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
     <title>About SW Dice Roller</title>
 {% endblock %}
 
-<!-- include navbar_Room_button -->
-
-{% block navbar_EditProfile_button %}
-{% endblock %}
-<!-- include navbar_Profile_button -->
+{% block subtitle %} - About{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -18,10 +14,15 @@
     <p>
         Words here about SW Dice Roller.
     </p>
+    <p>
+        Possible ideas:
+    </p>
     <ul>
-        <li><a href ="{% url 'vanlevy:home' %}">Van Levy Homepage</a></li>
-        <li><a href ="{% url 'accounts:about' %}">Accounts</a></li>
-        <li><a href ="{% url 'swdice:dockingbay' %}">SW Dice Roller Docking Bay</a></li>
+        <li>amazon affiliate links</li>
+        <li>pdf for character sheets</li>
+        <li>pdf for vehicle sheets</li>
+        <li>SW Specific resources? (risks overlapping with cool stuff; make based on category?)</li>
     </ul>
+
 </div>
 {% endblock %}

@@ -7,16 +7,34 @@
 
 
 {% block body %}
+{% block vanlevy %}
+{% endblock %}
     <div class="container">
         <br>
-        <h4>Welcome to</h4>
-        <h1>Van Levy .com!</h1>
+        <h3>Welcome to Van Levy.com,
+            {% if user.is_authenticated %}
+                {% if user.userprofile.user_first_name %}
+                {{user.userprofile.user_first_name}}.
+                {% else %}
+                {{user.username}}.
+                {% endif %}
+            {% else %}
+                stranger.
+            {% endif %}
+        </h3>
+
         <p></p>
         <h5>
             Speeding up your RPG time wasting.
         </h5>
-        <p></p>
+        <p><br></p>
+        <p><br></p>
         <p>To get started, click on "Navigate".</p>
+        <p><br></p>
+        <p>Or, click one of these links below:</p>
+        <p><a href="{% url 'vanlevy:vl_about' %}">About VanLevy.com</a></p>
+        <p><a href="{% url 'vanlevy:resources' %}">Our Resources</a></p>
+        <p><a href="{% url 'vanlevy:cool_stuff' %}">Other People's Cool Stuff</a></p>
 
     </div>
 {% endblock %}
