@@ -127,7 +127,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'), )
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'vanlevysite/media/')
 
-LOGIN_REDIRECT_URL = '/swdice/dockingbay/'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
 
 LOGIN_URL = '/accounts/login/'
 
