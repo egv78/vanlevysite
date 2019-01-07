@@ -16,6 +16,7 @@ app_name = 'accounts'
 urlpatterns = [
     path('', views.about, name='about'),
     path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    path('login_required/', LoginView.as_view(template_name='accounts/login_required.html'), name='login_required'),
     path('logout/', LogoutView.as_view(template_name='accounts/logout.html'), name='logout'),
     path('register/', views.register, name='register'),
     path('register/success/', views.RegisterSuccess, name='register_success'),

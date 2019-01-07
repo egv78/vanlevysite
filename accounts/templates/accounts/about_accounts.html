@@ -5,27 +5,34 @@
     <title>About Accounts</title>
 {% endblock %}
 
-{% block Title_link_auth %}{% url 'accounts:about' %}{% endblock %}
-{% block Title_link_not_auth %}{% url 'accounts:about' %}{% endblock %}
-{% block Title %}Accounts{% endblock %}
-<!-- include navbar_Room_button -->
-
-{% block navbar_EditProfile_button %}
-{% endblock %}
-<!-- include navbar_Profile_button -->
 
 {% block body %}
 <br>
 <div class="container">
     <p></p>
-    <h2>About the Van Levy Accounts</h2>
+    <h2>Van Levy Accounts</h2>
     <p>
-        Words here about managing accounts, awesomeness.
+        This part of the website is dedicated to creating and maintaining your account.
     </p>
-    <ul>
-        <li><a href ="{% url 'vanlevy:home' %}">Van Levy Homepage</a></li>
-        <li><a href ="{% url 'accounts:about' %}">Accounts</a></li>
-        <li><a href ="{% url 'swdice:dockingbay' %}">SW Dice Roller Docking Bay</a></li>
-    </ul>
+    <br>
+        {% if user.is_authenticated %}
+        <h4>You are logged in as {{user.first_name}}.</h4>
+            <br>
+            Would you like to:
+            <ul>
+                <li><a href="{% url 'accounts:view_profile' %}">View or edit your profile</a></li>
+                <li><a href="{% url 'accounts:password' %}">Change your password</a></li>
+                <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+            </ul>
+        {% else %}
+        <h4>You are not logged in.</h4>
+            <br>
+            Would you like to:
+            <ul>
+                <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                <li><a href="{% url 'accounts:password_reset' %}">Reset your password</a></li>
+                <li><a href="{% url 'accounts:register' %}">Create a new account</a></li>
+            </ul>
+        {% endif %}
 </div>
 {% endblock %}

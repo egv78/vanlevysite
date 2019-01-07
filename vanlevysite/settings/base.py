@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts.middleware.LoginRequiredMiddleware'
 ]
 
 ROOT_URLCONF = 'vanlevysite.urls'
@@ -130,6 +131,34 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'vanlevysite/media/')
 LOGIN_REDIRECT_URL = '/accounts/profile/'
 
 LOGIN_URL = '/accounts/login/'
+LOGIN_REQUIRED_URL = '/accounts/login_required/'
+
+LOGIN_EXEMPT_URLS = (
+    # Admin login pages
+    '/admin/',
+    '/admin/login/'
+    # VanLevy pages - all
+    '',
+    '/',
+    '/about/',
+    '/cool-stuff/',
+    '/home/',
+    '/resources/',
+    # Accounts pages - About and necessary to login/logout, register, reset password
+    # Accounts login is handled explicitly in middleware
+    LOGIN_REQUIRED_URL,
+    '/accounts/',
+    '/accounts/logout/',
+    '/accounts/register/',
+    '/accounts/register/success/',
+    '/accounts/password-reset/',
+    '/accounts/password-reset/done/',
+    '/accounts/password-reset/confirm/',
+    '/accounts/password-reset/complete/',
+    # Dice Rollers - only About pages
+    '/swdice/',
+)
+
 
 # User substitution
 AUTH_USER_MODEL = 'accounts.VanLevyUser'

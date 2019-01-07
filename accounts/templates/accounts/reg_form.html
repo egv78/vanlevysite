@@ -5,11 +5,12 @@
     <title>Registration Form</title>
 {% endblock %}
 
-{% block navbar_Rooms_button %}
+{% block link_logout %}
+    {% if user.is_authenticated %}
+    {% else %}
+        <a class="dropdown-item" href="{% url 'accounts:password_reset' %}">Reset Password</a>
+    {% endif %}
 {% endblock %}
-{% block navbar_Register_button %}
-{% endblock %}
-<!-- include navbar_Login_button -->
 
 
 {% block body %}
