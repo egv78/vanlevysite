@@ -52,15 +52,28 @@
                 <p>Are you REALLY sure that you want to delete this Avatar?</p>
                 <p>Once this is done, you can't undo it!</p>
                 <p>&nbsp</p>
-                <p><strong>Delete </strong><em>{{avatar_data.avatar_name}}?</em></p>
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ avatar_form.deleted }}
-                    <p></p>
-                    <button type="submit" id="delete_button" class="btn btn-outline-success">
-                        Never mind.<br>Return to Profile page
-                    </button>
-                </form>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <p><strong>Delete </strong><em>{{avatar_data.avatar_name}}?</em></p>
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{ avatar_form.deleted }}
+                            <p></p>
+                        </div>
+                        <div class="col">
+                            <p><br></p>
+                            <button type="submit" id="delete_button" class="btn btn-outline-success">
+                                Never mind.<br>Return to Profile page
+                            </button>
+                            </form>
+                        </div>
+                    </div>
+                    <p id="delete_language">
+                        In order to delete {{avatar_data.avatar_name}}, you must check "Yes" <em>and then</em>
+                        click the button.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -70,16 +83,23 @@
 <script>
 $("#id_deleted").click(function () {
     var button = $("#delete_button");
+    var language = document.getElementById("delete_language");
+    var new_words = '<br><strong>This is permanent.</strong>  There is no going back once you click the button.'
+        + '<br><em>{{avatar_data.avatar_name}}</em><strong> will be deleted.</strong>';
+    var revert = 'In order to delete {{avatar_data.avatar_name}}, you must check "Yes" <em>and then</em>'
+        + ' click the button.';
     if (document.getElementById('id_deleted_0').checked) {
         console.log("True")
         button.removeClass('btn btn-outline-success');
         button.addClass('btn btn-outline-danger');
-        button.html('I am sure.<br>FEED THIS AVATAR TO THE SARLAAC!<br>(I mean, Delete this Avatar.)');
+        button.html('I am sure.<br>FEED THIS AVATAR TO THE SARLAAC!<br>(I mean, "Delete this Avatar.")');
+        language.innerHTML = new_words;
     } else {
         console.log("False")
         button.removeClass('btn btn-outline-danger');
         button.addClass('btn btn-outline-success');
         button.html('Never mind.<br>Return to Profile page');
+        language.innerHTML = revert;
     };
 });
 </script>
