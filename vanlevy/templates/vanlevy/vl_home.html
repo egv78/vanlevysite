@@ -5,36 +5,45 @@
     <title>VanLevy Website</title>
 {% endblock %}
 
+{% block vanlevy %} <!-- this is the link in the navbar. -->
+{% endblock %}
 
 {% block body %}
-{% block vanlevy %}
-{% endblock %}
-    <div class="container">
-        <br>
-        <h3>Welcome to Van Levy.com,
-            {% if user.is_authenticated %}
-                {% if user.userprofile.user_first_name %}
-                {{user.userprofile.user_first_name}}.
-                {% else %}
-                {{user.username}}.
-                {% endif %}
+
+<div class="container">
+    <br>
+    <h3>Welcome {% if user.is_authenticated %}back {% endif %}to Van Levy.com,
+        {% if user.is_authenticated %}
+            {% if user.userprofile.user_first_name %}
+            {{user.userprofile.user_first_name}}.
             {% else %}
-                stranger.
+            {{user.username}}.
             {% endif %}
-        </h3>
+        {% else %}
+            stranger.
+        {% endif %}
+    </h3>
 
-        <p></p>
-        <h5>
-            Speeding up your RPG time wasting.
-        </h5>
-        <p><br></p>
-        <p><br></p>
-        <p>To get started, click on "Navigate".</p>
-        <p><br></p>
-        <p>Or, click one of these links below:</p>
-        <p><a href="{% url 'vanlevy:vl_about' %}">About VanLevy.com</a></p>
-        <p><a href="{% url 'vanlevy:resources' %}">Our Resources</a></p>
-        <p><a href="{% url 'vanlevy:cool_stuff' %}">Other People's Cool Stuff</a></p>
+    <p></p>
+    <h5>
+        Speeding up your RPG time wasting.
+    </h5>
+    <p><br></p>
+    <p>You are {% if user.is_authenticated %}currently {% else %}not {% endif %}
+        logged in{% if user.is_authenticated %} as <strong>{{user.username}}</strong>.{% else %}.{% endif %}
+        To {% if user.is_authenticated %}
+        manage your account or go directly to a Dice Roller,
+        {% else %}
+        login or register,
+        {% endif %}
+        click on "Navigate".
+    </p>
+    <p><br></p>
+    <p>
+        We're here to help you spend less time getting set up to waste time playing games!
+    </p>
 
-    </div>
+
+</div>
+
 {% endblock %}

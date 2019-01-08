@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
+
 def vl_home_view(request):
     template_name = 'vanlevy/vl_home.html'
     return render(request, template_name)
@@ -20,3 +21,9 @@ def vl_resources_view(request):
 def vl_cool_stuff_view(request):
     template_name = 'vanlevy/vl_cool_stuff.html'
     return render(request, template_name)
+
+
+def vl_dice_rollers_view(request):
+    template_name = 'vanlevy/dice_rollers.html'
+    return render(request, template_name)
+

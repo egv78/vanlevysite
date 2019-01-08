@@ -58,7 +58,7 @@ ROOT_URLCONF = 'vanlevysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['vanlevy/templates', 'accounts/templates', 'swdice/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -144,6 +144,7 @@ LOGIN_EXEMPT_URLS = (
     '/cool-stuff/',
     '/home/',
     '/resources/',
+    '/dice-rollers/',
     # Accounts pages - About and necessary to login/logout, register, reset password
     # Accounts login is handled explicitly in middleware
     LOGIN_REQUIRED_URL,
