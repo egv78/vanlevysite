@@ -12,5 +12,9 @@ urlpatterns = [
     path('makeroom/', views.make_sw_room, name='makeroom'),
     path('enter_with_passcode/', views.DockingBay.as_view(template_name="swdice/enter_with_passcode.html"),
          name='enter_passcode'),
+    path('switch_avatar/', views.DockingBay.as_view(template_name="swdice/switch_avatar.html"),
+         name='switch_avatar'),
+    path('switch_avatar/room/<int:swroom_id>/', views.DockingBay.as_view(template_name="swdice/switch_avatar.html"),
+         name='switch_avatar_room'),
 ]
 

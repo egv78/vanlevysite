@@ -193,6 +193,11 @@ class DockingBay(FormMixin, TemplateView):
 
     # if request.method == 'GET'
     def get(self, request, *args, **kwargs):
+        try:
+            room_id = self.kwargs['swroom_id']
+        except:
+            room_id = ""
+
         kwargs = self.get_form_kwargs()
         avatars = dict(kwargs['avatar_list'])
         current_user_id = self.request.user.id
@@ -214,7 +219,7 @@ class DockingBay(FormMixin, TemplateView):
                     make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, 0)
 
         form = Enter_SW_Room(**kwargs)
-        args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list}
+        args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id}
 
         return render(request, self.template_name, args)
 
@@ -231,7 +236,7 @@ class DockingBay(FormMixin, TemplateView):
             use_user_id = True if int(avatar_id) == 0 else False
             print('avatar_id')
             print(avatar_id)
-            print(avatar_id == 0)
+            print(int(avatar_id) == 0)
 
             room = SWRoom.objects.get(pk=swroom_id)
             if room:
@@ -246,8 +251,9 @@ class DockingBay(FormMixin, TemplateView):
                 elif been_there and not been_there[0].banned:
                     link_instance = been_there[0]
                     link_instance.avatar_id_id = avatar_id if int(avatar_id) > 0 else ""
-                    link_instance.default_avatar_is_user = 1 if avatar_id == 0 else 0
+                    link_instance.default_avatar_is_user = 1 if int(avatar_id) == 0 else 0
                     link_instance.save()
+                    print("here")
                     return redirect('swdice:swroom', swroom_id)
                 else:
                     passcode_correct = room.passcode
@@ -258,6 +264,8 @@ class DockingBay(FormMixin, TemplateView):
                         print(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
                         make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
                         return redirect('swdice:swroom', swroom_id)
+                    else:
+                        return redirect('swdice:enter_passcode')
         else:
             # need to do error handling
             pass

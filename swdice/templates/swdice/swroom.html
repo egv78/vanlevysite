@@ -564,16 +564,26 @@
             </div>
         </div>
         <div class="col-3" style="padding:0">
-            <span style="color:gray">You are signed in as: </span>
-            <table>
+
+            <table style="width: 100%;">
                 <tr>
-                    <td>
+                    <td rowspan="2" style="width:90px">
                         {% if icon %}
                             <img src="{{ icon }}" width="80">
                         {% endif %}
                     </td>
                     <td>
+                        <span style="color:gray">You are signed in as: </span>
                         <strong>{{ name_in_room }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="{% url 'swdice:switch_avatar_room' room_number %}">
+                        <button type="button" class="btn btn-light btn-sm align-right" name="switch_avatar">
+                            Switch Avatar
+                        </button>
+                        </a>
                     </td>
                 </tr>
             </table>
