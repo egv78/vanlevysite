@@ -20,6 +20,19 @@
 {% endblock %}
 
 {% block body %}
+<style>
+#action_table {width: 100%;}
+#action_table td {padding: 5px 0px;}
+#action_table tr:nth-child(odd){background-color: #f8f9fa;}
+#action_table tr:hover {background-color: #ddd;}
+#action_table tr{border-bottom: 1px solid #ddd}
+
+#chat_table {width: 100%;}
+#chat_table td {padding: 5px;}
+#chat_table tr:nth-child(odd){background-color: #e8e8e8;}
+#chat_table tr:nth-child(even){background-color: #f4f4f4;}
+</style>
+
 {% load static %}
 <div class="container-fluid">
 <br>
@@ -472,21 +485,35 @@
                 {% if action_log is empty %}
                     <p>This room has no actions.</p>
                 {% else %}
+                <table id="action_table">
                     {% for action in action_log %}
+                    <tr>
                         {% if action.is_just_caption %}
-                            <p>
+                            <td>
+
                             {% if action.image_url %}
-                                <img src="{{ action.image_url }}" width="40">
+                                <img src="{{ action.image_url }}"
+                                     title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                     width="40">
                             {% endif %}
+                            </td>
+                            <td>
+                                <strong>{% if action.avatar %} {{ action.avatar.avatar_name }} {% else %}
+                                    {{ action.user.username }} {% endif %} </strong> said:
                             {{ action.caption }}
-                            </p>
-                            <hr>
+                            </td>
+
                         {% else %}
-                            <p>
+                            <td>
                             {% if action.image_url %}
-                                <img src="{{ action.image_url }}" width="40">
+                                <img src="{{ action.image_url }}"
+                                     title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                     width="40">
                             {% endif %}
-                            <strong>Rolled: </strong>
+                            </td>
+                            <td>
+                            <strong>{% if action.avatar %} {{ action.avatar.avatar_name }} {% else %}
+                                    {{ action.user.username }} {% endif %} </strong> Rolled:
                                 <!--Individual Faces-->
                             {% for face in action.faces_summary|split_string %}
                                 {% if face %}
@@ -556,14 +583,16 @@
                                 <strong>Caption: </strong>
                                 {{ action.caption }}
                             {% endif %}
-                            </p>
-                        <hr>
+                            </td>
+
                         {% endif %}
+                    </tr>
                     {% endfor %}
+                </table>
                 {% endif %}
             </div>
         </div>
-        <div class="col-3" style="padding:0">
+        <div class="col-3" style="padding:0;">
 
             <table style="width: 100%;">
                 <tr>
@@ -602,12 +631,17 @@
             {% if chat_log is empty %}
                 <p>This room has no chats</p>
             {% else %}
-                <table>
+                <table id="chat_table">
                 {% for chat in chat_log %}
                     <tr>
+                        <!-- When whisper is implemented, add:
+                        style="{% if chat.avatar %}background-color:#fff372;{% endif %}" , but change if
+                        -->
                         <td>
                         {% if chat.image_url %}
-                            <img src="{{ chat.image_url }}" width="40">
+                            <img src="{{ chat.image_url }}"
+                                 title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                 width="40">
                         {% endif %}
                         </td>
                         <td>
