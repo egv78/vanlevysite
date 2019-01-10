@@ -486,6 +486,7 @@
                     <p>This room has no actions.</p>
                 {% else %}
                 <table id="action_table">
+                    <col width="50px">
                     {% for action in action_log %}
                     <tr>
                         {% if action.is_just_caption %}
@@ -632,6 +633,7 @@
                 <p>This room has no chats</p>
             {% else %}
                 <table id="chat_table">
+                    <col width="50px">
                 {% for chat in chat_log %}
                     <tr>
                         <!-- When whisper is implemented, add:
