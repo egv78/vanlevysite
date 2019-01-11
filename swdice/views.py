@@ -234,12 +234,12 @@ class DockingBay(FormMixin, TemplateView):
             instance = form.save(commit=False)
 
             use_user_id = True if int(avatar_id) == 0 else False
-            print('avatar_id')
-            print(avatar_id)
-            print(int(avatar_id) == 0)
+            # print('avatar_id')
+            # print(avatar_id)
+            # print(int(avatar_id) == 0)
 
-            room = SWRoom.objects.get(pk=swroom_id)
-            if room:
+            try:
+                room = SWRoom.objects.get(pk=swroom_id)
                 my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id,
                                                                     banned=0).order_by('-admitted')
                 my_rooms_list = []
@@ -253,7 +253,7 @@ class DockingBay(FormMixin, TemplateView):
                     link_instance.avatar_id_id = avatar_id if int(avatar_id) > 0 else ""
                     link_instance.default_avatar_is_user = 1 if int(avatar_id) == 0 else 0
                     link_instance.save()
-                    print("here")
+                    # print("here")
                     return redirect('swdice:swroom', swroom_id)
                 else:
                     passcode_correct = room.passcode
@@ -261,13 +261,17 @@ class DockingBay(FormMixin, TemplateView):
                     if room_is_open or (passcode_candidate == passcode_correct):
                         game_master = False
                         banned = False
-                        print(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
+                        # print(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
                         make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
                         return redirect('swdice:swroom', swroom_id)
                     else:
                         return redirect('swdice:enter_passcode')
+
+            except SWRoom.DoesNotExist:
+                raise Http404("Room has not yet been created")
+
         else:
-            # need to do error handling
+            # need to do error handling for form
             pass
 
 
