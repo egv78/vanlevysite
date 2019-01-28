@@ -60,7 +60,8 @@ def save_dice_pool(user, avatar, room, image_url, caption="",
                    num_boost_dice=0, num_ability_dice=0, num_proficiency_dice=0,
                    num_setback_dice=0, num_difficulty_dice=0, num_challenge_dice=0, num_force_dice=0,
                    additional_triumph=0, additional_despair=0, additional_success=0, additional_failure=0,
-                   additional_advantage=0, additional_threat=0, additional_light_pips=0, additional_dark_pips=0,
+                   additional_advantage=0, additional_threat=0,
+                   additional_light_pips=0, additional_dark_pips=0,
                    num_numerical_dice=0, numerical_dice_sides=0, just_caption=True):
     new_dice_pool = SWDicePool()
     new_dice_pool.user = user
@@ -234,9 +235,6 @@ class DockingBay(FormMixin, TemplateView):
             instance = form.save(commit=False)
 
             use_user_id = True if int(avatar_id) == 0 else False
-            # print('avatar_id')
-            # print(avatar_id)
-            # print(int(avatar_id) == 0)
 
             try:
                 room = SWRoom.objects.get(pk=swroom_id)
@@ -278,6 +276,30 @@ class DockingBay(FormMixin, TemplateView):
 class ViewRoom(FormMixin, TemplateView):
     template_name = 'swdice/swroom.html'
 
+    def get_form_kwargs(self):
+        swroom_id = self.kwargs['swroom_id']
+        kwargs = super().get_form_kwargs()
+        user_id = self.request.user.id
+        room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id).exclude(user_id_id=user_id)
+
+        if room_users_link_list:
+            recipients_list = [(self.request.user.id, "Send to all")]  # self as recipient = key for not private
+            for user_in_room in room_users_link_list:
+                if not user_in_room.banned:
+                    user_name = user_in_room.user_id.username
+                    if user_in_room.default_avatar_is_user:
+                        name_in_room = "themself"
+                    else:
+                        name_in_room = user_in_room.avatar_id.avatar_name
+                    display_name = user_name + " as " + name_in_room
+                    recipients_list.append((user_in_room.user_id_id, display_name))
+
+        else:
+            recipients_list = [(self.request.user.id, "No other users in room")]
+
+        kwargs['recipients_list'] = recipients_list
+        return kwargs
+
     def post(self, request, *args, **kwargs):
         swroom_id = self.kwargs['swroom_id']
         current_user = self.request.user
@@ -292,21 +314,31 @@ class ViewRoom(FormMixin, TemplateView):
             image_url = ''
 
         if request.method == "POST" and "chat" in request.POST:
-            form = SW_Room_Chat_Form(request.POST)
-            if form.is_valid():
-                post = form.save(commit=False)
-                post.user_id = current_user_id
-                post.chat_text = form.cleaned_data['chat_text']
-                post.room_id_id = swroom_id
-                post.avatar = avatar
-                post.image_url = image_url
-                if post.chat_text != "":
-                    post.save()
-                    return redirect('swdice:swroom', swroom_id)
-                else:
-                    return redirect('swdice:swroom', swroom_id)
+            # form = SW_Room_Chat_Form(request.POST)
+            kwargs = self.get_form_kwargs()
+            # print("Kwargs")
+            # print(kwargs)
+            form = SW_Room_Chat_Form(**kwargs)
+            text = form.data['chat_text']
+
+            if text != "":
+                recipient_id = form.data['recipient']
+                recipient_user = VanLevyUser.objects.filter(id=recipient_id)[0]
+                room_user_link_recipient = SWRoomToUser.objects.filter(room_id_id=swroom_id, user_id=recipient_user)[0]
+                recipient_avatar = room_user_link_recipient.avatar_id
+                is_private = not (recipient_user == current_user)
+                new_chat = SWRoomChat()
+                new_chat.room_id_id = swroom_id
+                new_chat.chat_text = text
+                new_chat.user = current_user
+                new_chat.avatar = avatar
+                new_chat.image_url = image_url
+                new_chat.is_private = is_private
+                new_chat.recipient = recipient_user if is_private else None
+                new_chat.recipient_avatar = recipient_avatar
+                new_chat.save()
+                return redirect('swdice:swroom', swroom_id)
             else:
-                print("FORM BUSTED")
                 return redirect('swdice:swroom', swroom_id)
         elif request.method == "POST" and "add_dark" in request.POST:
             caption_text = " added a DARK destiny point."
@@ -412,6 +444,7 @@ class ViewRoom(FormMixin, TemplateView):
             return redirect('swdice:swroom', swroom_id)
 
     def get(self, request, *args, **kwargs):
+        kwargs = self.get_form_kwargs()
         swroom_id = self.kwargs['swroom_id']
         try:
             room = SWRoom.objects.get(pk=swroom_id)
@@ -492,8 +525,8 @@ class ViewRoom(FormMixin, TemplateView):
             else:
                 gm_name = "No one"
             chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
-            action_log = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')[:150]
-            form = SW_Room_Chat_Form()
+            action_log = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')[:100]
+            form = SW_Room_Chat_Form(**kwargs)
             light_pips = room_destiny.light_pips
             dark_pips = room_destiny.dark_pips
             dice_form = SW_Dice_Roll()
@@ -501,6 +534,104 @@ class ViewRoom(FormMixin, TemplateView):
             args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'gm_name': gm_name,
                     'room_number': swroom_id, 'chat_log': chat_log, 'form': form, 'destiny': room_destiny,
                     'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
-                    'dice_form': dice_form, }
+                    'dice_form': dice_form, 'users_in_room': room_users_link_list}
             template_name = 'swdice/swroom.html'
             return render(request, template_name, args)
+
+
+class RoomInfo(FormMixin, TemplateView):
+    template_name = 'swdice/swroom_info.html'
+
+    def get(self, request, *args, **kwargs):
+        # kwargs = self.get_form_kwargs()
+        swroom_id = self.kwargs['swroom_id']
+        try:
+            room = SWRoom.objects.get(pk=swroom_id)
+            room_is_open = room.open_to_all
+            room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
+            gm_link = room_users_link_list.filter(game_master=1)
+            if len(gm_link) > 0:
+                gm_id = gm_link[0].user_id_id
+            else:
+                gm_id = ""
+            current_user_id = request.user.id
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            else:
+                user_to_room_link = False
+
+            if room_is_open and not user_to_room_link:
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                should_be_here = True
+            elif not user_to_room_link:
+                should_be_here = False
+                return redirect('swdice:request_access')
+            elif user_to_room_link.admitted and not user_to_room_link.banned:
+                should_be_here = True
+            elif user_to_room_link.banned:
+                should_be_here = False
+                return redirect('swdice:dockingbay')  # will need to change when banning implemented
+            else:
+                should_be_here = False
+                return redirect('swdice:dockingbay')
+
+        except SWRoom.DoesNotExist:
+            raise Http404("Room has not yet been created")
+
+        if should_be_here:
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            if not user_to_room_link.default_avatar_is_user:
+                avatar_id = user_to_room_link.avatar_id_id
+                default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+                if not default_avatar.deleted:
+                    name_in_room = default_avatar.avatar_name
+                    if default_avatar.avatar_image:
+                        icon_src = default_avatar.avatar_image.url
+                    else:
+                        icon_src = ""
+                else:
+                    if request.user.userprofile.user_first_name:
+                        name_in_room = request.user.userprofile.user_first_name
+                    else:
+                        name_in_room = request.user.username
+                    if request.user.userprofile.user_image:
+                        icon_src = request.user.userprofile.user_image.url
+                    else:
+                        icon_src = ""
+            else:
+                if request.user.userprofile.user_first_name:
+                    name_in_room = request.user.userprofile.user_first_name
+                else:
+                    name_in_room = request.user.username
+                if request.user.userprofile.user_image:
+                    icon_src = request.user.userprofile.user_image.url
+                else:
+                    icon_src = ""
+
+            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
+                destiny = SWRoomDestiny()                                       # maybe not
+                destiny.room_id_id = swroom_id
+                destiny.dark_pips = 0
+                destiny.light_pips = 0
+                destiny.save()
+            room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
+
+            if len(gm_link) > 0:
+                gm_name = "you" if gm_id == request.user.id else VanLevyUser.objects.filter(pk=gm_id)[0].username
+            else:
+                gm_name = "No one"
+            chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
+            action_log = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            light_pips = room_destiny.light_pips
+            dark_pips = room_destiny.dark_pips
+
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'gm_name': gm_name,
+                    'room_number': swroom_id, 'chat_log': chat_log,  'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'users_in_room': room_users_link_list}
+            template_name = 'swdice/swroom_info.html'
+            return render(request, template_name, args)
+

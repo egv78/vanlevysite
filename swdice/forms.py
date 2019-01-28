@@ -35,6 +35,7 @@ class SW_Room_to_User_Form(forms.ModelForm):
 
 
 class SW_Room_Chat_Form(forms.ModelForm):
+    recipient = forms.ChoiceField(choices=[])
     chat_text = forms.CharField(widget=forms.Textarea(
         attrs={
             'id': "chat_text", 'rows': 2, 'width': "50%"
@@ -43,7 +44,13 @@ class SW_Room_Chat_Form(forms.ModelForm):
 
     class Meta:
         model = SWRoomChat
-        fields = ('chat_text', )
+        widgets = {'is_private': forms.RadioSelect, 'recipient': forms.Select()}
+        fields = ('chat_text', 'is_private', 'recipient')
+
+    def __init__(self, *args, **kwargs):
+        imported_list = kwargs.pop('recipients_list')
+        super().__init__(*args, **kwargs)
+        self.fields['recipient'].choices = imported_list
 
 
 class SW_Dice_Roll(forms.ModelForm):

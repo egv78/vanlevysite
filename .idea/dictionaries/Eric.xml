@@ -2,6 +2,7 @@
   <dictionary name="Eric">
     <words>
       <w>dockingbay</w>
+      <w>elif</w>
       <w>endblock</w>
       <w>endfor</w>
       <w>makeroom</w>
@@ -9,6 +10,7 @@
       <w>passcode</w>
       <w>swdice</w>
       <w>swroom</w>
+      <w>userprofile</w>
       <w>vanlevy</w>
       <w>vanlevysite</w>
       <w>whitenoise</w>

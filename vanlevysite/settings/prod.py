@@ -15,24 +15,14 @@ except:
 
 
 # these handle STATIC FILES
-
 STATIC_URL = '//www.vanlevy.com.s3-website.us-east-2.amazonaws.com/static/'
 STATIC_ROOT = 'http://www.vanlevy.com.s3-website.us-east-2.amazonaws.com/'
-
-# old attempts
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
-# STATICFILES_DIRS = []
-# never got whitenoise to work
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # end static files
 
+
 # MEDIA FILES
-
 # INSTALLED_APPS += 'storages'
-
 # DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
+# MEDIA_URL = '//vanlevysite/media/'
 
-MEDIA_URL = '//vanlevysite/media/'
-
+# DATABASE

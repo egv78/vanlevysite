@@ -10,9 +10,11 @@
 {% endblock %}
 
 {% block brand %}
+<a href="{% url 'swdice:swroom_info' room_number %}">
 <span class="d-inline-block text-truncate" style="max-width: 750px; color:white; font-size: 150%;">
     {{room.name}}
 </span>
+</a>
 {% endblock %}
 
 {% block navbar_space_part_2 %}
@@ -499,8 +501,8 @@
                             {% endif %}
                             </td>
                             <td>
-                                <strong>{% if action.avatar %} {{ action.avatar.avatar_name }} {% else %}
-                                    {{ action.user.username }} {% endif %} </strong> said:
+                                <strong>{% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}
+                                    {{ action.user.username }}{% endif %}</strong>:
                             {{ action.caption }}
                             </td>
 
@@ -622,12 +624,14 @@
             <form method="post" autocomplete="off">
                 {% csrf_token %}
                 {{ form.chat_text }}
+                {{ form.recipient }}
                 <button type="submit" name="chat" class="btn btn-outline-dark btn-sm">
                     Add Chat
                 </button>
             </form>
             </div>
             <hr>
+
             <div class="container-fluid" id="chat_log" style="padding:0">
             {% if chat_log is empty %}
                 <p>This room has no chats</p>
@@ -635,21 +639,60 @@
                 <table id="chat_table">
                     <col width="50px">
                 {% for chat in chat_log %}
-                    <tr>
-                        <!-- When whisper is implemented, add:
-                        style="{% if chat.avatar %}background-color:#fff372;{% endif %}" , but change if
-                        -->
-                        <td>
-                        {% if chat.image_url %}
-                            <img src="{{ chat.image_url }}"
-                                 title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                                 width="40">
+                    {% if chat.is_private %}
+                        {% if chat.recipient == user %}
+                            <tr>
+                                <td>
+                                {% if chat.image_url %}
+                                    <img src="{{ chat.image_url }}"
+                                         title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                         width="40">
+                                {% endif %}
+                                </td>
+                                <td style="background-color:#fff372;">
+                                    {% if chat.avatar %}
+                                    <em>{{ chat.avatar.avatar_name }} whispers to you:</em>
+                                    {% else %}
+                                    <em>{{ chat.user.username }} whispers to you:</em>
+                                    {% endif %}
+                                    <br>{{chat.chat_text}}
+                                </td>
+                            </tr>
+                        {% elif chat.user == user %}
+                            <tr>
+                                <td>
+                                {% if chat.image_url %}
+                                    <img src="{{ chat.image_url }}"
+                                         title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                         width="40">
+                                {% endif %}
+                                </td>
+                                <td style="background-color:#fff3a2;">
+                                    <em>You whisper to
+                                        {% if chat.recipient_avatar %}
+                                            {{ chat.recipient_avatar.avatar_name }}:
+                                        {% else %}
+                                        {{ chat.recipient.username }}:</em>
+                                    {% endif %}
+                                    </em>
+                                    <br>{{chat.chat_text}}
+                                </td>
+                            </tr>
                         {% endif %}
-                        </td>
-                        <td>
-                        {{chat.chat_text}}
-                        </td>
-                    </tr>
+                    {% else %}
+                        <tr>
+                            <td>
+                            {% if chat.image_url %}
+                                <img src="{{ chat.image_url }}"
+                                     title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                     width="40">
+                            {% endif %}
+                            </td>
+                            <td>
+                                {{chat.chat_text}}
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
                 </table>
             {% endif %}
@@ -678,20 +721,20 @@ $(function() {
         var url_actions = document.URL + ' #action_log'
         $('#action_log').load(url_actions, function () {
             // When it loads, schedule the next request for 2s later
-            setTimeout(refresh_action_log, 2000)
+            setTimeout(refresh_action_log, 10000)
         });
     }
     function refresh_chat_log(){
         var url_actions = document.URL + ' #chat_log'
         $('#chat_log').load(url_actions, function () {
             // When it loads, schedule the next request for 2s later
-            setTimeout(refresh_chat_log, 2000)
+            setTimeout(refresh_chat_log, 10000)
         });
     }
     function refresh_destiny_box() {
         var url_destiny = document.URL + ' #destiny_box'
         $('#destiny_box').load(url_destiny, function () {
-            setTimeout(refresh_destiny_box, 2000)
+            setTimeout(refresh_destiny_box, 10000)
         });
         // $('#use_dark').prop('disabled', false);
         // $('#use_light').prop('disabled', false);

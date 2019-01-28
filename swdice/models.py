@@ -61,6 +61,11 @@ class SWRoomChat(models.Model):
     avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, default="", blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
+    is_private = models.BooleanField(default=False)
+    recipient = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE, default="", blank=True, null=True,
+                                  related_name="recipient")
+    recipient_avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, default="", blank=True, null=True,
+                                         related_name="recipient_avatar")
 
 
 class SWDicePool(models.Model):
