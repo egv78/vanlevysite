@@ -307,7 +307,7 @@ class ViewRoom(FormMixin, TemplateView):
         room_to_user_link = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)[0]
         avatar = room_to_user_link.avatar_id
         if avatar is None:
-            image_url = current_user.userprofile.user_image.url
+            image_url = current_user.userprofile.user_image.url if current_user.userprofile.user_image else ""
         elif avatar.avatar_image:
             image_url = avatar.avatar_image.url
         else:
