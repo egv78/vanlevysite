@@ -14,14 +14,14 @@ def about(request):
 
 def register(request):
     template_name = 'accounts/reg_form.html'
-    if request.method =='POST':
+    if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect(reverse('accounts:register_success'))
         else:
             form = RegistrationForm(request.POST or None)
-            print("Form BUGGED")
+            # print("Form BUGGED")
             args = {'form': form}
             return render(request, template_name, args)
     else:
@@ -31,7 +31,7 @@ def register(request):
         return render(request, template_name, args)
 
 
-def RegisterSuccess(request):
+def register_success(request):
     template_name = 'accounts/reg_success.html'
     return render(request, template_name)
 
@@ -94,7 +94,7 @@ def edit_avatar(request, avatar_id=0):
             if avatar_id == 0:  # create
                 avatar_form = EditAvatarForm(request.POST, request.FILES)
                 avatar_form.deleted = False
-                print(avatar_form)
+                # print(avatar_form)
             elif "edit" in request.path:
                 avatar_form = EditAvatarForm(request.POST, request.FILES, instance=this_avatar)
             elif "delete" in request.path:
@@ -109,10 +109,9 @@ def edit_avatar(request, avatar_id=0):
                 avatar_post.save()
                 return redirect('accounts:view_profile')
             else:
-                print("form has problems")
                 message = "There is a problem."
                 args = {'error_message': message}
-                return redirect('accounts:create_avatar')
+                return redirect('accounts:create_avatar', args)
 
         else:  # request.method == GET
             if "create" in request.path:
@@ -156,4 +155,3 @@ def change_password_success(request):
     template_name = 'accounts/password_success.html'
     args = {'user': request.user}
     return render(request, template_name, args)
-

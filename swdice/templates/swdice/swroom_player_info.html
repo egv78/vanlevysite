@@ -2,7 +2,7 @@
 
 {% block head %}
     <meta charset="UTF-8">
-    <title>SW Room Info</title>
+    <title>SW Room Player Info</title>
 {% endblock %}
 
 {% block navbar_space_part_1 %}
@@ -47,7 +47,7 @@
             <table style="width: 100%;">
                 <tr>
                     <td>
-                        <h3>Info Page</h3>
+                        <h3>Player Info Page</h3>
                         <h4>This page does not automatically update.</h4>
                         <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
                     </td>
@@ -57,24 +57,31 @@
                             Back to Live Page
                         </button>
                         </a>
+                        <p><br></p>
+                        <a href="{% url 'swdice:swroom_info' room_number %}">
+                        <button type="button" class="btn btn-outline-info align-right" name="back to info page">
+                            Back to Info Page
+                        </button>
+                        </a>
                     </td>
                 </tr>
             </table>
             <div class="container-fluid" id="current_users">
                 <h5>User Information Table</h5>
-
-                <table id="users_table" style={%if player_is_gm%}"width:700px"{%else%}"width:540px"{%endif%}>
+                <table id="users_table" style="width:700px">
                     <tr>
-                        <th style="width:80px">User <br>Image</th>
+                        <th style="width:80px">User<br> Image</th>
                         <th style="width:300px">&nbsp<br>Playing as</th>
-                        <th style="width:80px">Avatar <br>Image</th>
+                        <th style="width:80px">Avatar<br> Image</th>
                         <th style="width:80px">&nbsp<br>Role</th>
                         {% if player_is_gm %}
-                        <th style="width:160px">Player <br>Info</th>
+                            <th style="text-align:right; width:80px">&nbsp<br>GM</th>
+                            <th style="width:80px">&nbsp<br>Actions</th>
                         {% endif %}
                     </tr>
                     {% for player in users_in_room %}
                     {% if not player.banned or player_is_gm %}
+                    {% if player.user_id_id == player_id %}
                     <tr>
                         <td>
                             {% if player.user_id.userprofile.user_image %}
@@ -110,53 +117,115 @@
                             {% else %}Player
                             {% endif %}
                         </td>
-                        {% if player_is_gm %}
-                        <td>
-
-                            <a href="{% url 'swdice:swroom_player_info' room_number player.user_id_id%}">
-                            <button type="button" class="btn btn-info btn-sm btn-outline-info" name="Player_Info">
-                                Player Info
-                            </button>
-                            </a>
-                        </td>
-
-                        {% endif %}
+                        {% if player_is_gm %} <!-- this is the page viewer is gm-->
+                            {% if player.game_master %} <!-- this is the player in table info is gm-->
+                                <td colspan="2" style="text-align:center;">
+                                    <em>You are the GM</em>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <div class="container-fluid" id="gm_button" style="padding: 0px 3px">
+                                    {% if not player.banned %}
+                                    <button type="button" class="btn btn-sm btn-outline-primary align-right"
+                                            id="make_gm" onclick="showMakeGM()">
+                                    Make GM
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary align-right"
+                                            id="cancel_make_gm" style="display: none;" onclick="hideMakeGM()">
+                                    Cancel
+                                    </button>
+                                    {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="container-fluid" id="ban_button" style="padding: 0px 3px">
+                                    {% if player.banned %}
+                                        <button type="button" class="btn btn-sm btn-outline-warning" id="unban"
+                                                onclick="showUnban()">
+                                        Unban
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" id="cancel_unban"
+                                                style="display:none" onclick="hideUnban()">
+                                        Cancel
+                                        </button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-sm btn-outline-danger" id="ban"
+                                                onclick="showBan()">
+                                        Ban
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" id="cancel_ban"
+                                                style="display:none" onclick="hideBan()">
+                                        Cancel
+                                        </button>
+                                    {% endif %} <!--ban/unban button -->
+                                    </div>
+                                </td>
+                            {% endif %} <!--buttons removed if player is GM -->
+                        {% endif %} <!--only GM's see these buttons when viewing the page, just in case -->
                     </tr>
+                    {% endif %}
                     {% endif %}
                     {% endfor %}
                 </table>
                 {% if player_is_gm %}
+                    <div class="container-fluid" id="gm_instructions">
                     <p>
-                        You are the GM for this room.  This means that you have have extra privileges.  You can:
+                        As the GM for this room, you are the only one who can take actions on this page.  From here,
+                        you can:
                         <ul>
-                            <li>See individual player's pages</li>
-                            <li>See banned players</li>
+                            <li>Transfer the GM title to another (non-banned) player</li>
+                            <li>Ban (or unban) this player</li>
                         </ul>
-                        In the Player Info Page, you can alter player's privileges for this room.
+                        by using the buttons in the player information table above.  Please keep in mind that
+                        transferring the GM role can only be undone by the new GM.  You will lose all GM abilities that
+                        you now have.
                     </p>
+                    </div>
+                    <div class="container-fluid" id="gm_transfer" style="display: none">
+                    <p>
+                    You are about to transfer your role and privileges as GM to
+                    {% for player in users_in_room %}
+                        {% if player.user_id_id == player_id %}
+                    <strong>{{ player.user_id.username }}</strong>
+                        {% endif %}
+                    {% endfor %}. Only they will be able to undo this change.<br>
+                    <strong>Are you sure you want to do this?</strong><br>
+                    <button type="button" class="btn btn-primary" name="make_gm_real">
+                        Yes, make
+                        {% for player in users_in_room %}
+                            {% if player.user_id_id == player_id %}
+                                <strong>{{ player.user_id.username }}</strong>
+                            {% endif %}
+                        {% endfor %}
+                        GM
+                    </button>
+                    </p>
+                    </div>
+                    <div class="container-fluid" id="ban_area" style="display:none">
+                        {% for player in users_in_room %}
+                        {% if player.user_id_id == player_id %}
+                            {% if player.banned %}
+                                Are you certain that you want to unban <strong>{{player.user_id.username}}</strong>?<br>
+                                Once you unban <strong>{{player.user_id.username}}</strong>, all of their actions and
+                                chats will be visible again.<br>
+                                <button type="button" class="btn btn-warning" id="unban_real">
+                                    <strong>Yes. Unban {{player.user_id.username}}.</strong>
+                                </button>
+                            {% else %}
+                                Are you certain that you want to ban <strong>{{player.user_id.username}}</strong>?<br>
+                                While <strong>{{player.user_id.username}}</strong> is banned, all actions and chats
+                                from them will be invisible.<br>
+                                You <em>can</em> undo this at a later point.<br>
+                                <button type="button" class="btn btn-danger" id="ban_real">
+                                    <strong>Yes. BAN {{player.user_id.username}}.</strong>
+                                </button>
+                            {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
                 {% endif %}
             </div>
             <hr>
-            <div class="container-fluid" id="destiny_area">
-                <h5>Current Destiny</h5>
-                <table id="destiny_table">
-                    <tr>
-                        <td>
-                            <span class="container-fluid" id="destiny_box">
-                            {% if dark_pips == 0  and light_pips == 0 %}
-                            There are no Destiny Points
-                            {% endif %}
-                            {% for i in dark_pips|get_range %}
-                                <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Use Dark">
-                            {% endfor %}
-                            {% for i in light_pips|get_range %}
-                                <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Use Light">
-                            {% endfor %}
-                            </span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
             <div class="container-fluid" id="action_log" style="padding:0">
                 <hr>
                 <h5>Rolls</h5>
@@ -364,6 +433,48 @@
 
 
 {% block page_scripts %}
+<script>
+function showMakeGM() {
+    document.getElementById('make_gm').style.display='none';
+    document.getElementById('cancel_make_gm').style.display='block';
+    document.getElementById('gm_instructions').style.display='none';
+    document.getElementById('gm_transfer').style.display='block';
+    document.getElementById('ban_button').style.display='none';
+}
+function hideMakeGM() {
+    document.getElementById('make_gm').style.display='block';
+    document.getElementById('cancel_make_gm').style.display='none';
+    document.getElementById('gm_instructions').style.display='block';
+    document.getElementById('gm_transfer').style.display='none';
+    document.getElementById('ban_button').style.display='block';
+}
+function showBan() {
+    document.getElementById('ban').style.display='none';
+    document.getElementById('cancel_ban').style.display='block';
+    document.getElementById('gm_instructions').style.display='none';
+    document.getElementById('ban_area').style.display='block';
+    document.getElementById('gm_button').style.display='none';
+}
+function hideBan() {
+    document.getElementById('ban').style.display='block';
+    document.getElementById('cancel_ban').style.display='none';
+    document.getElementById('gm_instructions').style.display='block';
+    document.getElementById('ban_area').style.display='none';
+    document.getElementById('gm_button').style.display='block';
+}
+function showUnban() {
+    document.getElementById('unban').style.display='none';
+    document.getElementById('cancel_unban').style.display='block';
+    document.getElementById('gm_instructions').style.display='none';
+    document.getElementById('ban_area').style.display='block';
+}
+function hideUnban() {
+    document.getElementById('unban').style.display='block';
+    document.getElementById('cancel_unban').style.display='none';
+    document.getElementById('gm_instructions').style.display='block';
+    document.getElementById('ban_area').style.display='none';
+}
+</script>
 {% endblock %} <!--page_scripts-->
 
 {% endblock %} <!--body-->

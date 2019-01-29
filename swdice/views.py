@@ -42,14 +42,14 @@ def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user
     link_instance.default_avatar_is_user = avatar_is_user
     # if avatar is None:
     #     avatar = 0
-    print("Make Link")
-    print(avatar)
+    # print("Make Link")
+    # print(avatar)
     if int(avatar) == 0:
         link_instance.avatar_id_id = ""
-        print("blank")
+        # print("blank")
     else:
         link_instance.avatar_id_id = int(avatar)
-        print(avatar)
+        # print(avatar)
 
     if gm:
         link_instance.date_made_gm = now
@@ -195,7 +195,7 @@ class DockingBay(FormMixin, TemplateView):
     # if request.method == 'GET'
     def get(self, request, *args, **kwargs):
         try:
-            room_id = self.kwargs['swroom_id']
+            room_id = self.kwargs['room_id']
         except:
             room_id = ""
 
@@ -252,6 +252,8 @@ class DockingBay(FormMixin, TemplateView):
                     link_instance.save()
                     # print("here")
                     return redirect('swdice:swroom', swroom_id)
+                elif been_there and been_there[0].banned:
+                    return redirect('swdice:dockingbay')
                 else:
                     passcode_correct = room.passcode
                     room_is_open = room.open_to_all
@@ -389,7 +391,7 @@ class ViewRoom(FormMixin, TemplateView):
             return redirect('swdice:swroom', swroom_id)
         elif request.method == "POST" and "roll_dice" in request.POST:
             form = SW_Dice_Roll(request.POST)
-            print(form.errors)
+            # print(form.errors)
             if form.is_valid():
                 boost_dice = form.cleaned_data['num_boost_dice']
                 ability_dice = form.cleaned_data['num_ability_dice']
@@ -466,7 +468,7 @@ class ViewRoom(FormMixin, TemplateView):
                 should_be_here = True
             elif not user_to_room_link:
                 should_be_here = False
-                return redirect('swdice:request_access')
+                return redirect('swdice:enter_passcode')
             elif user_to_room_link.admitted and not user_to_room_link.banned:
                 should_be_here = True
             elif user_to_room_link.banned:
@@ -573,7 +575,7 @@ class RoomInfo(FormMixin, TemplateView):
                 should_be_here = True
             elif not user_to_room_link:
                 should_be_here = False
-                return redirect('swdice:request_access')
+                return redirect('swdice:enter_passcode')
             elif user_to_room_link.admitted and not user_to_room_link.banned:
                 should_be_here = True
             elif user_to_room_link.banned:
@@ -649,5 +651,110 @@ class RoomInfo(FormMixin, TemplateView):
                     'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
                     'users_in_room': room_users_link_list}
             template_name = 'swdice/swroom_info.html'
+            return render(request, template_name, args)
+
+
+class RoomPlayerInfo(FormMixin, TemplateView):
+    # need security / redirect for non GM's who type in the correct number combos
+    template_name = 'swdice/swroom_player_info.html'
+
+    def get(self, request, *args, **kwargs):
+        # kwargs = self.get_form_kwargs()
+        swroom_id = self.kwargs['swroom_id']
+        player_id = self.kwargs['player_id']
+        try:
+            room = SWRoom.objects.get(pk=swroom_id)
+            room_is_open = room.open_to_all
+            room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
+            gm_link = room_users_link_list.filter(game_master=1)
+            if len(gm_link) > 0:
+                gm_id = gm_link[0].user_id_id
+            else:
+                gm_id = ""
+            current_user_id = request.user.id
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            else:
+                user_to_room_link = False
+
+            if room_is_open and not user_to_room_link:
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                should_be_here = True
+            elif not user_to_room_link:
+                should_be_here = False
+                return redirect('swdice:enter_passcode')
+            elif user_to_room_link.admitted and not user_to_room_link.banned and user_to_room_link.game_master:
+                should_be_here = True
+            elif user_to_room_link.banned:
+                should_be_here = False
+                return redirect('swdice:dockingbay')  # will need to change when banning implemented
+            else:
+                should_be_here = False
+                return redirect('swdice:dockingbay')
+
+        except SWRoom.DoesNotExist:
+            raise Http404("Room has not yet been created")
+
+        try:
+            player = VanLevyUser.objects.get(pk=player_id)
+        except player.DoesNotExist:
+            raise Http404("Player does not exist")
+
+        if should_be_here:
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            if not user_to_room_link.default_avatar_is_user:
+                avatar_id = user_to_room_link.avatar_id_id
+                default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+                if not default_avatar.deleted:
+                    name_in_room = default_avatar.avatar_name
+                    if default_avatar.avatar_image:
+                        icon_src = default_avatar.avatar_image.url
+                    else:
+                        icon_src = ""
+                else:
+                    if request.user.userprofile.user_first_name:
+                        name_in_room = request.user.userprofile.user_first_name
+                    else:
+                        name_in_room = request.user.username
+                    if request.user.userprofile.user_image:
+                        icon_src = request.user.userprofile.user_image.url
+                    else:
+                        icon_src = ""
+            else:
+                if request.user.userprofile.user_first_name:
+                    name_in_room = request.user.userprofile.user_first_name
+                else:
+                    name_in_room = request.user.username
+                if request.user.userprofile.user_image:
+                    icon_src = request.user.userprofile.user_image.url
+                else:
+                    icon_src = ""
+
+            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
+                destiny = SWRoomDestiny()                                       # maybe not
+                destiny.room_id_id = swroom_id
+                destiny.dark_pips = 0
+                destiny.light_pips = 0
+                destiny.save()
+            room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
+
+            if len(gm_link) > 0:
+                player_is_gm = 1 if gm_id == request.user.id else 0
+
+            chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
+
+            action_log = SWDicePool.objects.filter(swroom_id=swroom_id, user_id=player_id).order_by('-created')
+
+            light_pips = room_destiny.light_pips
+            dark_pips = room_destiny.dark_pips
+
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
+                    'room_number': swroom_id, 'chat_log': chat_log,  'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'users_in_room': room_users_link_list, 'player_id': player_id}
+            template_name = 'swdice/swroom_player_info.html'
             return render(request, template_name, args)
 
