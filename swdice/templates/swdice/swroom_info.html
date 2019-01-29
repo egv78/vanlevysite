@@ -62,14 +62,19 @@
             </table>
             <div class="container-fluid" id="current_users">
                 <h5>Users who have joined this room:</h5>
+
                 <table id="users_table">
                     <tr>
                         <th>User Image</th>
                         <th>Playing as</th>
                         <th>Avatar Image</th>
                         <th>Role</th>
+                        {% if player_is_gm %}
+                        <th>GM Actions</th>
+                        {% endif %}
                     </tr>
                     {% for player in users_in_room %}
+                    {% if not player.banned or player_is_gm %}
                     <tr>
                         <td>
                             {% if player.user_id.userprofile.user_image %}
@@ -105,9 +110,41 @@
                             {% else %}Player
                             {% endif %}
                         </td>
+                        {% if player_is_gm %}
+                        <td>
+                            {% if player.game_master %}
+                                <em>You are the GM</em>
+                            {% else %}
+                                <button type="button" class="btn btn-info btn-sm btn-outline-info" name="make_gm">
+                                Make GM
+                                </button>
+                            {% if player.banned %}
+                                <button type="button" class="btn btn-info btn-sm btn-outline-warning" name="unban">
+                                Unban
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-info btn-sm btn-outline-danger" name="ban">
+                                Ban
+                                </button>
+                            {% endif %}
+                            {% endif %}
+                        </td>
+
+                        {% endif %}
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </table>
+                {% if player_is_gm %}
+                    <p>
+                        You are the GM for this room.  This means that you have have two extra privileges.  You can:
+                        <ul>
+                            <li>Transfer the GM title.</li>
+                            <li>Ban (and unban) players.  You are also the only one who can see banned players' rolls
+                                and chats.</li>
+                        </ul>
+                    </p>
+                {% endif %}
             </div>
             <hr>
             <div class="container-fluid" id="destiny_area">

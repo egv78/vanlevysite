@@ -40,7 +40,7 @@
                 </td>
             </tr>
             <tr><td></td><td><p></p></td></tr>
-            <tr>
+            <tr style="display:none">
                 <td align="right" valign="bottom">Leave this blank.</td>
                 <td><strong>Passcode:</strong>
                 <br>
@@ -66,10 +66,21 @@
             <tr>
                 <td></td>
                 <td align="right"><p></p>
-                    <button type="submit" class="btn btn-primary btn-sm">Switch Avatar</button>
+                    <button type="submit" class="btn btn-primary">Switch Avatar</button>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <p><br></p>
+                    <a href="{% url 'accounts:create_avatar' %}">
+                    <button type="button" class="btn btn-sm btn-outline-primary align-right">
+                        Create a new avatar
+                    </button></a>
                 </td>
             </tr>
         </table>
     </form>
+
 </div>
 {% endblock %}

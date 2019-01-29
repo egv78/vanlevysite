@@ -13,6 +13,9 @@
 {% block link_account %}<!--exclude navbar link to profile-->{% endblock %}
 
 {% block body %}
+<style>
+    #avatar {display: inline-block}
+</style>
 <br>
 <div class="container">
     <div class="container">
@@ -43,18 +46,22 @@
                 {% else %}
                     <p><strong>No image uploaded</strong></p>
                 {% endif %}
-                <a href="{% url 'accounts:edit_profile' %}"><button type="button" class="btn btn-primary">
+                <a href="{% url 'accounts:edit_profile' %}"><button type="button" class="btn btn-outline-primary">
                     Edit Profile
                 </button></a>
                 <p></p>
-                <a href="{% url 'accounts:password' %}"><button type="button" class="btn btn-secondary">
+                <a href="{% url 'accounts:password' %}"><button type="button" class="btn btn-outline-secondary">
                     Change Password
                 </button></a>
 
             </div>
             <div class="col">
                 <!-- Two of two columns -->
-                <h1>Avatars</h1>
+                <h1 id="avatar">Avatars</h1>
+                <a href="{% url 'accounts:create_avatar' %}">
+                    <button type="button" class="btn btn-primary align-right">
+                        Create a new Avatar
+                    </button></a>
                 {% if has_avatars %}
                     {% for avatar in my_avatars_list %}
                         <hr>
@@ -64,7 +71,7 @@
                             <p><strong>{{ avatar.avatar_name }}</strong> </p>
                             <p>{{ avatar.avatar_description }}</p>
                             <a href="{% url 'accounts:edit_avatar' avatar.id %}">
-                                <button type="button" class="btn btn-primary btn-sm">
+                                <button type="button" class="btn btn-outline-primary btn-sm">
                                     Edit {{ avatar.avatar_name }}
                                 </button>
                             </a>
@@ -82,15 +89,12 @@
                     {% endfor %}
                     <hr>
                     <p></p>
-                    <a href="{% url 'accounts:create_avatar' %}"><button type="button" class="btn btn-secondary">
-                        Create a new Avatar
-                    </button></a>
                 {% else %}
                     <p><strong>You have not created any avatars.</strong></p>
                     <p></p>
-                    <a href="{% url 'accounts:create_avatar' %}"><button type="button"  class="btn btn-primary">
-                        Create your first Avatar
-                    </button></a>
+                    <!--<a href="{% url 'accounts:create_avatar' %}"><button type="button"  class="btn btn-primary">-->
+                        <!--Create your first Avatar-->
+                    <!--</button></a>-->
 
                 {% endif %}
 

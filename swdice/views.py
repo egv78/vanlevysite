@@ -238,8 +238,7 @@ class DockingBay(FormMixin, TemplateView):
 
             try:
                 room = SWRoom.objects.get(pk=swroom_id)
-                my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id,
-                                                                    banned=0).order_by('-admitted')
+                my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id).order_by('-admitted') #,banned=0
                 my_rooms_list = []
                 for my_room in my_rooms_to_user_list:
                     my_rooms_list += SWRoom.objects.filter(pk=my_room.room_id_id)
@@ -521,17 +520,25 @@ class ViewRoom(FormMixin, TemplateView):
             room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
 
             if len(gm_link) > 0:
-                gm_name = "you" if gm_id == request.user.id else VanLevyUser.objects.filter(pk=gm_id)[0].username
-            else:
-                gm_name = "No one"
-            chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
-            action_log = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')[:100]
+                player_is_gm = 1 if gm_id == request.user.id else 0
+
+            chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
+            chat_log = []
+            for chat in chats_all:
+                if not room_users_link_list.filter(user_id=chat.user)[0].banned:
+                    chat_log.append(chat)
+            actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            actions = []
+            for action in actions_all:
+                if not room_users_link_list.filter(user_id=action.user)[0].banned:
+                    actions.append(action)
+            action_log = actions[:100]
             form = SW_Room_Chat_Form(**kwargs)
             light_pips = room_destiny.light_pips
             dark_pips = room_destiny.dark_pips
             dice_form = SW_Dice_Roll()
 
-            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'gm_name': gm_name,
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                     'room_number': swroom_id, 'chat_log': chat_log, 'form': form, 'destiny': room_destiny,
                     'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
                     'dice_form': dice_form, 'users_in_room': room_users_link_list}
@@ -620,15 +627,24 @@ class RoomInfo(FormMixin, TemplateView):
             room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
 
             if len(gm_link) > 0:
-                gm_name = "you" if gm_id == request.user.id else VanLevyUser.objects.filter(pk=gm_id)[0].username
-            else:
-                gm_name = "No one"
-            chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
-            action_log = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+                player_is_gm = 1 if gm_id == request.user.id else 0
+
+            chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
+            chat_log = []
+            for chat in chats_all:
+                if not room_users_link_list.filter(user_id=chat.user)[0].banned:
+                    chat_log.append(chat)
+            actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            actions = []
+            for action in actions_all:
+                if not room_users_link_list.filter(user_id=action.user)[0].banned:
+                    actions.append(action)
+            action_log = actions[:100]
+
             light_pips = room_destiny.light_pips
             dark_pips = room_destiny.dark_pips
 
-            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'gm_name': gm_name,
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                     'room_number': swroom_id, 'chat_log': chat_log,  'destiny': room_destiny,
                     'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
                     'users_in_room': room_users_link_list}
