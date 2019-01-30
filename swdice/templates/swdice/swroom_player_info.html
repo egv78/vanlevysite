@@ -237,7 +237,12 @@
             <hr>
             <div class="container-fluid" id="action_log" style="padding:0">
                 <hr>
-                <h5>Rolls</h5>
+                <h5>Rolls by only {% for player in users_in_room %}
+                        {% if player.user_id_id == player_id %}
+                    <strong>{{ player.user_id.username }}</strong>
+                        {% endif %}
+                    {% endfor %}
+                </h5>
                 <hr>
                 {% if action_log is empty %}
                     <p>This room has no actions.</p>
@@ -245,10 +250,16 @@
                 <table id="action_table">
                     <col width="50px">
                     {% for action in action_log %}
-                    <tr>
+                    {% if not action.secret_roll or player_is_gm or action.user == user %}
+                    {% if not action.secret_roll %}
+                        <tr>
+                    {% elif action.user == user %}
+                        <tr style="background-color:#fff3a2;">
+                    {% else %}
+                        <tr style="background-color:#fff372;">
+                    {% endif %}
                         {% if action.is_just_caption %}
                             <td>
-
                             {% if action.image_url %}
                                 <img src="{{ action.image_url }}"
                                      title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
@@ -256,11 +267,13 @@
                             {% endif %}
                             </td>
                             <td>
+                                {% if action.secret_roll %}
+                                <em>secret roll</em><br>
+                                {% endif %}
                                 <strong>{% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}
                                     {{ action.user.username }}{% endif %}</strong>:
                             {{ action.caption }}
                             </td>
-
                         {% else %}
                             <td>
                             {% if action.image_url %}
@@ -270,6 +283,9 @@
                             {% endif %}
                             </td>
                             <td>
+                            {% if action.secret_roll %}
+                            <em>secret roll</em><br>
+                            {% endif %}
                             <strong>{% if action.avatar %} {{ action.avatar.avatar_name }} {% else %}
                                     {{ action.user.username }} {% endif %} </strong> Rolled:
                                 <!--Individual Faces-->
@@ -342,9 +358,9 @@
                                 {{ action.caption }}
                             {% endif %}
                             </td>
-
                         {% endif %}
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </table>
                 {% endif %}
@@ -369,7 +385,13 @@
                     </td>
                 </tr>
             </table>
-            <h5>Chat</h5>
+            <br>
+            <h5>Chats by only {% for player in users_in_room %}
+                        {% if player.user_id_id == player_id %}
+                    <strong>{{ player.user_id.username }}</strong>
+                        {% endif %}
+                    {% endfor %}
+            </h5>
             <hr>
             <div class="container-fluid" id="chat_log" style="padding:0">
             {% if chat_log is empty %}

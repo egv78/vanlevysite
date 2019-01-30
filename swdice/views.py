@@ -65,7 +65,7 @@ def save_dice_pool(user, avatar, room, image_url, caption="",
                    additional_triumph=0, additional_despair=0, additional_success=0, additional_failure=0,
                    additional_advantage=0, additional_threat=0,
                    additional_light_pips=0, additional_dark_pips=0,
-                   num_numerical_dice=0, numerical_dice_sides=0, just_caption=True):
+                   num_numerical_dice=0, numerical_dice_sides=0, just_caption=True, secret_roll=False):
     new_dice_pool = SWDicePool()
     new_dice_pool.user = user
     new_dice_pool.avatar = avatar
@@ -90,6 +90,7 @@ def save_dice_pool(user, avatar, room, image_url, caption="",
     new_dice_pool.num_numerical_dice = num_numerical_dice
     new_dice_pool.numerical_dice_sides = numerical_dice_sides
     new_dice_pool.is_just_caption = just_caption
+    new_dice_pool.secret_roll = secret_roll
 
     swdice = {'boost': num_boost_dice, 'ability': num_ability_dice, 'proficiency': num_proficiency_dice,
               'setback': num_setback_dice, 'difficulty': num_difficulty_dice, 'challenge': num_challenge_dice,
@@ -392,8 +393,9 @@ class ViewRoom(FormMixin, TemplateView):
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect('swdice:swroom', swroom_id)
-        elif request.method == "POST" and "roll_dice" in request.POST:
+        elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
             form = SW_Dice_Roll(request.POST)
+            secret_roll = "roll_dice_secret" in request.POST
             # print(form.errors)
             if form.is_valid():
                 boost_dice = form.cleaned_data['num_boost_dice']
@@ -438,6 +440,7 @@ class ViewRoom(FormMixin, TemplateView):
                               "additional_advantage": additional_advantage, "additional_threat": additional_threat,
                               "additional_light_pips": additional_light_pips,
                               "additional_dark_pips": additional_dark_pips,
+                              "secret_roll": secret_roll
                               }
                     save_dice_pool(**kwargs)
                 else:

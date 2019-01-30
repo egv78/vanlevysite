@@ -381,6 +381,7 @@
                             </tr>
                             </table>
                         </div>
+                        <div class="container-fluid dice-container-long"></div>
                         <br class="clearBoth">
                         <div class="container-fluid dice-container">
                             <table>
@@ -474,13 +475,43 @@
                             </tr>
                             </table>
                         </div>
+                        <div class="container-fluid dice-container-long"></div>
                         <br class="clearBoth">
                     </div>
-                    <br>
-                    <button type="submit" class="btn btn-warning btn-lg top-margin" name="roll_dice">
+                    <div class="container-fluid dice-container-long" style="text-align:center">
+                    <button type="submit" class="btn btn-warning btn-lg" name="roll_dice" style="margin: auto"
+                            id="roll_dice_button">
                         <strong>Roll 'Em!</strong>
                     </button>
+                    <button type="submit" class="btn btn-outline-warning btn-lg" name="roll_dice_secret"
+                            style="margin: auto; display: none;" id="roll_dice_secret_button">
+                        <strong>Roll 'Em</strong><em>, secretly!</em>
+                    </button>
+                    </div>
+                    <div class="container-fluid dice-container-long">
+                        <span id="secret_warning" style="display:none">
+                            {% if player_is_gm %}
+                            <em>Only you will be able to see this roll.</em>
+                            {% else %}
+                            <em>Only you and the GM will be able to see this roll</em>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="container-fluid dice-container-long">
+                        <button type="button" id="show_secret_roll_button"
+                                class="btn btn-outline-secondary btn-sm align-right"
+                                onclick="showSecretRoll()">
+                            Switch to Secret Roll
+                        </button>
+                        <button type="button" id="hide_secret_roll_button"
+                                class="btn btn-outline-secondary btn-sm align-right"
+                                onclick="hideSecretRoll()" style="display:none">
+                            Switch to Regular Roll
+                        </button>
+                    </div>
+                    <br class="clearBoth">
                 </form>
+                <p><br></p>
             </div>
             <div class="container-fluid" id="action_log" style="padding:0">
                 <hr>
@@ -490,10 +521,16 @@
                 <table id="action_table">
                     <col width="50px">
                     {% for action in action_log %}
-                    <tr>
+                    {% if not action.secret_roll or player_is_gm or action.user == user %}
+                    {% if not action.secret_roll %}
+                        <tr>
+                    {% elif action.user == user %}
+                        <tr style="background-color:#fff3a2;">
+                    {% else %}
+                        <tr style="background-color:#fff372;">
+                    {% endif %}
                         {% if action.is_just_caption %}
                             <td>
-
                             {% if action.image_url %}
                                 <img src="{{ action.image_url }}"
                                      title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
@@ -501,11 +538,13 @@
                             {% endif %}
                             </td>
                             <td>
+                                {% if action.secret_roll %}
+                                <em>secret roll</em><br>
+                                {% endif %}
                                 <strong>{% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}
                                     {{ action.user.username }}{% endif %}</strong>:
                             {{ action.caption }}
                             </td>
-
                         {% else %}
                             <td>
                             {% if action.image_url %}
@@ -515,6 +554,9 @@
                             {% endif %}
                             </td>
                             <td>
+                            {% if action.secret_roll %}
+                            <em>secret roll</em><br>
+                            {% endif %}
                             <strong>{% if action.avatar %} {{ action.avatar.avatar_name }} {% else %}
                                     {{ action.user.username }} {% endif %} </strong> Rolled:
                                 <!--Individual Faces-->
@@ -587,16 +629,15 @@
                                 {{ action.caption }}
                             {% endif %}
                             </td>
-
                         {% endif %}
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </table>
                 {% endif %}
             </div>
         </div>
         <div class="col-3" style="padding:0;">
-
             <table style="width: 100%;">
                 <tr>
                     <td rowspan="2" style="width:90px">
@@ -714,6 +755,22 @@ function hideAutoPips() {
     document.getElementById('hidden_fields').style.display='none'
     document.getElementById('show_pips_button').style.display='block'
     document.getElementById('hide_pips_button').style.display='none'
+}
+
+function showSecretRoll() {
+    document.getElementById('secret_warning').style.display='block'
+    document.getElementById('show_secret_roll_button').style.display='none'
+    document.getElementById('hide_secret_roll_button').style.display='block'
+    document.getElementById('roll_dice_button').style.display='none'
+    document.getElementById('roll_dice_secret_button').style.display='block'
+}
+
+function hideSecretRoll() {
+    document.getElementById('secret_warning').style.display='none'
+    document.getElementById('show_secret_roll_button').style.display='block'
+    document.getElementById('hide_secret_roll_button').style.display='none'
+    document.getElementById('roll_dice_button').style.display='block'
+    document.getElementById('roll_dice_secret_button').style.display='none'
 }
 
 $(function() {

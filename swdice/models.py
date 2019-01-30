@@ -109,3 +109,4 @@ class SWDicePool(models.Model):
     avatar = models.ForeignKey(Avatar, on_delete=models.SET_NULL, null=True)
     image_url = models.URLField(blank=True, null=True)
     swroom = models.ForeignKey(SWRoom, on_delete=models.SET_NULL, null=True)
+    secret_roll = models.BooleanField(default=False)

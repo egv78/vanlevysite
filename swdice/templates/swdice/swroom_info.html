@@ -167,10 +167,16 @@
                 <table id="action_table">
                     <col width="50px">
                     {% for action in action_log %}
-                    <tr>
+                    {% if not action.secret_roll or player_is_gm or action.user == user %}
+                    {% if not action.secret_roll %}
+                        <tr>
+                    {% elif action.user == user %}
+                        <tr style="background-color:#fff3a2;">
+                    {% else %}
+                        <tr style="background-color:#fff372;">
+                    {% endif %}
                         {% if action.is_just_caption %}
                             <td>
-
                             {% if action.image_url %}
                                 <img src="{{ action.image_url }}"
                                      title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
@@ -178,11 +184,13 @@
                             {% endif %}
                             </td>
                             <td>
+                                {% if action.secret_roll %}
+                                <em>secret roll</em><br>
+                                {% endif %}
                                 <strong>{% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}
                                     {{ action.user.username }}{% endif %}</strong>:
                             {{ action.caption }}
                             </td>
-
                         {% else %}
                             <td>
                             {% if action.image_url %}
@@ -192,6 +200,9 @@
                             {% endif %}
                             </td>
                             <td>
+                            {% if action.secret_roll %}
+                            <em>secret roll</em><br>
+                            {% endif %}
                             <strong>{% if action.avatar %} {{ action.avatar.avatar_name }} {% else %}
                                     {{ action.user.username }} {% endif %} </strong> Rolled:
                                 <!--Individual Faces-->
@@ -264,9 +275,9 @@
                                 {{ action.caption }}
                             {% endif %}
                             </td>
-
                         {% endif %}
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </table>
                 {% endif %}
