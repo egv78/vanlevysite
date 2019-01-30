@@ -63,14 +63,14 @@
             <div class="container-fluid" id="current_users">
                 <h5>User Information Table</h5>
 
-                <table id="users_table" style={%if player_is_gm%}"width:700px"{%else%}"width:540px"{%endif%}>
+                <table id="users_table" style={%if player_is_gm%}"width:720px"{%else%}"width:540px"{%endif%}>
                     <tr>
                         <th style="width:80px">User <br>Image</th>
                         <th style="width:300px">&nbsp<br>Playing as</th>
                         <th style="width:80px">Avatar <br>Image</th>
                         <th style="width:80px">&nbsp<br>Role</th>
                         {% if player_is_gm %}
-                        <th style="width:160px">Player <br>Info</th>
+                        <th style="width:180px">Player <br>Info</th>
                         {% endif %}
                     </tr>
                     {% for player in users_in_room %}

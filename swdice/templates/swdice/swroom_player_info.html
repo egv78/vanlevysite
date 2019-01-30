@@ -68,14 +68,14 @@
             </table>
             <div class="container-fluid" id="current_users">
                 <h5>User Information Table</h5>
-                <table id="users_table" style="width:700px">
+                <table id="users_table" style="width:720px">
                     <tr>
                         <th style="width:80px">User<br> Image</th>
                         <th style="width:300px">&nbsp<br>Playing as</th>
                         <th style="width:80px">Avatar<br> Image</th>
                         <th style="width:80px">&nbsp<br>Role</th>
                         {% if player_is_gm %}
-                            <th style="text-align:right; width:80px">&nbsp<br>GM</th>
+                            <th style="text-align:right; width:100px">&nbsp<br>GM</th>
                             <th style="width:80px">&nbsp<br>Actions</th>
                         {% endif %}
                     </tr>
@@ -190,15 +190,18 @@
                         {% endif %}
                     {% endfor %}. Only they will be able to undo this change.<br>
                     <strong>Are you sure you want to do this?</strong><br>
-                    <button type="button" class="btn btn-primary" name="make_gm_real">
-                        Yes, make
-                        {% for player in users_in_room %}
-                            {% if player.user_id_id == player_id %}
-                                <strong>{{ player.user_id.username }}</strong>
-                            {% endif %}
-                        {% endfor %}
-                        GM
-                    </button>
+                        <form id="make_gm_form" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary" name="make_gm_real">
+                                Yes, make
+                                {% for player in users_in_room %}
+                                    {% if player.user_id_id == player_id %}
+                                        <strong>{{ player.user_id.username }}</strong>
+                                    {% endif %}
+                                {% endfor %}
+                                GM
+                            </button>
+                        </form>
                     </p>
                     </div>
                     <div class="container-fluid" id="ban_area" style="display:none">
@@ -208,17 +211,23 @@
                                 Are you certain that you want to unban <strong>{{player.user_id.username}}</strong>?<br>
                                 Once you unban <strong>{{player.user_id.username}}</strong>, all of their actions and
                                 chats will be visible again.<br>
-                                <button type="button" class="btn btn-warning" id="unban_real">
-                                    <strong>Yes. Unban {{player.user_id.username}}.</strong>
-                                </button>
+                                <form id="unban_form" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-warning" name="unban_real">
+                                        <strong>Yes. Unban {{player.user_id.username}}.</strong>
+                                    </button>
+                                </form>
                             {% else %}
                                 Are you certain that you want to ban <strong>{{player.user_id.username}}</strong>?<br>
                                 While <strong>{{player.user_id.username}}</strong> is banned, all actions and chats
                                 from them will be invisible.<br>
                                 You <em>can</em> undo this at a later point.<br>
-                                <button type="button" class="btn btn-danger" id="ban_real">
-                                    <strong>Yes. BAN {{player.user_id.username}}.</strong>
-                                </button>
+                                <form id="ban_form" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" name="ban_real">
+                                        <strong>Yes. BAN {{player.user_id.username}}.</strong>
+                                    </button>
+                                </form>
                             {% endif %}
                         {% endif %}
                         {% endfor %}

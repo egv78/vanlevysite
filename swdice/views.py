@@ -29,30 +29,33 @@ def split_string(string):
 def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user=True, avatar=0):
     if SWRoomToUser.objects.filter(user_id_id=user_id, room_id_id=room_id):
         link_instance = SWRoomToUser.objects.filter(user_id_id=user_id, room_id_id=room_id)[0]
+        new_user = False
     else:
         link_instance = SWRoomToUser()
+        new_user = True
     now = datetime.datetime.now()
     link_instance.room_id_id = room_id
     link_instance.user_id = VanLevyUser(pk=user_id)
     link_instance.admitted = True
     link_instance.game_master = gm
     link_instance.banned = banned
-    link_instance.date_link_created = now
-    link_instance.date_admitted = now
     link_instance.default_avatar_is_user = avatar_is_user
-    # if avatar is None:
-    #     avatar = 0
-    # print("Make Link")
-    # print(avatar)
+
+    if new_user:
+        link_instance.date_link_created = now
+        link_instance.date_admitted = now
+
     if int(avatar) == 0:
+        print("here")
         link_instance.avatar_id_id = ""
-        # print("blank")
     else:
         link_instance.avatar_id_id = int(avatar)
-        # print(avatar)
 
     if gm:
         link_instance.date_made_gm = now
+    if banned:
+        link_instance.date_banned = now
+
     link_instance.save()
 
 
@@ -195,7 +198,7 @@ class DockingBay(FormMixin, TemplateView):
     # if request.method == 'GET'
     def get(self, request, *args, **kwargs):
         try:
-            room_id = self.kwargs['room_id']
+            room_id = self.kwargs['swroom_id']
         except:
             room_id = ""
 
@@ -228,6 +231,7 @@ class DockingBay(FormMixin, TemplateView):
     def post(self, request, **kwargs):
         kwargs = self.get_form_kwargs()
         form = Enter_SW_Room(**kwargs)
+        print(form)
         if form.is_valid():
             swroom_id = form.cleaned_data['room_number']
             passcode_candidate = form.cleaned_data['passcode']
@@ -270,8 +274,7 @@ class DockingBay(FormMixin, TemplateView):
                 raise Http404("Room has not yet been created")
 
         else:
-            # need to do error handling for form
-            pass
+            return redirect('swdice:dockingbay')
 
 
 class ViewRoom(FormMixin, TemplateView):
@@ -655,8 +658,39 @@ class RoomInfo(FormMixin, TemplateView):
 
 
 class RoomPlayerInfo(FormMixin, TemplateView):
-    # need security / redirect for non GM's who type in the correct number combos
     template_name = 'swdice/swroom_player_info.html'
+
+    def post(self, request, *args, **kwargs):
+        room_id = self.kwargs['swroom_id']
+        player_id = self.kwargs['player_id']
+        gm_user_id = self.request.user.id
+        room_player_link = SWRoomToUser.objects.filter(user_id_id=player_id, room_id_id=room_id)[0]
+        player_avatar_is_user = room_player_link.default_avatar_is_user
+        player_avatar = int(room_player_link.avatar_id_id) if room_player_link.avatar_id else 0
+
+        if request.method == "POST" and "make_gm_real" in request.POST:
+            # make player new gm
+            user_id = player_id
+            avatar_is_user = player_avatar_is_user
+            avatar = player_avatar
+            make_user_room_link(room_id, user_id, True, False, avatar_is_user, avatar)
+            room_old_gm_link = SWRoomToUser.objects.filter(user_id_id=gm_user_id, room_id_id=room_id)[0]
+            # change old gm to player
+            old_gm_avatar_is_user = room_old_gm_link.default_avatar_is_user
+            old_gm_avatar = room_old_gm_link.avatar_id_id if room_old_gm_link.avatar_id else 0
+            user_id = gm_user_id
+            avatar_is_user = old_gm_avatar_is_user
+            avatar = old_gm_avatar
+            make_user_room_link(room_id, user_id, False, False, avatar_is_user, avatar)
+            return redirect('swdice:swroom_info', room_id)
+        elif request.method == "POST" and "ban_real" in request.POST:
+            make_user_room_link(room_id, player_id, False, True, player_avatar_is_user, player_avatar)
+            return redirect('swdice:swroom_info', room_id)
+        elif request.method == "POST" and "unban_real" in request.POST:
+            make_user_room_link(room_id, player_id, False, False, player_avatar_is_user, player_avatar)
+            return redirect('swdice:swroom_info', room_id)
+        else:
+            return redirect('swdice:swroom_player_info', room_id, player_id)
 
     def get(self, request, *args, **kwargs):
         # kwargs = self.get_form_kwargs()
