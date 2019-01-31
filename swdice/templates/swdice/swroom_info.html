@@ -103,15 +103,32 @@
 {% block gm_stuff %}
 {% if player_is_gm %}
     <div class="container-fluid" id="gm_message">
-        <br>
+        <h5>Room Details</h5>
+        <ul>
+            {% if not room.open_to_all %}
+            <li><strong>Passcode:</strong>
+                {% if room.passcode %}
+                    "{{ room.passcode }}"
+                {% else %}
+                    this room's passcode has been left <em>blank</em>.
+                {% endif %}
+            </li>
+            {% else %}
+            <li>This room is <strong>open to all</strong></li>
+            {% endif %}
+            <li><strong>Created on:</strong> {{ room.created_on }}</li>
+            <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
+        </ul>
+        <hr>
+
         <h5>GM Information</h5>
         <p>
             You are the GM for this room.  This means that you have have extra privileges.  You can:
             <ul>
-                <li>See individual Player Info pages</li>
+                <li>See individual Player Info pages (and alter player privileges)</li>
                 <li>See banned players</li>
+                <li>See Room Details</li>
             </ul>
-            In the Player Info Page, you can alter player's privileges for this room.
         </p>
         <hr>
     </div>

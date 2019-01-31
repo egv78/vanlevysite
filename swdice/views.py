@@ -796,6 +796,8 @@ class RoomPlayerInfo(FormMixin, TemplateView):
             return render(request, template_name, args)
 
 
+# duplicates; prepping to condense
+
 class ViewRoomA(FormMixin, TemplateView):
     template_name = 'swdice/swroom.html'
 
