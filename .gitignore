@@ -1,2 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 /vanlevysite/settings/secret_key.txt
+
+/vanlevysite/media/static/base_style.css
+!/vanlevy/static/base_style.css

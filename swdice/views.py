@@ -795,3 +795,521 @@ class RoomPlayerInfo(FormMixin, TemplateView):
             template_name = 'swdice/swroom_player_info.html'
             return render(request, template_name, args)
 
+
+class ViewRoomA(FormMixin, TemplateView):
+    template_name = 'swdice/swroom.html'
+
+    def get_form_kwargs(self):
+        swroom_id = self.kwargs['swroom_id']
+        kwargs = super().get_form_kwargs()
+        user_id = self.request.user.id
+        room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id).exclude(user_id_id=user_id)
+
+        if room_users_link_list:
+            recipients_list = [(self.request.user.id, "Send to all")]  # self as recipient = key for not private
+            for user_in_room in room_users_link_list:
+                if not user_in_room.banned:
+                    user_name = user_in_room.user_id.username
+                    if user_in_room.default_avatar_is_user:
+                        name_in_room = "themself"
+                    else:
+                        name_in_room = user_in_room.avatar_id.avatar_name
+                    display_name = user_name + " as " + name_in_room
+                    recipients_list.append((user_in_room.user_id_id, display_name))
+
+        else:
+            recipients_list = [(self.request.user.id, "No other users in room")]
+
+        kwargs['recipients_list'] = recipients_list
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        swroom_id = self.kwargs['swroom_id']
+        current_user = self.request.user
+        current_user_id = self.request.user.id
+        room_to_user_link = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)[0]
+        avatar = room_to_user_link.avatar_id
+        if avatar is None:
+            image_url = current_user.userprofile.user_image.url if current_user.userprofile.user_image else ""
+        elif avatar.avatar_image:
+            image_url = avatar.avatar_image.url
+        else:
+            image_url = ''
+
+        if request.method == "POST" and "chat" in request.POST:
+            # form = SW_Room_Chat_Form(request.POST)
+            kwargs = self.get_form_kwargs()
+            # print("Kwargs")
+            # print(kwargs)
+            form = SW_Room_Chat_Form(**kwargs)
+            text = form.data['chat_text']
+
+            if text != "":
+                recipient_id = form.data['recipient']
+                recipient_user = VanLevyUser.objects.filter(id=recipient_id)[0]
+                room_user_link_recipient = SWRoomToUser.objects.filter(room_id_id=swroom_id, user_id=recipient_user)[0]
+                recipient_avatar = room_user_link_recipient.avatar_id
+                is_private = not (recipient_user == current_user)
+                new_chat = SWRoomChat()
+                new_chat.room_id_id = swroom_id
+                new_chat.chat_text = text
+                new_chat.user = current_user
+                new_chat.avatar = avatar
+                new_chat.image_url = image_url
+                new_chat.is_private = is_private
+                new_chat.recipient = recipient_user if is_private else None
+                new_chat.recipient_avatar = recipient_avatar
+                new_chat.save()
+                return redirect('swdice:swroom', swroom_id)
+            else:
+                return redirect('swdice:swroom', swroom_id)
+        elif request.method == "POST" and "add_dark" in request.POST:
+            caption_text = " added a DARK destiny point."
+            delta_light = 0
+            delta_dark = 1
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+                      "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
+            change_destiny(**kwargs)
+            return redirect('swdice:swroom', swroom_id)
+        elif request.method == "POST" and "rem_dark" in request.POST:
+            caption_text = " removed a DARK destiny point."
+            delta_light = 0
+            delta_dark = -1
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+                      "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
+            change_destiny(**kwargs)
+            return redirect('swdice:swroom', swroom_id)
+        elif request.method == "POST" and "use_dark" in request.POST:
+            caption_text = " used a DARK destiny point."
+            delta_light = 1
+            delta_dark = -1
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+                      "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
+            change_destiny(**kwargs)
+            return redirect('swdice:swroom', swroom_id)
+        elif request.method == "POST" and "add_light" in request.POST:
+            caption_text = " added a LIGHT destiny point."
+            delta_light = 1
+            delta_dark = 0
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+                      "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
+            change_destiny(**kwargs)
+            return redirect('swdice:swroom', swroom_id)
+        elif request.method == "POST" and "rem_light" in request.POST:
+            caption_text = " removed a LIGHT destiny point."
+            delta_light = -1
+            delta_dark = 0
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+                      "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
+            change_destiny(**kwargs)
+            return redirect('swdice:swroom', swroom_id)
+        elif request.method == "POST" and "use_light" in request.POST:
+            caption_text = " used a LIGHT destiny point."
+            delta_light = -1
+            delta_dark = 1
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+                      "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
+            change_destiny(**kwargs)
+            return redirect('swdice:swroom', swroom_id)
+        elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
+            form = SW_Dice_Roll(request.POST)
+            secret_roll = "roll_dice_secret" in request.POST
+            # print(form.errors)
+            if form.is_valid():
+                boost_dice = form.cleaned_data['num_boost_dice']
+                ability_dice = form.cleaned_data['num_ability_dice']
+                proficiency_dice = form.cleaned_data['num_proficiency_dice']
+                setback_dice = form.cleaned_data['num_setback_dice']
+                difficulty_dice = form.cleaned_data['num_difficulty_dice']
+                challenge_dice = form.cleaned_data['num_challenge_dice']
+                force_dice = form.cleaned_data['num_force_dice']
+                numerical_sides = form.cleaned_data['numerical_dice_sides']
+                numerical_dice = form.cleaned_data['num_numerical_dice']
+                caption_text = form.cleaned_data['caption']
+                additional_triumph = form.cleaned_data['additional_triumph']
+                additional_despair = form.cleaned_data['additional_despair']
+                additional_success = form.cleaned_data['additional_success']
+                additional_failure = form.cleaned_data['additional_failure']
+                additional_advantage = form.cleaned_data['additional_advantage']
+                additional_threat = form.cleaned_data['additional_threat']
+                additional_light_pips = form.cleaned_data['additional_light_pips']
+                additional_dark_pips = form.cleaned_data['additional_dark_pips']
+                total_dice = (boost_dice + ability_dice + proficiency_dice + force_dice +
+                              setback_dice + difficulty_dice + challenge_dice + numerical_dice +
+                              additional_triumph + additional_despair + additional_success + additional_failure +
+                              additional_advantage + additional_threat + additional_light_pips + additional_dark_pips
+                              )
+
+                if caption_text or total_dice > 0:
+                    if total_dice == 0:
+                        just_caption = True
+                    else:
+                        just_caption = False
+
+                    kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+                              "image_url": image_url,
+                              "num_boost_dice": boost_dice, "num_ability_dice": ability_dice,
+                              "num_proficiency_dice": proficiency_dice, "num_setback_dice": setback_dice,
+                              "num_difficulty_dice": difficulty_dice, "num_challenge_dice": challenge_dice,
+                              "num_force_dice": force_dice, "just_caption": just_caption,
+                              "num_numerical_dice": numerical_dice, "numerical_dice_sides": numerical_sides,
+                              "additional_triumph": additional_triumph, "additional_despair": additional_despair,
+                              "additional_success": additional_success, "additional_failure": additional_failure,
+                              "additional_advantage": additional_advantage, "additional_threat": additional_threat,
+                              "additional_light_pips": additional_light_pips,
+                              "additional_dark_pips": additional_dark_pips,
+                              "secret_roll": secret_roll
+                              }
+                    save_dice_pool(**kwargs)
+                else:
+                    pass
+            else:
+                print("Form's busted")
+
+            return redirect('swdice:swrooma', swroom_id)
+
+    def get(self, request, *args, **kwargs):
+        kwargs = self.get_form_kwargs()
+        swroom_id = self.kwargs['swroom_id']
+        try:
+            room = SWRoom.objects.get(pk=swroom_id)
+            room_is_open = room.open_to_all
+            room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
+            gm_link = room_users_link_list.filter(game_master=1)
+            if len(gm_link) > 0:
+                gm_id = gm_link[0].user_id_id
+            else:
+                gm_id = ""
+            current_user_id = request.user.id
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            else:
+                user_to_room_link = False
+
+            if room_is_open and not user_to_room_link:
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                should_be_here = True
+            elif not user_to_room_link:
+                should_be_here = False
+                return redirect('swdice:enter_passcode')
+            elif user_to_room_link.admitted and not user_to_room_link.banned:
+                should_be_here = True
+            elif user_to_room_link.banned:
+                should_be_here = False
+                return redirect('swdice:dockingbay')  # will need to change when banning implemented
+            else:
+                should_be_here = False
+                return redirect('swdice:dockingbay')
+
+        except SWRoom.DoesNotExist:
+            raise Http404("Room has not yet been created")
+
+        if should_be_here:
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            if not user_to_room_link.default_avatar_is_user:
+                avatar_id = user_to_room_link.avatar_id_id
+                default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+                if not default_avatar.deleted:
+                    name_in_room = default_avatar.avatar_name
+                    if default_avatar.avatar_image:
+                        icon_src = default_avatar.avatar_image.url
+                    else:
+                        icon_src = ""
+                else:
+                    if request.user.userprofile.user_first_name:
+                        name_in_room = request.user.userprofile.user_first_name
+                    else:
+                        name_in_room = request.user.username
+                    if request.user.userprofile.user_image:
+                        icon_src = request.user.userprofile.user_image.url
+                    else:
+                        icon_src = ""
+            else:
+                if request.user.userprofile.user_first_name:
+                    name_in_room = request.user.userprofile.user_first_name
+                else:
+                    name_in_room = request.user.username
+                if request.user.userprofile.user_image:
+                    icon_src = request.user.userprofile.user_image.url
+                else:
+                    icon_src = ""
+
+            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
+                destiny = SWRoomDestiny()                                       # maybe not
+                destiny.room_id_id = swroom_id
+                destiny.dark_pips = 0
+                destiny.light_pips = 0
+                destiny.save()
+            room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
+
+            if len(gm_link) > 0:
+                player_is_gm = 1 if gm_id == request.user.id else 0
+
+            chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
+            chat_log = []
+            for chat in chats_all:
+                if not room_users_link_list.filter(user_id=chat.user)[0].banned:
+                    chat_log.append(chat)
+            actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            actions = []
+            for action in actions_all:
+                if not room_users_link_list.filter(user_id=action.user)[0].banned:
+                    actions.append(action)
+            action_log = actions[:100]
+            form = SW_Room_Chat_Form(**kwargs)
+            light_pips = room_destiny.light_pips
+            dark_pips = room_destiny.dark_pips
+            dice_form = SW_Dice_Roll()
+
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
+                    'room_number': swroom_id, 'chat_log': chat_log, 'form': form, 'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'dice_form': dice_form, 'users_in_room': room_users_link_list}
+            template_name = 'swdice/swroom.html'
+            return render(request, template_name, args)
+
+
+class RoomInfoA(FormMixin, TemplateView):
+    template_name = 'swdice/swroom_info.html'
+
+    def get(self, request, *args, **kwargs):
+        # kwargs = self.get_form_kwargs()
+        swroom_id = self.kwargs['swroom_id']
+        try:
+            room = SWRoom.objects.get(pk=swroom_id)
+            room_is_open = room.open_to_all
+            room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
+            gm_link = room_users_link_list.filter(game_master=1)
+            if len(gm_link) > 0:
+                gm_id = gm_link[0].user_id_id
+            else:
+                gm_id = ""
+            current_user_id = request.user.id
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            else:
+                user_to_room_link = False
+
+            if room_is_open and not user_to_room_link:
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                should_be_here = True
+            elif not user_to_room_link:
+                should_be_here = False
+                return redirect('swdice:enter_passcode')
+            elif user_to_room_link.admitted and not user_to_room_link.banned:
+                should_be_here = True
+            elif user_to_room_link.banned:
+                should_be_here = False
+                return redirect('swdice:dockingbay')  # will need to change when banning implemented
+            else:
+                should_be_here = False
+                return redirect('swdice:dockingbay')
+
+        except SWRoom.DoesNotExist:
+            raise Http404("Room has not yet been created")
+
+        if should_be_here:
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            if not user_to_room_link.default_avatar_is_user:
+                avatar_id = user_to_room_link.avatar_id_id
+                default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+                if not default_avatar.deleted:
+                    name_in_room = default_avatar.avatar_name
+                    if default_avatar.avatar_image:
+                        icon_src = default_avatar.avatar_image.url
+                    else:
+                        icon_src = ""
+                else:
+                    if request.user.userprofile.user_first_name:
+                        name_in_room = request.user.userprofile.user_first_name
+                    else:
+                        name_in_room = request.user.username
+                    if request.user.userprofile.user_image:
+                        icon_src = request.user.userprofile.user_image.url
+                    else:
+                        icon_src = ""
+            else:
+                if request.user.userprofile.user_first_name:
+                    name_in_room = request.user.userprofile.user_first_name
+                else:
+                    name_in_room = request.user.username
+                if request.user.userprofile.user_image:
+                    icon_src = request.user.userprofile.user_image.url
+                else:
+                    icon_src = ""
+
+            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
+                destiny = SWRoomDestiny()                                       # maybe not
+                destiny.room_id_id = swroom_id
+                destiny.dark_pips = 0
+                destiny.light_pips = 0
+                destiny.save()
+            room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
+
+            if len(gm_link) > 0:
+                player_is_gm = 1 if gm_id == request.user.id else 0
+
+            chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
+            chat_log = []
+            for chat in chats_all:
+                if not room_users_link_list.filter(user_id=chat.user)[0].banned:
+                    chat_log.append(chat)
+            actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            actions = []
+            for action in actions_all:
+                if not room_users_link_list.filter(user_id=action.user)[0].banned:
+                    actions.append(action)
+            action_log = actions[:100]
+
+            light_pips = room_destiny.light_pips
+            dark_pips = room_destiny.dark_pips
+
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
+                    'room_number': swroom_id, 'chat_log': chat_log,  'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'users_in_room': room_users_link_list}
+            template_name = 'swdice/swroom_info.html'
+            return render(request, template_name, args)
+
+
+class RoomPlayerInfoA(FormMixin, TemplateView):
+    template_name = 'swdice/swroom_player_info.html'
+
+    def post(self, request, *args, **kwargs):
+        room_id = self.kwargs['swroom_id']
+        player_id = self.kwargs['player_id']
+        gm_user_id = self.request.user.id
+        room_player_link = SWRoomToUser.objects.filter(user_id_id=player_id, room_id_id=room_id)[0]
+        player_avatar_is_user = room_player_link.default_avatar_is_user
+        player_avatar = int(room_player_link.avatar_id_id) if room_player_link.avatar_id else 0
+
+        if request.method == "POST" and "make_gm_real" in request.POST:
+            # make player new gm
+            user_id = player_id
+            avatar_is_user = player_avatar_is_user
+            avatar = player_avatar
+            make_user_room_link(room_id, user_id, True, False, avatar_is_user, avatar)
+            room_old_gm_link = SWRoomToUser.objects.filter(user_id_id=gm_user_id, room_id_id=room_id)[0]
+            # change old gm to player
+            old_gm_avatar_is_user = room_old_gm_link.default_avatar_is_user
+            old_gm_avatar = room_old_gm_link.avatar_id_id if room_old_gm_link.avatar_id else 0
+            user_id = gm_user_id
+            avatar_is_user = old_gm_avatar_is_user
+            avatar = old_gm_avatar
+            make_user_room_link(room_id, user_id, False, False, avatar_is_user, avatar)
+            return redirect('swdice:swroom_info', room_id)
+        elif request.method == "POST" and "ban_real" in request.POST:
+            make_user_room_link(room_id, player_id, False, True, player_avatar_is_user, player_avatar)
+            return redirect('swdice:swroom_info', room_id)
+        elif request.method == "POST" and "unban_real" in request.POST:
+            make_user_room_link(room_id, player_id, False, False, player_avatar_is_user, player_avatar)
+            return redirect('swdice:swroom_info', room_id)
+        else:
+            return redirect('swdice:swroom_player_info', room_id, player_id)
+
+    def get(self, request, *args, **kwargs):
+        # kwargs = self.get_form_kwargs()
+        swroom_id = self.kwargs['swroom_id']
+        player_id = self.kwargs['player_id']
+        try:
+            room = SWRoom.objects.get(pk=swroom_id)
+            room_is_open = room.open_to_all
+            room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
+            gm_link = room_users_link_list.filter(game_master=1)
+            if len(gm_link) > 0:
+                gm_id = gm_link[0].user_id_id
+            else:
+                gm_id = ""
+            current_user_id = request.user.id
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            else:
+                user_to_room_link = False
+
+            if room_is_open and not user_to_room_link:
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                should_be_here = True
+            elif not user_to_room_link:
+                should_be_here = False
+                return redirect('swdice:enter_passcode')
+            elif user_to_room_link.admitted and not user_to_room_link.banned and user_to_room_link.game_master:
+                should_be_here = True
+            elif user_to_room_link.banned:
+                should_be_here = False
+                return redirect('swdice:dockingbay')  # will need to change when banning implemented
+            else:
+                should_be_here = False
+                return redirect('swdice:dockingbay')
+
+        except SWRoom.DoesNotExist:
+            raise Http404("Room has not yet been created")
+
+        try:
+            player = VanLevyUser.objects.get(pk=player_id)
+        except player.DoesNotExist:
+            raise Http404("Player does not exist")
+
+        if should_be_here:
+            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+            if len(user_to_room_link_candidate) > 0:
+                user_to_room_link = user_to_room_link_candidate[0]
+            if not user_to_room_link.default_avatar_is_user:
+                avatar_id = user_to_room_link.avatar_id_id
+                default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+                if not default_avatar.deleted:
+                    name_in_room = default_avatar.avatar_name
+                    if default_avatar.avatar_image:
+                        icon_src = default_avatar.avatar_image.url
+                    else:
+                        icon_src = ""
+                else:
+                    if request.user.userprofile.user_first_name:
+                        name_in_room = request.user.userprofile.user_first_name
+                    else:
+                        name_in_room = request.user.username
+                    if request.user.userprofile.user_image:
+                        icon_src = request.user.userprofile.user_image.url
+                    else:
+                        icon_src = ""
+            else:
+                if request.user.userprofile.user_first_name:
+                    name_in_room = request.user.userprofile.user_first_name
+                else:
+                    name_in_room = request.user.username
+                if request.user.userprofile.user_image:
+                    icon_src = request.user.userprofile.user_image.url
+                else:
+                    icon_src = ""
+
+            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
+                destiny = SWRoomDestiny()                                       # maybe not
+                destiny.room_id_id = swroom_id
+                destiny.dark_pips = 0
+                destiny.light_pips = 0
+                destiny.save()
+            room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
+
+            if len(gm_link) > 0:
+                player_is_gm = 1 if gm_id == request.user.id else 0
+
+            chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
+
+            action_log = SWDicePool.objects.filter(swroom_id=swroom_id, user_id=player_id).order_by('-created')
+
+            light_pips = room_destiny.light_pips
+            dark_pips = room_destiny.dark_pips
+
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
+                    'room_number': swroom_id, 'chat_log': chat_log,  'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'users_in_room': room_users_link_list, 'player_id': player_id}
+            template_name = 'swdice/swroom_player_info.html'
+            return render(request, template_name, args)
+

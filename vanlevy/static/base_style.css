@@ -1,0 +1,104 @@
+.sml-input {
+    width: 30px;
+    font-size: 1.5em;
+    margin: 5px 0px;
+}
+
+.med-input {
+    width: 60px;
+    font-size: 1.5em;
+    background-color: #f8f9fa;
+    border-style: none;
+}
+
+.roll-caption {
+    width: 240px;
+    padding: 7px 5px;
+    margin: 5px 3px;
+}
+
+.big-font {
+    font-size: 1.5em;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+table#destiny_table {
+    background-color: #f8f9fa;
+    width: 780px;
+    margin: 0px 0px 5px 0px;
+}
+
+.dice-container {
+    width: 130px;
+    height: 75px;
+    padding: 3px 6px;
+    margin: 10px 0px 0px 0xp;
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    float: left;
+}
+
+.dice-container-long {
+    width: 260px;
+    height: 75px;
+    padding: 3px 6px;
+    margin: 10px 0px 0px 0xp;
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    float: left;
+}
+
+.clearBoth {
+    clear:both;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+.outline-me {
+    border: 1px solid black;
+}
+
+.align-right {
+    float: right;
+    margin: 15px 0px 0px 0xp;
+}
+
+.top_margin {
+    margin: 10px 0px 0px 0xp;
+}
+
+.action-odd {
+    padding: 0px;
+    background-color: #f8f9fa;
+}
+
+.action-even {
+    padding: 0px;
+}
+
+#action_table {width: 100%;}
+#action_table td {padding: 5px 0px;}
+#action_table tr:nth-child(odd){background-color: #f8f9fa;}
+#action_table tr:hover {background-color: #ddd;}
+#action_table tr{border-bottom: 1px solid #ddd}
+
+#users_table {width: 100%;}
+#users_table td {padding: 5px 0px;}
+#users_table tr:nth-child(odd){background-color: #f8f9fa;}
+#users_table tr:hover {background-color: #ddd;}
+#users_table tr{border-bottom: 1px solid #ddd}
+
+#chat_table {width: 100%;}
+#chat_table td {padding: 5px;}
+#chat_table tr:nth-child(odd){background-color: #e8e8e8;}
+#chat_table tr:nth-child(even){background-color: #f4f4f4;}
