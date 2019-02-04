@@ -9,78 +9,112 @@
 
 {% block body %}
 <div class="container">
-    <br>
-    <h3>You currently are signed in as {{ my_avatars_list|get_item:room_id }}</h3>
-    <h4>Select the avatar you wish to use in room
-        {% for room in my_rooms_list %}
-        {% if room.id == room_id %}
-        {{ room.name }}
-        {% endif %}
-        {% endfor %}.  </h4>
-    <br>
-    <form method="post">
-        {% csrf_token %}
-        <table>
-            <col width="240">
-            <col width="120">
-            <col width="240">
-            <tr style="display:none"> <!-- style="display:none" -->
-                <td align="right" valign="bottom"></td>
-                <td><strong>Room ID:</strong>
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
                 <br>
-                    <!--{{form.room_number}}-->
-                    <input id="room_number" type="number" name="room_number" value="{{ room_id }}" readonly>
-                <br>
-                    {% if request.method.post %}
-                    <strong>{{ form.room_number.errors }}</strong>
+                <h3>You currently are signed in as {{ my_avatars_list|get_item:room_id }}</h3>
+                <h4>Select the avatar you wish to use in room
+                    {% for room in my_rooms_list %}
+                    {% if room.id == room_id %}
+                    {{ room.name }}
                     {% endif %}
-                </td>
-                <td>
-
-                </td>
-            </tr>
-            <tr><td></td><td><p></p></td></tr>
-            <tr style="display:none">  <!-- style="display:none" -->
-                <td align="right" valign="bottom">Leave this blank.</td>
-                <td><strong>Passcode:</strong>
+                    {% endfor %}.  </h4>
                 <br>
-                    <!--{{form.passcode}}-->
-                    <input id="passcode" type="text" name="passcode" value="" readonly>
+                <form method="post">
+                    {% csrf_token %}
+                    <table>
+                        <col width="240">
+                        <col width="120">
+                        <col width="240">
+                        <tr style="display:none"> <!-- style="display:none" -->
+                            <td align="right" valign="bottom"></td>
+                            <td><strong>Room ID:</strong>
+                            <br>
+                                <!--{{form.room_number}}-->
+                                <input id="room_number" type="number" name="room_number" value="{{ room_id }}" readonly>
+                            <br>
+                                {% if request.method.post %}
+                                <strong>{{ form.room_number.errors }}</strong>
+                                {% endif %}
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr><td></td><td><p></p></td></tr>
+                        <tr style="display:none">  <!-- style="display:none" -->
+                            <td align="right" valign="bottom">Leave this blank.</td>
+                            <td><strong>Passcode:</strong>
+                            <br>
+                                <!--{{form.passcode}}-->
+                                <input id="passcode" type="text" name="passcode" value="" readonly>
+                            <br>
+                                <strong>{{ form.passcode.errors }}</strong>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" valign="bottom"><strong>Select your avatar.</strong></td>
+                            <td><strong>Avatar Id:</strong>
+                                <br>{{form.default_avatar}} <br>
+                                <strong>{{ form.default_avatar.errors }}</strong>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="right"><p></p>
+                                <button type="submit" class="btn btn-primary">Switch Avatar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <p><br></p>
+                                <a href="{% url 'accounts:create_avatar' %}">
+                                <button type="button" class="btn btn-sm btn-outline-primary align-right">
+                                    Create a new avatar
+                                </button></a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="col-3">
                 <br>
-                    <strong>{{ form.passcode.errors }}</strong>
-                </td>
-                <td>
-
-                </td>
-            </tr>
-            <tr>
-                <td align="right" valign="bottom"><strong>Select your avatar.</strong></td>
-                <td><strong>Avatar Id:</strong>
-                    <br>{{form.default_avatar}} <br>
-                    <strong>{{ form.default_avatar.errors }}</strong>
-                </td>
-                <td>
-
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td align="right"><p></p>
-                    <button type="submit" class="btn btn-primary">Switch Avatar</button>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <p><br></p>
-                    <a href="{% url 'accounts:create_avatar' %}">
-                    <button type="button" class="btn btn-sm btn-outline-primary align-right">
-                        Create a new avatar
-                    </button></a>
-                </td>
-            </tr>
-        </table>
-    </form>
-
+                <h5>Avatars List</h5>
+                <br>
+                <strong>User:</strong>
+                {% if user.userprofile.user_first_name %}
+                    {{ user.userprofile.user_first_name }}
+                {% else %}
+                    {{ user.username }}
+                {% endif %}
+                <br>
+                {% if user.userprofile.user_url_image %}
+                    <img src="{{ user.userprofile.user_url_image }}" width="150">
+                {% else %}
+                    <em>no image.</em>
+                {% endif %}
+                <br>
+                <hr>
+                {% for avatar in my_avatar_objects %}
+                    <strong>Avatar:</strong> {{ avatar.avatar_name }}<br>
+                    {% if avatar.avatar_url_image %}
+                        <img src="{{ avatar.avatar_url_image }}" width="150">
+                    {% else %}
+                        <em>no image.</em>
+                    {% endif %}
+                    <br>
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -224,8 +224,10 @@ class DockingBay(FormMixin, TemplateView):
                     make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, 0)
 
         form = Enter_SW_Room(**kwargs)
-        args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id}
-
+        my_avatar_objects = Avatar.objects.filter(user_id=self.request.user.id, deleted=0)
+        args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id,
+                'my_avatar_objects': my_avatar_objects}
+        # print(my_avatars_list)
         return render(request, self.template_name, args)
 
     # if request.method == 'POST':
@@ -243,7 +245,7 @@ class DockingBay(FormMixin, TemplateView):
 
             try:
                 room = SWRoom.objects.get(pk=swroom_id)
-                my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id).order_by('-admitted') #,banned=0
+                my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id).order_by('-admitted')
                 my_rooms_list = []
                 for my_room in my_rooms_to_user_list:
                     my_rooms_list += SWRoom.objects.filter(pk=my_room.room_id_id)
