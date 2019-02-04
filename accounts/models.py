@@ -53,6 +53,7 @@ class UserProfile(models.Model):
     user_bio = models.CharField(max_length=500, default='', blank=True)
     user_description = models.CharField(max_length=500, default='', blank=True)
     user_image = models.ImageField(upload_to='profile_image', blank=True)
+    user_url_image = models.URLField(max_length=300, blank=True, default='')
     user_first_name = models.CharField(max_length=500, default='', blank=True)
     user_last_name = models.CharField(max_length=500, default='', blank=True)
 
@@ -73,6 +74,7 @@ class Avatar(models.Model):
     avatar_name = models.CharField(max_length=200, default='', blank=True)
     avatar_description = models.CharField(max_length=500, default='', blank=True)
     avatar_image = models.ImageField(upload_to='avatar_image', blank=True)
+    avatar_url_image = models.URLField(max_length=300, blank=True, default='')
     created_on = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(choices=BOOL_CHOICES, default=False)
 

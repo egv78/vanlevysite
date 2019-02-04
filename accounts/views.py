@@ -111,7 +111,8 @@ def edit_avatar(request, avatar_id=0):
             else:
                 message = "There is a problem."
                 args = {'error_message': message}
-                return redirect('accounts:create_avatar', args)
+                # return redirect('accounts:create_avatar', args)
+                return redirect('accounts:view_profile')
 
         else:  # request.method == GET
             if "create" in request.path:

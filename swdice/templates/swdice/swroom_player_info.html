@@ -57,8 +57,8 @@
         {% if player.user_id_id == player_id %}
         <tr>
             <td>
-                {% if player.user_id.userprofile.user_image %}
-                    <img src="{{ player.user_id.userprofile.user_image.url }}" width="40">
+                {% if player.user_id.userprofile.user_url_image %}
+                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
                 {% else %}
                     <em>no image</em>
                 {% endif %}
@@ -71,14 +71,14 @@
             </td>
             <td>
                 {% if player.avatar_id %}
-                    {% if player.avatar_id.avatar_image %}
-                        <img src="{{ player.avatar_id.avatar_image.url }}" width="40">
+                    {% if player.avatar_id.avatar_url_image %}
+                        <img src="{{ player.avatar_id.avatar_url_image }}" width="40">
                     {% else %}
                         <em>no image</em>
                     {% endif %}
                 {% else %}
-                    {% if player.user_id.userprofile.user_image %}
-                        <img src="{{ player.user_id.userprofile.user_image.url }}" width="40">
+                    {% if player.user_id.userprofile.user_url_image %}
+                        <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
                     {% else %}
                         <em>no image</em>
                     {% endif %}
