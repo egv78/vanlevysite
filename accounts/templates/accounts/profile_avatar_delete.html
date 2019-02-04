@@ -31,8 +31,8 @@
                 <p><strong>Last Name:</strong> {{user.userprofile.user_last_name}}</p>
                 <p><strong>Bio:</strong> {{ user.userprofile.user_bio }}</p>
                 <p><strong>Description:</strong> {{user.userprofile.user_description}}</p>
-                {% if user.userprofile.user_image %}
-                    <p><img src="{{ user.userprofile.user_image.url }}" width="240"></p>
+                {% if user.userprofile.user_url_image %}
+                    <p><img src="{{ user.userprofile.user_url_image }}" width="240"></p>
                 {% else %}
                     <p><strong>No image uploaded</strong></p>
                 {% endif %}
@@ -42,8 +42,8 @@
                 <p><strong>Name:</strong> {{avatar_data.avatar_name}}</p>
                 <p><strong>Description:</strong> {{avatar_data.avatar_description}}</p>
                 <p>
-                    {% if avatar_data.avatar_image %}
-                        <img src="{{ avatar_data.avatar_image.url }}" width="150">
+                    {% if avatar_data.avatar_url_image %}
+                        <img src="{{ avatar_data.avatar_url_image }}" width="150">
                     {% else %}
                         This Avatar has no image.
                     {% endif %}

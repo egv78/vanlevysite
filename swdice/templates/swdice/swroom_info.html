@@ -49,8 +49,8 @@
         {% if not player.banned or player_is_gm %}
         <tr>
             <td>
-                {% if player.user_id.userprofile.user_image %}
-                    <img src="{{ player.user_id.userprofile.user_image.url }}" width="40">
+                {% if player.user_id.userprofile.user_url_image %}
+                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
                 {% else %}
                     <em>no image</em>
                 {% endif %}
@@ -63,14 +63,14 @@
             </td>
             <td>
                 {% if player.avatar_id %}
-                    {% if player.avatar_id.avatar_image %}
-                        <img src="{{ player.avatar_id.avatar_image.url }}" width="40">
+                    {% if player.avatar_id.avatar_url_image %}
+                        <img src="{{ player.avatar_id.avatar_url_image }}" width="40">
                     {% else %}
                         <em>no image</em>
                     {% endif %}
                 {% else %}
-                    {% if player.user_id.userprofile.user_image %}
-                        <img src="{{ player.user_id.userprofile.user_image.url }}" width="40">
+                    {% if player.user_id.userprofile.user_url_image %}
+                        <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
                     {% else %}
                         <em>no image</em>
                     {% endif %}
@@ -126,7 +126,7 @@
             You are the GM for this room.  This means that you have have extra privileges.  You can:
             <ul>
                 <li>See individual Player Info pages (and alter player privileges)</li>
-                <li>See banned players</li>
+                <li>See banned players (rolls and chats only visible on Player Info Page)</li>
                 <li>See Room Details</li>
             </ul>
         </p>

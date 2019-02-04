@@ -46,6 +46,7 @@ class EditProfileForm(forms.ModelForm):
     user_bio = forms.CharField(required=False, label='User Bio')
     user_description = forms.CharField(required=False, label='Description')
     user_image = forms.ImageField(required=False)
+    user_url_image = forms.CharField(required=False, label='URL for Image')
     user_first_name = forms.CharField(required=False, label='First Name')
     user_last_name = forms.CharField(required=False, label='Last Name')
 
@@ -54,6 +55,7 @@ class EditProfileForm(forms.ModelForm):
         fields = ('user_bio',
                   'user_description',
                   'user_image',
+                  'user_url_image',
                   'user_first_name',
                   'user_last_name'
                   )
@@ -62,18 +64,21 @@ class EditProfileForm(forms.ModelForm):
 class EditAvatarForm(forms.ModelForm):
     avatar_description = forms.CharField(required=False, label='Description')
     avatar_image = forms.ImageField(required=False)
+    avatar_url_image = forms.CharField(required=False, label='URL for Image')
 
     class Meta:
         model = Avatar
         fields = ('avatar_name',
                   'avatar_description',
-                  'avatar_image'
+                  'avatar_image',
+                  'avatar_url_image'
                   )
 
 
 class DeleteAvatarForm(forms.ModelForm):
     avatar_description = forms.CharField(required=False, label='Description')
     avatar_image = forms.ImageField(required=False)
+    avatar_url_image = forms.CharField(required=False, label='URL for Image')
 
     class Meta:
         model = Avatar
@@ -81,6 +86,7 @@ class DeleteAvatarForm(forms.ModelForm):
         fields = ('avatar_name',
                   'avatar_description',
                   'avatar_image',
+                  'avatar_url_image',
                   'deleted'
                   )
 

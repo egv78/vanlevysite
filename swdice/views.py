@@ -312,9 +312,9 @@ class ViewRoom(FormMixin, TemplateView):
         room_to_user_link = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)[0]
         avatar = room_to_user_link.avatar_id
         if avatar is None:
-            image_url = current_user.userprofile.user_image.url if current_user.userprofile.user_image else ""
-        elif avatar.avatar_image:
-            image_url = avatar.avatar_image.url
+            image_url = current_user.userprofile.user_url_image if current_user.userprofile.user_url_image else ""
+        elif avatar.avatar_url_image:
+            image_url = avatar.avatar_url_image
         else:
             image_url = ''
 
@@ -496,8 +496,8 @@ class ViewRoom(FormMixin, TemplateView):
                 default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
                 if not default_avatar.deleted:
                     name_in_room = default_avatar.avatar_name
-                    if default_avatar.avatar_image:
-                        icon_src = default_avatar.avatar_image.url
+                    if default_avatar.avatar_url_image:
+                        icon_src = default_avatar.avatar_url_image
                     else:
                         icon_src = ""
                 else:
@@ -505,8 +505,8 @@ class ViewRoom(FormMixin, TemplateView):
                         name_in_room = request.user.userprofile.user_first_name
                     else:
                         name_in_room = request.user.username
-                    if request.user.userprofile.user_image:
-                        icon_src = request.user.userprofile.user_image.url
+                    if request.user.userprofile.user_url_image:
+                        icon_src = request.user.userprofile.user_url_image
                     else:
                         icon_src = ""
             else:
@@ -514,8 +514,8 @@ class ViewRoom(FormMixin, TemplateView):
                     name_in_room = request.user.userprofile.user_first_name
                 else:
                     name_in_room = request.user.username
-                if request.user.userprofile.user_image:
-                    icon_src = request.user.userprofile.user_image.url
+                if request.user.userprofile.user_url_image:
+                    icon_src = request.user.userprofile.user_url_image
                 else:
                     icon_src = ""
 
@@ -603,8 +603,8 @@ class RoomInfo(FormMixin, TemplateView):
                 default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
                 if not default_avatar.deleted:
                     name_in_room = default_avatar.avatar_name
-                    if default_avatar.avatar_image:
-                        icon_src = default_avatar.avatar_image.url
+                    if default_avatar.avatar_url_image:
+                        icon_src = default_avatar.avatar_url_image
                     else:
                         icon_src = ""
                 else:
@@ -612,8 +612,8 @@ class RoomInfo(FormMixin, TemplateView):
                         name_in_room = request.user.userprofile.user_first_name
                     else:
                         name_in_room = request.user.username
-                    if request.user.userprofile.user_image:
-                        icon_src = request.user.userprofile.user_image.url
+                    if request.user.userprofile.user_url_image:
+                        icon_src = request.user.userprofile.user_url_image
                     else:
                         icon_src = ""
             else:
@@ -621,8 +621,8 @@ class RoomInfo(FormMixin, TemplateView):
                     name_in_room = request.user.userprofile.user_first_name
                 else:
                     name_in_room = request.user.username
-                if request.user.userprofile.user_image:
-                    icon_src = request.user.userprofile.user_image.url
+                if request.user.userprofile.user_url_image:
+                    icon_src = request.user.userprofile.user_url_image
                 else:
                     icon_src = ""
 
@@ -747,8 +747,8 @@ class RoomPlayerInfo(FormMixin, TemplateView):
                 default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
                 if not default_avatar.deleted:
                     name_in_room = default_avatar.avatar_name
-                    if default_avatar.avatar_image:
-                        icon_src = default_avatar.avatar_image.url
+                    if default_avatar.avatar_url_image:
+                        icon_src = default_avatar.avatar_url_image
                     else:
                         icon_src = ""
                 else:
@@ -756,8 +756,8 @@ class RoomPlayerInfo(FormMixin, TemplateView):
                         name_in_room = request.user.userprofile.user_first_name
                     else:
                         name_in_room = request.user.username
-                    if request.user.userprofile.user_image:
-                        icon_src = request.user.userprofile.user_image.url
+                    if request.user.userprofile.user_url_image:
+                        icon_src = request.user.userprofile.user_url_image
                     else:
                         icon_src = ""
             else:
@@ -765,8 +765,8 @@ class RoomPlayerInfo(FormMixin, TemplateView):
                     name_in_room = request.user.userprofile.user_first_name
                 else:
                     name_in_room = request.user.username
-                if request.user.userprofile.user_image:
-                    icon_src = request.user.userprofile.user_image.url
+                if request.user.userprofile.user_url_image:
+                    icon_src = request.user.userprofile.user_url_image
                 else:
                     icon_src = ""
 
@@ -832,9 +832,9 @@ class ViewRoomA(FormMixin, TemplateView):
         room_to_user_link = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)[0]
         avatar = room_to_user_link.avatar_id
         if avatar is None:
-            image_url = current_user.userprofile.user_image.url if current_user.userprofile.user_image else ""
-        elif avatar.avatar_image:
-            image_url = avatar.avatar_image.url
+            image_url = current_user.userprofile.user_url_image if current_user.userprofile.user_url_image else ""
+        elif avatar.avatar_url_image:
+            image_url = avatar.avatar_url_image
         else:
             image_url = ''
 
@@ -1016,8 +1016,8 @@ class ViewRoomA(FormMixin, TemplateView):
                 default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
                 if not default_avatar.deleted:
                     name_in_room = default_avatar.avatar_name
-                    if default_avatar.avatar_image:
-                        icon_src = default_avatar.avatar_image.url
+                    if default_avatar.avatar_url_image:
+                        icon_src = default_avatar.avatar_url_image
                     else:
                         icon_src = ""
                 else:
@@ -1025,8 +1025,8 @@ class ViewRoomA(FormMixin, TemplateView):
                         name_in_room = request.user.userprofile.user_first_name
                     else:
                         name_in_room = request.user.username
-                    if request.user.userprofile.user_image:
-                        icon_src = request.user.userprofile.user_image.url
+                    if request.user.userprofile.user_url_image:
+                        icon_src = request.user.userprofile.user_url_image
                     else:
                         icon_src = ""
             else:
@@ -1034,8 +1034,8 @@ class ViewRoomA(FormMixin, TemplateView):
                     name_in_room = request.user.userprofile.user_first_name
                 else:
                     name_in_room = request.user.username
-                if request.user.userprofile.user_image:
-                    icon_src = request.user.userprofile.user_image.url
+                if request.user.userprofile.user_url_image:
+                    icon_src = request.user.userprofile.user_url_image
                 else:
                     icon_src = ""
 
@@ -1123,8 +1123,8 @@ class RoomInfoA(FormMixin, TemplateView):
                 default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
                 if not default_avatar.deleted:
                     name_in_room = default_avatar.avatar_name
-                    if default_avatar.avatar_image:
-                        icon_src = default_avatar.avatar_image.url
+                    if default_avatar.avatar_url_image:
+                        icon_src = default_avatar.avatar_url_image
                     else:
                         icon_src = ""
                 else:
@@ -1132,8 +1132,8 @@ class RoomInfoA(FormMixin, TemplateView):
                         name_in_room = request.user.userprofile.user_first_name
                     else:
                         name_in_room = request.user.username
-                    if request.user.userprofile.user_image:
-                        icon_src = request.user.userprofile.user_image.url
+                    if request.user.userprofile.user_url_image:
+                        icon_src = request.user.userprofile.user_url_image
                     else:
                         icon_src = ""
             else:
@@ -1141,8 +1141,8 @@ class RoomInfoA(FormMixin, TemplateView):
                     name_in_room = request.user.userprofile.user_first_name
                 else:
                     name_in_room = request.user.username
-                if request.user.userprofile.user_image:
-                    icon_src = request.user.userprofile.user_image.url
+                if request.user.userprofile.user_url_image:
+                    icon_src = request.user.userprofile.user_url_image
                 else:
                     icon_src = ""
 
@@ -1267,8 +1267,8 @@ class RoomPlayerInfoA(FormMixin, TemplateView):
                 default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
                 if not default_avatar.deleted:
                     name_in_room = default_avatar.avatar_name
-                    if default_avatar.avatar_image:
-                        icon_src = default_avatar.avatar_image.url
+                    if default_avatar.avatar_url_image:
+                        icon_src = default_avatar.avatar_url_image
                     else:
                         icon_src = ""
                 else:
@@ -1276,8 +1276,8 @@ class RoomPlayerInfoA(FormMixin, TemplateView):
                         name_in_room = request.user.userprofile.user_first_name
                     else:
                         name_in_room = request.user.username
-                    if request.user.userprofile.user_image:
-                        icon_src = request.user.userprofile.user_image.url
+                    if request.user.userprofile.user_url_image:
+                        icon_src = request.user.userprofile.user_url_image
                     else:
                         icon_src = ""
             else:
@@ -1285,8 +1285,8 @@ class RoomPlayerInfoA(FormMixin, TemplateView):
                     name_in_room = request.user.userprofile.user_first_name
                 else:
                     name_in_room = request.user.username
-                if request.user.userprofile.user_image:
-                    icon_src = request.user.userprofile.user_image.url
+                if request.user.userprofile.user_url_image:
+                    icon_src = request.user.userprofile.user_url_image
                 else:
                     icon_src = ""
 

@@ -42,7 +42,7 @@
                 <p><strong>Bio:</strong> {{ user.userprofile.user_bio }}</p>
                 <p><strong>Description:</strong> {{user.userprofile.user_description}}</p>
                 {% if user.userprofile.user_image %}
-                    <p><img src="{{ user.userprofile.user_image.url }}" width="240"></p>
+                    <p><img src="{{ user.userprofile.user_url_image }}" width="240"></p>
                 {% else %}
                     <p><strong>No image uploaded</strong></p>
                 {% endif %}
@@ -78,8 +78,8 @@
                             <!---->
                         </div>
                         <div class="col">
-                            {% if avatar.avatar_image %}
-                                <p><img src="{{ avatar.avatar_image.url }}" width="150"></p>
+                            {% if avatar.avatar_url_image %}
+                                <p><img src="{{ avatar.avatar_url_image }}" width="150"></p>
                             {% else %}
                                 This avatar has no image.
                             {% endif %}
