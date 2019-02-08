@@ -35,7 +35,7 @@ class SW_Room_to_User_Form(forms.ModelForm):
 
 
 class SW_Room_Chat_Form(forms.ModelForm):
-    recipient = forms.ChoiceField(choices=[])
+    recipient = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'onchange': "highlightChat();"}))
     chat_text = forms.CharField(widget=forms.Textarea(
         attrs={
             'id': "chat_text", 'rows': 2, 'width': "50%"
@@ -44,7 +44,8 @@ class SW_Room_Chat_Form(forms.ModelForm):
 
     class Meta:
         model = SWRoomChat
-        widgets = {'is_private': forms.RadioSelect, 'recipient': forms.Select()}
+        # widgets = {'is_private': forms.RadioSelect, 'recipient': forms.Select(attrs={'onchange': "highlightChat();"})}
+        widgets = {'is_private': forms.RadioSelect}
         fields = ('chat_text', 'is_private', 'recipient')
 
     def __init__(self, *args, **kwargs):

@@ -185,6 +185,12 @@
                                 onclick="hideAutoPips()" style="display:none">
                             Hide
                         </button>
+                        <br>
+                        <button type="button" id="reset_dice"
+                                class="btn btn-outline-secondary btn-sm align-right"
+                                onclick="resetDice()" style="margin:5px 0px 0px 0px">
+                            Reset Dice
+                        </button>
                     </div>
                     <br class="clearBoth">
                     <div class="container-fluid dice-container">
@@ -673,9 +679,9 @@
             <div class="container-fluid" id="chat_input" style="padding:0">
             <form method="post" autocomplete="off">
                 {% csrf_token %}
-                {{ form.chat_text }}
-                {{ form.recipient }}
-                <button type="submit" name="chat" class="btn btn-outline-dark btn-sm">
+                {{ chat_form.chat_text }}
+                {{ chat_form.recipient }}
+                <button type="submit" name="chat" class="btn btn-outline-dark btn-sm" id="chat_submit">
                     Add Chat
                 </button>
             </form>
@@ -783,7 +789,9 @@ function hideSecretRoll() {
     document.getElementById('roll_dice_button').style.display='block'
     document.getElementById('roll_dice_secret_button').style.display='none'
 }
+</script>
 
+<script>
 function addOne(id) {
     document.getElementById(id).stepUp(1);
 }
@@ -793,18 +801,61 @@ function subtractOne(id) {
 </script>
 
 <script>
+function resetDice() {
+    document.getElementById('boost').value = 0;
+    document.getElementById('setback').value = 0;
+    document.getElementById('ability').value = 0;
+    document.getElementById('difficulty').value = 0;
+    document.getElementById('proficiency').value = 0;
+    document.getElementById('challenge').value = 0;
+    document.getElementById('force').value = 0;
+    document.getElementById('numerical').value = 0;
+    document.getElementById('sides').value = 100;
+    document.getElementById('triumph').value = 0;
+    document.getElementById('despair').value = 0;
+    document.getElementById('success').value = 0;
+    document.getElementById('failure').value = 0;
+    document.getElementById('advantage').value = 0;
+    document.getElementById('threat').value = 0;
+    document.getElementById('lightpip').value = 0;
+    document.getElementById('darkpip').value = 0;
+}
+</script>
+
+<script>
+function highlightChat() {
+  var number = document.getElementById("id_recipient").selectedIndex;
+  var button = document.getElementById("chat_submit");
+  var chat_area = document.getElementById("chat_text");
+  if (number > 0) {
+    button.classList.remove('btn-outline-dark');
+    button.classList.add('btn-outline-warning');
+    button.textContent = 'Whisper';
+    chat_area.classList.add('chat_whisper');
+    chat_area.classList.remove('chat_regular');
+  } else {
+    button.classList.remove('btn-outline-warning');
+    button.classList.add('btn-outline-dark');
+    button.textContent = 'Add Chat';
+    chat_area.classList.remove('chat_whisper');
+    chat_area.classList.add('chat_regular');
+  }
+}
+</script>
+
+<script>
 $(function() {
     function refresh_action_log(){
         var url_actions = document.URL + ' #action_log'
         $('#action_log').load(url_actions, function () {
-            // When it loads, schedule the next request for 2s later
+            // When it loads, schedule the next request for 10s later
             setTimeout(refresh_action_log, 10000)
         });
     }
     function refresh_chat_log(){
         var url_actions = document.URL + ' #chat_log'
         $('#chat_log').load(url_actions, function () {
-            // When it loads, schedule the next request for 2s later
+            // When it loads, schedule the next request for 10s later
             setTimeout(refresh_chat_log, 10000)
         });
     }
@@ -813,8 +864,6 @@ $(function() {
         $('#destiny_box').load(url_destiny, function () {
             setTimeout(refresh_destiny_box, 10000)
         });
-        // $('#use_dark').prop('disabled', false);
-        // $('#use_light').prop('disabled', false);
     };
 
     refresh_action_log();
@@ -822,7 +871,6 @@ $(function() {
     refresh_destiny_box();
 })
 </script>
-
 {% endblock %} <!--page_scripts-->
 
 {% endblock %} <!--body-->

@@ -59,7 +59,7 @@ def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user
     link_instance.save()
 
 
-def save_dice_pool(user, avatar, room, image_url, caption="",
+def save_dice_pool(user, avatar, room, image_url, caption_text="",
                    num_boost_dice=0, num_ability_dice=0, num_proficiency_dice=0,
                    num_setback_dice=0, num_difficulty_dice=0, num_challenge_dice=0, num_force_dice=0,
                    additional_triumph=0, additional_despair=0, additional_success=0, additional_failure=0,
@@ -70,7 +70,7 @@ def save_dice_pool(user, avatar, room, image_url, caption="",
     new_dice_pool.user = user
     new_dice_pool.avatar = avatar
     new_dice_pool.swroom_id = room
-    new_dice_pool.caption = caption
+    new_dice_pool.caption = caption_text
     new_dice_pool.image_url = image_url
     new_dice_pool.num_boost_dice = num_boost_dice
     new_dice_pool.num_ability_dice = num_ability_dice
@@ -141,6 +141,52 @@ def change_destiny(user, avatar, room, image_url, caption="", delta_light=0, del
         save_dice_pool(**kwargs)
     else:
         pass
+
+
+def read_dice(dice_form):
+    boost_dice = dice_form.cleaned_data['num_boost_dice']
+    ability_dice = dice_form.cleaned_data['num_ability_dice']
+    proficiency_dice = dice_form.cleaned_data['num_proficiency_dice']
+    setback_dice = dice_form.cleaned_data['num_setback_dice']
+    difficulty_dice = dice_form.cleaned_data['num_difficulty_dice']
+    challenge_dice = dice_form.cleaned_data['num_challenge_dice']
+    force_dice = dice_form.cleaned_data['num_force_dice']
+    numerical_sides = dice_form.cleaned_data['numerical_dice_sides']
+    numerical_dice = dice_form.cleaned_data['num_numerical_dice']
+    caption_text = dice_form.cleaned_data['caption']
+    additional_triumph = dice_form.cleaned_data['additional_triumph']
+    additional_despair = dice_form.cleaned_data['additional_despair']
+    additional_success = dice_form.cleaned_data['additional_success']
+    additional_failure = dice_form.cleaned_data['additional_failure']
+    additional_advantage = dice_form.cleaned_data['additional_advantage']
+    additional_threat = dice_form.cleaned_data['additional_threat']
+    additional_light_pips = dice_form.cleaned_data['additional_light_pips']
+    additional_dark_pips = dice_form.cleaned_data['additional_dark_pips']
+    total_dice = (boost_dice + ability_dice + proficiency_dice + force_dice +
+                  setback_dice + difficulty_dice + challenge_dice + numerical_dice +
+                  additional_triumph + additional_despair + additional_success + additional_failure +
+                  additional_advantage + additional_threat + additional_light_pips + additional_dark_pips
+                  )
+
+    if caption_text or total_dice > 0:
+        if total_dice == 0:
+            just_caption = True
+        else:
+            just_caption = False
+
+    dice_pool = {'caption_text': caption_text, "total_dice": total_dice,
+                 "num_boost_dice": boost_dice, "num_ability_dice": ability_dice,
+                 "num_proficiency_dice": proficiency_dice, "num_setback_dice": setback_dice,
+                 "num_difficulty_dice": difficulty_dice, "num_challenge_dice": challenge_dice,
+                 "num_force_dice": force_dice, "just_caption": just_caption,
+                 "num_numerical_dice": numerical_dice, "numerical_dice_sides": numerical_sides,
+                 "additional_triumph": additional_triumph, "additional_despair": additional_despair,
+                 "additional_success": additional_success, "additional_failure": additional_failure,
+                 "additional_advantage": additional_advantage, "additional_threat": additional_threat,
+                 "additional_light_pips": additional_light_pips,
+                 "additional_dark_pips": additional_dark_pips,
+                 }
+    return dice_pool
 
 
 def about(request):
@@ -330,6 +376,7 @@ class SWRoomViews(FormMixin, TemplateView):
             else:
                 image_url = ''
 
+        # Player Info view functions
         if request.method == "POST" and "make_gm_real" in request.POST:
             # make player new gm
             user_id = player_id
@@ -351,7 +398,9 @@ class SWRoomViews(FormMixin, TemplateView):
         elif request.method == "POST" and "unban_real" in request.POST:
             make_user_room_link(swroom_id, player_id, False, False, player_avatar_is_user, player_avatar)
             return redirect('swdice:swroom_info', swroom_id)
+        # Regular Room functions
         elif request.method == "POST" and "chat" in request.POST:
+            print(request.POST)
             kwargs = self.get_form_kwargs()
             form = SW_Room_Chat_Form(**kwargs)
             text = form.data['chat_text']
@@ -424,65 +473,48 @@ class SWRoomViews(FormMixin, TemplateView):
             change_destiny(**kwargs)
             return redirect('swdice:swroom', swroom_id)
         elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
-            form = SW_Dice_Roll(request.POST)
+            dice_form = SW_Dice_Roll(request.POST)
             secret_roll = "roll_dice_secret" in request.POST
-            # print(form.errors)
-            if form.is_valid():
-                boost_dice = form.cleaned_data['num_boost_dice']
-                ability_dice = form.cleaned_data['num_ability_dice']
-                proficiency_dice = form.cleaned_data['num_proficiency_dice']
-                setback_dice = form.cleaned_data['num_setback_dice']
-                difficulty_dice = form.cleaned_data['num_difficulty_dice']
-                challenge_dice = form.cleaned_data['num_challenge_dice']
-                force_dice = form.cleaned_data['num_force_dice']
-                numerical_sides = form.cleaned_data['numerical_dice_sides']
-                numerical_dice = form.cleaned_data['num_numerical_dice']
-                caption_text = form.cleaned_data['caption']
-                additional_triumph = form.cleaned_data['additional_triumph']
-                additional_despair = form.cleaned_data['additional_despair']
-                additional_success = form.cleaned_data['additional_success']
-                additional_failure = form.cleaned_data['additional_failure']
-                additional_advantage = form.cleaned_data['additional_advantage']
-                additional_threat = form.cleaned_data['additional_threat']
-                additional_light_pips = form.cleaned_data['additional_light_pips']
-                additional_dark_pips = form.cleaned_data['additional_dark_pips']
-                total_dice = (boost_dice + ability_dice + proficiency_dice + force_dice +
-                              setback_dice + difficulty_dice + challenge_dice + numerical_dice +
-                              additional_triumph + additional_despair + additional_success + additional_failure +
-                              additional_advantage + additional_threat + additional_light_pips + additional_dark_pips
-                              )
+            print(request.POST)
+            # text = chat_form['chat_text']
+            # print(text)
+
+            if dice_form.is_valid():
+                dice_pool = read_dice(dice_form)
+                total_dice = dice_pool['total_dice']
+                del dice_pool['total_dice']
+                print(dice_pool)
+                caption_text = dice_pool['caption_text']
 
                 if caption_text or total_dice > 0:
-                    if total_dice == 0:
-                        just_caption = True
-                    else:
-                        just_caption = False
-
-                    kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
-                              "image_url": image_url,
-                              "num_boost_dice": boost_dice, "num_ability_dice": ability_dice,
-                              "num_proficiency_dice": proficiency_dice, "num_setback_dice": setback_dice,
-                              "num_difficulty_dice": difficulty_dice, "num_challenge_dice": challenge_dice,
-                              "num_force_dice": force_dice, "just_caption": just_caption,
-                              "num_numerical_dice": numerical_dice, "numerical_dice_sides": numerical_sides,
-                              "additional_triumph": additional_triumph, "additional_despair": additional_despair,
-                              "additional_success": additional_success, "additional_failure": additional_failure,
-                              "additional_advantage": additional_advantage, "additional_threat": additional_threat,
-                              "additional_light_pips": additional_light_pips,
-                              "additional_dark_pips": additional_dark_pips,
-                              "secret_roll": secret_roll
-                              }
+                    kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "image_url": image_url, }
+                    kwargs.update(dice_pool)
+                    kwargs.update({"secret_roll": secret_roll})
                     save_dice_pool(**kwargs)
                 else:
                     pass
             else:
                 print("Form's busted")
 
+            if dice_pool:
+                if dice_pool['just_caption']:
+                    del dice_pool['just_caption']
+                if dice_pool['caption_text']:
+                    del dice_pool['caption_text']
+                dice_pool_carryover = dice_pool
+
+            request.session['dice_pool_carryover'] = dice_pool_carryover
+            # request.session['chat_carryover'] = text
+
             return redirect('swdice:swroom', swroom_id)
 
     def get(self, request, *args, **kwargs):
         # kwargs = self.get_form_kwargs()
         swroom_id = self.kwargs['swroom_id']
+        # try:
+        #     initial_args = self.kwargs.dice_pool_carryover
+        # except:
+        #     initial_args = {}
         viewing_player_info = "player" in self.template_name
         if viewing_player_info:
             player_id = self.kwargs['player_id']
@@ -584,7 +616,12 @@ class SWRoomViews(FormMixin, TemplateView):
 
             if viewing_basic_room:
                 kwargs = self.get_form_kwargs()
-                form = SW_Room_Chat_Form(**kwargs)
+
+                if 'chat_carryover' in request.session:
+                    initial_args = request.session['chat_carryover']
+                else:
+                    initial_args = {}
+                chat_form = SW_Room_Chat_Form(initial_args, **kwargs)
                 chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
                 chat_log = []
                 for chat in chats_all[:100]:
@@ -595,9 +632,19 @@ class SWRoomViews(FormMixin, TemplateView):
                 for action in actions_all[:100]:
                     if not room_users_link_list.filter(user_id=action.user)[0].banned:
                         action_log.append(action)
-                dice_form = SW_Dice_Roll()
+
+                if 'dice_pool_carryover' in request.session:
+                    initial_args = request.session['dice_pool_carryover']
+                else:
+                    initial_args = {}
+                dice_form = SW_Dice_Roll(initial_args)
+                # if initial_args:
+                #     dice_form = SW_Dice_Roll(initial_args)
+                # else:
+                #     dice_form = SW_Dice_Roll()
+
                 args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
-                        'room_number': swroom_id, 'chat_log': chat_log, 'form': form, 'destiny': room_destiny,
+                        'room_number': swroom_id, 'chat_log': chat_log, 'chat_form': chat_form, 'destiny': room_destiny,
                         'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
                         'dice_form': dice_form, 'users_in_room': room_users_link_list}
 

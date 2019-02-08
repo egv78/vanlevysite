@@ -102,3 +102,11 @@ input[type=number] {
 #chat_table td {padding: 5px;}
 #chat_table tr:nth-child(odd){background-color: #e8e8e8;}
 #chat_table tr:nth-child(even){background-color: #f4f4f4;}
+
+.chat_whisper {
+    background-color: #fff3a2;
+}
+
+.chat_regular {
+    background-color: #ffffff;
+}
