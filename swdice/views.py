@@ -618,6 +618,7 @@ class SWRoomViews(FormMixin, TemplateView):
 
             if viewing_basic_room:
                 kwargs = self.get_form_kwargs()
+                now = datetime.datetime.now()
 
                 if 'chat_carryover' in request.session:
                     initial_args = request.session['chat_carryover']
@@ -629,13 +630,20 @@ class SWRoomViews(FormMixin, TemplateView):
                 for chat in chats_all[:100]:
                     if not room_users_link_list.filter(user_id=chat.user)[0].banned:
                         chat_log.append(chat)
-                last_chat_time = chat_log[0].created_on
+                if len(chat_log) > 0:
+                    last_chat_time = chat_log[0].created_on
+                else:
+                    last_chat_time = now
+
                 actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
                 action_log = []
                 for action in actions_all[:100]:
                     if not room_users_link_list.filter(user_id=action.user)[0].banned:
                         action_log.append(action)
-                last_action_time = action_log[0].created
+                if len(action_log) > 0:
+                    last_action_time = action_log[0].created
+                else:
+                    last_action_time = now
 
                 if 'dice_pool_carryover' in request.session:
                     initial_args = request.session['dice_pool_carryover']
