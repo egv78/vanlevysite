@@ -56,7 +56,7 @@
                     <div class="row">
                         <div class="col">
                             <p><strong>Delete </strong><em>{{avatar_data.avatar_name}}?</em></p>
-                            <form method="POST">
+                            <form method="POST" id="deleteAvatar">
                                 {% csrf_token %}
                                 {{ avatar_form.deleted }}
                             <p></p>
@@ -101,6 +101,14 @@ $("#id_deleted").click(function () {
         button.html('Never mind.<br>Return to Profile page');
         language.innerHTML = revert;
     };
+});
+</script>
+<script>
+var $myForm = $("#destiny");
+$myForm.submit(function(){
+    $myForm.submit(function(){
+        return false;
+    });
 });
 </script>
 {% endblock %}

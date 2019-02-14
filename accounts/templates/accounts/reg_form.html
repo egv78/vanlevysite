@@ -21,11 +21,22 @@
         <br>
         <p>To create a new account, please <a href="{% url 'accounts:logout' %}">logout</a> and then register.</p>
     {% else %}
-        <form method="post">
+        <form method="post" id="register">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-outline-primary">Register</button>
         </form>
     {% endif %}
 </div>
+{% endblock
+
+{% block page_scripts %}
+<script>
+var $myForm = $("#register");
+$myForm.submit(function(){
+    $myForm.submit(function(){
+        return false;
+    });
+});
+</script>
 {% endblock %}

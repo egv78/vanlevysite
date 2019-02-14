@@ -21,7 +21,7 @@
                 You are logged in as <strong>{{user}}</strong>.
                 <br>Emails cannot be changed at this time.
                 <p></p>
-                <form method="post", enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" id="editProfile">
                     {% csrf_token %}
                     <table>
                         <tr>
@@ -53,4 +53,15 @@
 
 </div>
 
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+var $myForm = $("#editProfile");
+$myForm.submit(function(){
+    $myForm.submit(function(){
+        return false;
+    });
+});
+</script>
 {% endblock %}

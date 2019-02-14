@@ -39,7 +39,7 @@
             </div>
             <div class="col">
                 <!-- Two of two columns -->
-                <form method="POST", enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" id="editAvatar">
                     {% csrf_token %}
                     <p><strong>Avatar Name:</strong> {{avatar_form.avatar_name}}</p>
                     <p><strong>Avatar Description:</strong> {{avatar_form.avatar_description}}</p>
@@ -50,4 +50,15 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+var $myForm = $("#editAvatar");
+$myForm.submit(function(){
+    $myForm.submit(function(){
+        return false;
+    });
+});
+</script>
 {% endblock %}

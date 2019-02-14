@@ -677,7 +677,7 @@
             {% endblock %}
             {% block chat_input %}
             <div class="container-fluid" id="chat_input" style="padding:0">
-            <form method="post" autocomplete="off">
+            <form method="post" autocomplete="off" id="chat">
                 {% csrf_token %}
                 {{ chat_form.chat_text }}
                 {{ chat_form.recipient }}
@@ -849,7 +849,26 @@ function highlightChat() {
   }
 }
 </script>
-
+<script>
+var $myForm = $("#destiny");
+$myForm.submit(function(){
+    $myForm.submit(function(){
+        return false;
+    });
+});
+var $mySecondForm = $("#dice");
+$mySecondForm.submit(function(){
+    $mySecondForm.submit(function(){
+        return false;
+    });
+});
+var $myThirdForm = $("#chat");
+$myThirdForm.submit(function(){
+    $myThirdForm.submit(function(){
+        return false;
+    });
+});
+</script>
 <script>
 $(function () {
     function refresh_action_log(){
