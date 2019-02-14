@@ -755,12 +755,19 @@
             {% endif %}
             </div>
             {% endblock %}
+            <p style="display:none">Last action taken: <span id="actionTime">{{ last_action_time.isoformat }}</span></p>
+            <p style="display:none">Last chat made: <span id="chatTime">{{ last_chat_time.isoformat }}</span></p>
+            <p style="display:none">Page last updated: <span id="updateTime"></span>
         </div>
     </div>
 </div>
 
 
 {% block page_scripts %}
+<script>
+    var dt = new Date();
+    document.getElementById('updateTime').innerHTML = dt.toLocaleString();
+</script>
 <script>
 function showAutoPips() {
     document.getElementById('hidden_fields').style.display='block'
@@ -844,31 +851,53 @@ function highlightChat() {
 </script>
 
 <script>
-$(function() {
+$(function () {
     function refresh_action_log(){
-        var url_actions = document.URL + ' #action_log'
-        $('#action_log').load(url_actions, function () {
-            // When it loads, schedule the next request for 10s later
-            setTimeout(refresh_action_log, 10000)
-        });
+        var url_actions = document.URL + ' #action_log';
+        var url_destiny = document.URL + ' #destiny_box';
+        $('#action_log').load(url_actions);
+        $('#destiny_box').load(url_destiny);
     }
-    function refresh_chat_log(){
-        var url_actions = document.URL + ' #chat_log'
-        $('#chat_log').load(url_actions, function () {
-            // When it loads, schedule the next request for 10s later
-            setTimeout(refresh_chat_log, 10000)
-        });
+    function check_and_update_actions() {
+        var pageUpdate = new Date(document.getElementById('updateTime').innerHTML);
+        var actionUpdate = new Date($("#actionTime").text());
+        var now = new Date();
+        if (actionUpdate > pageUpdate) {
+            refresh_action_log();
+            document.getElementById('updateTime').innerHTML = now.toLocaleString();
+        };
     }
-    function refresh_destiny_box() {
-        var url_destiny = document.URL + ' #destiny_box'
-        $('#destiny_box').load(url_destiny, function () {
-            setTimeout(refresh_destiny_box, 10000)
+    function update_action_time() {
+        var url_action_time = document.URL + ' #actionTime';
+        $('#actionTime').load(url_action_time, function () {
+            // When it loads, schedule the next request for 1s later
+            setTimeout(update_action_time, 1000)
         });
+        check_and_update_actions();
     };
-
-    refresh_action_log();
-    refresh_chat_log();
-    refresh_destiny_box();
+    function refresh_chat_log() {
+        var url_chat_log = document.URL + ' #chat_log';
+        $('#chat_log').load(url_chat_log);
+    }
+    function check_and_update_chat() {
+        var pageUpdate = new Date(document.getElementById('updateTime').innerHTML);
+        var chatUpdate = new Date($("#chatTime").text());
+        var now = new Date();
+        if (chatUpdate > pageUpdate) {
+            refresh_chat_log();
+            document.getElementById('updateTime').innerHTML = now.toLocaleString();
+        };
+    }
+    function update_chat_time() {
+        var url_chat_time = document.URL + ' #chatTime';
+        $('#chatTime').load(url_chat_time, function () {
+            // When it loads, schedule the next request for 1s later
+            setTimeout(update_chat_time, 1000)
+        });
+        check_and_update_chat();
+    };
+    update_action_time();
+    update_chat_time();
 })
 </script>
 {% endblock %} <!--page_scripts-->

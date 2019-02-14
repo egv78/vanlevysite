@@ -2,10 +2,10 @@ from vanlevysite.settings.base import *
 
 # add overwrites here
 
-DEBUG = False
+DEBUG = True
 
 # change ALLOWED_HOSTS on launch
-ALLOWED_HOSTS = ['3.16.166.171']
+ALLOWED_HOSTS = ['18.191.142.81']
 
 # local settings
 try:

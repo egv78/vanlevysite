@@ -61,6 +61,8 @@ def edit_profile(request):
         if profile_form.is_valid():
             profile_form.save()
             return redirect('accounts:view_profile')
+        else:
+            return redirect('accounts:edit_profile')
     else:
         profile_form = EditProfileForm(instance=request.user.userprofile)
         args = {'profile_form': profile_form}

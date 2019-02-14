@@ -136,7 +136,7 @@ def change_destiny(user, avatar, room, image_url, caption="", delta_light=0, del
         destiny.light_pips += delta_light
         destiny.dark_pips += delta_dark
         destiny.save()
-        kwargs = {"user": user, "avatar": avatar, "room": room, "caption": caption,
+        kwargs = {"user": user, "avatar": avatar, "room": room, "caption_text": caption,
                   "image_url": image_url}
         save_dice_pool(**kwargs)
     else:
@@ -400,7 +400,7 @@ class SWRoomViews(FormMixin, TemplateView):
             return redirect('swdice:swroom_info', swroom_id)
         # Regular Room functions
         elif request.method == "POST" and "chat" in request.POST:
-            print(request.POST)
+            # print(request.POST)
             kwargs = self.get_form_kwargs()
             form = SW_Room_Chat_Form(**kwargs)
             text = form.data['chat_text']
@@ -475,7 +475,7 @@ class SWRoomViews(FormMixin, TemplateView):
         elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
             dice_form = SW_Dice_Roll(request.POST)
             secret_roll = "roll_dice_secret" in request.POST
-            print(request.POST)
+            # print(request.POST)
             # text = chat_form['chat_text']
             # print(text)
 
@@ -483,7 +483,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_pool = read_dice(dice_form)
                 total_dice = dice_pool['total_dice']
                 del dice_pool['total_dice']
-                print(dice_pool)
+                # print(dice_pool)
                 caption_text = dice_pool['caption_text']
 
                 if caption_text or total_dice > 0:
@@ -503,7 +503,9 @@ class SWRoomViews(FormMixin, TemplateView):
                     del dice_pool['caption_text']
                 dice_pool_carryover = dice_pool
 
-            request.session['dice_pool_carryover'] = dice_pool_carryover
+            # request.session['dice_pool_carryover'] = dice_pool_carryover
+            # if request.session['dice_pool_carryover']:
+            #     del request.session['dice_pool_carryover']
             # request.session['chat_carryover'] = text
 
             return redirect('swdice:swroom', swroom_id)
@@ -627,26 +629,27 @@ class SWRoomViews(FormMixin, TemplateView):
                 for chat in chats_all[:100]:
                     if not room_users_link_list.filter(user_id=chat.user)[0].banned:
                         chat_log.append(chat)
+                last_chat_time = chat_log[0].created_on
                 actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
                 action_log = []
                 for action in actions_all[:100]:
                     if not room_users_link_list.filter(user_id=action.user)[0].banned:
                         action_log.append(action)
+                last_action_time = action_log[0].created
 
                 if 'dice_pool_carryover' in request.session:
                     initial_args = request.session['dice_pool_carryover']
                 else:
                     initial_args = {}
+                # for key, value in request.session.items():
+                #     print('{} => {}'.format(key, value))
                 dice_form = SW_Dice_Roll(initial_args)
-                # if initial_args:
-                #     dice_form = SW_Dice_Roll(initial_args)
-                # else:
-                #     dice_form = SW_Dice_Roll()
 
                 args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                         'room_number': swroom_id, 'chat_log': chat_log, 'chat_form': chat_form, 'destiny': room_destiny,
                         'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
-                        'dice_form': dice_form, 'users_in_room': room_users_link_list}
+                        'dice_form': dice_form, 'users_in_room': room_users_link_list,
+                        'last_action_time': last_action_time, 'last_chat_time': last_chat_time}
 
             elif viewing_player_info:
                 chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
