@@ -25,28 +25,41 @@
                     {% csrf_token %}
                     <table>
                         <tr>
-                            <td><strong>First Name:</strong></td><td>{{profile_form.user_first_name}} </td>
+                            <td class="align-right"><strong>First Name:</strong></td>
+                            <td>{{profile_form.user_first_name}} </td>
                         </tr>
                         <tr>
-                            <td><strong>Last Name:</strong></td><td>{{profile_form.user_last_name}} </td>
+                            <td class="align-right"><strong>Last Name:</strong></td>
+                            <td>{{profile_form.user_last_name}} </td>
                         </tr>
                         <tr>
-                            <td><strong>Bio:</strong></td><td>{{profile_form.user_bio}} </td>
+                            <td class="align-right"><strong>Bio:</strong></td>
+                            <td>{{profile_form.user_bio}} </td>
                         </tr>
                         <tr>
-                            <td><strong>Description:</strong></td><td>{{profile_form.user_description}} </td>
+                            <td class="align-right"><strong>Description:</strong></td>
+                            <td>{{profile_form.user_description}} </td>
                         </tr>
                         <tr>
-                            <td><strong>Image:</strong></td><td>{{profile_form.user_url_image}} </td>
+                            <td class="align-right"><strong>Image:</strong></td>
+                            <td>{{profile_form.user_url_image}} </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <em>Images need to be valid URLs to a web-hosted image file.</em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn btn-outline-primary">Submit Change</button>
+                            </td>
                         </tr>
                     </table>
-                    <p></p>
-                    <button type="submit" class="btn btn-outline-primary">Submit Changes</button>
                 </form>
                 <p><br></p>
             </div>
-
-
         </div>
     </div>
     <p></p><br><p></p><br>

@@ -43,10 +43,16 @@ class EditUserForm(forms.ModelForm):
 
 
 class EditProfileForm(forms.ModelForm):
-    user_bio = forms.CharField(required=False, label='User Bio')
-    user_description = forms.CharField(required=False, label='Description')
+    user_bio = forms.CharField(required=False, label='User Bio',
+                               widget=forms.Textarea(attrs={'rows': 1, 'cols': 60})
+                               )
+    user_description = forms.CharField(required=False, label='Description',
+                                       widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                       )
     user_image = forms.ImageField(required=False)
-    user_url_image = forms.CharField(required=False, label='URL for Image')
+    user_url_image = forms.URLField(required=False, label='URL for Image',
+                                    widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                    )
     user_first_name = forms.CharField(required=False, label='First Name')
     user_last_name = forms.CharField(required=False, label='Last Name')
 
@@ -62,9 +68,16 @@ class EditProfileForm(forms.ModelForm):
 
 
 class EditAvatarForm(forms.ModelForm):
-    avatar_description = forms.CharField(required=False, label='Description')
+    avatar_name = forms.CharField(required=True, label='name',
+                                  widget=forms.TextInput(attrs={'size': 40})
+                                  )
+    avatar_description = forms.CharField(required=False, label='Description',
+                                         widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                         )
     avatar_image = forms.ImageField(required=False)
-    avatar_url_image = forms.CharField(required=False, label='URL for Image')
+    avatar_url_image = forms.URLField(required=False, label='URL for Image',
+                                      widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                      )
 
     class Meta:
         model = Avatar
