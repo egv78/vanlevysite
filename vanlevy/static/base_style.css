@@ -12,27 +12,26 @@
 }
 
 .roll-caption {
-    width: 240px;
+    width: 230px;
     padding: 7px 5px;
     margin: 5px 3px;
 }
 
 .big-font {
     font-size: 1.5em;
-    font-size: 1.5em;
     font-weight: bold;
 }
 
-table#destiny_table {
+.destiny_table {
     background-color: #f8f9fa;
-    width: 780px;
+    width: 750px;
     margin: 0px 0px 5px 0px;
 }
 
 .dice-container {
-    width: 130px;
+    width: 125px;
     height: 75px;
-    padding: 3px 6px;
+    padding: 3px 3px;
     margin: 10px 0px 0px 0xp;
     background-color: #f8f9fa;
     border: 1px solid lightgray;
@@ -40,9 +39,19 @@ table#destiny_table {
 }
 
 .dice-container-long {
-    width: 260px;
+    width: 250px;
     height: 75px;
-    padding: 3px 6px;
+    padding: 3px 3px;
+    margin: 10px 0px 0px 0xp;
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    float: left;
+}
+
+.dice-container-long-hidden {
+    width: 250px;
+    height: 75px;
+    padding: 3px 3px;
     margin: 10px 0px 0px 0xp;
     background-color: #f8f9fa;
     border: 1px solid lightgray;
@@ -109,4 +118,34 @@ input[type=number] {
 
 .chat_regular {
     background-color: #ffffff;
+}
+
+@media screen and (max-width:1024px) {
+    /* For Tablets */
+    .dice-container-long-hidden {
+        visibility: hidden;
+        display: none;
+        clear: both;
+    }
+    .destiny_table {
+        background-color: #f8f9fa;
+        width: 500px;
+        margin: 0px 0px 5px 0px;
+    }
+    .big-font {
+        font-size: 1.0em;
+        font-weight: bold;
+    }
+    .sml-input {
+        width: 30px;
+        font-size: 1.0em;
+        margin: 5px 0px;
+    }
+
+    .med-input {
+        width: 60px;
+        font-size: 1.0em;
+        background-color: #f8f9fa;
+        border-style: none;
+    }
 }

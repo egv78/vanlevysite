@@ -36,7 +36,7 @@
             {% endblock %}
             {% block destiny %}
             <div class="container-fluid" id="destiny_area">
-                <table id="destiny_table">
+                <table class="destiny_table">
                     <tr>
                     <form id="destiny" method="POST">
                     {% csrf_token %}
@@ -151,6 +151,29 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="container-fluid dice-container">
+                        <table>
+                            <tr>
+                                <td>
+                                    <img src="{% static 'swdice/Dice/force.png' %}" width="40">
+                                    {{ dice_form.num_force_dice }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('force')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('force')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <div class="container-fluid dice-container-long">
                         <table>
                             <tr>
@@ -174,24 +197,6 @@
                         </table>
                     </div>
 
-                    <div class="container-fluid dice-container">
-                        <button type="button" id="show_pips_button"
-                                class="btn btn-outline-secondary btn-sm align-right"
-                                onclick="showAutoPips()">
-                            Extra Pips
-                        </button>
-                        <button type="button" id="hide_pips_button"
-                                class="btn btn-outline-secondary btn-sm align-right"
-                                onclick="hideAutoPips()" style="display:none">
-                            Hide
-                        </button>
-                        <br>
-                        <button type="button" id="reset_dice"
-                                class="btn btn-outline-secondary btn-sm align-right"
-                                onclick="resetDice()" style="margin:5px 0px 0px 0px">
-                            Reset Dice
-                        </button>
-                    </div>
                     <br class="clearBoth">
                     <div class="container-fluid dice-container">
                         <table>
@@ -263,27 +268,22 @@
                         </table>
                     </div>
                     <div class="container-fluid dice-container">
-                        <table>
-                            <tr>
-                                <td>
-                                    <img src="{% static 'swdice/Dice/force.png' %}" width="40">
-                                    {{ dice_form.num_force_dice }}
-                                </td>
-                                <td>
-                                    <button type="button"
-                                            onclick="addOne('force')"
-                                            class="btn btn-light btn-sm">
-                                        &#9650
-                                    </button>
-                                    <br>
-                                    <button type="button"
-                                            onclick="subtractOne('force')"
-                                            class="btn btn-light btn-sm">
-                                        &#9660
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
+                        <button type="button" id="show_pips_button"
+                                class="btn btn-outline-secondary btn-sm"
+                                onclick="showAutoPips()" style="margin: auto; display: block;">
+                            Show Extras
+                        </button>
+                        <button type="button" id="hide_pips_button"
+                                class="btn btn-outline-secondary btn-sm"
+                                onclick="hideAutoPips()" style="margin: auto; display: none">
+                            Hide Extras
+                        </button>
+                        <br>
+                        <!--<button type="button" id="reset_dice"-->
+                                <!--class="btn btn-outline-secondary btn-sm align-right"-->
+                                <!--onclick="resetDice()" style="margin:5px 0px 0px 0px">-->
+                            <!--Reset Dice-->
+                        <!--</button>-->
                     </div>
                     <div class="container-fluid dice-container-long">
                         {{ dice_form.caption }}
@@ -384,7 +384,7 @@
                             </tr>
                             </table>
                         </div>
-                        <div class="container-fluid dice-container-long"></div>
+                        <div class="container-fluid dice-container-long-hidden"></div>
                         <br class="clearBoth">
                         <div class="container-fluid dice-container">
                             <table>
@@ -478,7 +478,7 @@
                             </tr>
                             </table>
                         </div>
-                        <div class="container-fluid dice-container-long"></div>
+                        <div class="container-fluid dice-container-long-hidden"></div>
                         <br class="clearBoth">
                     </div>
                     <div class="container-fluid dice-container-long" style="text-align:center">
@@ -492,25 +492,25 @@
                     </button>
                     </div>
                     <div class="container-fluid dice-container-long">
-                        <span id="secret_warning" style="display:none">
-                            {% if player_is_gm %}
-                            <em>Only you will be able to see this roll.</em>
-                            {% else %}
-                            <em>Only you and the GM will be able to see this roll</em>
-                            {% endif %}
-                        </span>
-                    </div>
-                    <div class="container-fluid dice-container-long">
                         <button type="button" id="show_secret_roll_button"
-                                class="btn btn-outline-secondary btn-sm align-right"
-                                onclick="showSecretRoll()">
+                                class="btn btn-outline-secondary btn-sm"
+                                onclick="showSecretRoll()" style="display: block; margin: auto;">
                             Switch to Secret Roll
                         </button>
                         <button type="button" id="hide_secret_roll_button"
-                                class="btn btn-outline-secondary btn-sm align-right"
-                                onclick="hideSecretRoll()" style="display:none">
+                                class="btn btn-outline-secondary btn-sm"
+                                onclick="hideSecretRoll()" style="display: none; margin: auto">
                             Switch to Regular Roll
                         </button>
+                        <span id="secret_warning" style="display:none">
+                            {% if player_is_gm %}
+                            <em>As GM, only you will see this roll.</em>
+                            {% else %}
+                            <em>You and the GM will see this roll.</em>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="container-fluid dice-container-long-hidden">
                     </div>
                     <br class="clearBoth">
                 </form>
