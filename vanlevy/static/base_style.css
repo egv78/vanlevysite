@@ -24,42 +24,8 @@
 
 .destiny_table {
     background-color: #f8f9fa;
-    width: 750px;
-    margin: 0px 0px 5px 0px;
-}
-
-.dice-container {
     width: 125px;
-    height: 75px;
-    padding: 3px 3px;
-    margin: 10px 0px 0px 0xp;
-    background-color: #f8f9fa;
-    border: 1px solid lightgray;
-    float: left;
-}
-
-.dice-container-long {
-    width: 250px;
-    height: 75px;
-    padding: 3px 3px;
-    margin: 10px 0px 0px 0xp;
-    background-color: #f8f9fa;
-    border: 1px solid lightgray;
-    float: left;
-}
-
-.dice-container-long-hidden {
-    width: 250px;
-    height: 75px;
-    padding: 3px 3px;
-    margin: 10px 0px 0px 0xp;
-    background-color: #f8f9fa;
-    border: 1px solid lightgray;
-    float: left;
-}
-
-.clearBoth {
-    clear:both;
+    margin: 0px 0px 5px 0px;
 }
 
 input::-webkit-outer-spin-button,
@@ -112,6 +78,12 @@ input[type=number] {
 #chat_table tr:nth-child(odd){background-color: #e8e8e8;}
 #chat_table tr:nth-child(even){background-color: #f4f4f4;}
 
+.room-name {
+    max-width: 750px;
+    color:white;
+    font-size: 150%;
+}
+
 .chat_whisper {
     background-color: #fff3a2;
 }
@@ -120,17 +92,65 @@ input[type=number] {
     background-color: #ffffff;
 }
 
-@media screen and (max-width:1024px) {
+.dice_table_sml {
+    width: 125px;
+    background-color: #f8f9fa;
+}
+
+.dice_table_lrg {
+    width: 250px;
+    background-color: #f8f9fa;
+}
+
+.dice_table_sml tr {
+    height: 70px;
+    padding: 3px 3px;
+    margin: 10px 0px 0px 0xp;
+    border: 1px solid lightgray;
+}
+
+.dice_table_lrg tr {
+    height: 70px;
+    padding: 3px 3px;
+    margin: 10px 0px 0px 0xp;
+    border: 1px solid lightgray;
+}
+
+.dice-col-1 {
+    width: 16.66%
+    padding: 3px;
+    margin: 0px;
+}
+.dice-col-2 {
+    width: 33.33%
+    padding: 3px;
+    margin: 0px;
+}
+.dice-col-2-hidden {
+    width: 33.33%
+    padding: 3px;
+    margin: 0px;
+}
+
+.dice-box {
+    width: 750px;
+    background-color: #f8f9fa;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0;
+    margin-left: 15;
+}
+
+
+@media screen and (max-width:991px) {
     /* For Tablets */
-    .dice-container-long-hidden {
-        visibility: hidden;
-        display: none;
-        clear: both;
-    }
-    .destiny_table {
-        background-color: #f8f9fa;
+    .dice-box {
         width: 500px;
-        margin: 0px 0px 5px 0px;
+        background-color: #f8f9fa;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: 0;
+        margin-left: 15;
     }
     .big-font {
         font-size: 1.0em;
@@ -141,11 +161,36 @@ input[type=number] {
         font-size: 1.0em;
         margin: 5px 0px;
     }
-
     .med-input {
         width: 60px;
         font-size: 1.0em;
         background-color: #f8f9fa;
         border-style: none;
     }
+    .hide-small {
+        display: none;
+    }
+    .room-name {
+        max-width: 500px;
+        color:white;
+        font-size: 125%;
+    }
 }
+
+@media screen and (max-width:767px) {
+    /* For Tablets */
+    .dice-box {
+        width: 250px;
+        background-color: #f8f9fa;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: 0;
+        margin-left: 15;
+    }
+    .room-name {
+        max-width: 400px;
+        color:white;
+        font-size: 100%;
+    }
+}
+
