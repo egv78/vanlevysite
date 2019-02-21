@@ -111,8 +111,8 @@ class SW_Dice_Roll(forms.ModelForm):
     ))
     additional_triumph = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Triumphs", 'value': 0, 'required': False, 'id': "triumph",
-            'label': "Triumphs", 'class': "sml-input"
+            'max': 9, 'min': 0, 'title': "Triumph", 'value': 0, 'required': False, 'id': "triumph",
+            'label': "Triumph", 'class': "sml-input"
         }
     ))
     additional_despair = forms.IntegerField(widget=forms.NumberInput(
@@ -147,7 +147,7 @@ class SW_Dice_Roll(forms.ModelForm):
     ))
     additional_light_pips = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Light Pops", 'value': 0, 'required': False, 'id': "lightpip",
+            'max': 9, 'min': 0, 'title': "Light Pips", 'value': 0, 'required': False, 'id': "lightpip",
             'label': "Light Pips", 'class': "sml-input"
         }
     ))

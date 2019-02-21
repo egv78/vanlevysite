@@ -142,6 +142,30 @@ input[type=number] {
 }
 
 
+@media screen and (max-width:1024px) {
+    /* For Tablets */
+    .big-font {
+        font-size: 1.0em;
+        font-weight: bold;
+    }
+    .sml-input {
+        width: 30px;
+        font-size: 1.0em;
+        margin: 5px 0px;
+    }
+    .med-input {
+        width: 60px;
+        font-size: 1.0em;
+        background-color: #f8f9fa;
+        border-style: none;
+    }
+    .room-name {
+        max-width: 500px;
+        color:white;
+        font-size: 125%;
+    }
+}
+
 @media screen and (max-width:991px) {
     /* For Tablets */
     .dice-box {
