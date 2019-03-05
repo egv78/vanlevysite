@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -19,8 +20,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
-with open(os.path.join(BASE_DIR, 'vanlevysite/settings/secret_key.txt')) as f:
-    SECRET_KEY = f.read().strip()
+# Load in the sensitive info
+
+with open(os.path.join(BASE_DIR, 'vanlevysite/settings/auth.csv'), mode='r') as infile:
+    reader = csv.reader(infile)
+    auth_dict = {rows[0]:rows[1] for rows in reader}
+
+SECRET_KEY = auth_dict['secret_key']
+
+# with open(os.path.join(BASE_DIR, 'vanlevysite/settings/secret_key.txt')) as f:
+#     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
