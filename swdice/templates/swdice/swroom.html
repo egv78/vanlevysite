@@ -728,6 +728,45 @@
             {% endblock %}
         </div>
         <div class="col-md-3" style="padding:0;">
+            {% block glossary %}
+                <input type="checkbox" id="showblock">
+                <div id="slideout">
+                    <label id="slideout_tab" for="showblock" title="Dice Meanings">
+                        <i>Dice</i>
+                    </label>
+                    <div id="slideout_inner">
+                        <ul style="list-style-type:none;">
+                            <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32"> Boost</li>
+                            <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32"> Ability</li>
+                            <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32"> Proficiency</li>
+                            <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32"> Setback</li>
+                            <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32"> Difficulty</li>
+                            <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32"> Challenge</li>
+                            <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32"> Numerical</li>
+                            <li><img src="{% static 'swdice/Dice/force.png' %}" width="32"> Force</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <input type="checkbox" id="showblock2">
+                <div id="slideout2">
+                    <label id="slideout_tab2" for="showblock2" title="Result Meanings">
+                        <i>Pips </i>
+                    </label>
+                    <div id="slideout_inner2">
+                         <ul style="list-style-type:none;">
+                            <li><img src="{% static 'swdice/Results/Suc01.jpg' %}" title="Success"> Success</li>
+                            <li><img src="{% static 'swdice/Results/Fai01.jpg' %}" title="Failure"> Failure</li>
+                            <li><img src="{% static 'swdice/Results/Adv01.jpg' %}" title="Advantage"> Advantage</li>
+                            <li><img src="{% static 'swdice/Results/Thr01.jpg' %}" title="Threat"> Threat</li>
+                            <li><img src="{% static 'swdice/Results/Tri01.jpg' %}" title="Triumph"> Triumph</li>
+                            <li><img src="{% static 'swdice/Results/Des01.jpg' %}" title="Despair"> Despair</li>
+                            <li><img src="{% static 'swdice/Results/Lig01.jpg' %}" title="Triumph"> Light</li>
+                            <li><img src="{% static 'swdice/Results/Dar01.jpg' %}" title="Triumph"> Dark</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endblock %}
             {% block player_info %}
             <table style="width: 100%;">
                 <tr>
@@ -738,6 +777,7 @@
                     </td>
                     <td>
                         <span style="color:gray">You are signed in as: </span>
+                        <br>
                         <strong>{{ name_in_room }}</strong>
                     </td>
                 </tr>
@@ -745,7 +785,7 @@
                     <td>
                         {% block switch_avatar_button %}
                         <a href="{% url 'swdice:switch_avatar_room' room_number %}">
-                        <button type="button" class="btn btn-light btn-sm align-right" name="switch_avatar">
+                        <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
                             Switch Avatar
                         </button>
                         {% endblock %}
