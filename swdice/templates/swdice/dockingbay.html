@@ -5,41 +5,52 @@
     <title>Docking Bay</title>
 {% endblock %}
 
-{% block subtitle %} - Docking Bay{% endblock %}
+{% block subtitle %} Docking Bay{% endblock %}
 
 {% block body %}
 
 {% block link_dice_sw %}
 {% endblock %}
+{% load static %}
 <div class="container">
-    <br>
-    <h1>Hail, {% if user.userprofile.user_first_name %}
-        {{user.userprofile.user_first_name}}
-        {% else %}
-        {{user.username}}
-        {% endif %}
-        !
-    </h1>
-    <p>
-        This is your personal docking bay.
-    </p>
-    <p>From here, you will be able to join a room and make rooms.</p>
+    <div class="row">
+        <div class="col-md-4">
+            <br>
+            <h1>Hail, {% if user.userprofile.user_first_name %}
+                {{user.userprofile.user_first_name}}!
+                {% else %}
+                {{user.username}}!
+                {% endif %}
+            </h1>
+            <p>
+                This is your personal docking bay.
+                From here, you will be able to join make rooms that use FFG's Edge of the Empire dice.
+            </p>
+        </div>
+        <div class="col-md-8">
+            <br>
+            <img src="{% static '/swdice/DockingBay.png' %}" alt="Docking Bay Banner" width="100%">
+            <p></p>
+        </div>
+    </div>
 
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-md-8">
+                <hr>
                 <h4>
                     {% if my_rooms_list %}
-                        Rooms I've been in:
+                        Rooms you've been in: <p></p>
                     {% else %}
                         You have not yet entered a room.
                     {% endif %}
                 </h4>
                 {% if my_rooms_list %}
-                <table>
+                <table id="star_wars_table">
                     <col width="10%">
-                    <col width="60%">
-                    <col width="25%">
+                    <col width="45%">
+                    <col width="20%">
+                    <col width="20%">
                     <col width="5%">
                     <tr>
                         <td>
@@ -52,6 +63,9 @@
                             <strong>Avatar</strong>
                         </td>
                         <td>
+                            <strong>GM</strong>
+                        </td>
+                        <td>
                             <strong>Open?</strong>
                         </td>
                     </tr>
@@ -60,11 +74,16 @@
                         <td>
                             {{ room.id }}
                         </td>
-                        <td>
-                            <a href="{% url 'swdice:swroom' room.id %}">{{ room.name }}</a>
+                        <td class="room_name_table">
+                            <div>
+                                <a href="{% url 'swdice:swroom' room.id %}">{{ room.name }}</a>
+                            </div>
                         </td>
                         <td>
                             {{ my_avatars_list|get_item:room.id }}
+                        </td>
+                        <td>
+                            {{ gms_list|get_item:room.id }}
                         </td>
                         <td>
                             {% if room.open_to_all %}
@@ -77,13 +96,19 @@
                 {% else %}
                     Once you've been in a room, this will be a list of direct links to get back in.
                 {% endif %}
-
             </div>
-            <div class="col">
+            <div class="col-md-4">
+                <hr>
+                <h4>Make a new room
+                <a href="{% url 'swdice:makeroom' %}">
+                    <button type="button" class="btn btn-outline-primary">
+                    <strong>&#12299</strong>
+                    </button>
+                </a>
+                </h4>
+                <hr>
                 <h4>Enter a room using passcode</h4>
-                <p><strong>-or change your avatar-</strong></p>
-                <p>To change your avatar, type the Room ID and select your Avatar from the drop-down.
-                    You do not need to re-enter the passcode.</p>
+                <p></p>
                 <form method="post"  autocomplete="off">
                     {% csrf_token %}
                     <table>
@@ -119,9 +144,6 @@
 
                     </table>
                 </form>
-                <hr>
-                <h4>Make a room</h4>
-                <a href="{% url 'swdice:makeroom' %}">Make a Room</a>
             </div>
         </div>
     </div>

@@ -84,6 +84,13 @@ input[type=number] {
     font-size: 150%;
 }
 
+.room_name_table div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#star_wars_table tr:nth-child(odd){background-color: #f9f9f9;}
+
 .chat_whisper {
     background-color: #fff3a2;
 }

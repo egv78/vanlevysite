@@ -5,6 +5,11 @@
     <title>Edit Profile</title>
 {% endblock %}
 
+{% block accounts_page %}
+    {% load static %}
+    <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile" height="32" width="32">
+    <span style="color: white;">Edit Profile</span>
+{% endblock %}
 
 {% block navbar_Rooms_button %}
 {% endblock %}

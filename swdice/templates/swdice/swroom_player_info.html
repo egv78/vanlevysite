@@ -6,10 +6,21 @@
 {% endblock %}
 
 {% block brand %}
-<span class="d-inline-block text-truncate" style="max-width: 650px; color:white; font-size: 150%;">
+{% load static %}
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+        <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+    </a>
+<span class="d-inline-block text-truncate" style="max-width: 650px; color:white; font-size: 150%; margin-right: 10px;">
     {{room.name}}
 </span>
-<span class="d-inline-block" style="color:white; font-size: 150%;">; Player Info Page</span>
+<a class="navbar-brand" style="color:white;" href="{% url 'swdice:dockingbay' %}">
+    <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+    {% block subtitle %}{% endblock %}
+</a>
+<span class="d-inline-block" style="color:white; font-size: 150%;"> Player Info Page</span>
+{% endblock %}
+
+{% block other_navbar_right %}
 {% endblock %}
 
 {% load static %}

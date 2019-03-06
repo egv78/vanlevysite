@@ -10,12 +10,35 @@
 {% endblock %}
 
 {% block brand %}
-<a href="{% url 'swdice:swroom_info' room_number %}">
-<span class="d-inline-block text-truncate room-name" >
-    {{room.name}}
-</span>
-</a>
+    {% load static %}
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+        <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+    </a>
+
+    <a class="navbar-brand">
+        <span class="d-inline-block text-truncate room-name" >
+            {{room.name}}
+        </span>
+    </a>
+
+    <a class="navbar-brand" style="color:white;" href="{% url 'swdice:dockingbay' %}">
+        <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+        {% block subtitle %}{% endblock %}
+    </a>
 {% endblock %}
+
+{% block other_navbar_right %}
+<a href="{% url 'swdice:swroom_info' room_number %}">
+    <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
+    {% block info_label %}
+        <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
+            Info
+        </span>
+    {% endblock %}
+</a>
+<!--<span style="color: white;">Info </span>-->
+{% endblock %}
+
 
 {% block navbar_space_part_2 %}
 <!--exclude space-->
@@ -27,7 +50,7 @@
 <div class="container-fluid">
 <br>
     <div class="row">
-        <div class="col-9">
+        <div class="col-md-9">
             {% block room_header %}
             {% endblock %}
             {% block user_table %}
@@ -704,7 +727,7 @@
             </div>
             {% endblock %}
         </div>
-        <div class="col-3" style="padding:0;">
+        <div class="col-md-3" style="padding:0;">
             {% block player_info %}
             <table style="width: 100%;">
                 <tr>

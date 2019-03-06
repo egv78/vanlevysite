@@ -5,12 +5,20 @@
     <title>Create Avatar</title>
 {% endblock %}
 
+{% block accounts_page %}
+    {% load static %}
+    <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
+    <span style="color: white;">New Avatar</span>
+{% endblock %}
 
 {% block navbar_Rooms_button %}
 {% endblock %}
 
 
 {% block body %}
+{% block new_avatar %} <!-- remove link in dropdown -->
+{% endblock %}
+
 <br>
 <div class="container">
     <div class="container">

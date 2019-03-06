@@ -26,7 +26,12 @@
         {% endblock %}
 
         {% block brand %}
-            <a class="navbar-brand" href="{% url 'vanlevy:home' %}"><h4>Van Levy</h4></a>
+            <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+                <h3><img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+                    Van Levy
+                </h3>
+            </a>
+            <!-- <h4>Van Levy</h4> -->
         {% endblock %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,17 +43,99 @@
                 <!--this ul needs to be here for some reason-->
                 </ul>
             {% block navbar_buttons %}
-                <ul class="navbar-nav navbar-right">
-                   {% block navbar_VanLevy_Links %}
+                {% block navbar_VanLevy_Links %}
+                    {% block other_navbar_right %}
+                    {% endblock %}
+                    <ul class="navbar-nav navbar-right">
+                       <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{% static '/vanlevy/ProfileOnly_32.png' %}" alt="Profile Options"
+                                                     height="32" width="32">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                {% block account_status %}
+                                    <a class="dropdown-item">
+                                    {% if user.is_authenticated %}
+                                        Logged in as <strong>{{user.username}}</strong>.
+                                    {% else %}
+                                        You are not logged in.
+                                    {% endif %}
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                {% endblock %}
+
+                                {% block link_account %}
+                                    {% if user.is_authenticated %}
+                                    <a class="dropdown-item" href="{% url 'accounts:view_profile' %}">
+                                        <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile Icon"
+                                             height="32" width="32">
+                                        Profile/Avatars
+                                        </a>
+                                    {% else %}
+                                    <a class="dropdown-item" href="{% url 'accounts:login' %}">Login</a>
+                                    {% endif %}
+                                {% endblock %}
+
+                                {% block new_avatar %}
+                                    {% if user.is_authenticated %}
+                                    <a class="dropdown-item" href="{% url 'accounts:create_avatar' %}">
+                                        New Avatar
+                                        <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar Icon"
+                                             height="32" width="32">
+                                        </a>
+                                    {% endif %}
+                                {% endblock %}
+
+                                {% block link_logout %}
+                                    {% if user.is_authenticated %}
+                                    <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                                        <img src="{% static '/vanlevy/Logout_32.png' %}" alt="Logout Icon"
+                                             height="32" width="32">
+                                        Logout
+                                    </a>
+                                    {% else %}
+                                    <a class="dropdown-item" href="{% url 'accounts:register' %}">Register</a>
+                                    {% endif %}
+                                {% endblock %}
+                            </div>
+                        </li>
+                    </ul>
+                {% endblock %}
+
+                {% block navbar_Dice_Rollers %}
+                    <ul class="navbar-nav navbar-right">
                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Navigate
+                            <img src="{% static '/vanlevy/Compass_32.png' %}" alt="Navigate"
+                                                 height="32" width="32">
+                                <!--Navigate-->
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
+                                {% block portals %}
+                                    <a class="dropdown-item">
+                                    {% if user.is_authenticated %}
+                                    <a class="dropdown-item">
+                                        <span style="text-decoration: line-through;">Portals Page</span>
+                                        <img src="{% static '/vanlevy/Doors_32.png' %}" alt="SW Dice Roller"
+                                             height="32" width="32">
+                                    </a>
+                                    {% else %}
+                                        You are not logged in.
+                                    {% endif %}
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                {% endblock %}
+
                                 {% block link_dice_sw %}
                                     {% if user.is_authenticated %}
-                                    <a class="dropdown-item" href="{% url 'swdice:dockingbay' %}">Docking Bay (SW)</a>
+                                    <a class="dropdown-item" href="{% url 'swdice:dockingbay' %}">
+                                        <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller"
+                                             height="32" width="32">
+                                        Docking Bay
+                                    </a>
                                     {% else %}
                                     <a class="dropdown-item" href="{% url 'swdice:about' %}">Dice Roller (SW)</a>
                                     {% endif %}
@@ -56,8 +143,11 @@
 
                                 {% block link_dice_gen %}
                                     {% if user.is_authenticated %}
-                                    <a class="dropdown-item" href="#"><span style="text-decoration: line-through;">
-                                        Confluence (Gen)</span></a>
+                                    <a class="dropdown-item" href="#">
+                                        <span style="text-decoration: line-through;">Confluence</span>
+                                        <img src="{% static '/vanlevy/Genesys_32.png' %}" alt="Genesys Icon"
+                                                 height="32" width="32">
+                                    </a>
                                     {% else %}
                                     <a class="dropdown-item" href="#"><span style="text-decoration: line-through;">
                                         Dice Roller (Gen</span></a>
@@ -66,46 +156,23 @@
 
                                 {% block link_dice_myz %}
                                     {% if user.is_authenticated %}
-                                    <a class="dropdown-item" href="#"><span style="text-decoration: line-through;">
-                                        The Zone (MYZ)</span></a>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="{% static '/vanlevy/MutantYearZero_32.png' %}"
+                                             alt="Mutant Year Zero Icon" height="32" width="32">
+                                        <span style="text-decoration: line-through;">
+                                        The Zone</span></a>
                                     {% else %}
                                     <a class="dropdown-item" href="#"><span style="text-decoration: line-through;">
                                         Dice Roller (MYZ)</span></a>
                                     {% endif %}
                                 {% endblock %}
-
-                                <div class="dropdown-divider"></div>
-
-                                {% block vanlevy %}
-                                    <a class="dropdown-item" href="{% url 'vanlevy:blank' %}">Van Levy Home</a>
-                                {% endblock %}
-
-                                {% block link_account %}
-                                    {% if user.is_authenticated %}
-                                    <a class="dropdown-item" href="{% url 'accounts:view_profile' %}">Profile</a>
-                                    {% else %}
-                                    <a class="dropdown-item" href="{% url 'accounts:login' %}">Login</a>
-                                    {% endif %}
-                                {% endblock %}
-
-                                {% block link_logout %}
-                                    {% if user.is_authenticated %}
-                                    <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
-                                    {% else %}
-                                    <a class="dropdown-item" href="{% url 'accounts:register' %}">Register</a>
-                                    {% endif %}
-                                {% endblock %}
                             </div>
                         </li>
-                </ul>
+                    </ul>
+                {% endblock %}
 
-                   {% endblock %}
-
-                   {% block navbar_Profile_Button %}
-                   {% endblock %}
-
-              {% endblock %}
-
+            {% endblock %}
+            </div>
         {% block navbar_end %}
         </nav>
         {% endblock %}

@@ -5,6 +5,18 @@
 {% endblock %}
 
 {% block brand %}
-    <a class="navbar-brand" href="{% url 'accounts:about' %}"><h4>Accounts</h4></a>
+    {% load static %}
+        <h4>
+            <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+                <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+                Van Levy
+            </a>
+            <a class="navbar-brand">
+            {% block accounts_page %}
+                <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile Icon" height="32" width="32">
+                <span style="color: white;">Accounts</span>
+            {% endblock %}
+            </a>
+        </h4>
 {% endblock %}
 

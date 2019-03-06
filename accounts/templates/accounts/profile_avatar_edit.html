@@ -5,6 +5,11 @@
     <title>Edit Avatar</title>
 {% endblock %}
 
+{% block accounts_page %}
+    {% load static %}
+    <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
+    <span style="color: white;">Edit Avatar</span>
+{% endblock %}
 
 {% block navbar_Rooms_button %}
 {% endblock %}

@@ -12,6 +12,12 @@
 <!--include navbar_Rooms_button-->
 {% block link_account %}<!--exclude navbar link to profile-->{% endblock %}
 
+{% block accounts_page %}
+    {% load static %}
+    <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile" height="32" width="32">
+    <span style="color: white;">Profile / Avatars</span>
+{% endblock %}
+
 {% block body %}
 <style>
     #avatar {display: inline-block}
@@ -47,11 +53,11 @@
                     <p><strong>No image uploaded</strong></p>
                 {% endif %}
                 <a href="{% url 'accounts:edit_profile' %}"><button type="button" class="btn btn-outline-primary">
-                    Edit Profile
+                    Edit Profile <strong>&#12299</strong>
                 </button></a>
                 <p></p>
                 <a href="{% url 'accounts:password' %}"><button type="button" class="btn btn-outline-secondary">
-                    Change Password
+                    Change Password <strong>&#12299</strong>
                 </button></a>
 
             </div>
@@ -60,7 +66,7 @@
                 <h1 id="avatar">Avatars</h1>
                 <a href="{% url 'accounts:create_avatar' %}">
                     <button type="button" class="btn btn-primary align-right">
-                        Create a new Avatar
+                        Create a new Avatar <strong>&#12299</strong>
                     </button></a>
                 {% if has_avatars %}
                     {% for avatar in my_avatars_list %}
@@ -72,7 +78,7 @@
                             <p>{{ avatar.avatar_description }}</p>
                             <a href="{% url 'accounts:edit_avatar' avatar.id %}">
                                 <button type="button" class="btn btn-outline-primary btn-sm">
-                                    Edit {{ avatar.avatar_name }}
+                                    Edit {{ avatar.avatar_name }} <strong>&#12299</strong>
                                 </button>
                             </a>
                             <!---->

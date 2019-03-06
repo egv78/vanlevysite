@@ -256,9 +256,22 @@ class DockingBay(FormMixin, TemplateView):
             '-admitted')
         my_rooms_list = []
         my_avatars_list = {}
+        gms_list = {}
 
         for room in my_rooms_to_user_list:
             my_rooms_list += SWRoom.objects.filter(pk=room.room_id_id)
+            if room.game_master:
+                gms_list[room.room_id_id] = "you"
+            else:
+                print(room.room_id_id)
+                gm_rooms = SWRoomToUser.objects.filter(room_id=room.room_id, game_master=True)
+                print(gm_rooms)
+                if gm_rooms:
+                    gm_id = gm_rooms[0].user_id
+                    gm_name = gm_id.username
+                    gms_list[room.room_id_id] = gm_name
+                else:
+                    gms_list[room.room_id_id] = "no one"
             if room.default_avatar_is_user == 1:
                 my_avatars_list[room.room_id_id] = avatars[0]
             else:
@@ -272,7 +285,7 @@ class DockingBay(FormMixin, TemplateView):
         form = Enter_SW_Room(**kwargs)
         my_avatar_objects = Avatar.objects.filter(user_id=self.request.user.id, deleted=0)
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id,
-                'my_avatar_objects': my_avatar_objects}
+                'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list}
         # print(my_avatars_list)
         return render(request, self.template_name, args)
 
