@@ -263,9 +263,7 @@ class DockingBay(FormMixin, TemplateView):
             if room.game_master:
                 gms_list[room.room_id_id] = "you"
             else:
-                print(room.room_id_id)
                 gm_rooms = SWRoomToUser.objects.filter(room_id=room.room_id, game_master=True)
-                print(gm_rooms)
                 if gm_rooms:
                     gm_id = gm_rooms[0].user_id
                     gm_name = gm_id.username
