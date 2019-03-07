@@ -126,6 +126,12 @@ def save_dice_pool(user, avatar, room, image_url, caption_text="",
     new_dice_pool.save()
 
 
+class UpdateTimes:
+    def __init__(self, action_time, chat_time):
+        self.action = action_time
+        self.chat = chat_time
+
+
 def change_destiny(user, avatar, room, image_url, caption="", delta_light=0, delta_dark=0):
     destiny = SWRoomDestiny.objects.get(room_id_id=room)
     light_pips = destiny.light_pips
@@ -664,11 +670,13 @@ class SWRoomViews(FormMixin, TemplateView):
                 #     print('{} => {}'.format(key, value))
                 dice_form = SW_Dice_Roll(initial_args)
 
+                update_times = UpdateTimes(last_action_time, last_chat_time)
+
                 args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                         'room_number': swroom_id, 'chat_log': chat_log, 'chat_form': chat_form, 'destiny': room_destiny,
                         'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
                         'dice_form': dice_form, 'users_in_room': room_users_link_list,
-                        'last_action_time': last_action_time, 'last_chat_time': last_chat_time}
+                        'update_times': update_times}
 
             elif viewing_player_info:
                 chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
