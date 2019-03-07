@@ -32,3 +32,5 @@ app 3: swdice
     dice selector section
     three auto-reloading section: destiny, actions, chat
     
+style:
+  buttons used as links should include either a preceeding '& # 12298' ( &#12298 ) or trailing '& # 12299' ( &#12299 )
