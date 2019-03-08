@@ -5,7 +5,7 @@ from vanlevysite.settings.base import *
 DEBUG = False
 
 # change ALLOWED_HOSTS on launch
-ALLOWED_HOSTS = ['35.175.243.191']
+ALLOWED_HOSTS = ['35.175.243.191', 'www.vanlevy.com', 'vanlevy.com']
 
 # local settings
 try:
