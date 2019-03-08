@@ -2,6 +2,7 @@
 
 {% block head %}
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <title>SW Room</title>
 {% endblock %}
 
@@ -1027,7 +1028,7 @@ $(function () {
     }
     function update_times() {
         var url_action_time = document.URL + ' #last_times';
-        $('#actionTime').load(url_action_time, function () {
+        $('#last_times').load(url_action_time, function () {
             // When it loads, schedule the next request for 1s later
             setTimeout(update_times, 2000)
         });
