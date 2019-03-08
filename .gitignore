@@ -32,3 +32,5 @@ vanlevysite/media/avatar_image/tamoq_gVLqV0b.jpg
 vanlevysite/settings/__pycache__/
 vanlevysite/settings/alpha.py
 vanlevysite/static/
+/db.sqlite3
+vanlevysite/settings/auth.csv
