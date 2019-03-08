@@ -148,9 +148,6 @@ input[type=number] {
     margin-left: 15;
 }
 
-.show-xs {
-    display: none;
-}
 
 @media screen and (max-width:1024px) {
     /* For Tablets */
@@ -222,12 +219,9 @@ input[type=number] {
         margin-left: 15;
     }
     .room-name {
-        max-width: 260px;
+        max-width: 400px;
         color:white;
         font-size: 100%;
-    }
-    .show-xs {
-        display: inline;
     }
 }
 
