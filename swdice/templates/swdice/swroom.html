@@ -796,6 +796,7 @@
             </table>
             {% endblock %}
             {% block chat_header %}
+            <hr>
             <h5>Chat</h5>
             {% endblock %}
             {% block chat_input %}
@@ -807,8 +808,12 @@
                 <button type="submit" name="chat" class="btn btn-outline-dark btn-sm" id="chat_submit">
                     Add Chat
                 </button>
+                <span style="font-size: 10pt">
+                    <br>You have <b><span id=myCounter>255</span></b> characters remaining in chat.
+                </span>
             </form>
             </div>
+            <hr>
             {% endblock %}
             {% block chat_log %}
             <div class="container-fluid" id="chat_log" style="padding:0">
@@ -997,6 +1002,34 @@ myThirdForm.submit(function(){
     });
 });
 </script>
+
+<script>
+    var maxL=255;
+    var bName = navigator.appName;
+    function taLimit(taObj) {
+	    if (taObj.value.length==maxL) return false;
+	    return true;
+    }
+
+    function taCount(taObj,Cnt) {
+        objCnt=createObject(Cnt);
+        objVal=taObj.value;
+        if (objVal.length>maxL) objVal=objVal.substring(0,maxL);
+        if (objCnt) {
+            if(bName == "Netscape"){
+                objCnt.textContent=maxL-objVal.length;}
+            else{objCnt.innerText=maxL-objVal.length;}
+        }
+        return true;
+    }
+    function createObject(objId) {
+        if (document.getElementById) return document.getElementById(objId);
+        else if (document.layers) return eval("document." + objId);
+        else if (document.all) return eval("document.all." + objId);
+        else return eval("document." + objId);
+    }
+</script>
+
 <script>
 $(function () {
     function refresh_action_log(){

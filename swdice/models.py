@@ -56,7 +56,7 @@ class SWRoomDestiny(models.Model):
 
 class SWRoomChat(models.Model):
     room_id = models.ForeignKey(SWRoom, on_delete=models.CASCADE)
-    chat_text = models.CharField(max_length=200, blank=True, null=True)
+    chat_text = models.CharField(max_length=256, blank=True, null=True)
     user = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
     avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, default="", blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)

@@ -35,10 +35,12 @@ class SW_Room_to_User_Form(forms.ModelForm):
 
 
 class SW_Room_Chat_Form(forms.ModelForm):
-    recipient = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'onchange': "highlightChat();"}))
+    recipient = forms.ChoiceField(choices=[], widget=forms.Select(
+        attrs={'onchange': "highlightChat();", 'onKeyPress': "return taLimit(this)",
+               'onKeyUp': "return taCount(this, 'myCounter')"}))
     chat_text = forms.CharField(widget=forms.Textarea(
         attrs={
-            'id': "chat_text", 'rows': 2, 'width': "50%"
+            'id': "chat_text", 'rows': 3, 'width': "50%", 'maxlength': "255"
         }
     ))
 
