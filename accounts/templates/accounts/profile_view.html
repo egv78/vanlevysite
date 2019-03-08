@@ -31,16 +31,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-md">
                 <p><strong>Username:</strong> {{user}}</p>
             </div>
-            <div class="col">
+            <div class="col"-md>
                 <p><strong>Email:</strong> {{user.email}}</p>
             </div>
         </div>
         <hr>
         <div class="row">
-            <div class="col">
+            <div class="col-sm">
                 <!-- One of two columns -->
                 <h1>Profile</h1>
                 <p><strong>First Name:</strong> {{user.userprofile.user_first_name}}</p>
@@ -59,15 +59,17 @@
                 <a href="{% url 'accounts:password' %}"><button type="button" class="btn btn-outline-secondary">
                     Change Password <strong>&#12299</strong>
                 </button></a>
-
+                <span class="show-md"><p><br></p></span>
             </div>
-            <div class="col">
+            <div class="col-sm">
                 <!-- Two of two columns -->
                 <h1 id="avatar">Avatars</h1>
                 <a href="{% url 'accounts:create_avatar' %}">
                     <button type="button" class="btn btn-primary align-right">
                         Create a new Avatar <strong>&#12299</strong>
                     </button></a>
+
+                <span class="show-md"><p><br></p></span>
                 {% if has_avatars %}
                     {% for avatar in my_avatars_list %}
                         <hr>
