@@ -137,7 +137,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'), )
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'vanlevysite/media/')
 
-LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGIN_REDIRECT_URL = '/portal/'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REQUIRED_URL = '/accounts/login_required/'
@@ -146,7 +146,7 @@ LOGIN_EXEMPT_URLS = (
     # Admin login pages
     '/admin/',
     '/admin/login/'
-    # VanLevy pages - all
+    # VanLevy pages - all but Portal
     '',
     '/',
     '/about/',
@@ -154,6 +154,7 @@ LOGIN_EXEMPT_URLS = (
     '/home/',
     '/resources/',
     '/dice-rollers/',
+    '/terms/',
     # Accounts pages - About and necessary to login/logout, register, reset password
     # Accounts login is handled explicitly in middleware
     LOGIN_REQUIRED_URL,

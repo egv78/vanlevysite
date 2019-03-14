@@ -12,6 +12,8 @@ urlpatterns = [
     path('resources/', views.vl_resources_view, name='resources'),
     path('cool-stuff/', views.vl_cool_stuff_view, name='cool_stuff'),
     path('dice-rollers/', views.vl_dice_rollers_view, name='dice_rollers'),
+    path('portal/', views.personal_portal, name='portal'),
+    path('terms/', views.vl_terms_view, name='terms'),
 
 ]
 

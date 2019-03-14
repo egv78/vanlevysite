@@ -25,19 +25,220 @@
 {% endblock %}
 <div class="container">
     <p></p>
-    <h2>About the SW Dice Roller</h2>
+    <h4>About the SW Dice Roller</h4>
     <p>
-        Words here about SW Dice Roller.
+        The Star Wars Dice Roller is designed to be used in conjunction with
+        <a href="https://www.fantasyflightgames.com/en/index/">Fantasy Flight Games'</a> Star Wars Role Playing Game.
+        This website is <em>not</em> made with any input or coordination from Fantasy Flights,
+        which still holds the copyright to all of their original content.
     </p>
-    <p>
-        Possible ideas:
-    </p>
-    <ul>
-        <li>amazon affiliate links</li>
-        <li>pdf for character sheets</li>
-        <li>pdf for vehicle sheets</li>
-        <li>SW Specific resources? (risks overlapping with cool stuff; make based on category?)</li>
-    </ul>
-
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                    data-target="#CoreRuleBooks" aria-expanded="false" aria-controls="CoreRuleBooks">
+                Core Rulebooks
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                    data-target="#DiceTypesInfo" aria-expanded="false" aria-controls="ImageGlossary">
+                Image Glossary
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container-fluid">
+            <div class="collapse" id="CoreRuleBooks">
+                <br>
+                <div class="card border-info mb-3" style="max-width: 100%;">
+                <div class="card card-body">
+                    <h6 class="card-title">Core Rule Books (CRBs)</h6>
+                    <ul>
+                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire/">
+                                Edge of the Empire</a>
+                             - Focuses on Smugglers, Bounty Hunters, Bantha Fodder, and Nerf Herders.
+                        </li>
+                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny/">
+                                Force and Destiny</a>
+                             - Jedis are the centerpiece of this CRB.  Force powers galore.
+                        </li>
+                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-age-of-rebellion/">
+                            Age of Rebellion</a>
+                            - You know all those pilots and fighters that get killed in the movies?
+                            Be one of them (and maybe <em>not</em> die)!
+                        </li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+            <div class="collapse" id="DiceTypesInfo">
+                <br>
+                <div class="card border-info mb-3">
+                    <div class="card-group">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Dice Types</h6>
+                                <p style="font-size:0.83em">
+                                    In the <strong>Star Wars Dice Roller</strong>, the dice are mostly non-numerical.
+                                    (There is one numerical die interface; it defaults to a D100.) Broadly speaking,
+                                    the Boost, Ability, and Proficiency dice represent the likelihood of success, while the
+                                    Setback, Difficulty, and Challenge dice represent the likelihood of failure.
+                                    A typical dice pool will use some from each category.
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-info">
+                                <div class="row">
+                                    <div class="col">
+                                        <ul style="list-style-type:none;">
+                                            <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" height="32">
+                                                Boost</li>
+                                            <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" height="32">
+                                                Ability</li>
+                                            <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" height="32">
+                                                Proficiency</li>
+                                            <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" height="32">
+                                                Force</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col">
+                                        <ul style="list-style-type:none;">
+                                            <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" height="32">
+                                                Setback</li>
+                                            <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" height="32">
+                                                Difficulty</li>
+                                            <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" height="32">
+                                                Challenge</li>
+                                            <li><img src="{% static 'swdice/Dice/D100.png' %}"
+                                                     style="margin-left: -32px;" width="64" height="32">
+                                                Numerical</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Pips</h6>
+                                <p style="font-size:0.83em">
+                                    Each face of a <strong>Star Wars Die</strong> has 0, 1, or 2 pips.
+                                    Success, Advantage, and Triumph are good results for the roller.
+                                    Failure, Threat, and Despair are bad results for the roller.
+                                    Light and Dark pips have their own set of rules.
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-info">
+                                <div class="row">
+                                    <div class="col">
+                                        <ul style="list-style-type:none;">
+                                            <li><img src="{% static 'swdice/Results/Suc01.jpg' %}"
+                                                     width="32" height="32" title="Success">
+                                                Success</li>
+                                            <li><img src="{% static 'swdice/Results/Adv01.jpg' %}"
+                                                     width="32" height="32" title="Advantage">
+                                                Advantage</li>
+                                            <li><img src="{% static 'swdice/Results/Tri01.jpg' %}"
+                                                     width="32" height="32" title="Triumph">
+                                                Triumph</li>
+                                            <li><img src="{% static 'swdice/Results/Lig01.jpg' %}"
+                                                     width="32" height="32" title="Triumph">
+                                                Light</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col">
+                                        <ul style="list-style-type:none;">
+                                            <li><img src="{% static 'swdice/Results/Fai01.jpg' %}"
+                                                     width="32" height="32" title="Failure">
+                                                Failure</li>
+                                            <li><img src="{% static 'swdice/Results/Thr01.jpg' %}"
+                                                     width="32" height="32" title="Threat">
+                                                Threat</li>
+                                            <li><img src="{% static 'swdice/Results/Des01.jpg' %}"
+                                                     width="32" height="32" title="Despair">
+                                                Despair</li>
+                                            <li><img src="{% static 'swdice/Results/Dar01.jpg' %}"
+                                                     width="32" height="32" title="Triumph">
+                                                Dark</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p><br></p>
+    <!--<div class="row">-->
+        <div class="card-group">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Success and Failure</h5>
+                <p class="card-text">
+                Success
+                <img src="{% static 'swdice/Results/Suc01.jpg' %}" width="20" height="20" title="Success">
+                pips and Failure
+                <img src="{% static 'swdice/Results/Fai01.jpg' %}" width="20" height="20" title="Failure">
+                pips cancel each other.  In order to succeed in a roll, the results must have
+                one more Success pip than Failure pips.  A roll with no uncancelled success pips is a failure.
+                </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Advantage and Threat</h5>
+                <p class="card-text">
+                Advantage
+                <img src="{% static 'swdice/Results/Adv01.jpg' %}" width="20" height="20" title="Advantage">
+                pips and Threat
+                <img src="{% static 'swdice/Results/Thr01.jpg' %}" width="20" height="20" title="Threat">
+                pips cancel each other.
+                It is possible to succeed on a roll, but with threat, just as it is possible to fail with advantage.
+                See the Core Rulebooks for how these results play out narratively.
+                </p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Triumph and Failure</h5>
+                <p class="card-text">
+                Triumph
+                <img src="{% static 'swdice/Results/Tri01.jpg' %}" width="20" height="20" title="Triumph">
+                pips and Despair
+                <img src="{% static 'swdice/Results/Des01.jpg' %}" width="20" height="20" title="Despair">
+                pips <strong>do not</strong> cancel each other.
+                The effects of a Triumph can be compared to a "critical hit" that you may have seen in another system.
+                Likewise, a Despair can be thought of as a "critical failure".
+                In addition to these effects, each Triumph "includes" a Success, and each Despair "includes" a failure.
+                These additional pips are accounted for by the dice roller.
+                </p>
+            </div>
+        </div>
+    <!--</div>-->
+    <div class="card-group">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Force Pips</h5>
+                <p class="card-text">
+                Light side
+                <img src="{% static 'swdice/Results/Lig01.jpg' %}" width="20" height="20" title="Light">
+                force pips and Dark side
+                <img src="{% static 'swdice/Results/Dar01.jpg' %}" width="20" height="20" title="Dark">
+                force pips <em>do not</em> cancel each other.  They have their own unique rules for use.
+                Please see one of the Core Rulebooks for how they are used.
+                </p>
+            </div>
+          </div>
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Numerical Dice</h5>
+                <p class="card-text">
+                In the Star Wars Role Playing Games, the Numerical dice tend to only be used in the determination of
+                critical injuries to characters or ships.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

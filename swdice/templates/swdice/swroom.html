@@ -736,6 +736,7 @@
                         <i>Dice</i>
                     </label>
                     <div id="slideout_inner">
+                        <p style="color: black; margin-left: 45px;">Glossary</p>
                         <ul style="list-style-type:none;">
                             <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32"> Boost</li>
                             <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32"> Ability</li>
@@ -755,6 +756,7 @@
                         <i>Pips </i>
                     </label>
                     <div id="slideout_inner2">
+                        <p style="color: white; margin-left: 45px;">Glossary</p>
                          <ul style="list-style-type:none;">
                             <li><img src="{% static 'swdice/Results/Suc01.jpg' %}" title="Success"> Success</li>
                             <li><img src="{% static 'swdice/Results/Fai01.jpg' %}" title="Failure"> Failure</li>
@@ -808,12 +810,11 @@
                 <button type="submit" name="chat" class="btn btn-outline-dark btn-sm" id="chat_submit">
                     Add Chat
                 </button>
-                <span style="font-size: 10pt">
-                    <br>You have <b><span id=myCounter>255</span></b> characters remaining in chat.
-                </span>
+                <!--<span style="font-size: 10pt">-->
+                    <!--<br>You have <b><span id=myCounter>255</span></b> characters remaining in chat.-->
+                <!--</span>-->
             </form>
             </div>
-            <hr>
             {% endblock %}
             {% block chat_log %}
             <div class="container-fluid" id="chat_log" style="padding:0">

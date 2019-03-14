@@ -7,7 +7,7 @@
 
 {% block accounts_page %}
     {% load static %}
-    <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile" height="32" width="32">
+    <img src="{% static '/vanlevy/Profile_32.png' %}" alt="Profile" height="32" width="32">
     <span style="color: white;">Edit Profile</span>
 {% endblock %}
 
@@ -38,11 +38,15 @@
                             <td>{{profile_form.user_last_name}} </td>
                         </tr>
                         <tr>
-                            <td class="align-right"><strong>Bio:</strong></td>
+                            <td class="align-right"><strong>Location:</strong></td>
+                            <td><em>coming soon</em></td>
+                        </tr>
+                        <tr>
+                            <td class="align-right"><strong>About Me:</strong></td>
                             <td>{{profile_form.user_bio}} </td>
                         </tr>
                         <tr>
-                            <td class="align-right"><strong>Description:</strong></td>
+                            <td class="align-right"><strong>Gaming Interests:</strong></td>
                             <td>{{profile_form.user_description}} </td>
                         </tr>
                         <tr>

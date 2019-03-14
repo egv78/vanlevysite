@@ -9,7 +9,6 @@
 {% block Title_link_not_auth %}{% url 'accounts:about' %}{% endblock %}
 {% block Title %}Accounts{% endblock %}
 
-<!--include navbar_Rooms_button-->
 {% block link_account %}<!--exclude navbar link to profile-->{% endblock %}
 
 {% block accounts_page %}
@@ -19,95 +18,141 @@
 {% endblock %}
 
 {% block body %}
-<style>
-    #avatar {display: inline-block}
-</style>
 <br>
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h3>Login Info:</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md">
-                <p><strong>Username:</strong> {{user}}</p>
-            </div>
-            <div class="col"-md>
-                <p><strong>Email:</strong> {{user.email}}</p>
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-sm">
-                <!-- One of two columns -->
-                <h1>Profile</h1>
-                <p><strong>First Name:</strong> {{user.userprofile.user_first_name}}</p>
-                <p><strong>Last Name:</strong> {{user.userprofile.user_last_name}}</p>
-                <p><strong>Bio:</strong> {{ user.userprofile.user_bio }}</p>
-                <p><strong>Description:</strong> {{user.userprofile.user_description}}</p>
-                {% if user.userprofile.user_url_image %}
-                    <p><img src="{{ user.userprofile.user_url_image }}" width="240"></p>
+    <div class="row">
+        <div class="col-md-6 col-lg-8">
+            <div class="card border-dark mb-3">
+                <h4 class="card-header">
+                    <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+                    {{user}}
+                    <a href="{% url 'accounts:edit_profile' %}">
+    {% if user.userprofile.user_first_name and user.userprofile.user_last_name and user.userprofile.user_url_image %}
+                        <button type="button" class="btn btn-outline-primary btn-sm align-right">
                 {% else %}
-                    <p><strong>No image uploaded</strong></p>
+                        <button type="button" class="btn btn-primary btn-sm align-right">
                 {% endif %}
-                <a href="{% url 'accounts:edit_profile' %}"><button type="button" class="btn btn-outline-primary">
-                    Edit Profile <strong>&#12299</strong>
-                </button></a>
-                <p></p>
-                <a href="{% url 'accounts:password' %}"><button type="button" class="btn btn-outline-secondary">
-                    Change Password <strong>&#12299</strong>
-                </button></a>
-                <span class="show-md"><p><br></p></span>
-            </div>
-            <div class="col-sm">
-                <!-- Two of two columns -->
-                <h1 id="avatar">Avatars</h1>
-                <a href="{% url 'accounts:create_avatar' %}">
-                    <button type="button" class="btn btn-primary align-right">
-                        Create a new Avatar <strong>&#12299</strong>
-                    </button></a>
+                            Edit Profile <strong>&#12299</strong>
+                        </button>
+                    </a>
+                </h4>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            {% if user.userprofile.user_url_image %}
+                                <p><img src="{{ user.userprofile.user_url_image }}" width="100%"></p>
+                            {% else %}
+                                <p><strong>No image uploaded</strong></p>
+                            {% endif %}
+                        </div>
+                        <div class="col-4">
+                            <p> {% if user.userprofile.user_first_name %}
+                                <span style="font-size: 1.33em"><strong>{{user.userprofile.user_first_name}}</strong></span>
+                                {% else %}
+                                    <em>you have not entered a first name</em>
+                                {% endif %}
+                                <br>
+                                {% if user.userprofile.user_last_name %}
+                                <span style="font-size: 1.33em"><strong>{{user.userprofile.user_last_name}}</strong></span>
+                                {% else %}
+                                    <em>you have not entered a last name</em>
+                                {% endif %}
+                            </p>
+                            <p><u>Location:</u> <br>
+                                <em>You can add a location when you edit your profile.</em>
+                            </p>
+                            <p>
+                                {{user.email}}<br>
+                                <a href="{% url 'accounts:password' %}">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm">
+                                        Change Password <strong>&#12299</strong>
+                                    </button>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-4">
 
-                <span class="show-md"><p><br></p></span>
-                {% if has_avatars %}
-                    {% for avatar in my_avatars_list %}
-                        <hr>
-                        <div class="row">
-                        <div class="col">
-                            <!-- One of two columns -->
-                            <p><strong>{{ avatar.avatar_name }}</strong> </p>
-                            <p>{{ avatar.avatar_description }}</p>
+                            <p><u>About Me:</u> <br>
+                                {% if user.userprofile.user_bio %}
+                                    {{ user.userprofile.user_bio }}
+                                {% else %}
+                                    <em>You can add a bio when you edit your profile.</em>
+                                {% endif %}
+                            </p>
+                            <p><u>Gaming Interests:</u> <br>
+                                {% if user.userprofile.user_description %}
+                                    {{user.userprofile.user_description}}
+                                {% else %}
+                                    <em>You can add gaming interests when you edit your profile.</em>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+        {% if has_avatars %}
+            {% for avatar in my_avatars_list %}
+        <!-- here -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-secondary mb-3">
+                        <h5 class="card-header">
+                            <img src="{% static '/vanlevy/avatar_32.png' %}" height="32" width="32" title="Avatar">
+                            {{ avatar.avatar_name }}
                             <a href="{% url 'accounts:edit_avatar' avatar.id %}">
-                                <button type="button" class="btn btn-outline-primary btn-sm">
+                                <button type="button" class="btn btn-outline-primary btn-sm align-right">
                                     Edit {{ avatar.avatar_name }} <strong>&#12299</strong>
                                 </button>
                             </a>
-                            <!---->
+                        </h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    {% if avatar.avatar_url_image %}
+                                        <p><img src="{{ avatar.avatar_url_image }}" width="120"></p>
+                                    {% else %}
+                                        This avatar has no image.
+                                    {% endif %}
+                                </div>
+                                <div class="col-7">
+                                    <p class="card-text">
+                                        <strong>Description</strong><br>
+                                        {{ avatar.avatar_description }}
+                                    </p>
+                                    <p align="right">
+                                        <a href="{% url 'accounts:delete_avatar' avatar.id %}">Delete?</a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col">
-                            {% if avatar.avatar_url_image %}
-                                <p><img src="{{ avatar.avatar_url_image }}" width="150"></p>
-                            {% else %}
-                                This avatar has no image.
-                            {% endif %}
-                            <p align="right"><a href="{% url 'accounts:delete_avatar' avatar.id %}">Delete?</a></p>
-                        </div>
-                        </div>
-                    {% endfor %}
-                    <hr>
-                    <p></p>
-                {% else %}
-                    <p><strong>You have not created any avatars.</strong></p>
-                    <p></p>
-                    <!--<a href="{% url 'accounts:create_avatar' %}"><button type="button"  class="btn btn-primary">-->
-                        <!--Create your first Avatar-->
-                    <!--</button></a>-->
-
-                {% endif %}
-
+                    </div>
+                </div>
+            <p><br></p>
+            {% endfor %}
+        {% endif %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-info mb-3">
+                <h5 class="card-header">
+                    <img src="{% static '/vanlevy/avatar_32.png' %}" height="32" width="32" title="Avatar">
+                    Make a New Avatar?
+                    <a href="{% url 'accounts:create_avatar' %}">
+                        <button type="button" class="btn btn-primary btn-sm align-right">
+                            <strong>&#12299</strong>
+                        </button>
+                    </a>
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        {% if not has_avatars %}
+                            Avatars are sort of like masks you can put on in dice rooms.
+                            Other players will still know your username.
+                        {% endif %}
+                    </p>
+                </div>
             </div>
         </div>
+    <p><br></p>
     </div>
 </div>
 {% endblock %}

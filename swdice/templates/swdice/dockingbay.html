@@ -33,117 +33,137 @@
             <p></p>
         </div>
     </div>
-
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <hr>
-                <h4>
-                    {% if my_rooms_list %}
-                        Rooms you've been in: <p></p>
-                    {% else %}
-                        You have not yet entered a room.
-                    {% endif %}
-                </h4>
-                {% if my_rooms_list %}
-                <table id="star_wars_table">
-                    <col width="10%">
-                    <col width="45%">
-                    <col width="20%">
-                    <col width="20%">
-                    <col width="5%">
-                    <tr>
-                        <td>
-                            <strong>ID</strong>
-                        </td>
-                        <td>
-                            <strong>Name</strong>
-                        </td>
-                        <td>
-                            <strong>Avatar</strong>
-                        </td>
-                        <td>
-                            <strong>GM</strong>
-                        </td>
-                        <td>
-                            <strong>Open?</strong>
-                        </td>
-                    </tr>
-                    {% for room in my_rooms_list %}
-                    <tr>
-                        <td>
-                            {{ room.id }}
-                        </td>
-                        <td class="room_name_table">
-                            <div>
-                                <a href="{% url 'swdice:swroom' room.id %}">{{ room.name }}</a>
-                            </div>
-                        </td>
-                        <td>
-                            {{ my_avatars_list|get_item:room.id }}
-                        </td>
-                        <td>
-                            {{ gms_list|get_item:room.id }}
-                        </td>
-                        <td>
-                            {% if room.open_to_all %}
-                                X
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% else %}
-                    Once you've been in a room, this will be a list of direct links to get back in.
-                {% endif %}
+                <div class="card border-dark mb-3" style="max-width: 100%;">
+                  <div class="card-header">
+                    <h5 class="card-title">
+                        {% if my_rooms_list %}
+                            Rooms you've been in:
+                        {% else %}
+                            You have not yet entered a room.
+                        {% endif %}
+                    </h5>
+                  </div>
+                    <div class="card-body text-dark">
+                        {% if my_rooms_list %}
+                            <table id="star_wars_table">
+                            <col width="10%">
+                            <col width="45%">
+                            <col width="20%">
+                            <col width="20%">
+                            <col width="5%">
+                            <tr>
+                                <td>
+                                    <strong>ID</strong>
+                                </td>
+                                <td>
+                                    <strong>Name</strong>
+                                </td>
+                                <td>
+                                    <strong>Avatar</strong>
+                                </td>
+                                <td>
+                                    <strong>GM</strong>
+                                </td>
+                                <td>
+                                    <strong>Open?</strong>
+                                </td>
+                            </tr>
+                            {% for room in my_rooms_list %}
+                            <tr>
+                                <td>
+                                    {{ room.id }}
+                                </td>
+                                <td class="room_name_table">
+                                    <div>
+                                        <a href="{% url 'swdice:swroom' room.id %}">{{ room.name }}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ my_avatars_list|get_item:room.id }}
+                                </td>
+                                <td>
+                                    {{ gms_list|get_item:room.id }}
+                                </td>
+                                <td>
+                                    {% if room.open_to_all %}
+                                        X
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        {% else %}
+                            Once you've been in a room, this will be a list of direct links to get back in.
+                        {% endif %}
+                    </div>
+                </div>
             </div>
             <div class="col-lg-4">
-                <hr>
-                <h4>Make a new room
-                <a href="{% url 'swdice:makeroom' %}">
-                    <button type="button" class="btn btn-outline-primary">
-                    <strong>&#12299</strong>
-                    </button>
-                </a>
-                </h4>
-                <hr>
-                <h4>Enter a room using passcode</h4>
-                <p></p>
-                <form method="post"  autocomplete="off">
+                <div class="card border-dark mb-3" style="max-width: 100%;">
+                  <div class="card-header">
+                      <h5 class="card-title">Enter a room using passcode</h5>
+                  </div>
+                  <div class="card-body text-dark">
+                    <form method="post"  autocomplete="off">
                     {% csrf_token %}
-                    <table>
-                        <col width="240">
-                        <col width="120">
+                      <table>
                         <tr>
-                            <td><strong>Room ID:</strong>
-                            <br>This will be a number.</td>
-                            <td>{{form.room_number}} <br>
+                            <td><strong>Room ID:</strong><br>
+                                {{form.room_number}} <br>
+                                This will be a number.<br>
                                 <strong>{{ form.room_number.errors }}</strong>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Passcode:</strong>
-                            <br>If the room is open, or you've been in it before, leave this blank.</td>
-                            <td>{{form.passcode}} <br>
+                            <td><strong>Passcode:</strong><br>
+                                {{form.passcode}} <br>
+                                If the room is open, or you've been in it before, leave this blank. CaSe sENsiTivE.<br>
                                 <strong>{{ form.passcode.errors }}</strong>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Avatar:</strong>
-                            <br>Select your avatar.</td>
-                            <td>{{form.default_avatar}} <br>
+                            <td><strong>Avatar:</strong><br>
+                                {{form.default_avatar}} <br>
+                                Select your avatar.<br>
                                 <strong>{{ form.default_avatar.errors }}</strong>
                             </td>
                         </tr>
                         <tr>
-                            <td></td>
+
                             <td>
-                                <button type="submit" class="btn btn-primary btn-sm">Enter Room</button>
+                                <button type="submit" class="btn btn-primary align-right">
+                                    Enter Room <strong>&#12299</strong>
+                                </button>
                             </td>
                         </tr>
-
-                    </table>
-                </form>
+                      </table>
+                    </form>
+                  </div>
+                </div>
+                <div class="card border-dark mb-3" style="max-width: 100%;">
+                  <div class="card-header">
+                      <h5 class="card-title">Make a new room</h5>
+                  </div>
+                  <div class="card-body text-dark">
+                    <div class="row">
+                        <div class="col-9">
+                            <p class="card-text">
+                                Create a new Star Wars Dice Room where you are the GM.
+                            </p>
+                        </div>
+                        <div class="col-3">
+                            <a href="{% url 'swdice:makeroom' %}">
+                                <button type="button" class="btn btn-outline-primary align-right">
+                                    <strong>&#12299</strong>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
     </div>

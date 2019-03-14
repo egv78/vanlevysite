@@ -1,3 +1,5 @@
+body    {overflow-y:scroll;}
+
 .sml-input {
     width: 30px;
     font-size: 1.5em;
@@ -262,7 +264,7 @@ input[type=number] {
 		background: #5587b1;
 		width: 200px;
 		padding: 15px 0px 0px 0px;
-		height: 275px;
+		height: 325px;
 		cursor:auto;
 		-webkit-border-radius: 5px 0 0 5px;
 		-moz-border-radius: 5px 0 0 5px;
@@ -303,7 +305,7 @@ input[type=number] {
 		color: #fff;
 		width: 180px;
 		padding: 15px 0px 0px 0px;
-		height: 275px;
+		height: 310px;
 		cursor:auto;
 		-webkit-border-radius: 5px 0 0 5px;
 		-moz-border-radius: 5px 0 0 5px;

@@ -5,10 +5,11 @@
     <title>Delete Avatar</title>
 {% endblock %}
 
-
-{% block navbar_Rooms_button %}
+{% block accounts_page %}
+    {% load static %}
+    <img src="{% static '/vanlevy/AvatarDelete_32.png' %}" height="32" width="32" title="Avatar">
+    <span style="color: white;">Delete {{avatar_data.avatar_name}}?</span>
 {% endblock %}
-
 
 {% block body %}
 <br>
