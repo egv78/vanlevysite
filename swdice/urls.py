@@ -12,7 +12,7 @@ urlpatterns = [
          views.SWRoomViews.as_view(template_name="swdice/swroom.html"), name='swroom'),
     path('room/<int:swroom_id>/info',
          views.SWRoomViews.as_view(template_name="swdice/swroom_info.html"), name='swroom_info'),
-    path('room/<int:swroom_id>/player-info/<int:player_id>',
+    path('room/<int:swroom_id>/destiny',
          views.SWRoomViews.as_view(template_name="swdice/swroom_player_info.html"), name='swroom_player_info'),
     path('makeroom/', views.make_sw_room, name='makeroom'),
     path('enter_with_passcode/', views.DockingBay.as_view(template_name="swdice/enter_with_passcode.html"),

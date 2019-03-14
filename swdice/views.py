@@ -175,10 +175,14 @@ def read_dice(dice_form):
                   )
 
     if caption_text or total_dice > 0:
+        valid_pool = True
         if total_dice == 0:
             just_caption = True
         else:
             just_caption = False
+    else:
+        just_caption = False
+        valid_pool = False
 
     dice_pool = {'caption_text': caption_text, "total_dice": total_dice,
                  "num_boost_dice": boost_dice, "num_ability_dice": ability_dice,
@@ -190,7 +194,7 @@ def read_dice(dice_form):
                  "additional_success": additional_success, "additional_failure": additional_failure,
                  "additional_advantage": additional_advantage, "additional_threat": additional_threat,
                  "additional_light_pips": additional_light_pips,
-                 "additional_dark_pips": additional_dark_pips,
+                 "additional_dark_pips": additional_dark_pips, "valid_pool": valid_pool,
                  }
     return dice_pool
 
@@ -500,6 +504,8 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_pool = read_dice(dice_form)
                 total_dice = dice_pool['total_dice']
                 del dice_pool['total_dice']
+                valid_pool = dice_pool['valid_pool']
+                del dice_pool['valid_pool']
                 # print(dice_pool)
                 caption_text = dice_pool['caption_text']
 

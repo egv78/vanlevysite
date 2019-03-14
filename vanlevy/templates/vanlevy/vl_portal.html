@@ -167,26 +167,29 @@ th, td {
                         {% endif %}
                     </h4>
                     <br>
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="row no-gutters">
+                        <div class="col-4">
                             {% if user.userprofile.user_url_image %}
-                                <p><img src="{{ user.userprofile.user_url_image }}" width="120"></p>
+                                <img src="{{ user.userprofile.user_url_image }}" width="100%">
                             {% else %}
                                 <p><strong>No image</strong></p>
                             {% endif %}
+                            <p><u>Location:</u> <br>
+                                <em>coming soon</em></p>
                         </div>
-                        <div class="col-9">
-                            <ul style="list-style-type: none;">
-                                <li><u>Bio:</u> <br>
-                                    {% if user.userprofile.user_bio %}
-                                        {{ user.userprofile.user_bio }}
-                                    {% else %}
-                                        <em>View your profile to enter a bio.</em>
-                                    {% endif %}
-                                </li>
-                                <li><u>Description:</u> <br>
-                                    {{user.userprofile.user_description}}
-                                </li>
+                        <div class="col-8">
+                            <p style="margin-left: 10px;">
+                                <u>About Me:</u> <br>
+                                {% if user.userprofile.user_bio %}
+                                    {{ user.userprofile.user_bio }}
+                                {% else %}
+                                    <em>View your profile to enter a bio.</em>
+                                {% endif %}
+                            </p>
+                            <p style="margin-left: 10px;">
+                                <u>Gaming Interests:</u> <br>
+                                {{user.userprofile.user_description}}
+                            </p>
                             </ul>
                         </div>
                     </div>
@@ -212,28 +215,26 @@ th, td {
                 {% for avatar in my_avatars_list %}
                     <div class="card border-secondary mb-3">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-3">
+                            <h4>
+                                {% if avatar.avatar_name %}
+                                    <strong>{{ avatar.avatar_name }}</strong>
+                                {% else %}
+                                    <em>no name given</em>
+                                {% endif %}
+                            </h4>
+                            <div class="row no-gutters">
+                                <div class="col-4">
                                     {% if avatar.avatar_url_image %}
-                                        <p><img src="{{ avatar.avatar_url_image }}" width="120"></p>
+                                        <p><img src="{{ avatar.avatar_url_image }}" width="100%"></p>
                                     {% else %}
                                         This avatar has no image.
                                     {% endif %}
                                 </div>
-                                <div class="col-9">
-                                    <ul style="list-style-type: none;">
-                                    <li>
-                                        <h4 style="margin-bottom: 0px;">
-                                            {% if avatar.avatar_name %}
-                                                <strong>{{ avatar.avatar_name }}</strong>
-                                            {% else %}
-                                                <em>no name given</em>
-                                            {% endif %}
-                                        </h4>
-                                    </li>
-                                    <li><u>Description:</u> </li>
-                                    <li>{{ avatar.avatar_description }}</li>
-                                    </ul>
+                                <div class="col-6">
+
+                                    <p style="margin-left: 10px;"><u>Description:</u> <br>
+                                        {{ avatar.avatar_description }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
