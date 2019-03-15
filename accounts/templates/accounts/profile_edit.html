@@ -20,10 +20,61 @@
 <div class="container">
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h1>Profile</h1>
-
-                You are logged in as <strong>{{user}}</strong>.
+            <div class="col-lg-6">
+                <div class="card border-dark mb-3">
+                    <h4 class="card-header">
+                        <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+                        Current Profile for {{user}}
+                    </h4>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                {% if user.userprofile.user_url_image %}
+                                    <p><img src="{{ user.userprofile.user_url_image }}" width="100%"></p>
+                                {% else %}
+                                    <p><strong>No image uploaded</strong></p>
+                                {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <p> {% if user.userprofile.user_first_name %}
+                                    <span style="font-size: 1.33em"><strong>{{user.userprofile.user_first_name}}</strong></span>
+                                    {% else %}
+                                        <em>you have not entered a first name</em>
+                                    {% endif %}
+                                    <br>
+                                    {% if user.userprofile.user_last_name %}
+                                    <span style="font-size: 1.33em"><strong>{{user.userprofile.user_last_name}}</strong></span>
+                                    {% else %}
+                                        <em>you have not entered a last name</em>
+                                    {% endif %}
+                                </p>
+                                <p><u>Location:</u> <br>
+                                    {{ user.userprofile.user_location }}
+                                </p>
+                                <p><u>Email:</u> <br>
+                                    {{user.email}}<br>
+                                </p>
+                                <p><u>About Me:</u> <br>
+                                    {% if user.userprofile.user_bio %}
+                                        {{ user.userprofile.user_bio }}
+                                    {% else %}
+                                        <em>You can add information about you.</em>
+                                    {% endif %}
+                                </p>
+                                <p><u>Gaming Interests:</u> <br>
+                                    {% if user.userprofile.user_description %}
+                                        {{user.userprofile.user_description}}
+                                    {% else %}
+                                        <em>You can add gaming interests.</em>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+            <div class="col-lg-6">
+                <h2>Edit Profile</h2>
                 <br>Emails cannot be changed at this time.
                 <p></p>
                 <form method="post" enctype="multipart/form-data" id="editProfile">
@@ -39,30 +90,29 @@
                         </tr>
                         <tr>
                             <td class="align-right"><strong>Location:</strong></td>
-                            <td><em>coming soon</em></td>
+                            <td>{{profile_form.user_location}}</td>
                         </tr>
                         <tr>
                             <td class="align-right"><strong>About Me:</strong></td>
                             <td>{{profile_form.user_bio}} </td>
                         </tr>
                         <tr>
-                            <td class="align-right"><strong>Gaming Interests:</strong></td>
+                            <td class="align-right"><strong>Gaming<br>Interests:</strong></td>
                             <td>{{profile_form.user_description}} </td>
                         </tr>
                         <tr>
-                            <td class="align-right"><strong>Image:</strong></td>
+                            <td class="align-right"><strong>Image URL:</strong></td>
                             <td>{{profile_form.user_url_image}} </td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>
-                                <em>Images need to be valid URLs to a web-hosted image file.</em>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button type="submit" class="btn btn-outline-primary">Submit Change</button>
+                                <button type="submit" class="btn btn-success">Submit Changes</button>
+                                <a href="{% url 'accounts:view_profile' %}">
+                                    <button type="button" class="btn btn-outline-danger btn-sm align-right">
+                                        Cancel <strong>&#12299</strong>
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                     </table>

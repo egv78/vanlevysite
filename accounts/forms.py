@@ -44,17 +44,24 @@ class EditUserForm(forms.ModelForm):
 
 class EditProfileForm(forms.ModelForm):
     user_bio = forms.CharField(required=False, label='User Bio',
-                               widget=forms.Textarea(attrs={'rows': 1, 'cols': 60})
+                               widget=forms.Textarea(attrs={'rows': 6, 'cols': 55})
                                )
     user_description = forms.CharField(required=False, label='Description',
-                                       widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                       widget=forms.Textarea(attrs={'rows': 3, 'cols': 55})
                                        )
     user_image = forms.ImageField(required=False)
     user_url_image = forms.URLField(required=False, label='URL for Image',
-                                    widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                    widget=forms.Textarea(
+                                        attrs={'rows': 3, 'cols': 55,
+                                               'placeholder':
+                                                   'Images need to be valid URLs to a web-hosted image file.'}
+                                        )
                                     )
     user_first_name = forms.CharField(required=False, label='First Name')
     user_last_name = forms.CharField(required=False, label='Last Name')
+    user_location = forms.CharField(required=False, label='Description',
+                                    widget=forms.Textarea(attrs={'rows': 1, 'cols': 55})
+                                    )
 
     class Meta:
         model = UserProfile
@@ -63,7 +70,8 @@ class EditProfileForm(forms.ModelForm):
                   'user_image',
                   'user_url_image',
                   'user_first_name',
-                  'user_last_name'
+                  'user_last_name',
+                  'user_location'
                   )
 
 
@@ -72,11 +80,16 @@ class EditAvatarForm(forms.ModelForm):
                                   widget=forms.TextInput(attrs={'size': 40})
                                   )
     avatar_description = forms.CharField(required=False, label='Description',
-                                         widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                         widget=forms.Textarea(attrs={'rows': 5, 'cols': 60})
                                          )
     avatar_image = forms.ImageField(required=False)
     avatar_url_image = forms.URLField(required=False, label='URL for Image',
-                                      widget=forms.Textarea(attrs={'rows': 2, 'cols': 60})
+                                      widget=forms.Textarea(
+                                          attrs={'rows': 3, 'cols': 60,
+                                                 'placeholder':
+                                                     'Images need to be valid URLs to a web-hosted image file.'
+                                                 }
+                                          )
                                       )
 
     class Meta:

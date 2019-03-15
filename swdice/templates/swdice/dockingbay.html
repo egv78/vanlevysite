@@ -109,18 +109,17 @@
                   <div class="card-body text-dark">
                     <form method="post"  autocomplete="off">
                     {% csrf_token %}
-                      <table>
+                      <table style="width: 100%;">
                         <tr>
                             <td><strong>Room ID:</strong><br>
                                 {{form.room_number}} <br>
-                                This will be a number.<br>
-                                <strong>{{ form.room_number.errors }}</strong>
+                                <strong>{{ form.room_number.errors }}</strong><br>
                             </td>
                         </tr>
                         <tr>
                             <td><strong>Passcode:</strong><br>
                                 {{form.passcode}} <br>
-                                If the room is open, or you've been in it before, leave this blank. CaSe sENsiTivE.<br>
+                                If the room is open, leave this blank.<br> <br>
                                 <strong>{{ form.passcode.errors }}</strong>
                             </td>
                         </tr>

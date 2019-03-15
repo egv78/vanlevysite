@@ -59,7 +59,12 @@
                                 {% endif %}
                             </p>
                             <p><u>Location:</u> <br>
-                                <em>You can add a location when you edit your profile.</em>
+                                {% if user.userprofile.user_location %}
+                                    {{ user.userprofile.user_location }}
+                                {% elif not user.userprofile.user_first_name and not user.userprofile.user_url_image %}
+                                    <em>You can add a location when you edit your profile.</em>
+                                {% endif %}
+
                             </p>
                             <p>
                                 {{user.email}}<br>
@@ -94,7 +99,6 @@
         <p></p>
         {% if has_avatars %}
             {% for avatar in my_avatars_list %}
-        <!-- here -->
                 <div class="col-md-6 col-lg-4">
                     <div class="card border-secondary mb-3">
                         <h5 class="card-header">

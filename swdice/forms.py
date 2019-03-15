@@ -25,6 +25,15 @@ class Enter_SW_Room(forms.ModelForm):
         self.fields['default_avatar'].choices = imported_list
 
     default_avatar = forms.ChoiceField(choices=[])
+    room_number = forms.IntegerField(required=True, label='Room ID',
+                                     widget=forms.NumberInput(
+                                         attrs={'placeholder': "Input a number"}
+                                     ))
+    passcode = forms.CharField(required=False, label='Passcode',
+                               widget=forms.TextInput(
+                                   attrs={'placeholder': "CaSe sENsiTivE"}
+                               )
+                               )
 
 
 class SW_Room_to_User_Form(forms.ModelForm):

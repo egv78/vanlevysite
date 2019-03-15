@@ -125,11 +125,11 @@ def edit_avatar(request, avatar_id=0):
             elif "edit" in request.path:
                 avatar_form = EditAvatarForm(instance=this_avatar)
                 template_name = 'accounts/profile_avatar_edit.html'
-                args = {'avatar_form': avatar_form}
+                args = {'avatar_form': avatar_form, 'this_avatar': this_avatar}
             elif "delete" in request.path:
                 avatar_form = DeleteAvatarForm(instance=this_avatar)
                 template_name = 'accounts/profile_avatar_delete.html'
-                args = {'avatar_form': avatar_form, 'avatar_data': this_avatar}
+                args = {'avatar_form': avatar_form, 'this_avatar': this_avatar}
             else:
                 return redirect('accounts:view_profile')
 

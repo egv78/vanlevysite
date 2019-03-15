@@ -53,9 +53,10 @@ class UserProfile(models.Model):
     user_bio = models.CharField(max_length=500, default='', blank=True)
     user_description = models.CharField(max_length=500, default='', blank=True)
     user_image = models.ImageField(upload_to='profile_image', blank=True)
-    user_url_image = models.URLField(max_length=300, blank=True, default='')
-    user_first_name = models.CharField(max_length=500, default='', blank=True)
-    user_last_name = models.CharField(max_length=500, default='', blank=True)
+    user_url_image = models.URLField(max_length=500, blank=True, default='')
+    user_first_name = models.CharField(max_length=100, default='', blank=True)
+    user_last_name = models.CharField(max_length=100, default='', blank=True)
+    user_location = models.CharField(max_length=300, default='', blank=True)
 
     def __str__(self):
         return self.user.username
