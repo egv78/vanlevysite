@@ -286,6 +286,7 @@ class DockingBay(FormMixin, TemplateView):
         my_rooms_list = []
         my_avatars_list = {}
         gms_list = {}
+        player_numbers_list = {}
 
         for room in my_rooms_to_user_list:
             my_rooms_list += SWRoom.objects.filter(pk=room.room_id_id)
@@ -299,6 +300,8 @@ class DockingBay(FormMixin, TemplateView):
                     gms_list[room.room_id_id] = gm_name
                 else:
                     gms_list[room.room_id_id] = "no one"
+            number_players = len(SWRoomToUser.objects.filter(room_id=room.room_id, game_master=False, banned=0))
+            player_numbers_list[room.room_id_id] = number_players
             if room.default_avatar_is_user == 1:
                 my_avatars_list[room.room_id_id] = avatars[0]
             else:
@@ -313,7 +316,8 @@ class DockingBay(FormMixin, TemplateView):
         form_direct = Enter_SW_Direct(**kwargs)
         my_avatar_objects = Avatar.objects.filter(user_id=self.request.user.id, deleted=0)
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id,
-                'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list, 'form_direct': form_direct}
+                'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list, 'form_direct': form_direct,
+                'player_numbers_list': player_numbers_list}
         return render(request, self.template_name, args)
 
     # if request.method == 'POST':
@@ -369,19 +373,24 @@ class DockingBay(FormMixin, TemplateView):
         elif request.method == "POST" and "direct" in request.POST:
             if form_direct.is_valid():
                 init_direct_link = form_direct.cleaned_data['direct']
-                first_bit = init_direct_link.build_absolute_uri('/room/')
-                print(first_bit)
-                whole_bit = init_direct_link.build_absolute_uri()
-                end_bit = whole_bit.replace(first_bit, "", 1)
-                print(end_bit)
-                if first_two == "SW":
-                    print("here")
-                    direct_link = init_direct_link[3:]
-                else:
-                    direct_link = init_direct_link
+                first_bit = "www.vanlevy.com/swdice/room/"
+                end_bit = init_direct_link.replace(first_bit, "", 1)
+                number_string = ""
+
+                i = 0
+                while i < len(end_bit):
+                    character = end_bit[i]
+                    if character.isdigit():
+                        number_string += str(character)
+                        i += 1
+                    else:
+                        i = len(end_bit)
+                next_bit = number_string + "/direct/"
+                passcode = end_bit.replace(next_bit, "", 1)
+                swroom_id = int(number_string)
                 avatar_id = form_direct.cleaned_data['default_avatar']
                 use_user_id = True if int(avatar_id) == 0 else False
-                new_room_list = SWRoom.objects.filter(direct=direct_link)
+                new_room_list = SWRoom.objects.filter(id=swroom_id, passcode=passcode)
                 if len(new_room_list) > 0:
                     new_room = new_room_list[0]
                     my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id).order_by(

@@ -48,7 +48,7 @@
                   </div>
                     <div class="card-body text-dark">
                         {% if my_rooms_list %}
-                            <table id="star_wars_table">
+                            <table id="star_wars_table" width="100%">
                             <col width="60%">
                             <col width="20%">
                             <col width="20%">
@@ -75,8 +75,7 @@
                                                 data-target=".multi-collapse{{room.id}}"
                                                 aria-expanded="false"
                                                 aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}">
-                                            <!--<strong>+</strong>-->
-                                            <img src="{% static '/vanlevy/plus_button_40.png' %}"
+                                            <img src="{% static '/vanlevy/plus_clear_40.png' %}"
                                                  alt="info" width="16" height="16">
                                         </button>
                                     {% endif %}
@@ -93,11 +92,10 @@
                                     </td>
                                     <td colspan="2">
                                         <strong>Copy direct link:</strong>
-                                        <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
-                                        </div>
+                                        <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
                                         <button type="button" style="padding: 0;margin-left: 10px;"
                                                 onclick="copyURL(link_{{room.id}})">
-                                        <img src="{% static '/vanlevy/copy_button_40.png' %}" alt="info" width="20" height="20">
+                                        <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
                                         </button>
                                     </td>
                                 </tr>
@@ -107,7 +105,7 @@
                                         Created: {{ room.created_on }}
                                     </td>
                                     <td>
-                                        # players
+                                        {{ player_numbers_list|get_item:room.id }} players
                                     </td>
                                     <td>
                                         <strong>Info Page: </strong>
@@ -170,10 +168,10 @@
                     <div id="collapseTwo" class="collapse show" data-parent="#accordion">
                         <div class="card-body text-dark">
                             <h5 class="card-title">Id & Passcode
-                                <!--<button class="btn btn-outline-primary btn-sm align-right" data-toggle="collapse"-->
-                                        <!--data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">-->
-                                    <!--Use Direct Link-->
-                                <!--</button>-->
+                                <button class="btn btn-outline-primary btn-sm align-right" data-toggle="collapse"
+                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Use Direct Link
+                                </button>
                             </h5>
                             <form method="post"  autocomplete="off">
                             {% csrf_token %}
