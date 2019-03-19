@@ -93,8 +93,7 @@
                                     </td>
                                     <td colspan="2">
                                         <strong>Copy direct link:</strong>
-                                        <div style="display: none;" id="link_{{room.id}}">
-                                        {% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
+                                        <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
                                         </div>
                                         <button type="button" style="padding: 0;margin-left: 10px;"
                                                 onclick="copyURL(link_{{room.id}})">
@@ -286,7 +285,8 @@ function copyURL(element){
     console.log(element.innerText);
     var copyText = element.innerText;
     copyTextToClipboard(copyText)
-    alert("Copied the text: " + copyText);
+    var msg = (copyText).concat(" copied to clipboard.")
+    alert(msg);
 }
 </script>
 {% endblock %}
