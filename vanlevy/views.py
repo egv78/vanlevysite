@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from swdice.models import SWRoomToUser, SWRoom
 from accounts.models import VanLevyUser, Avatar
@@ -54,6 +54,11 @@ def vl_terms_view(request):
 
 
 def personal_portal(request):
+    if 'requested_url' in request.session:
+        requested_url = request.session['requested_url']
+        del request.session['requested_url']
+        return redirect(requested_url)
+
     current_user_id = request.user.id
     user_name = request.user.username
     my_avatars = Avatar.objects.filter(user_id=current_user_id, deleted=False).order_by('-id')

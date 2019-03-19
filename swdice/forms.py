@@ -7,10 +7,34 @@ User = get_user_model()
 
 
 class Make_SW_Room(forms.ModelForm):
+    def clean(self):
+        is_open = self.cleaned_data.get('open_to_all')
+        passcode = self.cleaned_data.get('passcode')
+
+        if is_open:
+            self.cleaned_data['passcode'] = ''
+        else:
+            if passcode == '':
+                msg = forms.ValidationError("You must add a passcode to a closed (i.e. not open) room")
+                self.add_error('passcode', msg)
+
+        return self.cleaned_data
+
     class Meta:
         model = SWRoom
         widgets = {'open_to_all': forms.RadioSelect}
         fields = ('name', 'passcode', 'open_to_all')
+
+    name = forms.CharField(required=True, label='Passcode',
+                           widget=forms.TextInput(
+                               attrs={'placeholder': "Enter your room's name.", 'size': 40}
+                           )
+                           )
+    passcode = forms.SlugField(required=False, label='Passcode',
+                               widget=forms.TextInput(
+                                   attrs={'placeholder': "e.g. swordfish", 'size': 40}
+                               )
+                               )
 
 
 class Enter_SW_Room(forms.ModelForm):
@@ -34,6 +58,26 @@ class Enter_SW_Room(forms.ModelForm):
                                    attrs={'placeholder': "CaSe sENsiTivE"}
                                )
                                )
+
+
+class Enter_SW_Direct(forms.ModelForm):
+    class Meta:
+        model = EnterSWRoom
+        widgets = {'default_avatar': forms.Select()}
+        fields = ('direct', 'default_avatar')
+
+    def __init__(self, *args, **kwargs):
+        imported_list = kwargs.pop('avatar_list')
+        super().__init__(*args, **kwargs)
+        self.fields['default_avatar'].choices = imported_list
+
+    default_avatar = forms.ChoiceField(choices=[])
+
+    direct = forms.CharField(required=True, label='Direct',
+                             widget=forms.TextInput(
+                                 attrs={'placeholder': "CaSe sENsiTivE", 'style': "width: 100%;"}
+                             )
+                             )
 
 
 class SW_Room_to_User_Form(forms.ModelForm):

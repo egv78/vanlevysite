@@ -25,5 +25,7 @@ class LoginRequiredMiddleware:
 
         if not request.user.is_authenticated:
             if not url_is_exempt:
+                requested_url = request.get_full_path()
+                request.session['requested_url'] = requested_url
                 return redirect(settings.LOGIN_REQUIRED_URL)
 

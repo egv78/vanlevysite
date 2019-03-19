@@ -3,7 +3,7 @@ from django.http import Http404
 from django.views.generic import FormView, TemplateView
 from django.views.generic.edit import FormMixin
 from .models import SWRoomToUser, SWRoomChat, SWRoom, SWRoomDestiny, SWDicePool
-from .forms import Make_SW_Room, Enter_SW_Room, SW_Room_Chat_Form, SW_Dice_Roll
+from .forms import Make_SW_Room, Enter_SW_Room, Enter_SW_Direct, SW_Room_Chat_Form, SW_Dice_Roll
 from .dice import *
 from accounts.models import VanLevyUser, Avatar
 from django.template.defaulttags import register
@@ -228,10 +228,28 @@ def make_sw_room(request):
     else:
         now = datetime.datetime.now()
         user_id = request.user.id
-        initial_args = {'open_to_all': False, 'created_on': now, 'created_by': user_id}
+        initial_args = {'open_to_all': True, 'created_on': now, 'created_by': user_id}
         form = Make_SW_Room(initial_args)
         args = {'form': form}
         return render(request, 'swdice/make_swroom.html', args)
+
+
+def direct_view(request, swroom_id, slug):
+    current_user_id = request.user.id
+    user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+    if len(user_to_room_link_candidate) > 0:
+        user_to_room_link = user_to_room_link_candidate[0]
+    else:
+        user_to_room_link = False
+    if user_to_room_link:
+        if user_to_room_link.banned:
+            return redirect('swdice:dockingbay')  # will need to change when banning implemented
+        else:
+            return redirect('swdice:swroom', swroom_id)
+    else:
+        # make link, redirect
+        make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+        return redirect('swdice:swroom', swroom_id)
 
 
 class DockingBay(FormMixin, TemplateView):
@@ -262,8 +280,9 @@ class DockingBay(FormMixin, TemplateView):
         kwargs = self.get_form_kwargs()
         avatars = dict(kwargs['avatar_list'])
         current_user_id = self.request.user.id
-        my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=current_user_id, banned=0).order_by(
+        my_rooms_to_user_list_first = SWRoomToUser.objects.filter(user_id_id=current_user_id, banned=0).order_by(
             '-admitted')
+        my_rooms_to_user_list = my_rooms_to_user_list_first[::-1]
         my_rooms_list = []
         my_avatars_list = {}
         gms_list = {}
@@ -291,57 +310,98 @@ class DockingBay(FormMixin, TemplateView):
                     make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, 0)
 
         form = Enter_SW_Room(**kwargs)
+        form_direct = Enter_SW_Direct(**kwargs)
         my_avatar_objects = Avatar.objects.filter(user_id=self.request.user.id, deleted=0)
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id,
-                'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list}
-        # print(my_avatars_list)
+                'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list, 'form_direct': form_direct}
         return render(request, self.template_name, args)
 
     # if request.method == 'POST':
     def post(self, request, **kwargs):
         kwargs = self.get_form_kwargs()
         form = Enter_SW_Room(**kwargs)
-        print(form)
-        if form.is_valid():
-            swroom_id = form.cleaned_data['room_number']
-            passcode_candidate = form.cleaned_data['passcode']
-            avatar_id = form.cleaned_data['default_avatar']
-            instance = form.save(commit=False)
+        form_direct = Enter_SW_Direct(**kwargs)
 
-            use_user_id = True if int(avatar_id) == 0 else False
+        if request.method == "POST" and "passcode" in request.POST:
+            if form.is_valid():
+                swroom_id = form.cleaned_data['room_number']
+                passcode_candidate = form.cleaned_data['passcode']
+                avatar_id = form.cleaned_data['default_avatar']
+                instance = form.save(commit=False)
 
-            try:
-                room = SWRoom.objects.get(pk=swroom_id)
-                my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id).order_by('-admitted')
-                my_rooms_list = []
-                for my_room in my_rooms_to_user_list:
-                    my_rooms_list += SWRoom.objects.filter(pk=my_room.room_id_id)
-                been_there = my_rooms_to_user_list.filter(room_id_id=swroom_id)
-                if been_there and not been_there[0].banned and been_there[0].avatar_id_id == avatar_id:
-                    return redirect('swdice:swroom', swroom_id)
-                elif been_there and not been_there[0].banned:
-                    link_instance = been_there[0]
-                    link_instance.avatar_id_id = avatar_id if int(avatar_id) > 0 else ""
-                    link_instance.default_avatar_is_user = 1 if int(avatar_id) == 0 else 0
-                    link_instance.save()
-                    # print("here")
-                    return redirect('swdice:swroom', swroom_id)
-                elif been_there and been_there[0].banned:
-                    return redirect('swdice:dockingbay')
+                use_user_id = True if int(avatar_id) == 0 else False
+
+                try:
+                    room = SWRoom.objects.get(pk=swroom_id)
+                    my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id).order_by('-admitted')
+                    my_rooms_list = []
+                    for my_room in my_rooms_to_user_list:
+                        my_rooms_list += SWRoom.objects.filter(pk=my_room.room_id_id)
+                    been_there = my_rooms_to_user_list.filter(room_id_id=swroom_id)
+                    if been_there and not been_there[0].banned and been_there[0].avatar_id_id == avatar_id:
+                        return redirect('swdice:swroom', swroom_id)
+                    elif been_there and not been_there[0].banned:
+                        link_instance = been_there[0]
+                        link_instance.avatar_id_id = avatar_id if int(avatar_id) > 0 else ""
+                        link_instance.default_avatar_is_user = 1 if int(avatar_id) == 0 else 0
+                        link_instance.save()
+                        # print("here")
+                        return redirect('swdice:swroom', swroom_id)
+                    elif been_there and been_there[0].banned:
+                        return redirect('swdice:dockingbay')
+                    else:
+                        passcode_correct = room.passcode
+                        room_is_open = room.open_to_all
+                        if room_is_open or (passcode_candidate == passcode_correct):
+                            game_master = False
+                            banned = False
+                            make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
+                            return redirect('swdice:swroom', swroom_id)
+                        else:
+                            return redirect('swdice:enter_passcode')
+
+                except SWRoom.DoesNotExist:
+                    raise Http404("Room has not yet been created")
+
+            else:
+                return redirect('swdice:dockingbay')
+
+        elif request.method == "POST" and "direct" in request.POST:
+            if form_direct.is_valid():
+                init_direct_link = form_direct.cleaned_data['direct']
+                first_bit = init_direct_link.build_absolute_uri('/room/')
+                print(first_bit)
+                whole_bit = init_direct_link.build_absolute_uri()
+                end_bit = whole_bit.replace(first_bit, "", 1)
+                print(end_bit)
+                if first_two == "SW":
+                    print("here")
+                    direct_link = init_direct_link[3:]
                 else:
-                    passcode_correct = room.passcode
-                    room_is_open = room.open_to_all
-                    if room_is_open or (passcode_candidate == passcode_correct):
+                    direct_link = init_direct_link
+                avatar_id = form_direct.cleaned_data['default_avatar']
+                use_user_id = True if int(avatar_id) == 0 else False
+                new_room_list = SWRoom.objects.filter(direct=direct_link)
+                if len(new_room_list) > 0:
+                    new_room = new_room_list[0]
+                    my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=self.request.user.id).order_by(
+                        '-admitted')
+                    been_there = my_rooms_to_user_list.filter(room_id_id=new_room.id)
+                    if been_there and not been_there[0].banned:
+                        return redirect('swdice:swroom', new_room.id)
+                    elif not been_there:
                         game_master = False
                         banned = False
-                        # print(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
-                        make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
-                        return redirect('swdice:swroom', swroom_id)
+                        make_user_room_link(new_room.id, request.user.id, game_master, banned, use_user_id, avatar_id)
+                        return redirect('swdice:swroom', new_room.id)
+                    elif been_there and been_there[0].banned:
+                        return redirect('swdice:dockingbay')
                     else:
-                        return redirect('swdice:enter_passcode')
+                        return redirect('swdice:dockingbay')
 
-            except SWRoom.DoesNotExist:
-                raise Http404("Room has not yet been created")
+                return redirect('swdice:dockingbay')
+            else:
+                return redirect('swdice:dockingbay')
 
         else:
             return redirect('swdice:dockingbay')

@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.views.generic import TemplateView
+from django.views.generic.edit import FormMixin
 from .models import VanLevyUser, Avatar
 from accounts.forms import RegistrationForm, EditProfileForm, EditUserForm, EditAvatarForm, DeleteAvatarForm
 import datetime
@@ -158,3 +160,8 @@ def change_password_success(request):
     template_name = 'accounts/password_success.html'
     args = {'user': request.user}
     return render(request, template_name, args)
+
+
+# class CustomLogin(FormMixin, TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         template_name = self.template_name

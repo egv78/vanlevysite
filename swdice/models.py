@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import VanLevyUser, Avatar
+import uuid
 
 BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
 

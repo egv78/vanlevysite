@@ -116,6 +116,7 @@
     <div class="container-fluid" id="gm_message">
         <h5>Room Details</h5>
         <ul>
+            <li><strong>Room ID:</strong> <u>{{room.id}}</u></li>
             {% if not room.open_to_all %}
             <li><strong>Passcode:</strong>
                 {% if room.passcode %}
@@ -127,6 +128,7 @@
             {% else %}
             <li>This room is <strong>open to all</strong></li>
             {% endif %}
+            <li><strong>Direct Link:</strong> {% url 'swdice:swroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</li>
             <li><strong>Created on:</strong> {{ room.created_on }}</li>
             <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
         </ul>
