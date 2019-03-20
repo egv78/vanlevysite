@@ -565,7 +565,7 @@ class SWRoomViews(FormMixin, TemplateView):
         elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
             dice_form = SW_Dice_Roll(request.POST)
             secret_roll = "roll_dice_secret" in request.POST
-            # print(request.POST)
+            print(request.POST)
             # text = chat_form['chat_text']
             # print(text)
 
@@ -593,6 +593,7 @@ class SWRoomViews(FormMixin, TemplateView):
                     del dice_pool['just_caption']
                 if dice_pool['caption_text']:
                     del dice_pool['caption_text']
+                print(dice_pool)
                 dice_pool_carryover = dice_pool
 
             # request.session['dice_pool_carryover'] = dice_pool_carryover
@@ -713,10 +714,10 @@ class SWRoomViews(FormMixin, TemplateView):
                 now = datetime.datetime.now()
 
                 if 'chat_carryover' in request.session:
-                    initial_args = request.session['chat_carryover']
+                    initial_args_chat = request.session['chat_carryover']
                 else:
-                    initial_args = {}
-                chat_form = SW_Room_Chat_Form(initial_args, **kwargs)
+                    initial_args_chat = {}
+                chat_form = SW_Room_Chat_Form(initial_args_chat, **kwargs)
                 chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
                 chat_log = []
                 for chat in chats_all[:100]:
@@ -725,7 +726,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 if len(chat_log) > 0:
                     last_chat_time = chat_log[0].created_on
                 else:
-                    last_chat_time = now
+                    last_chat_time = room.created_on
 
                 actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
                 action_log = []
@@ -735,12 +736,13 @@ class SWRoomViews(FormMixin, TemplateView):
                 if len(action_log) > 0:
                     last_action_time = action_log[0].created
                 else:
-                    last_action_time = now
+                    last_action_time = room.created_on
 
-                if 'dice_pool_carryover' in request.session:
-                    initial_args = request.session['dice_pool_carryover']
-                else:
-                    initial_args = {}
+                initial_args = {}
+                # if 'dice_pool_carryover' in request.session:
+                #     initial_args = request.session['dice_pool_carryover']
+                # else:
+                #     initial_args = {}
                 # for key, value in request.session.items():
                 #     print('{} => {}'.format(key, value))
                 dice_form = SW_Dice_Roll(initial_args)
