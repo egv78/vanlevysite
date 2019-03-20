@@ -21,6 +21,8 @@
         <br>
         <p>To create a new account, please <a href="{% url 'accounts:logout' %}">logout</a> and then register.</p>
     {% else %}
+        <h4>By creating an account, you agree to our <a href="{% url 'vanlevy:terms' %}">terms and conditions.</a></h4>
+        <p><br></p>
         <form method="post" id="register">
             {% csrf_token %}
             {{ form.as_p }}

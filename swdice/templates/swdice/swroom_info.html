@@ -26,11 +26,16 @@
 {% load static %}
 
 {% block room_header %}
+<div class="container">
 <table style="width: 100%;">
     <tr>
         <td>
             <h4>This page does not automatically update.</h4>
             <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
+            <p>
+                However, this page loads <em>all</em> actions and chats, while the main page shows only the 100 most
+                recent actions and 100 most recent chats.
+            </p>
         </td>
         <td>
             <a href="{% url 'swdice:swroom' room_number %}">
@@ -41,12 +46,13 @@
         </td>
     </tr>
 </table>
+</div>
 {% endblock %}
 
 {% block user_table %}
-<div class="container-fluid" id="current_users">
+<div class="container" id="current_users">
     <h5>User Information Table</h5>
-    <table id="users_table" style={%if player_is_gm%}"width:720px"{%else%}"width:540px"{%endif%}>
+    <table id="users_table" style="100%">
         <tr>
             <th style="width:80px">User <br>Image</th>
             <th style="width:300px">&nbsp<br>Playing as</th>
@@ -114,6 +120,8 @@
 {% block gm_stuff %}
 {% if player_is_gm %}
     <div class="container-fluid" id="gm_message">
+        <div class="row no-gutters">
+            <div class="col-md-6">
         <h5>Room Details</h5>
         <ul>
             <li><strong>Room ID:</strong> <u>{{room.id}}</u></li>
@@ -132,24 +140,27 @@
             <li><strong>Created on:</strong> {{ room.created_on }}</li>
             <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
         </ul>
-        <hr>
-
+        </div>
+            <div class="col-md-6">
         <h5>GM Information</h5>
         <p>
-            You are the GM for this room.  This means that you have have extra privileges.  You can:
+            As the GM for this room, you have have extra privileges.  You can:
             <ul>
-                <li>See individual Player Info pages (and alter player privileges)</li>
-                <li>See banned players (rolls and chats only visible on Player Info Page)</li>
+                <li>Alter player privileges (on their Player Info Page).</li>
+                <li>See banned players; their rolls and chats will be visible only on their Player Info Page.</li>
                 <li>See Room Details</li>
             </ul>
         </p>
-        <hr>
+            </div>
+
+        </div>
     </div>
 {% endif %}
 {% endblock %}
 
 {% block destiny %}
 <div class="container-fluid" id="destiny_area">
+    <hr>
     <h5>Current Destiny</h5>
     <table id="destiny_table">
         <tr>
@@ -175,7 +186,7 @@
 {% endblock %}
 {% block actions_header %}
 <hr>
-<h5>Rolls</h5>
+<h5>Actions</h5>
 {% endblock %}
 <!-- include block action_log -->
 <!-- include block player_info -->
