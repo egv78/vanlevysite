@@ -1,4 +1,4 @@
-{% extends 'sw_base.html' %}
+{% extends 'gen_base.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
@@ -21,14 +21,14 @@
         </span>
     </a>
 
-    <a class="navbar-brand" style="color:white;" href="{% url 'swdice:dockingbay' %}">
-        <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+    <a class="navbar-brand" style="color:white;" href="{% url 'gendice:confluence' %}">
+        <img src="{% static '/gendice/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
         {% block subtitle %}{% endblock %}
     </a>
 {% endblock %}
 
 {% block other_navbar_right %}
-<a href="{% url 'swdice:swroom_info' room_number %}">
+<a href="{% url 'gendice:genroom_info' room_number %}">
     <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
     {% block info_label %}
         <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
@@ -130,7 +130,7 @@
                             <table class="dice_table_sml">
                                 <tr>
                                     <td>
-                                        <img src="{% static 'swdice/Dice/boost.png' %}" width="40" title="Boost">
+                                        <img src="{% static 'gendice/Dice/gen_boost.png' %}" width="40" title="Boost">
                                         {{ dice_form.num_boost_dice }}
                                     </td>
                                     <td>
@@ -153,7 +153,7 @@
                             <table class="dice_table_sml">
                                 <tr>
                                     <td>
-                                        <img src="{% static 'swdice/Dice/ability.png' %}" width="40" title="Ability">
+                                        <img src="{% static 'gendice/Dice/gen_ability.png' %}" width="40" title="Ability">
                                         {{ dice_form.num_ability_dice }}
                                     </td>
                                     <td>
@@ -176,7 +176,7 @@
                         <table class="dice_table_sml">
                             <tr>
                                 <td>
-                                    <img src="{% static 'swdice/Dice/proficiency.png' %}" width="40" title="Proficiency">
+                                    <img src="{% static 'gendice/Dice/gen_proficiency.png' %}" width="40" title="Proficiency">
                                     {{ dice_form.num_proficiency_dice }}
                                 </td>
                                 <td>
@@ -199,7 +199,7 @@
                             <table class="dice_table_sml">
                                 <tr>
                                     <td>
-                                        <img src="{% static 'swdice/Dice/setback.png' %}" width="40" title="Setback">
+                                        <img src="{% static 'gendice/Dice/gen_setback.png' %}" width="40" title="Setback">
                                         {{ dice_form.num_setback_dice }}
                                     </td>
                                     <td>
@@ -222,7 +222,7 @@
                             <table class="dice_table_sml">
                                 <tr>
                                     <td>
-                                        <img src="{% static 'swdice/Dice/difficulty.png' %}" width="40" title="Difficulty">
+                                        <img src="{% static 'gendice/Dice/gen_difficulty.png' %}" width="40" title="Difficulty">
                                         {{ dice_form.num_difficulty_dice }}
                                     </td>
                                     <td>
@@ -245,7 +245,7 @@
                             <table class="dice_table_sml">
                                 <tr>
                                     <td>
-                                        <img src="{% static 'swdice/Dice/challenge.png' %}" width="40" title="Challenge">
+                                        <img src="{% static 'gendice/Dice/gen_challenge.png' %}" width="40" title="Challenge">
                                         {{ dice_form.num_challenge_dice }}
                                     </td>
                                     <td>
@@ -299,21 +299,11 @@
                             <table class="dice_table_sml">
                                 <tr>
                                     <td>
-                                        <img src="{% static 'swdice/Dice/force.png' %}" width="40" title="Force">
+                                        <div class="container-fluid" style="display: none;">
                                         {{ dice_form.num_force_dice }}
+                                        </div>
                                     </td>
                                     <td>
-                                        <button type="button"
-                                                onclick="addOne('force')"
-                                                class="btn btn-light btn-sm">
-                                            &#9650
-                                        </button>
-                                        <br>
-                                        <button type="button"
-                                                onclick="subtractOne('force')"
-                                                class="btn btn-light btn-sm">
-                                            &#9660
-                                        </button>
                                     </td>
                                 </tr>
                             </table>
@@ -677,42 +667,42 @@
                                 {% endif %}
                             {% if action.results_triumph > 0 %}
                                 {% for i in action.results_triumph|get_range %}
-                                <img src="{% static 'swdice/Results/Tri01.png' %}" title="{{action.results_triumph}} Triumph">
+                                <img src="{% static 'gendice/Results/Tri01.png' %}" title="{{action.results_triumph}} Triumph">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_despair > 0 %}
                                 {% for i in action.results_despair|get_range %}
-                                <img src="{% static 'swdice/Results/Des01.png' %}" title="{{action.results_despair}} Despair">
+                                <img src="{% static 'gendice/Results/Des01.png' %}" title="{{action.results_despair}} Despair">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_success > 0 %}
                                 {% for i in action.results_success|get_range %}
-                                <img src="{% static 'swdice/Results/Suc01.png' %}" title="{{action.results_success}} Success">
+                                <img src="{% static 'gendice/Results/Suc01.png' %}" title="{{action.results_success}} Success">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_failure > 0 %}
                                 {% for i in action.results_failure|get_range %}
-                                <img src="{% static 'swdice/Results/Fai01.png' %}" title="{{action.results_failure}} Failure">
+                                <img src="{% static 'gendice/Results/Fai01.png' %}" title="{{action.results_failure}} Failure">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_advantage > 0 %}
                                 {% for i in action.results_advantage|get_range %}
-                                <img src="{% static 'swdice/Results/Adv01.png' %}" title="{{action.results_advantage}} Advantage">
+                                <img src="{% static 'gendice/Results/Adv01.png' %}" title="{{action.results_advantage}} Advantage">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_threat > 0 %}
                                 {% for i in action.results_threat|get_range %}
-                                <img src="{% static 'swdice/Results/Thr01.png' %}" title="{{action.results_threat}} Threat">
+                                <img src="{% static 'gendice/Results/Thr01.png' %}" title="{{action.results_threat}} Threat">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_light_pips > 0 %}
                                 {% for i in action.results_light_pips|get_range %}
-                                <img src="{% static 'swdice/Results/Lig01.png' %}" title="{{action.results_light_pips}} Light Pips">
+                                <img src="{% static 'gendice/Results/Lig01.png' %}" title="{{action.results_light_pips}} Light Pips">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_dark_pips > 0 %}
                                 {% for i in action.results_dark_pips|get_range %}
-                                <img src="{% static 'swdice/Results/Dar01.png' %}" title="{{action.results_dark_pips}} Dark Pips">
+                                <img src="{% static 'gendice/Results/Dar01.png' %}" title="{{action.results_dark_pips}} Dark Pips">
                                 {% endfor %}
                             {% endif %}
                             {% if action.results_numerical %}
@@ -755,14 +745,13 @@
                     <div id="slideout_inner">
                         <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
                         <ul style="list-style-type:none; color: white;">
-                            <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost"> Boost</li>
-                            <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability"> Ability</li>
-                            <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
-                            <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback"> Setback</li>
-                            <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
-                            <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge"> Challenge</li>
+                            <li><img src="{% static 'gendice/Dice/gen_boost.png' %}" width="32" title="Boost"> Boost</li>
+                            <li><img src="{% static 'gendice/Dice/gen_ability.png' %}" width="32" title="Ability"> Ability</li>
+                            <li><img src="{% static 'gendice/Dice/gen_proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
+                            <li><img src="{% static 'gendice/Dice/gen_setback.png' %}" width="32" title="Setback"> Setback</li>
+                            <li><img src="{% static 'gendice/Dice/gen_difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
+                            <li><img src="{% static 'gendice/Dice/gen_challenge.png' %}" width="32" title="Challenge"> Challenge</li>
                             <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
-                            <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force"> Force</li>
                         </ul>
                     </div>
                 </div>
@@ -775,14 +764,12 @@
                     <div id="slideout_inner2">
                         <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
                          <ul style="list-style-type:none;">
-                            <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success"> Success</li>
-                            <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure"> Failure</li>
-                            <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
-                            <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat"> Threat</li>
-                            <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
-                            <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair"> Despair</li>
-                            <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light"> Light</li>
-                            <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark"> Dark</li>
+                            <li><img src="{% static 'gendice/Results/Suc01.png' %}" title="Success"> Success</li>
+                            <li><img src="{% static 'gendice/Results/Fai01.png' %}" title="Failure"> Failure</li>
+                            <li><img src="{% static 'gendice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
+                            <li><img src="{% static 'gendice/Results/Thr01.png' %}" title="Threat"> Threat</li>
+                            <li><img src="{% static 'gendice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
+                            <li><img src="{% static 'gendice/Results/Des01.png' %}" title="Despair"> Despair</li>
                         </ul>
                     </div>
                 </div>
@@ -805,11 +792,11 @@
                     <td>
                         {% block switch_avatar_button %}
                         {% if not room.disabled %}
-                        <a href="{% url 'swdice:switch_avatar_room' room_number %}">
+                        <a href="{% url 'gendice:switch_avatar_room_gen' room_number %}">
                         <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
                             Switch Avatar
                         </button>
-                            {% endif %}
+                        {% endif %}
                         {% endblock %}
                         </a>
                     </td>

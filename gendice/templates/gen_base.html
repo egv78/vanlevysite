@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block navbar_characteristics %}
+{% load static %}
+    <nav class="navbar navbar-expand-sm navbar-dark"
+         style="background-color: #252525;
+                background-image:   url({% static '/gendice/gen_background_side_3.jpg' %}),
+                                    url({% static '/gendice/gen_background_side_3.jpg' %}),
+                                    url({% static '/gendice/gen_background_top_3.jpg' %}),
+                                    url({% static '/gendice/gen_background_top_3.jpg' %});
+                background-repeat: repeat-y, repeat-y, repeat-x, repeat-x;
+                background-position: left, right, top, bottom;">
+{% endblock %}
+
+{% block brand %}
+    <h4>
+        <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+            <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+            Van Levy
+        </a>
+        <a class="navbar-brand" style="color: #fb911d;">
+            <img src="{% static '/gendice/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+            {% block subtitle %}{% endblock %}
+        </a>
+
+    </h4>
+{% endblock %}
+
+{% block other_navbar_right %}
+    <a class="navbar-brand" href="{% url 'gendice:about' %}">
+        <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+        {% block info_label %}
+            <span style="font-size: 0.67em; color: #fb911d;">
+                About
+            </span>
+        {% endblock %}
+    </a>
+{% endblock %}
+
+{% block navbar_end %}
+</nav>
+{% endblock %}

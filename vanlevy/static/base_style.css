@@ -250,7 +250,7 @@ input[type=number] {
 		left: 0;
 		padding: 12px 6px 12px 6px;
 		text-align: center;
-		background: #5587b1;
+		background: #073863;
 		color: #fff;
 		cursor:pointer;
 		-webkit-border-radius: 5px 0 0 5px;
@@ -261,7 +261,7 @@ input[type=number] {
 		position: absolute;
 		top: -5px;
 		left: 41px;
-		background: #5587b1;
+		background: #073863;
 		color: #fff;
 		width: 200px;
 		padding: 15px 0px 0px 0px;
@@ -291,7 +291,7 @@ input[type=number] {
 		left: 0;
 		padding: 12px 6px 12px 6px;
 		text-align: center;
-		background: #073863;
+		background: #5587b1;
 		color: #fff;
 		cursor:pointer;
 		-webkit-border-radius: 5px 0 0 5px;
@@ -302,7 +302,7 @@ input[type=number] {
 		position: absolute;
 		top: -5px;
 		left: 41px;
-		background: #073863;
+		background: #5587b1;
 		color: #fff;
 		width: 180px;
 		padding: 15px 0px 0px 0px;

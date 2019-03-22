@@ -5,6 +5,10 @@
       <w>elif</w>
       <w>endblock</w>
       <w>endfor</w>
+      <w>gendice</w>
+      <w>gendiceroller</w>
+      <w>genesys</w>
+      <w>genroom</w>
       <w>makeroom</w>
       <w>navbar</w>
       <w>passcode</w>

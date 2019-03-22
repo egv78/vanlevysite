@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('vanlevy.urls', namespace='vanlevy')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('swdice/', include('swdice.urls', namespace='swdice')),
+    path('gendice/', include('gendice.urls', namespace='gendice')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

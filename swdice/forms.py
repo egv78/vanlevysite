@@ -112,56 +112,56 @@ class SW_Room_Chat_Form(forms.ModelForm):
 class SW_Dice_Roll(forms.ModelForm):
     num_boost_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Boost", 'value': 0, 'required': False, 'id': "boost", 'label': "Boost",
-            'class': "sml-input"
+            'max': 9, 'min': 0, 'title': "Boost Dice", 'value': 0, 'required': False, 'id': "boost",
+            'label': "Boost", 'class': "sml-input"
         }
     ))
     num_setback_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Setback", 'value': 0, 'required': False, 'id': "setback", 'label': "Setback",
-            'class': "sml-input"
+            'max': 9, 'min': 0, 'title': "Setback Dice", 'value': 0, 'required': False, 'id': "setback",
+            'label': "Setback", 'class': "sml-input"
         }
     ))
     num_ability_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Ability", 'value': 0, 'required': False, 'id': "ability", 'label': "Ability",
-            'class': "sml-input"
+            'max': 9, 'min': 0, 'title': "Ability Dice", 'value': 0, 'required': False, 'id': "ability",
+            'label': "Ability", 'class': "sml-input"
         }
     ))
     num_difficulty_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Difficulty", 'value': 0, 'required': False, 'id': "difficulty",
+            'max': 9, 'min': 0, 'title': "Difficulty Dice", 'value': 0, 'required': False, 'id': "difficulty",
             'label': "Difficulty", 'class': "sml-input"
         }
     ))
     num_proficiency_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Proficiency", 'value': 0, 'required': False, 'id': "proficiency",
+            'max': 9, 'min': 0, 'title': "Proficiency Dice", 'value': 0, 'required': False, 'id': "proficiency",
             'label': "Proficiency", 'class': "sml-input"
         }
     ))
     num_challenge_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Challenge", 'value': 0, 'required': False, 'id': "challenge",
+            'max': 9, 'min': 0, 'title': "Challenge Dice", 'value': 0, 'required': False, 'id': "challenge",
             'label': "Challenge", 'class': "sml-input"
         }
     ))
     num_force_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Force", 'value': 0, 'required': False, 'id': "force", 'label': "Force",
-            'class': "sml-input"
+            'max': 9, 'min': 0, 'title': "Force Dice", 'value': 0, 'required': False, 'id': "force",
+            'label': "Force", 'class': "sml-input"
         }
     ))
     num_numerical_dice = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 9, 'min': 0, 'title': "Numerical", 'value': 0, 'required': False, 'id': "numerical",
+            'max': 9, 'min': 0, 'title': "Numerical Dice", 'value': 0, 'required': False, 'id': "numerical",
             'label': "Numerical", 'class': "sml-input"
         }
     ))
     numerical_dice_sides = forms.IntegerField(widget=forms.NumberInput(
         attrs={
-            'max': 100, 'min': 0, 'title': "Sides", 'value': 100, 'required': False, 'id': "sides", 'label': "Sides",
-            'class': "med-input"
+            'max': 100, 'min': 0, 'title': "Sides", 'value': 100, 'required': False, 'id': "sides",
+            'label': "Sides", 'class': "med-input"
         }
     ))
     additional_triumph = forms.IntegerField(widget=forms.NumberInput(

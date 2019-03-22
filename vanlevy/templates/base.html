@@ -144,21 +144,20 @@
                                         Docking Bay
                                     </a>
                                     {% else %}
-                                    <a class="dropdown-item" href="{% url 'swdice:about' %}">Dice Roller (SW)</a>
+                                    <a class="dropdown-item" href="{% url 'swdice:about' %}">Star Wars (FFG)</a>
                                     {% endif %}
                                 {% endblock %}
 
                                 {% block link_dice_gen %}
                                     {% if user.is_authenticated %}
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{% url 'gendice:confluence' %}">
                                         <img src="{% static '/vanlevy/Genesys_32.png' %}" alt="Genesys Icon"
                                                  height="32" width="32">
-                                        <span style="text-decoration: line-through;">Confluence</span>
+                                        Confluence
                                     </a>
                                     {% else %}
-                                    <a class="dropdown-item" href="#">
-                                        <span style="text-decoration: line-through;">
-                                        Dice Roller (Gen)</span></a>
+                                    <a class="dropdown-item" href="{% url 'gendice:about' %}">
+                                        Genesys (FFG)</a>
                                     {% endif %}
                                 {% endblock %}
 

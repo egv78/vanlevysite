@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'vanlevy.apps.VanlevyConfig',
     'swdice.apps.SwdiceConfig',
+    'gendice.apps.GendiceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,7 +68,7 @@ ROOT_URLCONF = 'vanlevysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['vanlevy/templates', 'accounts/templates', 'swdice/templates'],
+        'DIRS': ['vanlevy/templates', 'accounts/templates', 'swdice/templates', 'gendice/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -168,6 +169,7 @@ LOGIN_EXEMPT_URLS = (
     '/accounts/password-reset/complete/',
     # Dice Rollers - only About pages
     '/swdice/',
+    '/gendice/',
 )
 
 

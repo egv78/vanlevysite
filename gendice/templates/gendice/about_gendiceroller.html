@@ -1,34 +1,23 @@
-{% extends 'sw_base.html' %}
+{% extends 'gen_base.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
-    <title>About SW Dice Roller</title>
+    <title>About Gen Dice Roller</title>
 {% endblock %}
 
-{% block brand %}
-    {% load static %}
-        <h4>
-            <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-                <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
-                Van Levy
-            </a>
-            <a class="navbar-brand" style="color:white;" href="{% url 'swdice:dockingbay' %}">
-                <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
-                {% block subtitle %} About{% endblock %}
-            </a>
-
-        </h4>
-{% endblock %}
+{% block subtitle %} About{% endblock %}
 
 {% block body %}
 {% block other_navbar_right %}
 {% endblock %}
+{% load static %}
 <div class="container">
     <p></p>
-    <h4>About the SW Dice Roller</h4>
+    <h4>About the Genesys Dice Roller</h4>
     <p>
-        The Star Wars Dice Roller is designed to be used in conjunction with
-        <a href="https://www.fantasyflightgames.com/en/index/">Fantasy Flight Games'</a> Star Wars Role Playing Game.
+        The Genesys Dice Roller is designed to be used in conjunction with
+        <a href="https://www.fantasyflightgames.com/en/products/genesys/">Fantasy Flight Games'</a>
+        Genesys Role Playing System.
         This website is <em>not</em> made with any input or coordination from Fantasy Flights,
         which still holds the copyright to all of their original content.
     </p>
@@ -54,18 +43,17 @@
                 <div class="card card-body">
                     <h6 class="card-title">Core Rule Books (CRBs)</h6>
                     <ul>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire/">
-                                Edge of the Empire</a>
-                             - Focuses on Smugglers, Bounty Hunters, Bantha Fodder, and Nerf Herders.
+                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/genesys-core-rulebook/">
+                                Genesys Core Rulebook</a>
+                             - Genesys isn't a realm so much as a set of mechanics to develop your own realm.
                         </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny/">
-                                Force and Destiny</a>
-                             - Jedis are the centerpiece of this CRB.  Force powers galore.
+                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/realms-terrinoth/">
+                                Realms of Terrinoth</a>
+                             - This is the first "world-book" of Genesys.  Classic high-medieval fantasy.
                         </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-age-of-rebellion/">
-                            Age of Rebellion</a>
-                            - You know all those pilots and fighters that get killed in the movies?
-                            Be one of them (and maybe <em>not</em> die)!
+                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/shadow-beanstalk/">
+                            Shadow of the Beanstalk</a>
+                            - Set in the Android universe, this "world-book" is set in a near-future Earth.
                         </li>
                     </ul>
                 </div>
@@ -130,32 +118,32 @@
                                 <div class="row">
                                     <div class="col">
                                         <ul style="list-style-type:none;">
-                                            <li><img src="{% static 'swdice/Results/Suc01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Suc01.jpg' %}"
                                                      width="32" height="32" title="Success">
                                                 Success</li>
-                                            <li><img src="{% static 'swdice/Results/Adv01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Adv01.jpg' %}"
                                                      width="32" height="32" title="Advantage">
                                                 Advantage</li>
-                                            <li><img src="{% static 'swdice/Results/Tri01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Tri01.jpg' %}"
                                                      width="32" height="32" title="Triumph">
                                                 Triumph</li>
-                                            <li><img src="{% static 'swdice/Results/Lig01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Lig01.jpg' %}"
                                                      width="32" height="32" title="Triumph">
                                                 Light</li>
                                         </ul>
                                     </div>
                                     <div class="col">
                                         <ul style="list-style-type:none;">
-                                            <li><img src="{% static 'swdice/Results/Fai01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Fai01.jpg' %}"
                                                      width="32" height="32" title="Failure">
                                                 Failure</li>
-                                            <li><img src="{% static 'swdice/Results/Thr01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Thr01.jpg' %}"
                                                      width="32" height="32" title="Threat">
                                                 Threat</li>
-                                            <li><img src="{% static 'swdice/Results/Des01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Des01.jpg' %}"
                                                      width="32" height="32" title="Despair">
                                                 Despair</li>
-                                            <li><img src="{% static 'swdice/Results/Dar01.png' %}"
+                                            <li><img src="{% static 'swdice/Results/Dar01.jpg' %}"
                                                      width="32" height="32" title="Triumph">
                                                 Dark</li>
                                         </ul>
@@ -176,9 +164,9 @@
               <h5 class="card-title">Success and Failure</h5>
                 <p class="card-text">
                 Success
-                <img src="{% static 'swdice/Results/Suc01.png' %}" width="20" height="20" title="Success">
+                <img src="{% static 'swdice/Results/Suc01.jpg' %}" width="20" height="20" title="Success">
                 pips and Failure
-                <img src="{% static 'swdice/Results/Fai01.png' %}" width="20" height="20" title="Failure">
+                <img src="{% static 'swdice/Results/Fai01.jpg' %}" width="20" height="20" title="Failure">
                 pips cancel each other.  In order to succeed in a roll, the results must have
                 one more Success pip than Failure pips.  A roll with no uncancelled success pips is a failure.
                 </p>
@@ -189,9 +177,9 @@
               <h5 class="card-title">Advantage and Threat</h5>
                 <p class="card-text">
                 Advantage
-                <img src="{% static 'swdice/Results/Adv01.png' %}" width="20" height="20" title="Advantage">
+                <img src="{% static 'swdice/Results/Adv01.jpg' %}" width="20" height="20" title="Advantage">
                 pips and Threat
-                <img src="{% static 'swdice/Results/Thr01.png' %}" width="20" height="20" title="Threat">
+                <img src="{% static 'swdice/Results/Thr01.jpg' %}" width="20" height="20" title="Threat">
                 pips cancel each other.
                 It is possible to succeed on a roll, but with threat, just as it is possible to fail with advantage.
                 See the Core Rulebooks for how these results play out narratively.
@@ -204,9 +192,9 @@
               <h5 class="card-title">Triumph and Failure</h5>
                 <p class="card-text">
                 Triumph
-                <img src="{% static 'swdice/Results/Tri01.png' %}" width="20" height="20" title="Triumph">
+                <img src="{% static 'swdice/Results/Tri01.jpg' %}" width="20" height="20" title="Triumph">
                 pips and Despair
-                <img src="{% static 'swdice/Results/Des01.png' %}" width="20" height="20" title="Despair">
+                <img src="{% static 'swdice/Results/Des01.jpg' %}" width="20" height="20" title="Despair">
                 pips <strong>do not</strong> cancel each other.
                 The effects of a Triumph can be compared to a "critical hit" that you may have seen in another system.
                 Likewise, a Despair can be thought of as a "critical failure".
@@ -222,9 +210,9 @@
               <h5 class="card-title">Force Pips</h5>
                 <p class="card-text">
                 Light side
-                <img src="{% static 'swdice/Results/Lig01.png' %}" width="20" height="20" title="Light">
+                <img src="{% static 'swdice/Results/Lig01.jpg' %}" width="20" height="20" title="Light">
                 force pips and Dark side
-                <img src="{% static 'swdice/Results/Dar01.png' %}" width="20" height="20" title="Dark">
+                <img src="{% static 'swdice/Results/Dar01.jpg' %}" width="20" height="20" title="Dark">
                 force pips <em>do not</em> cancel each other.  They have their own unique rules for use.
                 Please see one of the Core Rulebooks for how they are used.
                 </p>

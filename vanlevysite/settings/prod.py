@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'vanlevy.apps.VanlevyConfig',
     'swdice.apps.SwdiceConfig',
+    'gendice.apps.GendiceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

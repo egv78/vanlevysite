@@ -10,6 +10,8 @@ class SWRoom(models.Model):
     created_on = models.DateTimeField()
     created_by = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
     open_to_all = models.BooleanField(choices=BOOL_CHOICES, default=False)
+    genesys = models.BooleanField(choices=BOOL_CHOICES, default=False)
+    disabled = models.BooleanField(choices=BOOL_CHOICES, default=False)
 
     def __str__(self):
         return self.name
@@ -31,6 +33,7 @@ class SWRoomToUser(models.Model):
     date_banned = models.DateTimeField(blank=True, null=True)
     default_avatar_is_user = models.BooleanField(default=True)
     avatar_id = models.ForeignKey(Avatar, on_delete=models.CASCADE, default="", blank=True, null=True)
+    archive = models.BooleanField(choices=BOOL_CHOICES, default=False)
 
     def __str__(self):
         name_string = "ROOM #" + str(self.room_id.name) + "# to USER *" + str(self.user_id.username) + "*"

@@ -265,12 +265,13 @@ th, td {
                             </h5>
                         </div>
                         <div class="card-body" style="background-image: url({% static '/vanlevy/CardImageDroid.png' %});
-                                    background-repeat: no-repeat; background-color: #d6e9f9; background-position: center;">
+                                    background-repeat: no-repeat; background-color: #d6e9f9; background-position: center;
+                                    min-height: 240px;">
                             <h5 class="card-title">
                                 <strong>Hub: </strong>
                                 <a href="{% url 'swdice:dockingbay' %}">Docking Bay</a>
                             </h5>
-                            {% if my_rooms_list %}
+                            {% if my_sw_rooms_list %}
                                 <table width="100%">
                                 <col width="60%">
                                 <col width="20%">
@@ -280,7 +281,7 @@ th, td {
                                     <td><strong>Avatar</strong></td>
                                     <td><strong>GM</strong></td>
                                 </tr>
-                                {% for room in my_rooms_list %}
+                                {% for room in my_sw_rooms_list %}
                                 <tr>
                                     <td class="room_name_table">
                                         <div>
@@ -305,27 +306,50 @@ th, td {
                     <div class="card border-primary mb-3">
                         <div class="card-header">
                             <h5 class="card-title" style="margin-bottom: 0px;">
-                                <a href="#">
+                                <a href="{% url 'gendice:about' %}">
                                     <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
                                         alt="SW Dice Roller" height="32" width="32">
                                     </a>
-                                Genesys
+                                Genesys <em>(alpha)</em>
                             </h5>
                         </div>
                         <div class="card-body" style="background-image: url({% static '/vanlevy/Genesys_reverse.png' %});
-                                background-repeat: no-repeat; background-color: #fdecd9; background-position: center;">
+                                background-repeat: no-repeat; background-color: #fdecd9; background-position: center;
+                                min-height: 240px;">
                             <h5 class="card-title">
                                 <strong>Hub: </strong>
-                                <a href="#">Confluence</a>
+                                <a href="{% url 'gendice:confluence' %}">Confluence</a>
                             </h5>
+                            {% if my_gen_rooms_list %}
+                                <table width="100%">
+                                <col width="60%">
+                                <col width="20%">
+                                <col width="20%">
+                                <tr>
+                                    <td><strong>Room Name</strong></td>
+                                    <td><strong>Avatar</strong></td>
+                                    <td><strong>GM</strong></td>
+                                </tr>
+                                {% for room in my_gen_rooms_list %}
+                                <tr>
+                                    <td class="room_name_table">
+                                        <div>
+                                            <a href="{% url 'gendice:genroom' room.id %}">{{ room.room_name }}</a>
+                                        </div>
+                                    </td>
+                                    <td>{{ room.avatar }}</td>
+                                    <td>{{ room.gm }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            {% else %}
                             <p></p>
-                            <p>
-                                <em>
+                                <p><em>
                                     You have not entered any Genesys rooms yet.
-                                    It may have something to do with the fact that they don't yet exist.
-                                </em>
-                            </p>
+                                    To make a room or join someone else's, go to the Confluence.
+                                </em></p>
                             <p><br></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -342,7 +366,8 @@ th, td {
                         </div>
                         <div class="card-body"
                                 style="background-image: url({% static '/vanlevy/d20_reverse.png' %});
-                                background-repeat: no-repeat; background-color: #D7D9F4; background-position: center;">
+                                background-repeat: no-repeat; background-color: #D7D9F4; background-position: center;
+                                min-height: 240px;">
                             <h5 class="card-title">
                                 <strong>Hub: </strong>
                                 <a href="#">The Dungeon</a>
@@ -369,7 +394,8 @@ th, td {
                         </div>
                         <div class="card-body"
                                 style="background-image: url({% static '/vanlevy/MutantYearZero_pale_200_2.png' %});
-                                background-repeat: no-repeat; background-color: #F8EEC6; background-position: center;">
+                                background-repeat: no-repeat; background-color: #F8EEC6; background-position: center;
+                                min-height: 240px;">
                             <h5 class="card-title">
                                 <strong>Hub: </strong>
                                 <a href="#">The Zone</a>

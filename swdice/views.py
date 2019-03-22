@@ -204,14 +204,16 @@ def about(request):
     return render(request, template_name)
 
 
-def make_sw_room(request):
-    if request.method == 'POST':
+class MakeSWRoom(TemplateView, FormMixin):
+    def post(self, request, **kwargs):
         form = Make_SW_Room(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.created_by = request.user
             now = datetime.datetime.now()
             instance.created_on = now
+            genesys_dice = 'gendice' in self.template_name
+            instance.genesys = genesys_dice
             instance.save()
             user_id = request.user.id
             room_id = instance.id
@@ -221,17 +223,22 @@ def make_sw_room(request):
             destiny.dark_pips = 0
             destiny.light_pips = 0
             destiny.save()
-            return redirect('swdice:dockingbay')
+            redirect_place = 'gendice:confluence' if 'gendice' in self.template_name else 'swdice:dockingbay'
+            return redirect(redirect_place)
         else:
             args = {'form': form}
-            return render(request, 'swdice/make_swroom.html', args)
-    else:
+            form_template = 'swdice/make_swroom.html' if 'swdice' in self.template_name else 'gendice/make_genroom.html'
+            return render(request, form_template, args)
+
+    def get(self, request, **kwargs):
         now = datetime.datetime.now()
         user_id = request.user.id
-        initial_args = {'open_to_all': True, 'created_on': now, 'created_by': user_id}
+        genesys_dice = 'gendice' in self.template_name
+        print(genesys_dice)
+        initial_args = {'open_to_all': True, 'created_on': now, 'created_by': user_id, 'genesys': genesys_dice}
         form = Make_SW_Room(initial_args)
         args = {'form': form}
-        return render(request, 'swdice/make_swroom.html', args)
+        return render(request, self.template_name, args)
 
 
 def direct_view(request, swroom_id, slug):
@@ -272,6 +279,7 @@ class DockingBay(FormMixin, TemplateView):
 
     # if request.method == 'GET'
     def get(self, request, *args, **kwargs):
+        genesys = 'gendice' in self.template_name
         try:
             room_id = self.kwargs['swroom_id']
         except:
@@ -280,6 +288,7 @@ class DockingBay(FormMixin, TemplateView):
         kwargs = self.get_form_kwargs()
         avatars = dict(kwargs['avatar_list'])
         current_user_id = self.request.user.id
+        genesys_dice = 'confluence' in self.template_name
         my_rooms_to_user_list_first = SWRoomToUser.objects.filter(user_id_id=current_user_id, banned=0).order_by(
             '-admitted')
         my_rooms_to_user_list = my_rooms_to_user_list_first[::-1]
@@ -287,9 +296,21 @@ class DockingBay(FormMixin, TemplateView):
         my_avatars_list = {}
         gms_list = {}
         player_numbers_list = {}
+        has_archived_sw_rooms = False
+        has_archived_gen_rooms = False
+        number_of_rooms = 0
 
         for room in my_rooms_to_user_list:
-            my_rooms_list += SWRoom.objects.filter(pk=room.room_id_id)
+            this_room = SWRoom.objects.filter(pk=room.room_id_id)[0]
+            if this_room.disabled:
+                if this_room.genesys:
+                    has_archived_gen_rooms = True
+                else:
+                    has_archived_sw_rooms = True
+            else:
+                if this_room.genesys == genesys:
+                    number_of_rooms += 1
+            my_rooms_list += SWRoom.objects.filter(pk=room.room_id_id, genesys=genesys_dice)
             if room.game_master:
                 gms_list[room.room_id_id] = "you"
             else:
@@ -317,11 +338,16 @@ class DockingBay(FormMixin, TemplateView):
         my_avatar_objects = Avatar.objects.filter(user_id=self.request.user.id, deleted=0)
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id,
                 'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list, 'form_direct': form_direct,
-                'player_numbers_list': player_numbers_list}
+                'player_numbers_list': player_numbers_list, 'number_of_rooms': number_of_rooms,
+                'has_archived_gen_rooms': has_archived_gen_rooms, 'has_archived_sw_rooms': has_archived_sw_rooms}
         return render(request, self.template_name, args)
 
     # if request.method == 'POST':
     def post(self, request, **kwargs):
+        genesys = 'gendice' in self.template_name
+        room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
+        hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
+        enter_url = 'gendice:enter_passcode_gen' if genesys else 'swdice:enter_passcode'
         kwargs = self.get_form_kwargs()
         form = Enter_SW_Room(**kwargs)
         form_direct = Enter_SW_Direct(**kwargs)
@@ -343,16 +369,16 @@ class DockingBay(FormMixin, TemplateView):
                         my_rooms_list += SWRoom.objects.filter(pk=my_room.room_id_id)
                     been_there = my_rooms_to_user_list.filter(room_id_id=swroom_id)
                     if been_there and not been_there[0].banned and been_there[0].avatar_id_id == avatar_id:
-                        return redirect('swdice:swroom', swroom_id)
+                        return redirect(room_url, swroom_id)
                     elif been_there and not been_there[0].banned:
                         link_instance = been_there[0]
                         link_instance.avatar_id_id = avatar_id if int(avatar_id) > 0 else ""
                         link_instance.default_avatar_is_user = 1 if int(avatar_id) == 0 else 0
                         link_instance.save()
                         # print("here")
-                        return redirect('swdice:swroom', swroom_id)
+                        return redirect(room_url, swroom_id)
                     elif been_there and been_there[0].banned:
-                        return redirect('swdice:dockingbay')
+                        return redirect(hub_url)
                     else:
                         passcode_correct = room.passcode
                         room_is_open = room.open_to_all
@@ -360,20 +386,23 @@ class DockingBay(FormMixin, TemplateView):
                             game_master = False
                             banned = False
                             make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
-                            return redirect('swdice:swroom', swroom_id)
+                            return redirect(room_url, swroom_id)
                         else:
-                            return redirect('swdice:enter_passcode')
+                            return redirect(enter_url)
 
                 except SWRoom.DoesNotExist:
                     raise Http404("Room has not yet been created")
 
             else:
-                return redirect('swdice:dockingbay')
+                return redirect(hub_url)
 
         elif request.method == "POST" and "direct" in request.POST:
             if form_direct.is_valid():
                 init_direct_link = form_direct.cleaned_data['direct']
-                first_bit = "www.vanlevy.com/swdice/room/"
+                if 'swdice' in init_direct_link:
+                    first_bit = "www.vanlevy.com/swdice/room/"
+                else:
+                    first_bit = "www.vanlevy.com/gendice/room/"
                 end_bit = init_direct_link.replace(first_bit, "", 1)
                 number_string = ""
 
@@ -397,23 +426,23 @@ class DockingBay(FormMixin, TemplateView):
                         '-admitted')
                     been_there = my_rooms_to_user_list.filter(room_id_id=new_room.id)
                     if been_there and not been_there[0].banned:
-                        return redirect('swdice:swroom', new_room.id)
+                        return redirect(room_url, new_room.id)
                     elif not been_there:
                         game_master = False
                         banned = False
                         make_user_room_link(new_room.id, request.user.id, game_master, banned, use_user_id, avatar_id)
-                        return redirect('swdice:swroom', new_room.id)
+                        return redirect(room_url, new_room.id)
                     elif been_there and been_there[0].banned:
-                        return redirect('swdice:dockingbay')
+                        return redirect(hub_url)
                     else:
-                        return redirect('swdice:dockingbay')
+                        return redirect(hub_url)
 
-                return redirect('swdice:dockingbay')
+                return redirect(hub_url)
             else:
-                return redirect('swdice:dockingbay')
+                return redirect(hub_url)
 
         else:
-            return redirect('swdice:dockingbay')
+            return redirect(hub_url)
 
 
 class SWRoomViews(FormMixin, TemplateView):
@@ -444,8 +473,13 @@ class SWRoomViews(FormMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         swroom_id = self.kwargs['swroom_id']
+        room = SWRoom.objects.get(pk=swroom_id)
         current_user = self.request.user
         current_user_id = self.request.user.id
+        genesys = 'genroom' in self.template_name
+        room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
+        hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
+        info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'
 
         viewing_player_info = "player" in self.template_name
         if viewing_player_info:
@@ -481,13 +515,22 @@ class SWRoomViews(FormMixin, TemplateView):
             avatar_is_user = old_gm_avatar_is_user
             avatar = old_gm_avatar
             make_user_room_link(swroom_id, user_id, False, False, avatar_is_user, avatar)
-            return redirect('swdice:swroom_info', swroom_id)
+            return redirect(info_url, swroom_id)
         elif request.method == "POST" and "ban_real" in request.POST:
             make_user_room_link(swroom_id, player_id, False, True, player_avatar_is_user, player_avatar)
-            return redirect('swdice:swroom_info', swroom_id)
+            return redirect(info_url, swroom_id)
         elif request.method == "POST" and "unban_real" in request.POST:
             make_user_room_link(swroom_id, player_id, False, False, player_avatar_is_user, player_avatar)
-            return redirect('swdice:swroom_info', swroom_id)
+            return redirect(info_url, swroom_id)
+        # Room Info Functions
+        elif request.method == "POST" and "restore_real" in request.POST:
+            room.disabled = 0
+            room.save()
+            return redirect(info_url, swroom_id)
+        elif request.method == "POST" and "archive_real" in request.POST:
+            room.disabled = 1
+            room.save()
+            return redirect(info_url, swroom_id)
         # Regular Room functions
         elif request.method == "POST" and "chat" in request.POST:
             # print(request.POST)
@@ -511,9 +554,9 @@ class SWRoomViews(FormMixin, TemplateView):
                 new_chat.recipient = recipient_user if is_private else None
                 new_chat.recipient_avatar = recipient_avatar
                 new_chat.save()
-                return redirect('swdice:swroom', swroom_id)
+                return redirect(room_url, swroom_id)
             else:
-                return redirect('swdice:swroom', swroom_id)
+                return redirect(room_url, swroom_id)
         elif request.method == "POST" and "add_dark" in request.POST:
             caption_text = " added a DARK destiny point."
             delta_light = 0
@@ -521,7 +564,7 @@ class SWRoomViews(FormMixin, TemplateView):
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
         elif request.method == "POST" and "rem_dark" in request.POST:
             caption_text = " removed a DARK destiny point."
             delta_light = 0
@@ -529,7 +572,7 @@ class SWRoomViews(FormMixin, TemplateView):
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
         elif request.method == "POST" and "use_dark" in request.POST:
             caption_text = " used a DARK destiny point."
             delta_light = 1
@@ -537,7 +580,7 @@ class SWRoomViews(FormMixin, TemplateView):
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
         elif request.method == "POST" and "add_light" in request.POST:
             caption_text = " added a LIGHT destiny point."
             delta_light = 1
@@ -545,7 +588,7 @@ class SWRoomViews(FormMixin, TemplateView):
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
         elif request.method == "POST" and "rem_light" in request.POST:
             caption_text = " removed a LIGHT destiny point."
             delta_light = -1
@@ -553,7 +596,7 @@ class SWRoomViews(FormMixin, TemplateView):
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
         elif request.method == "POST" and "use_light" in request.POST:
             caption_text = " used a LIGHT destiny point."
             delta_light = -1
@@ -561,11 +604,16 @@ class SWRoomViews(FormMixin, TemplateView):
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
         elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
             dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            #     redirect_url = 'gendice:genroom'
+            # else:
+            #     redirect_url = 'swdice:swroom'
             secret_roll = "roll_dice_secret" in request.POST
-            print(request.POST)
+            # print(request.POST)
             # text = chat_form['chat_text']
             # print(text)
 
@@ -593,7 +641,7 @@ class SWRoomViews(FormMixin, TemplateView):
                     del dice_pool['just_caption']
                 if dice_pool['caption_text']:
                     del dice_pool['caption_text']
-                print(dice_pool)
+                # print(dice_pool)
                 dice_pool_carryover = dice_pool
 
             # request.session['dice_pool_carryover'] = dice_pool_carryover
@@ -601,11 +649,15 @@ class SWRoomViews(FormMixin, TemplateView):
             #     del request.session['dice_pool_carryover']
             # request.session['chat_carryover'] = text
 
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
 
     def get(self, request, *args, **kwargs):
         # kwargs = self.get_form_kwargs()
         swroom_id = self.kwargs['swroom_id']
+        genesys = 'genroom' in self.template_name
+        room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
+        hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
+        info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'
         # try:
         #     initial_args = self.kwargs.dice_pool_carryover
         # except:
@@ -635,7 +687,7 @@ class SWRoomViews(FormMixin, TemplateView):
             should_be_here = False
             if user_to_room_link:
                 if user_to_room_link.banned:
-                    return redirect('swdice:dockingbay')  # will need to change when banning implemented
+                    return redirect(hub_url)  # will need to change when banning implemented
                 elif not viewing_player_info:
                     should_be_here = True
                 elif viewing_player_info and user_to_room_link.game_master:
@@ -648,7 +700,7 @@ class SWRoomViews(FormMixin, TemplateView):
                     should_be_here = True
                 elif room_is_open:
                     make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
-                    return redirect('swdice:swroom', swroom_id)
+                    return redirect(room_url, swroom_id)
                 else:
                     return redirect('swdice:enter_passcode')
 

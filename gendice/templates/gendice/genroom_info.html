@@ -1,8 +1,8 @@
-{% extends 'swdice/swroom.html' %}
+{% extends 'gendice/genroom.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
-    <title>SW Room Info</title>
+    <title>Gen Room Info</title>
 {% endblock %}
 
 {% block brand %}
@@ -13,8 +13,8 @@
 <span class="d-inline-block text-truncate" style="max-width: 700px; color:white; font-size: 150%; margin-right: 10px;">
     {{room.name}}
 </span>
-<a class="navbar-brand" style="color:white;" href="{% url 'swdice:dockingbay' %}">
-    <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+<a class="navbar-brand" style="color:white;" href="{% url 'gendice:confluence' %}">
+    <img src="{% static '/vanlevy/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
     {% block subtitle %}{% endblock %}
 </a>
 <span class="d-inline-block" style="color:white; font-size: 150%;"> Info Page </span>
@@ -38,7 +38,7 @@
             </p>
         </td>
         <td>
-            <a href="{% url 'swdice:swroom' room_number %}">
+            <a href="{% url 'gendice:genroom' room_number %}">
             <button type="button" class="btn btn-info align-right" name="back to page">
                 Back to Live Page
             </button>
@@ -102,7 +102,7 @@
             {% if player_is_gm %}
             <td>
 
-                <a href="{% url 'swdice:swroom_player_info' room_number player.user_id_id%}">
+                <a href="{% url 'gendice:genroom_player_info' room_number player.user_id_id%}">
                 <button type="button" class="btn btn-info btn-sm btn-outline-info" name="Player_Info">
                     Player Info
                 </button>
@@ -150,7 +150,7 @@
                     {% else %}
                     <li>This room is <strong>open to all</strong></li>
                     {% endif %}
-                    <li><strong>Direct Link:</strong> {% url 'swdice:swroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</li>
+                    <li><strong>Direct Link:</strong> {% url 'gendice:genroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</li>
                     <li><strong>Created on:</strong> {{ room.created_on }}</li>
                     <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
                 </ul>
@@ -158,14 +158,14 @@
             <div class="col-md-6">
                 {% if room.disabled %}
                 <p>This room has been <strong>archived</strong>.<br>
-                    No rolls or chats can be made in this room. On the Docking Bay page, this room is only visible on the
+                    No rolls or chats can be made in this room. On the Confluence page, this room is only visible on the
                     Archived Rooms tab.
                 </p>
                 {% else %}
                 <p>
                     As GM, you can choose to <em>archive</em> this room.<br>
                     Once a room has been <em>archived</em>, players will not be able to make any more rolls or chats, and
-                    the room will only be visible on the Archived Rooms tab on the Docking Bay page.
+                    the room will only be visible on the Archived Rooms tab on the Confluence page.
                 </p>
                 {% endif %}
                 <div class="row no-gutters" id="disable_button" style="padding: 0px 3px">

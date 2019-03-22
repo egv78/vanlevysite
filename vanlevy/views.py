@@ -69,11 +69,11 @@ def personal_portal(request):
     my_rooms_to_user_list = SWRoomToUser.objects.filter(user_id_id=current_user_id, banned=0).order_by(
         '-admitted')
     my_rooms_reversed_list = my_rooms_to_user_list[::-1]
-    number_rooms = 5 if (len(my_rooms_to_user_list) > 5) else len(my_rooms_to_user_list)
+    number_rooms = 5
+    my_sw_rooms_list = []
+    my_gen_rooms_list = []
 
-    my_rooms_list = []
-
-    for room in my_rooms_reversed_list[:number_rooms]:
+    for room in my_rooms_reversed_list:
         this_room = SWRoom.objects.filter(pk=room.room_id_id)[0]
         room_name = (this_room.name[:38] + '..') if len(this_room.name) > 40 else this_room.name
         room_id = room.room_id_id
@@ -95,9 +95,14 @@ def personal_portal(request):
             except:
                 name_in_room = user_name
         new_room = TempRoom(room_name, name_in_room, gm, room_id)
-        my_rooms_list.append(new_room)
+        if this_room.genesys:
+            if len(my_gen_rooms_list) < number_rooms and not this_room.disabled:
+                my_gen_rooms_list.append(new_room)
+        else:
+            if len(my_sw_rooms_list) < number_rooms and not this_room.disabled:
+                my_sw_rooms_list.append(new_room)
 
     template_name = 'vanlevy/vl_portal.html'
-    args = {'user': request.user, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars,
-            'has_avatars': has_avatars, 'number_rooms': number_rooms}
+    args = {'user': request.user, 'my_sw_rooms_list': my_sw_rooms_list, 'my_gen_rooms_list': my_gen_rooms_list,
+            'my_avatars_list': my_avatars, 'has_avatars': has_avatars, 'number_rooms': number_rooms}
     return render(request, template_name, args)
