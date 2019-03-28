@@ -16,16 +16,17 @@
     <div class="row">
         <div class="col-md-4">
             <br>
-            <h1>Hail, {% if user.userprofile.user_first_name %}
+            <h3>Hail, {% if user.userprofile.user_first_name %}
                 {{user.userprofile.user_first_name}}!
                 {% else %}
                 {{user.username}}!
                 {% endif %}
-            </h1>
+            </h3>
             <p>
                 This is the <strong>Confluence</strong>.
                 From here, you will be able to join make rooms that use FFG's Genesys dice.
             </p>
+
         </div>
         <div class="col-md-8">
             <br>

@@ -25,33 +25,9 @@
 
 {% load static %}
 
-{% block room_header %}
-<div class="container">
-<table style="width: 100%;">
-    <tr>
-        <td>
-            <h4>This page does not automatically update.</h4>
-            <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
-            <p>
-                However, this page loads <em>all</em> actions and chats, while the main page shows only the 100 most
-                recent actions and 100 most recent chats.
-            </p>
-        </td>
-        <td>
-            <a href="{% url 'swdice:swroom' room_number %}">
-            <button type="button" class="btn btn-info align-right" name="back to page">
-                Back to Live Page
-            </button>
-            </a>
-        </td>
-    </tr>
-</table>
-</div>
-{% endblock %}
-
 {% block user_table %}
 <div class="container" id="current_users">
-    <h5>User Information Table</h5>
+    <h5>Player Information Table</h5>
     <table id="users_table" style="100%">
         <tr>
             <th style="width:80px">User <br>Image</th>
@@ -101,14 +77,12 @@
             </td>
             {% if player_is_gm %}
             <td>
-
                 <a href="{% url 'swdice:swroom_player_info' room_number player.user_id_id%}">
                 <button type="button" class="btn btn-info btn-sm btn-outline-info" name="Player_Info">
                     Player Info
                 </button>
                 </a>
             </td>
-
             {% endif %}
         </tr>
         {% endif %}
@@ -123,21 +97,12 @@
         <div class="row">
             <div class="col">
                 <h5>GM-only Information:</h5>
-                <!--<p>-->
-                    <!--As the GM for this room, you have have extra privileges.  You can:-->
-                <!--</p>-->
-                <!--<ul style="margin-left: -15px;">-->
-                    <!--<li>Alter player privileges (on their Player Info Page).</li>-->
-                    <!--<li>See banned players; their rolls and chats will be visible only on their Player Info Page.</li>-->
-                    <!--<li>See Room Details</li>-->
-                    <!--<li>Archive (and Restore) this room.</li>-->
-                <!--</ul>-->
             </div>
         </div>
         <div class="row no-gutters">
             <div class="col-md-6">
                 <h6>Room Details</h6>
-                <ul style="margin-left: -15px;">
+                <ul style="margin-left: -15px; margin-top: -5px">
                     <li><strong>Room ID:</strong> <u>{{room.id}}</u></li>
                     {% if not room.open_to_all %}
                     <li><strong>Passcode:</strong>
@@ -157,7 +122,8 @@
             </div>
             <div class="col-md-6">
                 {% if room.disabled %}
-                <p>This room has been <strong>archived</strong>.<br>
+                <h5><span style="color: darkred;">This room has been <strong>archived</strong>.</span></h5>
+                <p>
                     No rolls or chats can be made in this room. On the Docking Bay page, this room is only visible on the
                     Archived Rooms tab.
                 </p>
@@ -218,53 +184,58 @@
 {% endif %}
 {% endblock %}
 
-{% block destiny %}
-<div class="container-fluid" id="destiny_area">
-    <hr>
-    <h5>Current Destiny</h5>
-    <table id="destiny_table">
-        <tr>
-            <td>
-                <span class="container-fluid" id="destiny_box">
-                {% if dark_pips == 0  and light_pips == 0 %}
-                There are no Destiny Points
-                {% endif %}
-                {% for i in dark_pips|get_range %}
-                    <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Use Dark">
-                {% endfor %}
-                {% for i in light_pips|get_range %}
-                    <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Use Light">
-                {% endfor %}
-                </span>
-            </td>
-        </tr>
-    </table>
+{% block room_header %}
+<div class="container-fluid" style="background-color: #B5D4EF">
+    <h4>This page does not automatically update.</h4>
+    <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
+    <p>
+        However, this page loads <em>all</em> actions and chats, while the main page shows only the 100 most
+        recent actions and 100 most recent chats.
+    </p>
+    <a href="{% url 'swdice:swroom' room_number %}">
+    <button type="button" class="btn btn-info align-right" name="back to page">
+        <strong>&#12298</strong> Back to Live Page
+    </button>
+    </a>
 </div>
 {% endblock %}
-{% block dice_box %}
-<!-- no dice box -->
+
+{% block form_inputs %}
+<!-- remove inputs, destiny, and standard user information space -->
+{% endblock %}
+
+{% block alt_destiny %}
+    <div class="container-fluid" id="destiny_area">
+        <h5>Current Destiny</h5>
+        <table id="destiny_table">
+            <tr>
+                <td>
+                    <span class="container-fluid" id="destiny_box">
+                    {% if dark_pips == 0  and light_pips == 0 %}
+                    There are no Destiny Points
+                    {% endif %}
+                    {% for i in dark_pips|get_range %}
+                        <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Use Dark">
+                    {% endfor %}
+                    {% for i in light_pips|get_range %}
+                        <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Use Light">
+                    {% endfor %}
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
 {% endblock %}
 {% block actions_header %}
 <hr>
 <h5>Actions</h5>
 {% endblock %}
-<!-- include block action_log -->
-<!-- include block player_info -->
-{% block switch_avatar_button %}
-<!-- no switch avatar button -->
-{% endblock %}
 
-{% block glossary %}
-<!-- no glossary tabs -->
-{% endblock %}
-
-{% block chat_header %}
+{% block alt_chat_header %}
 <hr>
 <h5>Chats</h5>
 {% endblock %}
-{% block chat_input %}
-<!-- no chat input -->
-{% endblock %}
+
 <!-- include block chat_log -->
 
 

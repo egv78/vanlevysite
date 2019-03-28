@@ -25,7 +25,7 @@
         <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
         {% block subtitle %}{% endblock %}
     </a>
-{% endblock %}
+{% endblock brand %}
 
 {% block other_navbar_right %}
 <a href="{% url 'swdice:swroom_info' room_number %}">
@@ -34,9 +34,9 @@
         <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
             Info
         </span>
-    {% endblock %}
+    {% endblock info_label %}
 </a>
-{% endblock %}
+{% endblock other_navbar_right %}
 
 
 {% block navbar_space_part_2 %}
@@ -48,22 +48,31 @@
 {% load static %}
 <div class="container-fluid">
 <br>
-    <div class="row">
+    {% if not viewing_basic_room %}
+    <div class="row no-gutters">
         <div class="col-md-9">
-            {% block room_header %}
-            {% endblock %}
             {% block user_table %}
             {% endblock %}
             {% block gm_stuff %}
             {% endblock %}
-            {% block destiny %}
-            <div class="dice-box" id="destiny_area">
-                <form id="destiny" method="POST">
-                    {% csrf_token %}
+        </div>
+        <div class="col-md-3">
+            {% block room_header %}
+            {% endblock %}
+        </div>
+    </div>
+    {% endif %}
+    {% block form_inputs %}
+    {% if not room.disabled %}
+    <form id="destiny" method="POST" autocomplete="off">
+        {% csrf_token %}
+        <div class="row no-gutters">
+            <div class="col-md-9">
+                {% block destiny %}
+                <div class="dice-box" id="destiny_area">
                     <div class="row no-gutters">
                         <div class="col-6 col-md-3 col-lg-2">
                             <table class="destiny_table">
-                                {% if not room.disabled %}
                                 <tr>
                                     <td style="width:12px;">
                                         <button type="submit" class="btn btn-light btn-sm" name="add_dark">
@@ -79,7 +88,6 @@
                                         </button>
                                     </td>
                                 </tr>
-                                {% endif %}
                             </table>
                         </div>
                         <div class="col-12 order-last col-md-6 order-md-4 col-lg-8">
@@ -97,7 +105,6 @@
                         </div>
                         <div class="col-6 col-md-3 order-md-last col-lg-2 order-lg-last">
                             <table class="destiny_table">
-                                {% if not room.disabled %}
                                 <tr>
                                     <td style="width:36px;">
                                         <button type="submit" class="btn btn-outline-dark" name="use_light"
@@ -113,18 +120,13 @@
                                             &#9660</button>
                                     </td>
                                 </tr>
-                                {% endif %}
                             </table>
                         </div>
                     </div>
-                </form>
-            </div>
-            {% endblock %}
-            {% block dice_box %}
-            <div class="dice-box">
-                {% if not room.disabled %}
-                <form id="dice" method="post" autocomplete="off">
-                    {% csrf_token %}
+                </div>
+                {% endblock destiny %}
+                {% block dice_box %}
+                <div class="dice-box">
                     <div class="row no-gutters justify-content-start">
                         <div class="col-6 col-md-3 col-lg-2">
                             <table class="dice_table_sml">
@@ -173,7 +175,7 @@
                             </table>
                         </div>
                         <div class="col-6 col-md-3 col-lg-2">
-                        <table class="dice_table_sml">
+                            <table class="dice_table_sml">
                             <tr>
                                 <td>
                                     <img src="{% static 'swdice/Dice/proficiency.png' %}" width="40" title="Proficiency">
@@ -588,26 +590,116 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <!--<button type="button" id="reset_dice"-->
-                                                <!--class="btn btn-outline-secondary btn-sm"-->
-                                                <!--onclick="resetDice()" style="margin: auto;">-->
-                                            <!--Reset Dice-->
-                                        <!--</button>-->
+                                        <button type="button" id="reset_dice"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                onclick="resetDice()" style="margin: auto;">
+                                            Reset Dice
+                                        </button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                </form>
-                {% endif %}
+                </div>
+                {% endblock dice_box %}
             </div>
-            <p><br></p>
+            <div class="col-md-3">
+                {% block glossary %}
+                    <input type="checkbox" id="showblock">
+                    <div id="slideout">
+                        <label id="slideout_tab" for="showblock" title="Dice Meanings">
+                            <i>Dice</i>
+                        </label>
+                        <div id="slideout_inner">
+                            <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
+                            <ul style="list-style-type:none; color: white;">
+                                <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost"> Boost</li>
+                                <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability"> Ability</li>
+                                <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
+                                <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback"> Setback</li>
+                                <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
+                                <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge"> Challenge</li>
+                                <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
+                                <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force"> Force</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="checkbox" id="showblock2">
+                    <div id="slideout2">
+                        <label id="slideout_tab2" for="showblock2" title="Result Meanings">
+                            <i>Pips </i>
+                        </label>
+                        <div id="slideout_inner2">
+                            <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
+                             <ul style="list-style-type:none;">
+                                <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success"> Success</li>
+                                <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure"> Failure</li>
+                                <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
+                                <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat"> Threat</li>
+                                <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
+                                <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair"> Despair</li>
+                                <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light"> Light</li>
+                                <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark"> Dark</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endblock glossary %}
+                {% block player_info %}
+                <table style="width: 100%;">
+                    <tr>
+                        <td rowspan="2" style="width:90px">
+                            {% if icon %}
+                                <img src="{{ icon }}" width="80">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span style="color:gray">You are signed in as: </span>
+                            <br>
+                            <strong>{{ name_in_room }}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="{% url 'swdice:switch_avatar_room' room_number %}">
+                            <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
+                                Switch Avatar
+                            </button>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                {% endblock player_info %}
+                {% block chat_header %}
+                <hr>
+                <h5>Chat</h5>
+                {% endblock chat_header %}
+                {% block chat_input %}
+                <div class="container-fluid" id="chat_input" style="padding:0">
+                    {{ chat_form.chat_text }}
+                    {{ chat_form.recipient }}
+                        <button type="submit" name="chat" id="chat_submit"
+                                class="btn {%if start_whisper%}btn-outline-warning{%else%}btn-outline-dark{%endif%} btn-sm" >
+                            {%if start_whisper%}Whisper{%else%}Add Chat{%endif%}
+                        </button>
+                </div>
+                {% endblock chat_input %}
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <h3>This room has been archived by the GM.</h3>
+    <p>No new rolls or chats may be made in it.</p>
+    {% endif %}
+    {% endblock form_inputs %}
+    <div class="row">
+        <div class="col-md-9">
+            <hr>
+            {% block alt_destiny %}
             {% endblock %}
             {% block actions_header %}
-            {% endblock %}
+            {% endblock actions_header %}
             {% block action_log %}
             <div class="container-fluid" id="action_log" style="padding:0">
-                <hr>
                 {% if action_log is empty %}
                     <p>This room has no actions.</p>
                 {% else %}
@@ -656,7 +748,7 @@
                                 <!--Individual Faces-->
                             {% for face in action.faces_summary|split_string %}
                                 {% if face %}
-                                {% with 'swdice/Faces/'|add:face|add:'.jpg' as face_image %}
+                                {% with 'swdice/Faces/'|add:face|add:'.png' as face_image %}
                                 <img src="{% static face_image %}" title="{{face}}">
                                 {% endwith %}
                                 {% endif %}
@@ -743,99 +835,10 @@
                 </table>
                 {% endif %}
             </div>
-            {% endblock %}
+            {% endblock action_log %}
         </div>
         <div class="col-md-3" style="padding:0;">
-            {% block glossary %}
-                <input type="checkbox" id="showblock">
-                <div id="slideout">
-                    <label id="slideout_tab" for="showblock" title="Dice Meanings">
-                        <i>Dice</i>
-                    </label>
-                    <div id="slideout_inner">
-                        <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                        <ul style="list-style-type:none; color: white;">
-                            <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost"> Boost</li>
-                            <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability"> Ability</li>
-                            <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
-                            <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback"> Setback</li>
-                            <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
-                            <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge"> Challenge</li>
-                            <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
-                            <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force"> Force</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <input type="checkbox" id="showblock2">
-                <div id="slideout2">
-                    <label id="slideout_tab2" for="showblock2" title="Result Meanings">
-                        <i>Pips </i>
-                    </label>
-                    <div id="slideout_inner2">
-                        <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                         <ul style="list-style-type:none;">
-                            <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success"> Success</li>
-                            <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure"> Failure</li>
-                            <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
-                            <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat"> Threat</li>
-                            <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
-                            <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair"> Despair</li>
-                            <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light"> Light</li>
-                            <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark"> Dark</li>
-                        </ul>
-                    </div>
-                </div>
-            {% endblock %}
-            {% block player_info %}
-            <table style="width: 100%;">
-                <tr>
-                    <td rowspan="2" style="width:90px">
-                        {% if icon %}
-                            <img src="{{ icon }}" width="80">
-                        {% endif %}
-                    </td>
-                    <td>
-                        <span style="color:gray">You are signed in as: </span>
-                        <br>
-                        <strong>{{ name_in_room }}</strong>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {% block switch_avatar_button %}
-                        {% if not room.disabled %}
-                        <a href="{% url 'swdice:switch_avatar_room' room_number %}">
-                        <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
-                            Switch Avatar
-                        </button>
-                            {% endif %}
-                        {% endblock %}
-                        </a>
-                    </td>
-                </tr>
-            </table>
-            {% endblock %}
-            {% block chat_header %}
-            <hr>
-            <h5>Chat</h5>
-            {% endblock %}
-            {% block chat_input %}
-            <div class="container-fluid" id="chat_input" style="padding:0">
-                {% if not room.disabled %}
-            <form method="post" autocomplete="off" id="chat">
-                {% csrf_token %}
-                {{ chat_form.chat_text }}
-                {{ chat_form.recipient }}
-                <button type="submit" name="chat" class="btn btn-outline-dark btn-sm" id="chat_submit">
-                    Add Chat
-                </button>
-                <!--<span style="font-size: 10pt">-->
-                    <!--<br>You have <b><span id=myCounter>255</span></b> characters remaining in chat.-->
-                <!--</span>-->
-            </form>
-                {% endif %}
-            </div>
+            {% block alt_chat_header %}
             {% endblock %}
             {% block chat_log %}
             <div class="container-fluid" id="chat_log" style="padding:0">
@@ -919,7 +922,6 @@
 </div>
 
 {% block page_scripts %}
-
 <script>
 $(function () {
     var dt = new Date();
@@ -955,7 +957,6 @@ function hideSecretRoll() {
     document.getElementById('roll_dice_secret_button').style.display='none';
 };
 </script>
-
 <script>
 function addOne(id) {
     document.getElementById(id).stepUp(1);
@@ -964,7 +965,6 @@ function subtractOne(id) {
     document.getElementById(id).stepDown(1);
 };
 </script>
-
 <script>
 function resetDice() {
     document.getElementById('boost').value = 0;
@@ -986,7 +986,6 @@ function resetDice() {
     document.getElementById('darkpip').value = 0;
 };
 </script>
-
 <script>
 function highlightChat() {
   var number = document.getElementById("id_recipient").selectedIndex;
@@ -1006,6 +1005,17 @@ function highlightChat() {
     chat_area.classList.add('chat_regular');
   };
 };
+</script>
+<script>
+$(function () {
+  var number = document.getElementById("id_recipient").selectedIndex;
+  var button = document.getElementById("chat_submit");
+  var chat_area = document.getElementById("chat_text");
+  if (number > 0) {
+    chat_area.classList.add('chat_whisper');
+    chat_area.classList.remove('chat_regular');
+  };
+});
 </script>
 <script>
 var myForm = $("#destiny");
@@ -1064,5 +1074,5 @@ function update_times() {
     check_and_update();
 };
 </script>
-{% endblock %}
-{% endblock %} <!--body-->
+{% endblock page_scripts %}
+{% endblock body %}

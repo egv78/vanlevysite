@@ -163,7 +163,7 @@ input[type=number] {
     .sml-input {
         width: 30px;
         font-size: 1.0em;
-        margin: 5px 0px;
+        margin: 0px;
     }
     .med-input {
         width: 60px;

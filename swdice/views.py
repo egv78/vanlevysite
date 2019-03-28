@@ -59,7 +59,7 @@ def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user
     link_instance.save()
 
 
-def save_dice_pool(user, avatar, room, image_url, caption_text="",
+def save_dice_pool(user, avatar, room, image_url, caption="",
                    num_boost_dice=0, num_ability_dice=0, num_proficiency_dice=0,
                    num_setback_dice=0, num_difficulty_dice=0, num_challenge_dice=0, num_force_dice=0,
                    additional_triumph=0, additional_despair=0, additional_success=0, additional_failure=0,
@@ -70,7 +70,7 @@ def save_dice_pool(user, avatar, room, image_url, caption_text="",
     new_dice_pool.user = user
     new_dice_pool.avatar = avatar
     new_dice_pool.swroom_id = room
-    new_dice_pool.caption = caption_text
+    new_dice_pool.caption = caption
     new_dice_pool.image_url = image_url
     new_dice_pool.num_boost_dice = num_boost_dice
     new_dice_pool.num_ability_dice = num_ability_dice
@@ -142,11 +142,30 @@ def change_destiny(user, avatar, room, image_url, caption="", delta_light=0, del
         destiny.light_pips += delta_light
         destiny.dark_pips += delta_dark
         destiny.save()
-        kwargs = {"user": user, "avatar": avatar, "room": room, "caption_text": caption,
+        kwargs = {"user": user, "avatar": avatar, "room": room, "caption": caption,
                   "image_url": image_url}
         save_dice_pool(**kwargs)
     else:
         pass
+
+
+def read_chat(chat_form, avatar, swroom_id, current_user, chat_text, image_url):
+    recipient_id = chat_form.data['recipient']
+    recipient_user = VanLevyUser.objects.filter(id=recipient_id)[0]
+    room_user_link_recipient = SWRoomToUser.objects.filter(room_id_id=swroom_id, user_id=recipient_user)[0]
+    recipient_avatar = room_user_link_recipient.avatar_id
+    is_private = not (recipient_user == current_user)
+    new_chat = SWRoomChat()
+    new_chat.room_id_id = swroom_id
+    new_chat.chat_text = chat_text
+    new_chat.user = current_user
+    new_chat.avatar = avatar
+    new_chat.image_url = image_url
+    new_chat.is_private = is_private
+    new_chat.recipient = recipient_user if is_private else None
+    new_chat.recipient_avatar = recipient_avatar
+
+    return new_chat
 
 
 def read_dice(dice_form):
@@ -159,7 +178,7 @@ def read_dice(dice_form):
     force_dice = dice_form.cleaned_data['num_force_dice']
     numerical_sides = dice_form.cleaned_data['numerical_dice_sides']
     numerical_dice = dice_form.cleaned_data['num_numerical_dice']
-    caption_text = dice_form.cleaned_data['caption']
+    caption = dice_form.cleaned_data['caption']
     additional_triumph = dice_form.cleaned_data['additional_triumph']
     additional_despair = dice_form.cleaned_data['additional_despair']
     additional_success = dice_form.cleaned_data['additional_success']
@@ -174,7 +193,7 @@ def read_dice(dice_form):
                   additional_advantage + additional_threat + additional_light_pips + additional_dark_pips
                   )
 
-    if caption_text or total_dice > 0:
+    if caption or total_dice > 0:
         valid_pool = True
         if total_dice == 0:
             just_caption = True
@@ -184,7 +203,7 @@ def read_dice(dice_form):
         just_caption = False
         valid_pool = False
 
-    dice_pool = {'caption_text': caption_text, "total_dice": total_dice,
+    dice_pool = {'caption': caption, "total_dice": total_dice,
                  "num_boost_dice": boost_dice, "num_ability_dice": ability_dice,
                  "num_proficiency_dice": proficiency_dice, "num_setback_dice": setback_dice,
                  "num_difficulty_dice": difficulty_dice, "num_challenge_dice": challenge_dice,
@@ -198,6 +217,31 @@ def read_dice(dice_form):
                  }
     return dice_pool
 
+
+def get_chat_carryover(request, chat_form, current_user_id):
+    chat_text = chat_form.data['chat_text']
+    recipient_id = chat_form.data['recipient']
+    if chat_text != '':
+        request.session['chat_carryover'] = chat_text
+    if int(recipient_id) != int(current_user_id):
+        request.session['recipient_carryover'] = recipient_id
+
+
+def get_dice_carryover(request, dice_form):
+    if dice_form.is_valid():
+        dice_pool = read_dice(dice_form)
+        total_dice = dice_pool['total_dice']
+        del dice_pool['total_dice']
+        valid_pool = dice_pool['valid_pool']
+        del dice_pool['valid_pool']
+        caption = dice_pool['caption']
+
+        if valid_pool and (caption or total_dice > 0):
+            request.session['dice_pool_carryover'] = dice_pool
+        else:
+            pass
+    else:
+        pass
 
 def about(request):
     template_name = 'swdice/about_swdiceroller.html'
@@ -533,89 +577,147 @@ class SWRoomViews(FormMixin, TemplateView):
             return redirect(info_url, swroom_id)
         # Regular Room functions
         elif request.method == "POST" and "chat" in request.POST:
-            # print(request.POST)
             kwargs = self.get_form_kwargs()
-            form = SW_Room_Chat_Form(**kwargs)
-            text = form.data['chat_text']
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            chat_text = chat_form.data['chat_text']
 
-            if text != "":
-                recipient_id = form.data['recipient']
-                recipient_user = VanLevyUser.objects.filter(id=recipient_id)[0]
-                room_user_link_recipient = SWRoomToUser.objects.filter(room_id_id=swroom_id, user_id=recipient_user)[0]
-                recipient_avatar = room_user_link_recipient.avatar_id
-                is_private = not (recipient_user == current_user)
-                new_chat = SWRoomChat()
-                new_chat.room_id_id = swroom_id
-                new_chat.chat_text = text
-                new_chat.user = current_user
-                new_chat.avatar = avatar
-                new_chat.image_url = image_url
-                new_chat.is_private = is_private
-                new_chat.recipient = recipient_user if is_private else None
-                new_chat.recipient_avatar = recipient_avatar
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            if chat_text != "":
+                new_chat = read_chat(chat_form, avatar, swroom_id, current_user, chat_text, image_url)
                 new_chat.save()
                 return redirect(room_url, swroom_id)
             else:
                 return redirect(room_url, swroom_id)
         elif request.method == "POST" and "add_dark" in request.POST:
-            caption_text = " added a DARK destiny point."
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            caption = " added a DARK destiny point."
             delta_light = 0
             delta_dark = 1
-            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
         elif request.method == "POST" and "rem_dark" in request.POST:
-            caption_text = " removed a DARK destiny point."
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            caption = " removed a DARK destiny point."
             delta_light = 0
             delta_dark = -1
-            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
         elif request.method == "POST" and "use_dark" in request.POST:
-            caption_text = " used a DARK destiny point."
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            caption = " used a DARK destiny point."
             delta_light = 1
             delta_dark = -1
-            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
         elif request.method == "POST" and "add_light" in request.POST:
-            caption_text = " added a LIGHT destiny point."
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            caption = " added a LIGHT destiny point."
             delta_light = 1
             delta_dark = 0
-            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
         elif request.method == "POST" and "rem_light" in request.POST:
-            caption_text = " removed a LIGHT destiny point."
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            caption = " removed a LIGHT destiny point."
             delta_light = -1
             delta_dark = 0
-            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
         elif request.method == "POST" and "use_light" in request.POST:
-            caption_text = " used a LIGHT destiny point."
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            caption = " used a LIGHT destiny point."
             delta_light = -1
             delta_dark = 1
-            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption_text,
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
         elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
             dice_form = SW_Dice_Roll(request.POST)
             if 'gendice' in self.template_name:
                 dice_form.num_force_dice = 0
-            #     redirect_url = 'gendice:genroom'
-            # else:
-            #     redirect_url = 'swdice:swroom'
             secret_roll = "roll_dice_secret" in request.POST
-            # print(request.POST)
-            # text = chat_form['chat_text']
-            # print(text)
+            print(request.POST)
 
             if dice_form.is_valid():
                 dice_pool = read_dice(dice_form)
@@ -623,10 +725,9 @@ class SWRoomViews(FormMixin, TemplateView):
                 del dice_pool['total_dice']
                 valid_pool = dice_pool['valid_pool']
                 del dice_pool['valid_pool']
-                # print(dice_pool)
-                caption_text = dice_pool['caption_text']
+                caption = dice_pool['caption']
 
-                if caption_text or total_dice > 0:
+                if caption or total_dice > 0:
                     kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "image_url": image_url, }
                     kwargs.update(dice_pool)
                     kwargs.update({"secret_roll": secret_roll})
@@ -635,19 +736,6 @@ class SWRoomViews(FormMixin, TemplateView):
                     pass
             else:
                 print("Form's busted")
-
-            if dice_pool:
-                if dice_pool['just_caption']:
-                    del dice_pool['just_caption']
-                if dice_pool['caption_text']:
-                    del dice_pool['caption_text']
-                # print(dice_pool)
-                dice_pool_carryover = dice_pool
-
-            # request.session['dice_pool_carryover'] = dice_pool_carryover
-            # if request.session['dice_pool_carryover']:
-            #     del request.session['dice_pool_carryover']
-            # request.session['chat_carryover'] = text
 
             return redirect(room_url, swroom_id)
 
@@ -658,14 +746,12 @@ class SWRoomViews(FormMixin, TemplateView):
         room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
         hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
         info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'
-        # try:
-        #     initial_args = self.kwargs.dice_pool_carryover
-        # except:
-        #     initial_args = {}
+
         viewing_player_info = "player" in self.template_name
+        viewing_basic_room = "info" not in self.template_name
+
         if viewing_player_info:
             player_id = self.kwargs['player_id']
-        viewing_basic_room = "info" not in self.template_name
 
         try:
             room = SWRoom.objects.get(pk=swroom_id)
@@ -765,11 +851,31 @@ class SWRoomViews(FormMixin, TemplateView):
                 kwargs = self.get_form_kwargs()
                 now = datetime.datetime.now()
 
+                # instantiate carryover data
+                initial_args_chat = {}
                 if 'chat_carryover' in request.session:
-                    initial_args_chat = request.session['chat_carryover']
+                    initial_args_chat['chat_text'] = request.session['chat_carryover']
+                    del request.session['chat_carryover']
+                if 'recipient_carryover' in request.session:
+                    initial_args_chat['recipient'] = request.session['recipient_carryover']
+                    del request.session['recipient_carryover']
+                    start_whisper = True
                 else:
-                    initial_args_chat = {}
+                    start_whisper = False
+                if 'dice_pool_carryover' in request.session:
+                    initial_args = request.session['dice_pool_carryover']
+                    del request.session['dice_pool_carryover']
+                else:
+                    initial_args = {}
+                # if 'start_secret_roll' in request.session:
+                #     start_secret_roll = True
+                #     del request.session['start_secret_roll']
+                # else:
+                #     start_secret_roll = False
+
+                dice_form = SW_Dice_Roll(initial_args)
                 chat_form = SW_Room_Chat_Form(initial_args_chat, **kwargs)
+
                 chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
                 chat_log = []
                 for chat in chats_all[:100]:
@@ -790,22 +896,14 @@ class SWRoomViews(FormMixin, TemplateView):
                 else:
                     last_action_time = room.created_on
 
-                initial_args = {}
-                # if 'dice_pool_carryover' in request.session:
-                #     initial_args = request.session['dice_pool_carryover']
-                # else:
-                #     initial_args = {}
-                # for key, value in request.session.items():
-                #     print('{} => {}'.format(key, value))
-                dice_form = SW_Dice_Roll(initial_args)
-
                 update_times = UpdateTimes(last_action_time, last_chat_time)
 
                 args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                         'room_number': swroom_id, 'chat_log': chat_log, 'chat_form': chat_form, 'destiny': room_destiny,
                         'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
                         'dice_form': dice_form, 'users_in_room': room_users_link_list,
-                        'update_times': update_times}
+                        'update_times': update_times, 'viewing_basic_room': viewing_basic_room,
+                        'start_whisper': start_whisper, } #  'start_secret_roll': start_secret_roll
 
             elif viewing_player_info:
                 chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
@@ -813,7 +911,8 @@ class SWRoomViews(FormMixin, TemplateView):
                 args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                         'room_number': swroom_id, 'chat_log': chat_log, 'destiny': room_destiny,
                         'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
-                        'users_in_room': room_users_link_list, 'player_id': player_id}
+                        'users_in_room': room_users_link_list, 'player_id': player_id,
+                        'viewing_basic_room': viewing_basic_room}
 
             else:
                 chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
@@ -829,7 +928,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                         'room_number': swroom_id, 'chat_log': chat_log, 'destiny': room_destiny,
                         'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
-                        'users_in_room': room_users_link_list}
+                        'users_in_room': room_users_link_list, 'viewing_basic_room': viewing_basic_room}
 
             return render(request, self.template_name, args)
 

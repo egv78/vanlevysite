@@ -25,35 +25,9 @@
 
 {% load static %}
 
-{% block room_header %}
-<div class="container">
-<table style="width: 100%;">
-    <tr>
-        <td>
-            <h4>This page does not automatically update.</h4>
-            <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
-        </td>
-        <td>
-            <a href="{% url 'gendice:genroom' room_number %}">
-            <button type="button" class="btn btn-info align-right" name="back to page">
-                Back to Live Page
-            </button>
-            </a>
-            <p><br></p>
-            <a href="{% url 'gendice:genroom_info' room_number %}">
-            <button type="button" class="btn btn-outline-info align-right" name="back to info page">
-                Back to Info Page
-            </button>
-            </a>
-        </td>
-    </tr>
-</table>
-</div>
-{% endblock %}
-
 {% block user_table %}
 <div class="container" id="current_users">
-    <h5>User Information Table</h5>
+    <h5>Player Information Table</h5>
     <table id="users_table" style="width: 100%">
         <tr>
             <th style="width:80px">User<br> Image</th>
@@ -163,11 +137,11 @@
         <h5>GM Information</h5>
         <p>
             As the GM for this room, you are the only one who can see this page.  From here, you can:
-            <ul>
+            <ul style="margin-top: -10px; margin-bottom: 5px;">
                 <li>Transfer the GM title to another (non-banned) player</li>
                 <li>Ban (or unban) this player</li>
             </ul>
-            Please keep in mind that transferring the GM role can only be undone by the new GM.  You will lose all
+            Transferring the GM role back to you can only be done by the new GM.  You will lose all
             GM abilities that you now have.
         </p>
         </div>
@@ -225,45 +199,67 @@
     {% endif %}
 {% endblock %}
 
-{% block destiny %}
-<!-- no destiny info -->
+{% block room_header %}
+<div class="container-fluid" style="background-color: #B5D4EF">
+    <h4>This page does not automatically update.</h4>
+    <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
+    <p>
+        However, this page loads <em>all</em> actions and chats made by
+        {% for player in users_in_room %}
+        {% if player.user_id_id == player_id %}
+            <strong>{{ player.user_id.username }}</strong>.
+        {% endif %}
+        {% endfor %}
+    </p>
+</div>
+<div class="container-fluid">
+    <p>
+    <a href="{% url 'gendice:genroom' room_number %}">
+        <button type="button" class="btn btn-info align-right" name="back to page">
+            <strong>&#12298</strong> Back to Live Page
+        </button>
+    </a>
+        <br>
+    </p>
+    <p>
+    <a href="{% url 'gendice:genroom_info' room_number %}">
+        <button type="button" class="btn btn-outline-info align-right" name="back to info page">
+            <strong>&#12298</strong> Back to Info Page
+        </button>
+    </a>
+    </p>
+</div>
 {% endblock %}
-{% block dice_box %}
-<!-- no dice box -->
+{% block form_inputs %}
+<!-- remove inputs, destiny, and standard user information space -->
 {% endblock %}
+{% block alt_destiny %}
+<!-- no need for alternately placed destiny, either -->
+{% endblock%}
+
 {% block actions_header %}
-<hr>
 <h5>Actions by
     {% for player in users_in_room %}
         {% if player.user_id_id == player_id %}
-            <strong>{{ player.user_id.username }}</strong>
+            <strong>{{ player.user_id.username }}</strong>:
         {% endif %}
     {% endfor %}
 </h5>
 {% endblock %}
 <!-- include block action_log -->
 <!-- include block player_info -->
-{% block switch_avatar_button %}
-<!-- no switch avatar button -->
-{% endblock %}
 
-{% block glossary %}
-<!-- no glossary tabs -->
-{% endblock %}
-
-{% block chat_header %}
+{% block alt_chat_header %}
 <hr>
 <h5>Chats by
     {% for player in users_in_room %}
         {% if player.user_id_id == player_id %}
-            <strong>{{ player.user_id.username }}</strong>
+            <strong>{{ player.user_id.username }}</strong>:
         {% endif %}
     {% endfor %}
 </h5>
 {% endblock %}
-{% block chat_input %}
-<!-- no chat input -->
-{% endblock %}
+
 <!-- include block chat_log -->
 
 
