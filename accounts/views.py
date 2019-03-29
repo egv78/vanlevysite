@@ -63,7 +63,9 @@ def edit_profile(request):
             profile_form.save()
             return redirect('accounts:view_profile')
         else:
-            return redirect('accounts:edit_profile')
+            args = {'profile_form': profile_form}
+            template_name = 'accounts/profile_edit.html'
+            return render(request, template_name, args)
     else:
         profile_form = EditProfileForm(instance=request.user.userprofile)
         args = {'profile_form': profile_form}
@@ -74,17 +76,18 @@ def edit_profile(request):
 def edit_avatar(request, avatar_id=0):
     current_user_id = request.user.id
 
-    if avatar_id != 0:  # 0 means creating avatar
+    if avatar_id == 0:  # 0 means creating avatar
+        timestamp = datetime.datetime.now()
+        should_leave = False
+        avatar_form = EditAvatarForm()
+    elif "edit" in request.path:
         this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
         timestamp = this_avatar.created_on
         should_leave = not(this_avatar.user_id == current_user_id)
-        avatar_form = EditAvatarForm(instance=this_avatar)
-    elif "edit" in request.path:
-        timestamp = datetime.datetime.now()
-        should_leave = False
         initial_args = {'user_id': current_user_id, 'created_on': timestamp}
         avatar_form = EditAvatarForm(initial_args)
-    else:
+    else:  # Delete avatar
+        this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
         timestamp = datetime.datetime.now()
         should_leave = False
         initial_args = {'user_id': current_user_id, 'created_on': timestamp}
@@ -95,13 +98,21 @@ def edit_avatar(request, avatar_id=0):
     else:
         if request.method == 'POST' or request.method == 'FILES':
             if avatar_id == 0:  # create
+                bad_form_template_name = 'accounts/profile_avatar_create.html'
                 avatar_form = EditAvatarForm(request.POST, request.FILES)
                 avatar_form.deleted = False
-                # print(avatar_form)
+                avatar_form.user_id = current_user_id
+                avatar_form.created_on = timestamp
+                bad_form_args = {'avatar_form': avatar_form}
             elif "edit" in request.path:
                 avatar_form = EditAvatarForm(request.POST, request.FILES, instance=this_avatar)
+                bad_form_template_name = 'accounts/profile_avatar_edit.html'
+                this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+                bad_form_args = {'avatar_form': avatar_form, 'this_avatar': this_avatar}
             elif "delete" in request.path:
                 avatar_form = DeleteAvatarForm(request.POST, request.FILES, instance=this_avatar)
+                bad_form_template_name = 'accounts/profile_view.html'
+                bad_form_args = {}
 
             if avatar_form.is_valid():
                 avatar_post = avatar_form.save(commit=False)
@@ -112,15 +123,15 @@ def edit_avatar(request, avatar_id=0):
                 avatar_post.save()
                 return redirect('accounts:view_profile')
             else:
-                message = "There is a problem."
-                args = {'error_message': message}
-                # return redirect('accounts:create_avatar', args)
-                return redirect('accounts:view_profile')
+                if "delete" in request.path:
+                    return redirect('accounts:view_profile')
+                else:
+                    return render(request, bad_form_template_name, bad_form_args)
 
         else:  # request.method == GET
             if "create" in request.path:
-                initial_args = {'user_id': current_user_id, 'created_on': timestamp}
-                avatar_form = EditAvatarForm(initial_args)
+                # initial_args = {'user_id': current_user_id, 'created_on': timestamp}
+                avatar_form = EditAvatarForm()
                 template_name = 'accounts/profile_avatar_create.html'
                 args = {'avatar_form': avatar_form}
             elif "edit" in request.path:

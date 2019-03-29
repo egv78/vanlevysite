@@ -39,11 +39,11 @@
                 <h5>Once this is done, you can't undo it!</h5>
                 <p>&nbsp</p>
                 <div class="container-fluid">
+                    <form method="POST" id="deleteAvatar">
+                        {% csrf_token %}
                     <div class="row">
                         <div class="col">
                             <p><em>Delete </em><strong>{{this_avatar.avatar_name}}?</strong></p>
-                            <form method="POST" id="deleteAvatar">
-                                {% csrf_token %}
                                 {{ avatar_form.deleted }}
                             <p></p>
                         </div>
@@ -52,9 +52,9 @@
                             <button type="submit" id="delete_button" class="btn btn-outline-success">
                                 Never mind.<br>Return to Profile page
                             </button>
-                            </form>
                         </div>
                     </div>
+                        </form>
                     <p id="delete_language">
                         In order to delete {{this_avatar.avatar_name}}, you must check "Yes" <em>and then</em>
                         click the button.
@@ -64,8 +64,6 @@
         </div>
     </div>
 </div>
-{% endblock %}
-{% block page_scripts %}
 <script>
 $("#id_deleted").click(function () {
     var button = $("#delete_button");

@@ -77,12 +77,18 @@
                                 {{avatar_form.avatar_url_image}}
                             </td>
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <em>Images need to be valid URLs to a web-hosted image file.</em>
-                            </td>
-                        </tr>
+                        {% if avatar_form.errors %}
+                          {% for field in avatar_form %}
+                            {% for error in field.errors %}
+                              <tr><td colspan="2">
+                                <div class="alert alert-warning">
+                                  <a class="close" href="#" data-dismiss="alert">×</a>
+                                  {{ error }}
+                                </div>
+                              </td></tr>
+                            {% endfor %}
+                          {% endfor %}
+                        {% endif %}
                         <tr>
                             <td></td>
                             <td>

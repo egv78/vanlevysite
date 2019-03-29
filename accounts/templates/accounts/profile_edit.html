@@ -104,6 +104,18 @@
                             <td class="align-right"><strong>Image URL:</strong></td>
                             <td>{{profile_form.user_url_image}} </td>
                         </tr>
+                        {% if profile_form.errors %}
+                          {% for field in profile_form %}
+                            {% for error in field.errors %}
+                              <tr><td colspan="2">
+                                <div class="alert alert-warning">
+                                  <a class="close" href="#" data-dismiss="alert">×</a>
+                                  {{ error }}
+                                </div>
+                              </td></tr>
+                            {% endfor %}
+                          {% endfor %}
+                        {% endif %}
                         <tr>
                             <td></td>
                             <td>
