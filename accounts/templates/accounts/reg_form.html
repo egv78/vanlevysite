@@ -17,17 +17,72 @@
 <div class="container">
     <br>
     {% if user.is_authenticated %}
-        <h2>You are logged in as {{user.first_name}}.</h2>
+        <h3>You are logged in as {{user.first_name}}.</h3>
         <br>
         <p>To create a new account, please <a href="{% url 'accounts:logout' %}">logout</a> and then register.</p>
     {% else %}
-        <h4>By creating an account, you agree to our <a href="{% url 'vanlevy:terms' %}">terms and conditions.</a></h4>
+        <h3 style="text-align: center;">
+            By creating an account, you agree to our <a href="{% url 'vanlevy:terms' %}">terms and conditions.</a>
+        </h3>
         <p><br></p>
         <form method="post" id="register">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-outline-primary">Register</button>
+            <table style="margin-left: auto; margin-right: auto;">
+                <col width="190">
+                <col width="325">
+                <tr style="height: 45px;">
+                    <td style="padding-left: 5px;">{{ form.username }}</td>
+                    <td>Usernames must be unique.</td>
+                </tr>
+                <tr style="height: 45px;">
+                    <td style="padding-left: 5px;">{{ form.email }}</td>
+                    <td>One account per email.</td>
+                </tr>
+                <tr style="height: 45px;">
+                    <td style="padding-left: 5px;">{{ form.password1 }}</td>
+                    <td>Passwords must be at least 8 characters long.</td>
+                </tr>
+                <tr style="height: 45px;">
+                    <td style="padding-left: 5px;">{{ form.password2 }}</td>
+                    <td>Passwords cannot be entirely numeric.</td>
+                </tr>
+                {% if form.errors %}
+
+                  {% for field in form %}
+                    {% for error in field.errors %}
+                <tr><td colspan="2">
+                      <div class="alert alert-warning">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+                        {{ error }}
+                          {% if error == "This email already has an account." %}
+                          <br>You can request a <a href="{% url 'accounts:password_reset' %}">Password Reset</a>.
+                          {% endif %}
+                      </div>
+                </td></tr>
+                    {% endfor %}
+                  {% endfor %}
+                {% endif %}
+                <tr>
+                    <td style="padding-right: 10px;">
+                        <button type="submit" class="btn btn-outline-primary align-right">Register</button>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr><td><br></td></tr>
+                <tr>
+                    <td colspan="2">
+                        <h4>Account Requirements</h4>
+                        <ul>
+                            <li>Your password can't be too similar to your other personal information.</li>
+                            <li>Your password can't be a commonly used password.</li>
+                            <li>Usernames can only be 100 characters or fewer.</li>
+                            <li>Usernames can only contain letters, numbers, or @ + - _ ,</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
         </form>
+
     {% endif %}
 </div>
 {% endblock %}

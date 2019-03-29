@@ -11,7 +11,14 @@ BOOL_CHOICES = [(True, 'Yes'), (False, 'No')]
 
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    username = forms.CharField(required=True,
+                               widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    email = forms.EmailField(required=True,
+                             widget=forms.TextInput(attrs={'type': 'email', 'placeholder': 'Email'}))
+    password1 = forms.CharField(required=True,
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    password2 = forms.CharField(required=True,
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Confirm'}))
 
     class Meta:
         model = User
@@ -21,8 +28,11 @@ class RegistrationForm(UserCreationForm):
                   'password2')
 
     def clean(self):
+        if User.objects.filter(username=self.cleaned_data['username']).exists():
+            error_msg_username = 'This username has already been assigned.'
+            self.add_error('username', error_msg_username)
         if User.objects.filter(email=self.cleaned_data['email']).exists():
-            error_msg = 'This email already has an account.  Would you like to reset your password?'
+            error_msg = "This email already has an account."
             self.add_error('email', error_msg)
         return self.cleaned_data
 

@@ -176,6 +176,3 @@ LOGIN_EXEMPT_URLS = (
 # User substitution
 AUTH_USER_MODEL = 'accounts.VanLevyUser'
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-

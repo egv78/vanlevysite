@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.generic import TemplateView
@@ -23,12 +24,10 @@ def register(request):
             return redirect(reverse('accounts:register_success'))
         else:
             form = RegistrationForm(request.POST or None)
-            # print("Form BUGGED")
             args = {'form': form}
             return render(request, template_name, args)
     else:
         form = RegistrationForm()
-
         args = {'form': form}
         return render(request, template_name, args)
 
@@ -143,6 +142,7 @@ def change_password(request):
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Your password has been changed successfully.')
             update_session_auth_hash(request, form.user)
             return render(request, 'accounts/password_success.html')
         else:
