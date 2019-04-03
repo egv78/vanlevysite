@@ -717,7 +717,6 @@ class SWRoomViews(FormMixin, TemplateView):
             if 'gendice' in self.template_name:
                 dice_form.num_force_dice = 0
             secret_roll = "roll_dice_secret" in request.POST
-            print(request.POST)
 
             if dice_form.is_valid():
                 dice_pool = read_dice(dice_form)
@@ -736,6 +735,7 @@ class SWRoomViews(FormMixin, TemplateView):
                     pass
             else:
                 print("Form's busted")
+                return redirect(room_url, swroom_id)
 
             return redirect(room_url, swroom_id)
 
@@ -849,7 +849,6 @@ class SWRoomViews(FormMixin, TemplateView):
 
             if viewing_basic_room:
                 kwargs = self.get_form_kwargs()
-                now = datetime.datetime.now()
 
                 # instantiate carryover data
                 initial_args_chat = {}
@@ -867,11 +866,6 @@ class SWRoomViews(FormMixin, TemplateView):
                     del request.session['dice_pool_carryover']
                 else:
                     initial_args = {}
-                # if 'start_secret_roll' in request.session:
-                #     start_secret_roll = True
-                #     del request.session['start_secret_roll']
-                # else:
-                #     start_secret_roll = False
 
                 dice_form = SW_Dice_Roll(initial_args)
                 chat_form = SW_Room_Chat_Form(initial_args_chat, **kwargs)

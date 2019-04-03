@@ -1,61 +1,263 @@
 {% extends 'vl_base.html' %}
+{% load static %}
+{% block brand %}
+    <h3>
+        <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+            <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+                Van Levy
+        </a>
+        <a class="navbar-brand">
+            <img src="{% static '/vanlevy/Doors_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+            <span style="color: white;">About</span>
+        </a>
+    </h3>
+{% endblock %}
+{% block bottom_navbar_padding %}
+style="padding: 20px 0px 0px 0px"
+{% endblock %}
+{% block bottom_navbar_style %}
+    style="bottom: 0; "
+{% endblock %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>VanLevy About</title>
-    <style>
-        #background {
-            background-color: #FFFFFF;
-            display: flex; /* equal height of the children */
-            justify-content: space-between;
-        }
-        #van {
-            width: 49%;
-            background-color: #FFFFFF;
-            padding: 10px;
-            float: left;
-        }
-        #dave {
-            width: 49%;
-            background-color: #FFFFFF;
-            padding: 10px;
-            float: right;
-        }
-        #about {
-            clear: both;
-            background-color: #CCCCCC;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>VanLevy About</title>
+<style>
+    .faqs {
+        margin-left: -20px;
+        list-style-type: none;
+    }
+    .faqs li {
+        margin: 10px 0px;
+    }
+</style>
+
 {% endblock %}
 
 {% block body %}
-{% load static %}
-    <div class="container">
-        <br>
-        <h1>About</h1>
-        <div id="background">
-            <div id="van">
-                <img src="{% static 'vanlevy/Eric_Pic.jpg' %}" style="width: 200px; float: left; margin: 10px;">
-                <p style="padding: 10px;">
-                    I'm Van!
-                    <br>
-                    I do things.
-                </p>
+
+<div class="container">
+    <br>
+    <h2>About www.VanLevy.com</h2>
+    <div class="row">
+        <div class="col-md-3 col-lg-4">
+            <p></p>
+            <h3 id="faq_top">F.A.Q.s</h3>
+            <p style="margin-top: -10px;"><sub>Frequently Asked Questions</sub></p>
+            <ul class="faqs">
+                <li><a href="#who">Who is/are VanLevy?</a></li>
+                <li><a href="#what">What is this site?</a></li>
+                <li><a href="#when">When should I use this site?</a></li>
+                <li><a href="#where">Where do I go to ...</a></li>
+                <li><a href="#how">How do I ...</a></li>
+                <li><a href="#why">Why should I use this site?</a></li>
+            </ul>
+            <p>Not a FAQ, but this is a good spot to put a way for you to </p>
+            <a href="https://forms.gle/XDWppYRoih8R3MYM6" target="_blank">
+            <button type="button" class="btn btn-sm btn-outline-info">
+                Report a Bug &#12299
+            </button>
+            </a>
+        </div>
+        <div class="col-md-9 col-lg-8">
+            <p></p>
+            <h3>O.G.R.E.s</h3>
+            <p style="margin-top: -10px;"><sub>Occasionally Given Response Events</sub></p>
+            <p></p>
+            <h4 id="who">Who are Van Levy?</h4>
+            <div class="row no-gutters">
+                <div class="col-md-4 col-3">
+                    <img src="{% static 'vanlevy/Dave_Pic.jpg' %}" style="width: 100%">
+                </div>
+                <div class="col-md-2 col-3">
+                    <p style="padding: 10px;">
+                        I'm <em>not</em><br>
+                        <span style="font-size: 1.5em;"><strong>Van!</strong></span>
+                        <br>
+                        He's that guy over there <br>
+                        <span style="font-size: 1.5em;"><strong>&#10230</strong></span>
+                    </p>
+                </div>
+                <div class="col-md-2 col-3">
+                    <p style="padding: 10px; text-align: right;">
+                        <em>I'm</em> not<br>
+                        <span style="font-size: 1.5em;"><strong>Levy!</strong></span>
+                        <br>
+                        He's that guy over there <br>
+                        <span style="font-size: 1.5em;"><strong>&#10229</strong></span>
+                    </p>
+                </div>
+                <div class="col-md-4 col-3">
+                    <img src="{% static 'vanlevy/Eric_Pic.jpg' %}" style="width: 100%;">
+                </div>
+
             </div>
-            <div id="dave">
-                <img src="{% static 'vanlevy/Dave_Pic.jpg' %}" style="width: 200px; float: right; margin: 10px;">
-                <p style="padding: 10px;">
-                    I'm Dave!  I put the Levy in Van-Levy.
-                    <br>
-                    I also do things.
+            <div class="row">
+                <div class="col">
+                <p style="padding: 10px; text-align: center;">
+                    All clear?
+                    <a href="#faq_top">
+                        <button type="button" class="btn btn-sm btn-outline-info align-right"
+                                style="margin-right: -10px;">
+                            &#12298 top
+                        </button>
+                    </a>
                 </p>
+                </div>
             </div>
         </div>
-        <p style="clear: both"></p>
-        <div id="about">
-            <p style="padding: 10px;">
-                Together, we made this website.
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <hr>
+            <img src="{% static '/vanlevy/DicePoly_800.jpg' %}" alt="Poly Dice" width="100%" title="Polyhedral Dice">
+        </div>
+        <div class="col-md-8">
+            <hr>
+            <h4 id="what">What is this site?</h4>
+            <p></p>
+            <p>This is a resource site for folks who like Role Playing Games that are games that you play by rolling dice.
+            And, usually, not "normal dice".</p>
+            <p>
+                <a href="#faq_top">
+                    <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+                </a>
             </p>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-8">
+            <hr>
+            <h4 id="when">When should I use this site?</h4>
+            <p></p>
+            <p>When you're bored and would rather have fun playing RPGs? And specifically when the RPGs you want to
+                play require strange dice and the people you are playing with aren't in the same local space.</p>
+            <p style="font-size: 0.67em;">
+                <strong>Illegal disclaimer:</strong>
+                Batteries, players, and rulebooks not included.  Some assembly required.
+                This website was made without the input of any RPG system and is designed to be used after you have
+                purchased the official books, icons, dice, figurines, supplements, and/or other merch.
+                Images of your friends having fun may not match the ones in your head.
+                Any voices you hear are subject for concern.
+                Side-effects of using this site include:
+                stomach aches, chest pain, & incontinence due to laughing too hard,
+                delusions of dragon-slaying, nerf-herding, universe-saving, plasma-sword using, & laser-blasting,
+                addiction to our awesomeness, and general awesomeness on your part.
+                We are not responsible for:
+                loss of time due to overuse of these resources,
+                loss of hair due to bad rolls,
+                loss of mind due to malevolent GMs, TPKs,
+                players that break planned story-lines, players that stampede cattle through the Vatican,
+                rules-lawyers, newbies, n00bs, hackers, slackers, crackers, bushwhackers, bounty hunters,
+                con-men, ex-cons, nitwits, halfwits, dimwits, mugs, pugs, thugs, or Unitarians.
+            </p>
+            <p style="font-size: 0.67em;">
+                For the real terms and conditions, please use <a href="{% url 'vanlevy:terms' %}">this link</a>.
+                Or not. Who are we to tell you what to do with your life?
+                <a href="#faq_top">
+                    <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+                </a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <hr>
+            <img src="{% static '/vanlevy/DiceEdge_800.jpg' %}" alt="Poly Dice" width="100%" title="Star Wars Dice">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h4 id="where">Where do I go to...</h4>
+            <p></p>
+            <h5>join a game?</h5>
+            <p>If you have a direct link, you can just paste it into your browser's address bar.
+                If you're logged in, you should go straight to the game.  If you're not logged in, you will be prompted
+                to do so (or register); once you're logged in, you will be redirected to the appropriate page.
+                Once you are in the room, you can change your Avatar using the "Switch Avatar" Button.
+            </p>
+            <p>
+                You can also join a game (and select your Avatar at the same time) if you have the Room ID (which is
+                just a number) and the Passcode (if your GM has set one up).  Go to the Hub Page for the dice type you
+                are using and enter the information into the appropriate spaces.
+                (All links in the Dice drop-down menu go to Hub Pages.)
+            </p>
+            <h5>create a game?</h5>
+            <p>
+                First, pick your dice type and navigate to the Hub Page for it.
+                Inside each Hub Page, there is a link to make a room for that dice type.
+            </p>
+            <h5>edit my profile, make a new avatar, edit an Avatar?</h5>
+            <p>
+                The "Meeple" drop-down menu will give you links to go do all of the above. (And more!)
+            </p>
+            <p>
+                <a href="#faq_top">
+                    <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h4 id="how">How do I ...</h4>
+            <p></p>
+            <h5>get players into my game?</h5>
+            <p>
+                The easiest way for a GM to get players into a game (or 'Room') is to use the Direct Link.
+                With the Direct Link, players only need to copy / paste that into their browser.
+            </p>
+            <p>
+                There's two places a GM can find the Direct Link.  The first is on the Hub Page for that dice type.
+                (All links in the Dice drop-down menu go to Hub Pages.)
+                Once you're on the Hub Page, look for a plus button (
+                <button type="button" style="padding: 0;">
+                    <img src="{% static '/vanlevy/plus_clear_40.png' %}" alt="info" width="16" height="16">
+                </button>
+                ) for your room;
+                clicking that reveals info that only GM's can see.  Clicking on the copy button (
+                <button type="button" style="padding: 0;"
+                        onclick="copyURL(link_{{room.id}})">
+                <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+                </button> ) will put the link in your clipboard; you can paste the link into
+                an email to your players.  The other place you can find the link is in the Room Info page.
+                Inside each Dice Room is an info link (
+                <span style="background: #252525"><img src="{% static '/swdice/RoomInfoSmall_32.png' %}"
+                     alt="Room Info" height="20" width="20" style="margin-bottom: 3px"></span>
+                 ) on the top right. Follow that to find the Direct Link (and other info about the room).
+            </p>
+            <p>
+                The second way for players to enter a room is for them to navigate to the Hub Page and use the Room ID
+                and Passcode.  GM's can find this info in the same places as the Direct Link.
+                The only real difference between the Direct Link and the ID & Passcode is that a player entering with
+                the ID & Passcode can also select their Avatar at the same time.  Players entering with a Direct Link
+                will be signed in as their Username (but can change to a new Avatar at any time.)
+            </p>
+            <h5>find new players?</h5>
+            <p>
+                We have no general chat or general communications within our site.
+                The only way that you can communicate with other players (while on our site) is in a Dice Room.
+                All direct links (or other invites) will have to go through your own (outside) communications.
+                (You know, send an email or something.)
+            </p>
+                <a href="#faq_top">
+                    <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h4 id="why">Why should I use this site?</h4>
+            <p></p>
+            <p>Why should you do anything?  Does it matter? Even if it does matter, does it matter that it matters?</p>
+            <p>
+                <a href="#faq_top">
+                    <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}

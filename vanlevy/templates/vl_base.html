@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block bottom_navbar %}
-<div class="container" style="padding: 80px 10px 0px 0px">
+<div class="container" {% block bottom_navbar_padding %}style="padding: 80px 10px 0px 0px"{% endblock %}>
     <div class="container" {% block bottom_navbar_style %}
                             style="position: fixed; bottom: 0; "
                             {% endblock %} >
