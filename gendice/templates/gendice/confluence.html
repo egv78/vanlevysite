@@ -16,15 +16,15 @@
     <div class="row">
         <div class="col-md-4">
             <br>
-            <h3>Hail, {% if user.userprofile.user_first_name %}
+            <h1>Hail, {% if user.userprofile.user_first_name %}
                 {{user.userprofile.user_first_name}}!
                 {% else %}
                 {{user.username}}!
                 {% endif %}
-            </h3>
+            </h1>
             <p>
                 This is the <strong>Confluence</strong>.
-                From here, you will be able to join make rooms that use FFG's Genesys dice.
+                From here, you will be able to join and make rooms that use FFG's Genesys dice.
             </p>
 
         </div>
@@ -85,12 +85,20 @@
                                 <td>
                                     {{ gms_list|get_item:room.id }}
                                     {% if gms_list|get_item:room.id == 'you' %}
-                                        <button class="align-right" type="button" style="padding: 0;"
-                                                data-toggle="collapse"
-                                                data-target=".multi-collapse{{room.id}}"
+                                        <button class="align-right" type="button" style="padding: 0; display: inline;"
+                                                data-toggle="collapse" data-target=".multi-collapse{{room.id}}"
                                                 aria-expanded="false"
-                                                aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}">
+                                                aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}"
+                                                id="plusButton" onclick="switchToMinus()">
                                             <img src="{% static '/vanlevy/plus_clear_40.png' %}"
+                                                 alt="info" width="16" height="16">
+                                        </button>
+                                        <button class="align-right" type="button" style="padding: 0; display: none;"
+                                                data-toggle="collapse" data-target=".multi-collapse{{room.id}}"
+                                                aria-expanded="false"
+                                                aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}"
+                                                id="minusButton" onclick="switchToPlus()">
+                                            <img src="{% static '/vanlevy/minus_clear_40.png' %}"
                                                  alt="info" width="16" height="16">
                                         </button>
                                     {% endif %}
@@ -388,6 +396,14 @@ function switchButton() {
 function switchButtonBack() {
     document.getElementById('archivedButton').style.display='inline';
     document.getElementById('regularButton').style.display='none';
+}
+function switchToMinus() {
+    document.getElementById('minusButton').style.display='inline';
+    document.getElementById('plusButton').style.display='none';
+}
+function switchToPlus() {
+    document.getElementById('plusButton').style.display='inline';
+    document.getElementById('minusButton').style.display='none';
 }
 </script>
 {% endblock %}

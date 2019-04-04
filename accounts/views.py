@@ -172,7 +172,3 @@ def change_password_success(request):
     args = {'user': request.user}
     return render(request, template_name, args)
 
-
-# class CustomLogin(FormMixin, TemplateView):
-#     def get(self, request, *args, **kwargs):
-#         template_name = self.template_name

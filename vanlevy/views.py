@@ -44,7 +44,7 @@ def vl_cool_stuff_view(request):
 
 
 def vl_dice_rollers_view(request):
-    template_name = 'vanlevy/dice_rollers.html'
+    template_name = 'vanlevy/vl_dice_rollers.html'
     return render(request, template_name)
 
 
