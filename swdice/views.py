@@ -243,6 +243,7 @@ def get_dice_carryover(request, dice_form):
     else:
         pass
 
+
 def about(request):
     template_name = 'swdice/about_swdiceroller.html'
     return render(request, template_name)
