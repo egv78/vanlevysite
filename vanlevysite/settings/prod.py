@@ -7,12 +7,6 @@ DEBUG = False
 # change ALLOWED_HOSTS on launch
 ALLOWED_HOSTS = ['35.175.243.191', 'www.vanlevy.com', '.vanlevy.com']
 
-# local settings
-try:
-    from vanlevysite.settings.local import *
-except:
-    pass
-
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 INSTALLED_APPS = [
@@ -26,17 +20,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',
+    # 'storages',
 ]
 
 # STATIC FILES
 AWS_ACCESS_KEY_ID = auth_dict['aws_access_key_id']
 AWS_SECRET_ACCESS_KEY = auth_dict['aws_secret_access_key']
-# with open(os.path.join(BASE_DIR, 'vanlevysite/settings/s3_access_key.txt')) as f:
-#     AWS_ACCESS_KEY_ID = f.read().strip()
-#
-# with open(os.path.join(BASE_DIR, 'vanlevysite/settings/aws_secret_access_key.txt')) as f:
-#     AWS_SECRET_ACCESS_KEY = f.read().strip()
 
 AWS_PROFILE = 's3-full-access-user'
 AWS_STORAGE_BUCKET_NAME = 'www.vanlevy.com'
@@ -72,9 +61,3 @@ DATABASES = {
 }
 # end database
 
-# MEDIA FILES
-# INSTALLED_APPS += 'storages'
-# DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
-# MEDIA_URL = '//vanlevysite/media/'
-
-# DATABASE
