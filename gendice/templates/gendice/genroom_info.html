@@ -14,7 +14,7 @@
     {{room.name}}
 </span>
 <a class="navbar-brand" style="color:white;" href="{% url 'gendice:confluence' %}">
-    <img src="{% static '/vanlevy/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+    <img src="{% static '/gendice/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
     {% block subtitle %}{% endblock %}
 </a>
 <span class="d-inline-block" style="color:white; font-size: 150%;"> Info Page </span>
@@ -235,6 +235,10 @@
 <hr>
 <h5>Chats</h5>
 {% endblock %}
+
+{% block glossary %}
+<!-- hide glossary -->
+{% endblock%}
 
 <!-- include block chat_log -->
 

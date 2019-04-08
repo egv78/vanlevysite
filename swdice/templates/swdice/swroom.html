@@ -604,65 +604,30 @@
                 {% endblock dice_box %}
             </div>
             <div class="col-md-3">
-                {% block glossary %}
-                    <input type="checkbox" id="showblock">
-                    <div id="slideout">
-                        <label id="slideout_tab" for="showblock" title="Dice Meanings">
-                            <i>Dice</i>
-                        </label>
-                        <div id="slideout_inner">
-                            <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                            <ul style="list-style-type:none; color: white;">
-                                <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost"> Boost</li>
-                                <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability"> Ability</li>
-                                <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
-                                <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback"> Setback</li>
-                                <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
-                                <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge"> Challenge</li>
-                                <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
-                                <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force"> Force</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <input type="checkbox" id="showblock2">
-                    <div id="slideout2">
-                        <label id="slideout_tab2" for="showblock2" title="Result Meanings">
-                            <i>Pips </i>
-                        </label>
-                        <div id="slideout_inner2">
-                            <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                             <ul style="list-style-type:none;">
-                                <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success"> Success</li>
-                                <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure"> Failure</li>
-                                <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
-                                <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat"> Threat</li>
-                                <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
-                                <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair"> Despair</li>
-                                <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light"> Light</li>
-                                <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark"> Dark</li>
-                            </ul>
-                        </div>
-                    </div>
-                {% endblock glossary %}
                 {% block player_info %}
                 <table style="width: 100%;">
                     <tr>
+                        {% if icon %}
                         <td rowspan="2" style="width:90px">
-                            {% if icon %}
-                                <img src="{{ icon }}" width="80">
-                            {% endif %}
+                            <img src="{{ icon }}" width="80">
                         </td>
                         <td>
                             <span style="color:gray">You are signed in as: </span>
                             <br>
                             <strong>{{ name_in_room }}</strong>
                         </td>
+                        {% else %}<td colspan="2">
+                            <span style="color:gray">You are signed in as: </span>
+                            <br>
+                            <strong>{{ name_in_room }}</strong>
+                        </td>
+                        {% endif %}
                     </tr>
                     <tr>
                         <td>
                             <a href="{% url 'swdice:switch_avatar_room' room_number %}">
                             <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
-                                Switch Avatar
+                                Switch Avatar <strong>&#12299</strong>
                             </button>
                             </a>
                         </td>
@@ -677,10 +642,10 @@
                 <div class="container-fluid" id="chat_input" style="padding:0">
                     {{ chat_form.chat_text }}
                     {{ chat_form.recipient }}
-                        <button type="submit" name="chat" id="chat_submit"
-                                class="btn {%if start_whisper%}btn-outline-warning{%else%}btn-outline-dark{%endif%} btn-sm" >
-                            {%if start_whisper%}Whisper{%else%}Add Chat{%endif%}
-                        </button>
+                    <button type="submit" name="chat" id="chat_submit"
+                            class="btn {%if start_whisper%}btn-outline-warning{%else%}btn-outline-dark{%endif%} btn-sm" >
+                        {%if start_whisper%}Whisper{%else%}Add Chat{%endif%}
+                    </button>
                 </div>
                 {% endblock chat_input %}
             </div>
@@ -843,6 +808,46 @@
             {% block chat_log %}
             <div class="container-fluid" id="chat_log" style="padding:0">
             <hr>
+            {% block glossary %}
+                <input type="checkbox" id="showblock">
+                <div id="slideout">
+                    <label id="slideout_tab" for="showblock" title="Dice Meanings">
+                        <i>Dice</i>
+                    </label>
+                    <div id="slideout_inner">
+                        <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
+                        <ul style="list-style-type:none; color: white;">
+                            <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost"> Boost</li>
+                            <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability"> Ability</li>
+                            <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
+                            <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback"> Setback</li>
+                            <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
+                            <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge"> Challenge</li>
+                            <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
+                            <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force"> Force</li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="checkbox" id="showblock2">
+                <div id="slideout2">
+                    <label id="slideout_tab2" for="showblock2" title="Result Meanings">
+                        <i>Pips </i>
+                    </label>
+                    <div id="slideout_inner2">
+                        <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
+                         <ul style="list-style-type:none;">
+                            <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success"> Success</li>
+                            <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure"> Failure</li>
+                            <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
+                            <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat"> Threat</li>
+                            <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
+                            <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair"> Despair</li>
+                            <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light"> Light</li>
+                            <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark"> Dark</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endblock glossary %}
             {% if chat_log is empty %}
                 <p>This room has no chats</p>
             {% else %}
@@ -895,6 +900,16 @@
                                 <img src="{{ chat.image_url }}"
                                      title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
                                      width="40">
+                            {% else %}
+                                {% if chat.avatar %}
+                                <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ chat.avatar.avatar_name }}</strong></span>
+                                    {% else %}
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ chat.user.username }}</strong></span>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                             </td>
                             <td>
