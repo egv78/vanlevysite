@@ -36,7 +36,14 @@
                 </tr>
                 <tr style="height: 45px;">
                     <td style="padding-left: 5px;">{{ form.email }}</td>
-                    <td>One account per email.</td>
+                    <td>One account per email.
+                        <button type="button" class="btn btn-outline-info btn-sm align-right"
+                                              style="border-radius: 10px; padding: 0px 6px;"
+                                              onclick="showWhyEmail()" id="showButton">
+                            ?
+                        </button>
+                        <!--<span style="font-size: 0.67em;"><br>See below for why we ask for an email.</span>-->
+                    </td>
                 </tr>
                 <tr style="height: 45px;">
                     <td style="padding-left: 5px;">{{ form.password1 }}</td>
@@ -80,14 +87,28 @@
                         </ul>
                     </td>
                 </tr>
+                <tr><td><br></td></tr>
+                <tr style="height: 45px;">
+                    <td colspan="2" style="padding-left: 5px;">
+                        <span id="whyEmail" style="display: none;">
+                        <button type="button" class="btn btn-outline-danger btn-sm align-right"
+                                              style="border-radius: 10px; padding: 0px 6px;"
+                                              onclick="hideWhyEmail()">
+                            X
+                        </button>
+                        <h5>Why is an email required?</h5>
+                        We only use your email address to contact you if you need to reset your password,
+                        or if there are other problems with your account.<br><br>
+                        To learn more, please see our <a href="{% url 'vanlevy:terms' %}">terms and conditions</a>.
+                        </span>
+                    </td>
+                </tr>
             </table>
         </form>
 
     {% endif %}
 </div>
-{% endblock %}
 
-{% block page_scripts %}
 <script>
 var $myForm = $("#register");
 $myForm.submit(function(){
@@ -95,5 +116,15 @@ $myForm.submit(function(){
         return false;
     });
 });
+</script>
+<script>
+function showWhyEmail() {
+    document.getElementById('whyEmail').style.display='block';
+    document.getElementById('showButton').style.display='none';
+};
+function hideWhyEmail() {
+    document.getElementById('whyEmail').style.display='none';
+    document.getElementById('showButton').style.display='inline';
+};
 </script>
 {% endblock %}
