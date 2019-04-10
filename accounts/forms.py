@@ -1,6 +1,6 @@
 from django import forms
 from accounts.models import UserProfile
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 from .models import Avatar
 from django.core.validators import EMPTY_VALUES

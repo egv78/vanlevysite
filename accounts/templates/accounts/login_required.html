@@ -3,9 +3,17 @@
 {% block head %}
     <meta charset="UTF-8">
     <title>Login Required</title>
+    <meta id="my-data"
+          data-badlogins="{{ request.session.bad_logins }}"
+          data-delay="{{ request.session.delay }}"
+          data-badlogintime={{ request.session.bad_login_time }}
+    >
 {% endblock %}
 
 
 {% block required_warning %}
+<p><br></p>
     <h2 style="text-align:center; color:darkred">Please login or register.</h2>
 {% endblock %}
+
+{% block margin %}40px;{% endblock%}

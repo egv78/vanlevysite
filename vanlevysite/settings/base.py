@@ -158,3 +158,5 @@ LOGIN_EXEMPT_URLS = (
 # User substitution
 AUTH_USER_MODEL = 'accounts.VanLevyUser'
 
+# Email as authentication backend
+AUTHENTICATION_BACKENDS = ['vanlevysite.settings.emailbackend.CustomBackend']

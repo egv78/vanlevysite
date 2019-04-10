@@ -3,6 +3,11 @@
 {% block head %}
     <meta charset="UTF-8">
     <title>Login</title>
+    <meta id="my-data"
+          data-badlogins="{{ request.session.bad_logins }}"
+          data-delay="{{ request.session.delay }}"
+          data-badlogintime={{ request.session.bad_login_time }}
+    >
 {% endblock %}
 
 {% block link_account %}
@@ -13,58 +18,152 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <br>
-        {% if user.is_authenticated %}
-        <h3>You are logged in with the account: {{user.username}}.</h3>
-        <br>
-        <p><a href="{% url 'accounts:logout' %}">Logout</a>?</p>
-        {% else %}
-        {% block required_warning %}
-        {% endblock %}
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <h1>Login</h1>
-                    <p>
-                        If you already have an account, please login here:
-                    </p>
-                    <form method="post" id="login">
-                       {% csrf_token %}
-                        {{ form.as_p }}
-                       <button type="submit" class="btn btn-outline-primary">Login</button>
-                    </form>
+<div class="container">
+    {% if user.is_authenticated %}
+    <br>
+    <h3>You are logged in with the account: {{user.username}}.</h3>
+    <br>
+    <p><a href="{% url 'accounts:logout' %}">Logout</a>?</p>
+    {% else %}
+    {% block required_warning %}
+    {% endblock %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12"></div>
+            <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+                <div class="container-fluid"
+                     style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
+                            margin-top: {% block margin %}120px;{% endblock%}">
+                <form method="post" id="login">
+                  {% csrf_token %}
+                  <table style="width: 100%;">
+                    <tr><td>
+                    <input type="text" name="username" id="username" placeholder="Username or email"
+                           style="width: 100%; padding: 12px 20px; margin: 8px 0; text-align: center;
+                                  border: 1px solid #ccc; border-radius: 4px;">
+                    </td></tr>
+                    <tr><td>
+                    <input type="password" name="password" id="password" placeholder="Password"
+                           style="width: 100%; padding: 12px 20px; margin: 8px 0; text-align: center;
+                                  border: 1px solid #ccc; border-radius: 4px;">
+                    </td></tr>
+                    {% if form.errors %}
+                      {% for field in form %}
+                        {% for error in field.errors %}
+                          <tr><td>
+                            <div class="alert alert-warning" style="margin: 8px 0;">
+                              <a class="close" href="#" data-dismiss="alert">×</a>
+                              {{ error|escape }}
+                            </div>
+                          </td></tr>
+                        {% endfor %}
+                      {% endfor %}
+                      {% for error in form.non_field_errors %}
+                        <tr><td>
+                          <div class="alert alert-warning" style="margin: 8px 0;">
+                            <a class="close" href="#" data-dismiss="alert">×</a>
+                            {{ error }}
+                          </div>
+                        </td></tr>
+                      {% endfor %}
+                    {% endif %}
+                    {% if request.session.bad_logins > 3 %}
+                      <tr style="display: none;" id="delayAlertRow">
+                        <td>
+                        <div class="alert alert-danger" style="margin: 8px 0;" id="delayAlert">
+                          <a class="close" href="#" data-dismiss="alert">×</a>
+                          For security reasons, there will now be a delay of
+                            {{ request.session.delay }} seconds
+                            before you can login.
+                        </div>
+                        </td>
+                      </tr>
+                    {% endif %}
+                    <!--{ if request.session.bad_login_time }-->
+                      <!--<tr><td>-->
+                        <!--<div class="alert alert-info" style="margin: 8px 0;" id="clearAlert">-->
+                          <!--<a class="close" href="#" data-dismiss="alert">×</a>-->
+                            <!--{ request.session.bad_login_time }-->
+                        <!--</div>-->
+                        <!--</td></tr>-->
+                    <!--{ endif }-->
+                    <tr><td>
+                      <button type="submit" class="btn btn-primary btn-block" id="submitButton"
+                              style="margin: 8px 0px 8px 0px; display: none;">
+                        <h4 style="margin-bottom: 6px;">Login</h4>
+                      </button>
+                    </td></tr>
+                  </table>
+                </form>
                 </div>
-                <div class="col">
-                    <p><br></p>
-                    <h3>Register</h3>
-                    <p>
-                        If you do not have an account, please click below to create a new account.
-                    </p>
-                    <a href="{% url 'accounts:register' %}">
-                        <button type="button" class="btn btn-outline-dark">Register &#12299</button>
-                    </a>
-
-                    <p><br></p>
-                    <h4>Reset Password</h4>
-                    <p>
-                        Accounts are tied to your email address.  If you have an account, but cannot remember your
-                        password, please click below to start the to reset process.
-                    </p>
-                    <a href="{% url 'accounts:password_reset' %}">
-                        <button type="button" class="btn btn-outline-secondary">Reset Password &#12299</button>
-                    </a>
+                <div class="container-fluid"
+                     style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
+                            margin-top: 120px;">
+                <p>
+                    If you do not have an account, please
+                </p>
+                <a href="{% url 'accounts:register' %}">
+                    <button type="button" class="btn btn-success btn-block">
+                        <h5 style="margin-bottom: 4px;">Register</h5>
+                    </button>
+                </a>
+                </div>
+                <div class="container-fluid"
+                     style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
+                            margin-top: 60px;">
+                <p>
+                    If you've forgotten your password,
+                </p>
+                <a href="{% url 'accounts:password_reset' %}">
+                    <button type="button" class="btn btn-secondary btn-block">
+                        <h5 style="margin-bottom: 4px;">Reset Password</h5>
+                    </button>
+                </a>
                 </div>
             </div>
-            <div class="row">
-
-            </div>
+            <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12"></div>
         </div>
-        {% endif %}
-    </div>
-{% endblock %}
+        <div class="row">
 
-{% block page_scripts %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+<script>
+function showSubmit() {
+    document.getElementById('submitButton').style.display='inline';
+};
+function showDelayAlert() {
+    document.getElementById('delayAlertRow').style.display='inline';
+};
+function showSubmitAndClose() {
+    document.getElementById('submitButton').style.display='inline';
+    document.getElementById('delayAlertRow').style.display='none';
+};
+$(function () {
+    var bad_logins = $('#my-data').data('badlogins');
+    var delay_time = $('#my-data').data('delay');
+    var now = new Date();
+    var bad_login_str_v1 = $('#my-data').data('badlogintime');
+    if (bad_login_str_v1) {
+        var bad_login_str = bad_login_str_v1.replace('"', '').replace('"', '');
+    };
+    var first_bad_login_time = new Date(bad_login_str);
+    var clear_bad_login_time =  moment(first_bad_login_time).add(bad_logins, 'm').toDate();
+    if ((bad_logins > 3) && (now < clear_bad_login_time)) {
+        var delay = delay_time * 1000;
+        console.log(bad_logins);
+        console.log(delay_time);
+        console.log(delay);
+        showDelayAlert();
+        setTimeout(showSubmitAndClose, delay);
+    } else {
+        showSubmit()
+    };
+});
+</script>
 <script>
 var $myForm = $("#login");
 $myForm.submit(function(){
@@ -73,4 +172,6 @@ $myForm.submit(function(){
     });
 });
 </script>
-{% endblock %}
+
+
+{% endblock body %}
