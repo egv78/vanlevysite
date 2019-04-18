@@ -15,7 +15,7 @@ class Make_SW_Room(forms.ModelForm):
             self.cleaned_data['passcode'] = ''
         else:
             if passcode == '':
-                msg = forms.ValidationError("You must add a passcode to a closed (i.e. not open) room")
+                msg = forms.ValidationError("You must add a passcode to a restricted (i.e. not open) room")
                 self.add_error('passcode', msg)
 
         return self.cleaned_data
@@ -25,7 +25,7 @@ class Make_SW_Room(forms.ModelForm):
         widgets = {'open_to_all': forms.RadioSelect}
         fields = ('name', 'passcode', 'open_to_all')
 
-    name = forms.CharField(required=True, label='Passcode',
+    name = forms.CharField(required=True, label='Name',
                            widget=forms.TextInput(
                                attrs={'placeholder': "Enter your room's name.", 'size': 40}
                            )

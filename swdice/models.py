@@ -2,6 +2,7 @@ from django.db import models
 from accounts.models import VanLevyUser, Avatar
 
 BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
+OPEN_CHOICES = ((True, 'Open'), (False, 'Restricted'))
 
 
 class SWRoom(models.Model):
@@ -9,7 +10,7 @@ class SWRoom(models.Model):
     passcode = models.CharField(max_length=100, blank=True)
     created_on = models.DateTimeField()
     created_by = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
-    open_to_all = models.BooleanField(choices=BOOL_CHOICES, default=False)
+    open_to_all = models.BooleanField(choices=OPEN_CHOICES, default=False)
     genesys = models.BooleanField(choices=BOOL_CHOICES, default=False)
     disabled = models.BooleanField(choices=BOOL_CHOICES, default=False)
 

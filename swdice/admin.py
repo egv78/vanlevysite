@@ -3,7 +3,7 @@ from swdice.models import SWRoom, SWRoomToUser
 
 
 class SWRoomAdmin(admin.ModelAdmin):
-    list_display = ('room_name', 'created_on', 'created_by', 'is_open')
+    list_display = ('room_name', 'created_on', 'created_by', 'is_open', 'genesys')
 
     def room_name(self, swroom_object):
         if len(swroom_object.name) < 55:
@@ -23,6 +23,10 @@ class SWRoomAdmin(admin.ModelAdmin):
     def is_open(self, swroom_object):
         return swroom_object.open_to_all is True
     is_open.boolean = True
+
+    def genesys(self, swroom_object):
+        return swroom_object.genesys is True
+    genesys.boolean = True
 
 
 class SWRoomToUserAdmin(admin.ModelAdmin):

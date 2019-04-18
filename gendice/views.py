@@ -35,21 +35,3 @@ def about(request):
 def error_gen(request):
     template_name = '404_gen.html'
     return render(request, template_name)
-
-
-def direct_view_gen(request, swroom_id, slug):
-    current_user_id = request.user.id
-    user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
-    if len(user_to_room_link_candidate) > 0:
-        user_to_room_link = user_to_room_link_candidate[0]
-    else:
-        user_to_room_link = False
-    if user_to_room_link:
-        if user_to_room_link.banned:
-            return redirect('gendice:confluence')  # will need to change when banning implemented
-        else:
-            return redirect('gendice:genroom', swroom_id)
-    else:
-        # make link, redirect
-        make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
-        return redirect('gendice:genroom', swroom_id)

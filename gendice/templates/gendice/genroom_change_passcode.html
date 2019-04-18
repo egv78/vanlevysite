@@ -1,0 +1,114 @@
+{% extends 'gen_base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Change Passcode</title>
+{% endblock %}
+
+{% block subtitle %} Change Passcode{% endblock %}
+
+{% block body %}
+
+<style>
+    td {
+        vertical-align: top;
+        border-bottom: 1px solid #ddd;
+        padding: 5px 20px;
+    }
+</style>
+<div class="container">
+    <br>
+    <h3>Change the Passcode for <u>{{ room.name }}</u></h3>
+    <p><br></p>
+    <div class="row">
+        <div class="col-md-4">
+            <h5>Current status:</h5>
+            <ul style="margin-left: -5px;">
+                <li style="margin-bottom: 15px;">
+                    <strong>Room Name:</strong><br>
+                    <span style="word-wrap: break-word; font-size: 1.5em">
+                        <u>{{ room.name }}</u>
+                    </span><br>
+                    <span style="font-size: 0.67em;"><em>Room names cannot be changed.</em></span>
+                </li>
+                <li style="margin-bottom: 15px;">
+                    <strong>Passcode:</strong><br>
+                    {% if room.passcode %}
+                        {{ room.passcode }}
+                    {% else %}
+                        This room's passcode has been left <em>blank</em>.
+                    {% endif %}
+                </li>
+                <li style="margin-bottom: 15px;">
+                    This room is currently
+                    {% if room.open_to_all %}
+                        <strong>open</strong>.
+                    {% else %}
+                        <strong>restricted</strong>.
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <h5>Change Room Access:</h5>
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                <div class="container-fluid" style="display: none">
+                    {{form.name}}
+                </div>
+                <table style="width: 100%">
+                    <col width="33%">
+                    <col width="67%">
+                    <tr>
+                        <td><strong>Room Access</strong>
+                            <p>{{form.open_to_all}}</p>
+                            <p>
+                                <strong>{{ form.open_to_all.errors }}</strong>
+                            </p>
+                        </td>
+                        <td><br>
+                            <p>
+                                An <em>Open Room</em> means anyone can enter just knowing (or guessing) the room number.
+                                If your room is <em>Restricted</em>, players will need the passcode (or direct link) to enter.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Passcode:</strong>
+                            <p>{{form.passcode}} </p>
+                            <p>
+                                <strong>{{ form.passcode.errors }}</strong>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                Passcodes are not stored in an encrypted db.
+                                <strong>Don't use your site password.</strong>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="border-bottom: 0px;">
+                            <p>
+                                All players who have accessed <u>{{ room.name }}</u> previously will still have access
+                                and will still be able to use this room.  Changing the room access only affects players
+                                who attempt to join from this point forward.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 0px;">
+                            <button type="submit" class="btn btn-primary align-right" name="change_passcode">
+                                Submit Changes
+                            </button>
+                        <td style="border-bottom: 0px;"></td>
+                    </tr>
+
+                </table>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

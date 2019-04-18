@@ -23,6 +23,8 @@ urlpatterns = [
          name='switch_avatar'),
     path('switch_avatar/room/<int:swroom_id>/', views.DockingBay.as_view(template_name="swdice/switch_avatar.html"),
          name='switch_avatar_room'),
+    path('change_passcode/<int:swroom_id>/', views.MakeSWRoom.as_view(template_name='swdice/swroom_change_passcode.html'),
+         name='change_passcode'),
     path('404', views.error, name='404'),
 ]
 

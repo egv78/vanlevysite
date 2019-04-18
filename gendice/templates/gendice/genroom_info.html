@@ -103,6 +103,17 @@
             <div class="col-md-6">
                 <h6>Room Details</h6>
                 <ul style="margin-left: -15px; margin-top: -5px">
+                    <li><strong>Created on:</strong> {{ room.created_on }}</li>
+                    <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
+                    <li><strong>Direct Link:</strong>
+                        <button type="button" style="padding: 0;margin-left: 10px;"
+                                onclick="copyURL(link_{{room.id}})">
+                          <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+                        </button>
+                        <span style="word-wrap: break-word;" id="link_{{room.id}}">
+                            www.vanlevy.com{% url 'gendice:genroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
+                        </span>
+                    </li>
                     <li><strong>Room ID:</strong> <u>{{room.id}}</u></li>
                     {% if not room.open_to_all %}
                     <li><strong>Passcode:</strong>
@@ -115,10 +126,20 @@
                     {% else %}
                     <li>This room is <strong>open to all</strong></li>
                     {% endif %}
-                    <li><strong>Direct Link:</strong> www.vanlevy.com{% url 'swdice:swroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</li>
-                    <li><strong>Created on:</strong> {{ room.created_on }}</li>
-                    <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
                 </ul>
+                {% if not room.disabled %}
+                <a href="{% url 'gendice:change_passcode_gen' room_number %}">
+                  <button type="button" class="btn btn-sm btn-outline-info" id="changePasscode"
+                        style="margin-right: 15px;">
+                    {% if not room.open_to_all %}
+                        Change Passcode
+                    {% else %}
+                        Add Passcode
+                    {% endif %}
+                    <strong>&#12299</strong>
+                  </button>
+                </a>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 {% if room.disabled %}
@@ -264,6 +285,53 @@ function hideDisable() {
     document.getElementById('disable').style.display='block';
     document.getElementById('cancel_disable').style.display='none';
     document.getElementById('are_you_sure').style.display='none';
+}
+function copyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+
+  // Place in top-left corner of screen regardless of scroll position.
+  textArea.style.position = 'fixed';
+  textArea.style.top = 0;
+  textArea.style.left = 0;
+
+  // Ensure it has a small width & height. Setting to 1px / 1em doesn't work as this gives a negative w/h on some browsers.
+  textArea.style.width = '2em';
+  textArea.style.height = '2em';
+
+  // We don't need padding, reducing the size if it does flash render.
+  textArea.style.padding = 0;
+
+  // Clean up any borders.
+  textArea.style.border = 'none';
+  textArea.style.outline = 'none';
+  textArea.style.boxShadow = 'none';
+
+  // Avoid flash of white box if rendered for any reason.
+  textArea.style.background = 'transparent';
+
+  textArea.value = text;
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copying text command was ' + msg);
+  } catch (err) {
+    console.log('Oops, unable to copy');
+  }
+
+  document.body.removeChild(textArea);
+}
+
+function copyURL(element){
+    console.log(element.innerText);
+    var copyText = element.innerText;
+    copyTextToClipboard(copyText)
+    var msg = (copyText).concat(" copied to clipboard.")
+    alert(msg);
 }
 </script>
 {% endblock %}

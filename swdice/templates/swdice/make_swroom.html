@@ -18,69 +18,80 @@
 </style>
 <div class="container">
     <br>
-
-    <form method="post" autocomplete="off">
-        {% csrf_token %}
-        <table>
-            <col width="150">
-            <col width="300">
-            <tr>
-                <td colspan="2">
-                    <h3>Make a new Star Wars Room</h3>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Room Name:</strong>
-                    <p>{{form.name}} </p>
-                    <p>
-                        {% if request.method.post %}
-                        <strong>{{ form.name.errors }}</strong>
-                        {% endif %}
-                    </p>
-                </td>
-                <td>
-                    <br>
-                    <p>This will appear as the room's title.</p>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Make Open?</strong>
-                    <p>{{form.open_to_all}}</p>
-                    <p>
-                        <strong>{{ form.open_to_all.errors }}</strong>
-                    </p>
-                </td>
-                <td><br>
-                    <p>
-                        An <em>Open Room</em> means anyone can enter through the Hub Page.
-                        If your room is <em>not open</em>, players will need the passcode.
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Passcode:</strong>
-                    <p>{{form.passcode}} </p>
-                    <p>
-                        <strong>{{ form.passcode.errors }}</strong>
-                    </p>
-                </td>
-                <td>
-                    <p>
-                        Passcodes are not stored in an encrypted db.
-                        <strong>Don't use your site password.</strong>
-                    </p>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <button type="submit" class="btn btn-secondary">Make my room</button>
-        {% if request.method.post %}
-            <br><strong>time errors: {{ form.created_on.errors }}</strong>
-            <br><strong>user errors: {{ form.created_by.errors }}</strong>
-        {% endif %}
-    </form>
-
-
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                <table style="width: 100%;">
+                    <col width="33%">
+                    <col width="67%">
+                    <tr>
+                        <td colspan="2">
+                            <h3>Make a new Star Wars Room</h3>
+                            <p></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Room Name:</strong>
+                            <p>{{form.name}} </p>
+                            <p>
+                                {% if request.method.post %}
+                                <strong>{{ form.name.errors }}</strong>
+                                {% endif %}
+                            </p>
+                        </td>
+                        <td>
+                            <br>
+                            <p>This is how you (and players) will see the room in the Docking Bay.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Room Access</strong>
+                            <p>{{form.open_to_all}}</p>
+                            <p>
+                                <strong>{{ form.open_to_all.errors }}</strong>
+                            </p>
+                        </td>
+                        <td><br>
+                            <p>
+                                An <em>Open Room</em> means anyone can enter just knowing (or guessing) the room number.
+                                If your room is <em>Restricted</em>, players will need the passcode (or direct link) to enter.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Passcode:</strong>
+                            <p>{{form.passcode}} </p>
+                            <p>
+                                <strong>{{ form.passcode.errors }}</strong>
+                            </p>
+                        </td>
+                        <td>
+                            <p><br>
+                                Passcodes are not stored in an encrypted db.
+                                <strong>Don't use your site password.</strong>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 0px;">
+                            <br>
+                            <button type="submit" class="btn btn-primary align-right" name="make_room">
+                                Make my room
+                            </button>
+                        </td>
+                        <td style="border-bottom: 0px;"></td>
+                    </tr>
+                </table>
+                <br>
+                {% if request.method.post %}
+                    <br><strong>time errors: {{ form.created_on.errors }}</strong>
+                    <br><strong>user errors: {{ form.created_by.errors }}</strong>
+                {% endif %}
+            </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
 </div>
 {% endblock %}

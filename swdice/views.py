@@ -46,7 +46,6 @@ def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user
         link_instance.date_admitted = now
 
     if int(avatar) == 0:
-        print("here")
         link_instance.avatar_id_id = ""
     else:
         link_instance.avatar_id_id = int(avatar)
@@ -259,57 +258,119 @@ def error(request):
 
 class MakeSWRoom(TemplateView, FormMixin):
     def post(self, request, **kwargs):
-        form = Make_SW_Room(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.created_by = request.user
-            now = datetime.datetime.now()
-            instance.created_on = now
-            genesys_dice = 'gendice' in self.template_name
-            instance.genesys = genesys_dice
-            instance.save()
-            user_id = request.user.id
-            room_id = instance.id
-            make_user_room_link(room_id, user_id, True, False, True, 0)
-            destiny = SWRoomDestiny()
-            destiny.room_id_id = room_id
-            destiny.dark_pips = 0
-            destiny.light_pips = 0
-            destiny.save()
+        if "make_room" in request.POST:
+            form = Make_SW_Room(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.created_by = request.user
+                now = datetime.datetime.now()
+                instance.created_on = now
+                genesys_dice = 'gendice' in self.template_name
+                instance.genesys = genesys_dice
+                instance.save()
+                user_id = request.user.id
+                room_id = instance.id
+                make_user_room_link(room_id, user_id, True, False, True, 0)
+                destiny = SWRoomDestiny()
+                destiny.room_id_id = room_id
+                destiny.dark_pips = 0
+                destiny.light_pips = 0
+                destiny.save()
+                redirect_place = 'gendice:confluence' if 'gendice' in self.template_name else 'swdice:dockingbay'
+                return redirect(redirect_place)
+            else:
+                args = {'form': form}
+                form_template = 'swdice/make_swroom.html' if 'swdice' in self.template_name else 'gendice/make_genroom.html'
+                return render(request, form_template, args)
+        elif "change_passcode" in request.POST:
+            form = Make_SW_Room(request.POST)
+            swroom_id = self.kwargs['swroom_id']
+            try:
+                room = SWRoom.objects.get(pk=swroom_id)
+            except SWRoom.DoesNotExist:
+                if 'gendice' in request.path:
+                    return redirect('gendice:404')
+                else:
+                    return redirect('swdice:404')
+            genesys = room.genesys
+            info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'
+
+            if form.is_valid():
+                room.open_to_all = form.cleaned_data['open_to_all']
+                room.passcode = form.cleaned_data['passcode']
+                room.save()
+                return redirect(info_url, swroom_id)
+            else:
+                args = {'form': form, 'room_number': swroom_id, 'room': room}
+                if 'swdice' in self.template_name:
+                    form_template = 'swdice/swroom_change_passcode.html'
+                else:
+                    'gendice/genroom_change_passcode.html'
+                return render(request, form_template, args)
+        else:
             redirect_place = 'gendice:confluence' if 'gendice' in self.template_name else 'swdice:dockingbay'
             return redirect(redirect_place)
-        else:
-            args = {'form': form}
-            form_template = 'swdice/make_swroom.html' if 'swdice' in self.template_name else 'gendice/make_genroom.html'
-            return render(request, form_template, args)
 
     def get(self, request, **kwargs):
         now = datetime.datetime.now()
         user_id = request.user.id
+        change_passcode = 'change' in self.template_name
         genesys_dice = 'gendice' in self.template_name
-        print(genesys_dice)
-        initial_args = {'open_to_all': True, 'created_on': now, 'created_by': user_id, 'genesys': genesys_dice}
-        form = Make_SW_Room(initial_args)
-        args = {'form': form}
+        if not change_passcode:
+            initial_args = {'open_to_all': True, 'created_on': now, 'created_by': user_id, 'genesys': genesys_dice}
+            form = Make_SW_Room(initial_args)
+            args = {'form': form}
+        else:
+            swroom_id = self.kwargs['swroom_id']
+            try:
+                room = SWRoom.objects.get(pk=swroom_id)
+            except SWRoom.DoesNotExist:
+                if 'gendice' in request.path:
+                    return redirect('gendice:404')
+                else:
+                    return redirect('swdice:404')
+            initial_args = {'open_to_all': False, 'name': room.name}
+            form = Make_SW_Room(initial_args)
+            args = {'form': form, 'room_number': swroom_id, 'room': room}
         return render(request, self.template_name, args)
 
 
 def direct_view(request, swroom_id, slug):
     current_user_id = request.user.id
     user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+    try:
+        room = SWRoom.objects.get(pk=swroom_id)
+        passcode = room.passcode
+    except SWRoom.DoesNotExist:
+        if 'gendice' in request.path:
+            return redirect('gendice:404')
+        else:
+            return redirect('swdice:404')
+
     if len(user_to_room_link_candidate) > 0:
         user_to_room_link = user_to_room_link_candidate[0]
     else:
         user_to_room_link = False
+
+    redirect_place = 'gendice:confluence' if 'gendice' in request.path else 'swdice:dockingbay'
+    room_url = 'gendice:genroom' if 'gendice' in request.path else 'swdice:swroom'
+
     if user_to_room_link:
         if user_to_room_link.banned:
-            return redirect('swdice:dockingbay')  # will need to change when banning implemented
+            request.session['problem'] = "You have been banned from that room."
+            return redirect(redirect_place)
         else:
-            return redirect('swdice:swroom', swroom_id)
+            return redirect(room_url, swroom_id)
     else:
-        # make link, redirect
-        make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
-        return redirect('swdice:swroom', swroom_id)
+        # if passcode is right (or room open), make link, redirect
+        if slug == passcode or slug == 'open':
+            make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+            return redirect(room_url, swroom_id)
+        else:
+            request.session['problem'] = "There is a problem with the link to "
+            requested_url = request.get_full_path()
+            request.session['requested_url'] = requested_url
+            return redirect(redirect_place)
 
 
 class DockingBay(FormMixin, TemplateView):
@@ -332,6 +393,17 @@ class DockingBay(FormMixin, TemplateView):
 
     # if request.method == 'GET'
     def get(self, request, *args, **kwargs):
+        if 'problem' in request.session:
+            problem = request.session['problem']
+            del request.session['problem']
+            if 'requested_url' in request.session:
+                requested_url = request.session['requested_url']
+                del request.session['requested_url']
+            else:
+                requested_url = ""
+        else:
+            problem = ""
+            requested_url = ""
         genesys = 'gendice' in self.template_name
         try:
             room_id = self.kwargs['swroom_id']
@@ -392,6 +464,7 @@ class DockingBay(FormMixin, TemplateView):
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id,
                 'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list, 'form_direct': form_direct,
                 'player_numbers_list': player_numbers_list, 'number_of_rooms': number_of_rooms,
+                'problem': problem, 'requested_url': requested_url,
                 'has_archived_gen_rooms': has_archived_gen_rooms, 'has_archived_sw_rooms': has_archived_sw_rooms}
         return render(request, self.template_name, args)
 
@@ -428,9 +501,9 @@ class DockingBay(FormMixin, TemplateView):
                         link_instance.avatar_id_id = avatar_id if int(avatar_id) > 0 else ""
                         link_instance.default_avatar_is_user = 1 if int(avatar_id) == 0 else 0
                         link_instance.save()
-                        # print("here")
                         return redirect(room_url, swroom_id)
                     elif been_there and been_there[0].banned:
+                        request.session['problem'] = "You have been banned from that room."
                         return redirect(hub_url)
                     else:
                         passcode_correct = room.passcode
@@ -755,9 +828,7 @@ class SWRoomViews(FormMixin, TemplateView):
         try:
             room = SWRoom.objects.get(pk=swroom_id)
         except SWRoom.DoesNotExist:
-            print(request)
             if 'gendice' in request.path:
-                print('here')
                 return redirect('gendice:404')
             else:
                 return redirect('swdice:404')
@@ -802,7 +873,8 @@ class SWRoomViews(FormMixin, TemplateView):
             should_be_here = False
             if user_to_room_link:
                 if user_to_room_link.banned:
-                    return redirect(hub_url)  # will need to change when banning implemented
+                    request.session['problem'] = "You have been banned from that room."
+                    return redirect(hub_url)
                 elif not viewing_player_info:
                     should_be_here = True
                 elif viewing_player_info and user_to_room_link.game_master:
