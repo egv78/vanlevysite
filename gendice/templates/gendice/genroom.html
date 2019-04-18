@@ -75,15 +75,18 @@
                             <table class="destiny_table">
                                 <tr>
                                     <td style="width:12px;">
-                                        <button type="submit" class="btn btn-light btn-sm" name="add_dark">
+                                        <button type="submit" class="btn btn-light btn-sm" name="add_dark"
+                                                title="Add a GM Story Point">
                                             &#9650</button>
                                         <br>
-                                        <button type="submit" class="btn btn-light btn-sm" name="rem_dark">
+                                        <button type="submit" class="btn btn-light btn-sm" name="rem_dark"
+                                                title="Remove a GM Story Point">
                                             &#9660</button>
                                     </td>
-                                    <td style="width:33px;">
+                                    <td style="width:20px;">
                                         <button type="submit" class="btn btn-secondary outline-me" name="use_dark"
-                                                id="use_dark">
+                                                id="use_dark" title="Flip Story Point from GM to Player"
+                                                {% if dark_pips == 0 %}disabled{% endif %}>
                                             Use<br>GM
                                         </button>
                                     </td>
@@ -96,10 +99,10 @@
                             There are no Story Points
                             {% endif %}
                             {% for i in dark_pips|get_range %}
-                                <img src="{% static 'gendice/Pips/gm.png' %}" width="40" title="Dark">
+                                <img src="{% static 'gendice/Pips/gm.png' %}" width="40" title="GM">
                             {% endfor %}
                             {% for i in light_pips|get_range %}
-                                <img src="{% static 'gendice/Pips/player.png' %}" width="40" title="Light">
+                                <img src="{% static 'gendice/Pips/player.png' %}" width="40" title="Player">
                             {% endfor %}
                             </span>
                         </div>
@@ -108,15 +111,18 @@
                                 <tr>
                                     <td style="width:36px;">
                                         <button type="submit" class="btn btn-outline-dark" name="use_light"
-                                                id="use_light">
+                                                id="use_light" title="Flip a Story Point from Player to GM"
+                                                {% if light_pips == 0 %}disabled{% endif %}>
                                             Use<br>Player
                                         </button>
                                     </td>
                                     <td style="width:12px;">
-                                        <button type="submit" class="btn btn-light btn-sm" name="add_light">
+                                        <button type="submit" class="btn btn-light btn-sm" name="add_light"
+                                                title="Add a Player Story Point">
                                             &#9650</button>
                                         <br>
-                                        <button type="submit" class="btn btn-light btn-sm" name="rem_light">
+                                        <button type="submit" class="btn btn-light btn-sm" name="rem_light"
+                                                title="Remove a Player Story Point">
                                             &#9660</button>
                                     </td>
                                 </tr>

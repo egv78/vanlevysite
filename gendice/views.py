@@ -32,6 +32,11 @@ def about(request):
     return render(request, template_name)
 
 
+def error_gen(request):
+    template_name = '404_gen.html'
+    return render(request, template_name)
+
+
 def direct_view_gen(request, swroom_id, slug):
     current_user_id = request.user.id
     user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)

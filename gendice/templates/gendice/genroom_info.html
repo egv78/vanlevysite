@@ -115,7 +115,7 @@
                     {% else %}
                     <li>This room is <strong>open to all</strong></li>
                     {% endif %}
-                    <li><strong>Direct Link:</strong> {% url 'swdice:swroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</li>
+                    <li><strong>Direct Link:</strong> www.vanlevy.com{% url 'swdice:swroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</li>
                     <li><strong>Created on:</strong> {{ room.created_on }}</li>
                     <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
                 </ul>
@@ -192,7 +192,7 @@
         However, this page loads <em>all</em> actions and chats, while the main page shows only the 100 most
         recent actions and 100 most recent chats.
     </p>
-    <a href="{% url 'swdice:swroom' room_number %}">
+    <a href="{% url 'gendice:genroom' room_number %}">
     <button type="button" class="btn btn-info align-right" name="back to page">
         <strong>&#12298</strong> Back to Live Page
     </button>

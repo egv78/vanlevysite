@@ -1,4 +1,5 @@
 from django.urls import path, re_path
+from django.conf.urls import handler404
 
 from . import views
 
@@ -20,4 +21,7 @@ urlpatterns = [
          name='switch_avatar_room_gen'),
     path('enter_with_passcode/', views.DockingBay.as_view(template_name="gendice/enter_with_passcode_gen.html"),
          name='enter_passcode_gen'),
+    path('404', views.error_gen, name='404'),
 ]
+
+handler404 = views.error_gen

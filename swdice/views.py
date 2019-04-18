@@ -249,6 +249,14 @@ def about(request):
     return render(request, template_name)
 
 
+def error(request):
+    if 'gendice' in request.path:
+        redirect('gendice:404')
+    else:
+        template_name = '404.html'
+    return render(request, template_name)
+
+
 class MakeSWRoom(TemplateView, FormMixin):
     def post(self, request, **kwargs):
         form = Make_SW_Room(request.POST)
@@ -521,7 +529,8 @@ class SWRoomViews(FormMixin, TemplateView):
         room = SWRoom.objects.get(pk=swroom_id)
         current_user = self.request.user
         current_user_id = self.request.user.id
-        genesys = 'genroom' in self.template_name
+        # genesys = 'genroom' in self.template_name
+        genesys = room.genesys
         room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
         hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
         info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'
@@ -606,7 +615,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_form.num_force_dice = 0
             get_dice_carryover(request, dice_form)
 
-            caption = " added a DARK destiny point."
+            caption = " added a GM story point." if genesys else " added a DARK destiny point."
             delta_light = 0
             delta_dark = 1
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
@@ -625,7 +634,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_form.num_force_dice = 0
             get_dice_carryover(request, dice_form)
 
-            caption = " removed a DARK destiny point."
+            caption = " removed a GM story point." if genesys else " removed a DARK destiny point."
             delta_light = 0
             delta_dark = -1
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
@@ -644,7 +653,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_form.num_force_dice = 0
             get_dice_carryover(request, dice_form)
 
-            caption = " used a DARK destiny point."
+            caption = " used a GM story point." if genesys else " used a DARK destiny point."
             delta_light = 1
             delta_dark = -1
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
@@ -663,7 +672,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_form.num_force_dice = 0
             get_dice_carryover(request, dice_form)
 
-            caption = " added a LIGHT destiny point."
+            caption = " added a Player story point." if genesys else " added a LIGHT destiny point."
             delta_light = 1
             delta_dark = 0
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
@@ -682,7 +691,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_form.num_force_dice = 0
             get_dice_carryover(request, dice_form)
 
-            caption = " removed a LIGHT destiny point."
+            caption = " removed a Player story point." if genesys else " removed a LIGHT destiny point."
             delta_light = -1
             delta_dark = 0
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
@@ -701,7 +710,7 @@ class SWRoomViews(FormMixin, TemplateView):
                 dice_form.num_force_dice = 0
             get_dice_carryover(request, dice_form)
 
-            caption = " used a LIGHT destiny point."
+            caption = " used a Player story point." if genesys else " used a LIGHT destiny point."
             delta_light = -1
             delta_dark = 1
             kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
@@ -715,11 +724,11 @@ class SWRoomViews(FormMixin, TemplateView):
             get_chat_carryover(request, chat_form, current_user_id)
 
             dice_form = SW_Dice_Roll(request.POST)
-            if 'gendice' in self.template_name:
-                dice_form.num_force_dice = 0
             secret_roll = "roll_dice_secret" in request.POST
 
             if dice_form.is_valid():
+                if genesys:
+                    dice_form.cleaned_data['num_force_dice'] = 0
                 dice_pool = read_dice(dice_form)
                 total_dice = dice_pool['total_dice']
                 del dice_pool['total_dice']
@@ -727,7 +736,8 @@ class SWRoomViews(FormMixin, TemplateView):
                 del dice_pool['valid_pool']
                 caption = dice_pool['caption']
 
-                if caption or total_dice > 0:
+                # if caption or total_dice > 0:
+                if valid_pool:
                     kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "image_url": image_url, }
                     kwargs.update(dice_pool)
                     kwargs.update({"secret_roll": secret_roll})
@@ -735,7 +745,6 @@ class SWRoomViews(FormMixin, TemplateView):
                 else:
                     pass
             else:
-                print("Form's busted")
                 return redirect(room_url, swroom_id)
 
             return redirect(room_url, swroom_id)
@@ -743,7 +752,26 @@ class SWRoomViews(FormMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         # kwargs = self.get_form_kwargs()
         swroom_id = self.kwargs['swroom_id']
-        genesys = 'genroom' in self.template_name
+        try:
+            room = SWRoom.objects.get(pk=swroom_id)
+        except SWRoom.DoesNotExist:
+            print(request)
+            if 'gendice' in request.path:
+                print('here')
+                return redirect('gendice:404')
+            else:
+                return redirect('swdice:404')
+
+        genesys = room.genesys
+
+        # Redirect if wrong room url
+        if genesys and 'genroom' not in self.template_name:
+            return redirect('gendice:genroom', swroom_id)
+        elif not genesys and 'genroom' in self.template_name:
+            return redirect('swdice:swroom', swroom_id)
+        else:
+            pass
+
         room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
         hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
         info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'

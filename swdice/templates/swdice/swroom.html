@@ -75,15 +75,18 @@
                             <table class="destiny_table">
                                 <tr>
                                     <td style="width:12px;">
-                                        <button type="submit" class="btn btn-light btn-sm" name="add_dark">
+                                        <button type="submit" class="btn btn-light btn-sm" name="add_dark"
+                                                title="Add a Dark Destiny Point">
                                             &#9650</button>
                                         <br>
-                                        <button type="submit" class="btn btn-light btn-sm" name="rem_dark">
+                                        <button type="submit" class="btn btn-light btn-sm" name="rem_dark"
+                                                title="Remove a Dark Destiny Point">
                                             &#9660</button>
                                     </td>
                                     <td style="width:33px;">
                                         <button type="submit" class="btn btn-secondary outline-me" name="use_dark"
-                                                id="use_dark">
+                                                id="use_dark" title="Flip a Destiny Point from Dark to Light"
+                                                {% if dark_pips == 0 %}disabled{% endif %}>
                                             Use<br>Dark
                                         </button>
                                     </td>
@@ -108,15 +111,18 @@
                                 <tr>
                                     <td style="width:36px;">
                                         <button type="submit" class="btn btn-outline-dark" name="use_light"
-                                                id="use_light">
+                                                id="use_light" title="Flip a Destiny Point from Light to Dark"
+                                                {% if light_pips == 0 %}disabled{% endif %}>
                                             Use<br>Light
                                         </button>
                                     </td>
                                     <td style="width:12px;">
-                                        <button type="submit" class="btn btn-light btn-sm" name="add_light">
+                                        <button type="submit" class="btn btn-light btn-sm" name="add_light"
+                                                title="Add a Light Destiny Point">
                                             &#9650</button>
                                         <br>
-                                        <button type="submit" class="btn btn-light btn-sm" name="rem_light">
+                                        <button type="submit" class="btn btn-light btn-sm" name="rem_light"
+                                                title="Remove a Light Destiny Point">
                                             &#9660</button>
                                     </td>
                                 </tr>

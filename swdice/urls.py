@@ -1,4 +1,5 @@
 from django.urls import path, re_path
+from django.conf.urls import handler404
 
 from . import views
 
@@ -22,4 +23,7 @@ urlpatterns = [
          name='switch_avatar'),
     path('switch_avatar/room/<int:swroom_id>/', views.DockingBay.as_view(template_name="swdice/switch_avatar.html"),
          name='switch_avatar_room'),
+    path('404', views.error, name='404'),
 ]
+
+handler404 = views.error

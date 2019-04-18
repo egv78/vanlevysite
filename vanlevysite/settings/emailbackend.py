@@ -10,7 +10,7 @@ def default(o):
         return o.isoformat()
 
 
-# Class to permit the athentication using email or username
+# Class to permit the authentication using email or username
 # https://stackoverflow.com/questions/37332190/django-login-with-email
 class CustomBackend(ModelBackend):  # requires to define two functions authenticate and get_user
 
