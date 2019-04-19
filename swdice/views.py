@@ -515,11 +515,10 @@ class DockingBay(FormMixin, TemplateView):
                             return redirect(room_url, swroom_id)
                         else:
                             return redirect(enter_url)
-
                 except SWRoom.DoesNotExist:
                     raise Http404("Room has not yet been created")
-
             else:
+                request.session['problem'] = "There is a problem with the information you provided."
                 return redirect(hub_url)
 
         elif request.method == "POST" and "direct" in request.POST:
@@ -531,7 +530,6 @@ class DockingBay(FormMixin, TemplateView):
                     first_bit = "www.vanlevy.com/gendice/room/"
                 end_bit = init_direct_link.replace(first_bit, "", 1)
                 number_string = ""
-
                 i = 0
                 while i < len(end_bit):
                     character = end_bit[i]
@@ -559,14 +557,17 @@ class DockingBay(FormMixin, TemplateView):
                         make_user_room_link(new_room.id, request.user.id, game_master, banned, use_user_id, avatar_id)
                         return redirect(room_url, new_room.id)
                     elif been_there and been_there[0].banned:
+                        request.session['problem'] = "You have been banned from that room."
                         return redirect(hub_url)
                     else:
+                        request.session['problem'] = "There is a problem with the link you provided."
                         return redirect(hub_url)
-
-                return redirect(hub_url)
+                else:
+                    request.session['problem'] = "There is a problem with the link you provided."
+                    return redirect(hub_url)
             else:
+                request.session['problem'] = "There is a problem with the information you provided."
                 return redirect(hub_url)
-
         else:
             return redirect(hub_url)
 
