@@ -43,9 +43,14 @@
             <tr>
                 <td align="right" valign="bottom">This will be a number.</td>
                 <td><strong>Room ID:</strong>
-                <br>{{form.room_number}} <br>
+                    {% if room_id %}
+                        <br>
+                        <input id="room_number" type="number" name="room_number" value="{{ room_id }}" readonly>
+                    {% else %}
+                        <br>{{form.room_number}} <br>
+                    {% endif %}
                     {% if request.method.post %}
-                    <strong>{{ form.room_number.errors }}</strong>
+                        <strong>{{ form.room_number.errors }}</strong>
                     {% endif %}
                 </td>
             </tr>

@@ -24,5 +24,6 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('swdice/', include('swdice.urls', namespace='swdice')),
     path('gendice/', include('gendice.urls', namespace='gendice')),
+    path('polydice/', include('polydice.urls', namespace='polydice')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

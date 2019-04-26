@@ -1,14 +1,18 @@
 from django.shortcuts import render, redirect
-from django.http import Http404
-from django.views.generic import FormView, TemplateView
+# from django.http import Http404
+from django.views.generic import FormView, TemplateView, View
 from django.views.generic.edit import FormMixin
+from django.template.defaulttags import register
+
+from accounts.models import VanLevyUser, Avatar
 from .models import SWRoomToUser, SWRoomChat, SWRoom, SWRoomDestiny, SWDicePool
 from .forms import Make_SW_Room, Enter_SW_Room, Enter_SW_Direct, SW_Room_Chat_Form, SW_Dice_Roll
 from .dice import *
-from accounts.models import VanLevyUser, Avatar
-from django.template.defaulttags import register
+
 import datetime
 
+
+# Filters
 
 @register.filter
 def get_item(dictionary, key):
@@ -25,6 +29,8 @@ def split_string(string):
     faces_list = string.split(",")
     return faces_list
 
+
+# Methods used in views
 
 def make_user_room_link(room_id, user_id, gm=False, banned=False, avatar_is_user=True, avatar=0):
     if SWRoomToUser.objects.filter(user_id_id=user_id, room_id_id=room_id):
@@ -125,12 +131,6 @@ def save_dice_pool(user, avatar, room, image_url, caption="",
     new_dice_pool.save()
 
 
-class UpdateTimes:
-    def __init__(self, action_time, chat_time):
-        self.action = action_time
-        self.chat = chat_time
-
-
 def change_destiny(user, avatar, room, image_url, caption="", delta_light=0, delta_dark=0):
     destiny = SWRoomDestiny.objects.get(room_id_id=room)
     light_pips = destiny.light_pips
@@ -163,7 +163,6 @@ def read_chat(chat_form, avatar, swroom_id, current_user, chat_text, image_url):
     new_chat.is_private = is_private
     new_chat.recipient = recipient_user if is_private else None
     new_chat.recipient_avatar = recipient_avatar
-
     return new_chat
 
 
@@ -243,21 +242,65 @@ def get_dice_carryover(request, dice_form):
         pass
 
 
+class UpdateTimes:
+    def __init__(self, action_time, chat_time):
+        self.action = action_time
+        self.chat = chat_time
+
+
+# Views
+
 def about(request):
     template_name = 'swdice/about_swdiceroller.html'
     return render(request, template_name)
 
 
 def error(request):
-    if 'gendice' in request.path:
-        redirect('gendice:404')
-    else:
-        template_name = '404.html'
+    template_name = '404_sw.html'
     return render(request, template_name)
 
 
-class MakeSWRoom(TemplateView, FormMixin):
+class BadRoom(TemplateView):
+    def get(self, request):
+        template_name = self.template_name
+        if 'bad_room' in request.session:
+            bad_room_id = request.session['bad_room']
+            del request.session['bad_room']
+        else:
+            bad_room_id = ""
+
+        if 'bad_room_url' in request.session:
+            bad_room_url = request.session['bad_room_url']
+            del request.session['bad_room_url']
+        else:
+            bad_room_url = ''
+        args = {'bad_room_id': bad_room_id, 'bad_room_url': bad_room_url}
+        return render(request, template_name, args)
+
+
+class MakeDiceRoom(TemplateView, FormMixin):
     def post(self, request, **kwargs):
+        gendice = 'gendice' in self.template_name
+        polydice = 'polydice' in self.template_name
+        myzdice = 'myzdice' in self.template_name
+
+        if gendice:
+            url_404 = 'gendice:404'
+            hub_url = 'gendice:confluence'
+            info_url = 'gendice:genroom_info'
+        elif polydice:
+            url_404 = 'polydice:404'
+            hub_url = 'polydice:dungeon'
+            info_url = 'polydice:polyroom_info'
+        elif myzdice:
+            url_404 = 'myzdice:404'
+            hub_url = 'myzdice:the_zone'
+            info_url = 'myzdice:myzroom_info'
+        else:
+            url_404 = 'swdice:404'
+            hub_url = 'swdice:dockingbay'
+            info_url = 'swdice:swroom_info'
+
         if "make_room" in request.POST:
             form = Make_SW_Room(request.POST)
             if form.is_valid():
@@ -265,8 +308,9 @@ class MakeSWRoom(TemplateView, FormMixin):
                 instance.created_by = request.user
                 now = datetime.datetime.now()
                 instance.created_on = now
-                genesys_dice = 'gendice' in self.template_name
-                instance.genesys = genesys_dice
+                instance.genesys = gendice
+                instance.polydice = polydice
+                instance.myzdice = myzdice
                 instance.save()
                 user_id = request.user.id
                 room_id = instance.id
@@ -276,11 +320,10 @@ class MakeSWRoom(TemplateView, FormMixin):
                 destiny.dark_pips = 0
                 destiny.light_pips = 0
                 destiny.save()
-                redirect_place = 'gendice:confluence' if 'gendice' in self.template_name else 'swdice:dockingbay'
-                return redirect(redirect_place)
+                return redirect(hub_url)
             else:
                 args = {'form': form}
-                form_template = 'swdice/make_swroom.html' if 'swdice' in self.template_name else 'gendice/make_genroom.html'
+                form_template = self.template_name
                 return render(request, form_template, args)
         elif "change_passcode" in request.POST:
             form = Make_SW_Room(request.POST)
@@ -288,12 +331,7 @@ class MakeSWRoom(TemplateView, FormMixin):
             try:
                 room = SWRoom.objects.get(pk=swroom_id)
             except SWRoom.DoesNotExist:
-                if 'gendice' in request.path:
-                    return redirect('gendice:404')
-                else:
-                    return redirect('swdice:404')
-            genesys = room.genesys
-            info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'
+                return redirect(url_404)
 
             if form.is_valid():
                 room.open_to_all = form.cleaned_data['open_to_all']
@@ -302,22 +340,18 @@ class MakeSWRoom(TemplateView, FormMixin):
                 return redirect(info_url, swroom_id)
             else:
                 args = {'form': form, 'room_number': swroom_id, 'room': room}
-                if 'swdice' in self.template_name:
-                    form_template = 'swdice/swroom_change_passcode.html'
-                else:
-                    'gendice/genroom_change_passcode.html'
+                form_template = self.template_name
                 return render(request, form_template, args)
         else:
-            redirect_place = 'gendice:confluence' if 'gendice' in self.template_name else 'swdice:dockingbay'
-            return redirect(redirect_place)
+            return redirect(hub_url)
 
     def get(self, request, **kwargs):
         now = datetime.datetime.now()
         user_id = request.user.id
         change_passcode = 'change' in self.template_name
-        genesys_dice = 'gendice' in self.template_name
+
         if not change_passcode:
-            initial_args = {'open_to_all': True, 'created_on': now, 'created_by': user_id, 'genesys': genesys_dice}
+            initial_args = {'open_to_all': True, 'created_on': now, 'created_by': user_id}
             form = Make_SW_Room(initial_args)
             args = {'form': form}
         else:
@@ -327,56 +361,78 @@ class MakeSWRoom(TemplateView, FormMixin):
             except SWRoom.DoesNotExist:
                 if 'gendice' in request.path:
                     return redirect('gendice:404')
+                elif 'polydice' in request.path:
+                    return redirect('polydice:404')
                 else:
                     return redirect('swdice:404')
+
             initial_args = {'open_to_all': False, 'name': room.name}
             form = Make_SW_Room(initial_args)
             args = {'form': form, 'room_number': swroom_id, 'room': room}
         return render(request, self.template_name, args)
 
 
-def direct_view(request, swroom_id, slug):
-    current_user_id = request.user.id
-    user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
-    try:
-        room = SWRoom.objects.get(pk=swroom_id)
-        passcode = room.passcode
-    except SWRoom.DoesNotExist:
-        if 'gendice' in request.path:
-            return redirect('gendice:404')
+class DirectLink(TemplateView):
+    def get(self, request, swroom_id, slug):
+        current_user_id = self.request.user.id
+        gendice = 'gendice' in self.template_name
+        polydice = 'polydice' in self.template_name
+        myzdice = 'myzdice' in self.template_name
+
+        if gendice:
+            room_url = 'gendice:genroom'
+            redirect_place = 'gendice:confluence'
+            bad_room_url = 'gendice:bad_room'
+        elif polydice:
+            room_url = 'polydice:polyroom'
+            redirect_place = 'polydice:dungeon'
+            bad_room_url = 'polydice:bad_room'
+        elif myzdice:
+            room_url = 'myzdice:myzroom'
+            redirect_place = 'myzdice:the_zone'
+            bad_room_url = 'myzdice:bad_room'
         else:
-            return redirect('swdice:404')
+            room_url = 'swdice:swroom'
+            redirect_place = 'swdice:dockingbay'
+            bad_room_url = 'swdice:bad_room'
 
-    if len(user_to_room_link_candidate) > 0:
-        user_to_room_link = user_to_room_link_candidate[0]
-    else:
-        user_to_room_link = False
+        user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+        try:
+            room = SWRoom.objects.get(pk=swroom_id)
+            passcode = room.passcode
+        except SWRoom.DoesNotExist:
+            request.session['bad_room_url'] = 'direct link'
+            request.session['bad_room'] = swroom_id
+            return redirect(bad_room_url)
 
-    redirect_place = 'gendice:confluence' if 'gendice' in request.path else 'swdice:dockingbay'
-    room_url = 'gendice:genroom' if 'gendice' in request.path else 'swdice:swroom'
-
-    if user_to_room_link:
-        if user_to_room_link.banned:
-            request.session['problem'] = "You have been banned from that room."
-            return redirect(redirect_place)
+        if len(user_to_room_link_candidate) > 0:
+            user_to_room_link = user_to_room_link_candidate[0]
         else:
-            return redirect(room_url, swroom_id)
-    else:
-        # if passcode is right (or room open), make link, redirect
-        if slug == passcode or slug == 'open':
-            make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
-            return redirect(room_url, swroom_id)
+            user_to_room_link = False
+
+        if user_to_room_link:
+            if user_to_room_link.banned:
+                request.session['problem'] = "You have been banned from that room."
+                return redirect(redirect_place)
+            else:
+                return redirect(room_url, swroom_id)
         else:
-            request.session['problem'] = "There is a problem with the link to "
-            requested_url = request.get_full_path()
-            request.session['requested_url'] = requested_url
-            return redirect(redirect_place)
+            # if passcode is right (or room open), make link, redirect
+            if slug == passcode or slug == 'open':
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                return redirect(room_url, swroom_id)
+            else:
+                request.session['problem'] = "There is a problem with the link to "
+                requested_url = request.get_full_path()
+                request.session['requested_url'] = requested_url
+                return redirect(redirect_place)
 
 
-class DockingBay(FormMixin, TemplateView):
+class HubView(FormMixin, TemplateView):
     form_class = Enter_SW_Room
 
     def get_form_kwargs(self):
+        # get avatar choices for enter room forms
         kwargs = super().get_form_kwargs()
         if self.request.user.userprofile.user_first_name:
             user_name = self.request.user.userprofile.user_first_name
@@ -391,8 +447,8 @@ class DockingBay(FormMixin, TemplateView):
         kwargs['avatar_list'] = my_avatars_choices
         return kwargs
 
-    # if request.method == 'GET'
     def get(self, request, *args, **kwargs):
+        # import problems with POST
         if 'problem' in request.session:
             problem = request.session['problem']
             del request.session['problem']
@@ -404,7 +460,8 @@ class DockingBay(FormMixin, TemplateView):
         else:
             problem = ""
             requested_url = ""
-        genesys = 'gendice' in self.template_name
+
+        # this is for enter with passcode and switch avatar
         try:
             room_id = self.kwargs['swroom_id']
         except:
@@ -413,50 +470,59 @@ class DockingBay(FormMixin, TemplateView):
         kwargs = self.get_form_kwargs()
         avatars = dict(kwargs['avatar_list'])
         current_user_id = self.request.user.id
-        genesys_dice = 'confluence' in self.template_name
-        my_rooms_to_user_list_first = SWRoomToUser.objects.filter(user_id_id=current_user_id, banned=0).order_by(
-            '-admitted')
+        genesys = 'gendice' in self.template_name
+        polydice = 'polydice' in self.template_name
+        myzdice = 'myzdice' in self.template_name
+
+        # get rooms for links / information in Rooms Table
+        my_rooms_to_user_list_first = SWRoomToUser.objects.filter(user_id_id=current_user_id,
+                                                                  banned=0
+                                                                  ).order_by('-admitted')
         my_rooms_to_user_list = my_rooms_to_user_list_first[::-1]
         my_rooms_list = []
         my_avatars_list = {}
         gms_list = {}
         player_numbers_list = {}
-        has_archived_sw_rooms = False
-        has_archived_gen_rooms = False
+        has_archived_rooms = False
         number_of_rooms = 0
 
         for room in my_rooms_to_user_list:
-            this_room = SWRoom.objects.filter(pk=room.room_id_id)[0]
-            if this_room.disabled:
-                if this_room.genesys:
-                    has_archived_gen_rooms = True
+            maybe_this_room = SWRoom.objects.filter(pk=room.room_id_id,
+                                                    genesys=genesys,
+                                                    polydice=polydice,
+                                                    myzdice=myzdice
+                                                    )
+            if len(maybe_this_room) > 0:
+                this_room = maybe_this_room[0]
+                if this_room.disabled:
+                    has_archived_rooms = True
                 else:
-                    has_archived_sw_rooms = True
-            else:
-                if this_room.genesys == genesys:
                     number_of_rooms += 1
-            my_rooms_list += SWRoom.objects.filter(pk=room.room_id_id, genesys=genesys_dice)
-            if room.game_master:
-                gms_list[room.room_id_id] = "you"
-            else:
-                gm_rooms = SWRoomToUser.objects.filter(room_id=room.room_id, game_master=True)
-                if gm_rooms:
-                    gm_id = gm_rooms[0].user_id
-                    gm_name = gm_id.username
-                    gms_list[room.room_id_id] = gm_name
+
+                my_rooms_list += SWRoom.objects.filter(pk=room.room_id_id)
+
+                if room.game_master:
+                    gms_list[room.room_id_id] = "you"
                 else:
-                    gms_list[room.room_id_id] = "no one"
-            number_players = len(SWRoomToUser.objects.filter(room_id=room.room_id, game_master=False, banned=0))
-            player_numbers_list[room.room_id_id] = number_players
-            if room.default_avatar_is_user == 1:
-                my_avatars_list[room.room_id_id] = avatars[0]
-            else:
-                try:
-                    my_avatars_list[room.room_id_id] = avatars[room.avatar_id_id]
-                except:
+                    gm_rooms = SWRoomToUser.objects.filter(room_id=room.room_id, game_master=True)
+                    if gm_rooms:
+                        gm_id = gm_rooms[0].user_id
+                        gm_name = gm_id.username
+                        gms_list[room.room_id_id] = gm_name
+                    else:
+                        gms_list[room.room_id_id] = "no one"
+
+                number_players = len(SWRoomToUser.objects.filter(room_id=room.room_id, game_master=False, banned=0))
+                player_numbers_list[room.room_id_id] = number_players
+                if room.default_avatar_is_user == 1:
                     my_avatars_list[room.room_id_id] = avatars[0]
-                    game_master = room.game_master
-                    make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, 0)
+                else:
+                    try:
+                        my_avatars_list[room.room_id_id] = avatars[room.avatar_id_id]
+                    except:
+                        my_avatars_list[room.room_id_id] = avatars[0]
+                        game_master = room.game_master
+                        make_user_room_link(room.room_id_id, current_user_id, game_master, False, 1, 0)
 
         form = Enter_SW_Room(**kwargs)
         form_direct = Enter_SW_Direct(**kwargs)
@@ -464,16 +530,37 @@ class DockingBay(FormMixin, TemplateView):
         args = {'form': form, 'my_rooms_list': my_rooms_list, 'my_avatars_list': my_avatars_list, 'room_id': room_id,
                 'my_avatar_objects': my_avatar_objects, 'gms_list': gms_list, 'form_direct': form_direct,
                 'player_numbers_list': player_numbers_list, 'number_of_rooms': number_of_rooms,
-                'problem': problem, 'requested_url': requested_url,
-                'has_archived_gen_rooms': has_archived_gen_rooms, 'has_archived_sw_rooms': has_archived_sw_rooms}
+                'problem': problem, 'requested_url': requested_url, 'has_archived_rooms': has_archived_rooms}
         return render(request, self.template_name, args)
 
     # if request.method == 'POST':
     def post(self, request, **kwargs):
+        # determine the room type
         genesys = 'gendice' in self.template_name
-        room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
-        hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
-        enter_url = 'gendice:enter_passcode_gen' if genesys else 'swdice:enter_passcode'
+        polydice = 'polydice' in self.template_name
+        myzdice = 'myzdice' in self.template_name
+
+        if genesys:
+            room_url = 'gendice:genroom'
+            hub_url = 'gendice:confluence'
+            enter_url = 'gendice:enter_passcode_room'
+            bad_room = 'gendice:bad_room'
+        elif polydice:
+            room_url = 'polydice:polyroom'
+            hub_url = 'polydice:dungeon'
+            enter_url = 'polydice:enter_passcode_room'
+            bad_room = 'polydice:bad_room'
+        elif myzdice:
+            room_url = 'myzdice:myzroom'
+            hub_url = 'myzdice:the_zone'
+            enter_url = 'myzdice:enter_passcode_room'
+            bad_room = 'myzdice:bad_room'
+        else:
+            room_url = 'swdice:swroom'
+            hub_url = 'swdice:dockingbay'
+            enter_url = 'swdice:enter_passcode_room'
+            bad_room = 'swdice:bad_room'
+
         kwargs = self.get_form_kwargs()
         form = Enter_SW_Room(**kwargs)
         form_direct = Enter_SW_Direct(**kwargs)
@@ -514,9 +601,11 @@ class DockingBay(FormMixin, TemplateView):
                             make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
                             return redirect(room_url, swroom_id)
                         else:
-                            return redirect(enter_url)
+                            return redirect(enter_url, swroom_id)
                 except SWRoom.DoesNotExist:
-                    raise Http404("Room has not yet been created")
+                    request.session['bad_room'] = swroom_id
+                    return redirect(bad_room)
+
             else:
                 request.session['problem'] = "There is a problem with the information you provided."
                 return redirect(hub_url)
@@ -526,8 +615,11 @@ class DockingBay(FormMixin, TemplateView):
                 init_direct_link = form_direct.cleaned_data['direct']
                 if 'swdice' in init_direct_link:
                     first_bit = "www.vanlevy.com/swdice/room/"
-                else:
+                elif 'gendice' in init_direct_link:
                     first_bit = "www.vanlevy.com/gendice/room/"
+                elif 'polydice' in init_direct_link:
+                    first_bit = "www.vanlevy.com/polydice/room/"
+
                 end_bit = init_direct_link.replace(first_bit, "", 1)
                 number_string = ""
                 i = 0
@@ -826,103 +918,114 @@ class SWRoomViews(FormMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         # kwargs = self.get_form_kwargs()
         swroom_id = self.kwargs['swroom_id']
+
+        gen_path = 'gendice' in request.path
+        poly_path = 'polydice' in request.path
+        myz_path = 'myzdice' in request.path
+        sw_path = 'swdice' in request.path
+
         try:
             room = SWRoom.objects.get(pk=swroom_id)
         except SWRoom.DoesNotExist:
-            if 'gendice' in request.path:
-                return redirect('gendice:404')
+            request.session['bad_room_url'] = 'url'
+            request.session['bad_room'] = swroom_id
+            if gen_path:
+                return redirect('gendice:bad_room')
+            elif poly_path:
+                return redirect('polydice:bad_room')
+            elif myz_path:
+                return redirect('myzdice:bad_room')
             else:
-                return redirect('swdice:404')
+                return redirect('swdice:bad_room')
 
-        genesys = room.genesys
+        gendice = room.genesys
+        polydice = room.polydice
+        myzdice = room.myzdice
+        swdice = not gendice and not polydice and not myzdice
 
         # Redirect if wrong room url
-        if genesys and 'genroom' not in self.template_name:
+        if gendice and not gen_path:
             return redirect('gendice:genroom', swroom_id)
-        elif not genesys and 'genroom' in self.template_name:
+        elif polydice and not poly_path:
+            return redirect('polydice:polyroom', swroom_id)
+        elif myzdice and not myz_path:
+            return redirect('myzdice:myzroom', swroom_id)
+        elif swdice and not sw_path:
             return redirect('swdice:swroom', swroom_id)
         else:
             pass
 
-        room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
-        hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'
-        info_url = 'gendice:genroom_info' if genesys else 'swdice:swroom_info'
+        # create appropriate redirects
+        if gendice:
+            room_url = 'gendice:genroom'
+            hub_url = 'gendice:confluence'
+            info_url = 'gendice:genroom_info'
+            enter_url = 'gendice:enter_passcode_room'
+        elif polydice:
+            room_url = 'polydice:polyroom'
+            hub_url = 'polydice:dungeon'
+            info_url = 'polydice:polyroom_info'
+            enter_url = 'polydice:enter_passcode_room'
+        elif myzdice:
+            room_url = 'myzdice:myzroom'
+            hub_url = 'myzdice:dungeon'
+            info_url = 'myzdice:myzroom_info'
+            enter_url = 'myzdice:enter_passcode_room'
+        else:
+            room_url = 'swdice:swroom'
+            hub_url = 'swdice:dockingbay'
+            info_url = 'swdice:swroom_info'
+            enter_url = 'swdice:enter_passcode_room'
 
         viewing_player_info = "player" in self.template_name
         viewing_basic_room = "info" not in self.template_name
 
-        if viewing_player_info:
-            player_id = self.kwargs['player_id']
+        room_is_open = room.open_to_all
+        room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
+        gm_link = room_users_link_list.filter(game_master=1)
+        if len(gm_link) > 0:  # this should ALWAYS be true
+            gm_id = gm_link[0].user_id_id
+        else:
+            gm_id = ""  # this needs to raise an error
+        current_user_id = request.user.id
+        user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+        if len(user_to_room_link_candidate) > 0:
+            user_to_room_link = user_to_room_link_candidate[0]
+        else:
+            user_to_room_link = False
 
-        try:
-            room = SWRoom.objects.get(pk=swroom_id)
-            room_is_open = room.open_to_all
-            room_users_link_list = SWRoomToUser.objects.filter(room_id_id=swroom_id)
-            gm_link = room_users_link_list.filter(game_master=1)
-            if len(gm_link) > 0:  # this should ALWAYS be true
-                gm_id = gm_link[0].user_id_id
+        # testing whether a user should be able to view a page
+        if user_to_room_link:
+            if user_to_room_link.banned:
+                request.session['problem'] = "You have been banned from that room."
+                return redirect(hub_url)
+            elif viewing_player_info and not user_to_room_link.game_master:
+                return redirect(info_url, swroom_id)
             else:
-                gm_id = ""  # this needs to raise an error
-            current_user_id = request.user.id
-            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
-            if len(user_to_room_link_candidate) > 0:
-                user_to_room_link = user_to_room_link_candidate[0]
-            else:
-                user_to_room_link = False
+                pass
+        else:
+            if room_is_open and viewing_basic_room:
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                # should_be_here = True
+            elif room_is_open:
+                make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
+                return redirect(room_url, swroom_id)
+            else:  # room is not open, player has not been there
+                return redirect(enter_url, swroom_id)  # update
 
-            # testing whether a user should be able to view a page
-            should_be_here = False
-            if user_to_room_link:
-                if user_to_room_link.banned:
-                    request.session['problem'] = "You have been banned from that room."
-                    return redirect(hub_url)
-                elif not viewing_player_info:
-                    should_be_here = True
-                elif viewing_player_info and user_to_room_link.game_master:
-                    should_be_here = True
+        # player should be here, if they got through all of the above filters
+        user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
+        if len(user_to_room_link_candidate) > 0:
+            user_to_room_link = user_to_room_link_candidate[0]
+        if not user_to_room_link.default_avatar_is_user:
+            avatar_id = user_to_room_link.avatar_id_id
+            default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+            if not default_avatar.deleted:
+                name_in_room = default_avatar.avatar_name
+                if default_avatar.avatar_url_image:
+                    icon_src = default_avatar.avatar_url_image
                 else:
-                    return redirect('swdice:enter_passcode')
-            else:
-                if room_is_open and not viewing_player_info:
-                    make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
-                    should_be_here = True
-                elif room_is_open:
-                    make_user_room_link(swroom_id, current_user_id, False, False, True, 0)
-                    return redirect(room_url, swroom_id)
-                else:
-                    return redirect('swdice:enter_passcode')
-
-        except SWRoom.DoesNotExist:
-            raise Http404("Room has not yet been created")
-
-        if viewing_player_info:
-            try:
-                player = VanLevyUser.objects.get(pk=player_id)
-            except VanLevyUser.DoesNotExist:
-                raise Http404("Player does not exist")
-
-        if should_be_here:
-            user_to_room_link_candidate = SWRoomToUser.objects.filter(user_id_id=current_user_id, room_id_id=swroom_id)
-            if len(user_to_room_link_candidate) > 0:
-                user_to_room_link = user_to_room_link_candidate[0]
-            if not user_to_room_link.default_avatar_is_user:
-                avatar_id = user_to_room_link.avatar_id_id
-                default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
-                if not default_avatar.deleted:
-                    name_in_room = default_avatar.avatar_name
-                    if default_avatar.avatar_url_image:
-                        icon_src = default_avatar.avatar_url_image
-                    else:
-                        icon_src = ""
-                else:
-                    if request.user.userprofile.user_first_name:
-                        name_in_room = request.user.userprofile.user_first_name
-                    else:
-                        name_in_room = request.user.username
-                    if request.user.userprofile.user_url_image:
-                        icon_src = request.user.userprofile.user_url_image
-                    else:
-                        icon_src = ""
+                    icon_src = ""
             else:
                 if request.user.userprofile.user_first_name:
                     name_in_room = request.user.userprofile.user_first_name
@@ -932,99 +1035,114 @@ class SWRoomViews(FormMixin, TemplateView):
                     icon_src = request.user.userprofile.user_url_image
                 else:
                     icon_src = ""
-
-            if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
-                destiny = SWRoomDestiny()                                       # maybe not
-                destiny.room_id_id = swroom_id
-                destiny.dark_pips = 0
-                destiny.light_pips = 0
-                destiny.save()
-            room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
-
-            if len(gm_link) > 0:
-                player_is_gm = 1 if gm_id == request.user.id else 0
+        else:
+            if request.user.userprofile.user_first_name:
+                name_in_room = request.user.userprofile.user_first_name
             else:
-                player_is_gm = 0
-
-            light_pips = room_destiny.light_pips
-            dark_pips = room_destiny.dark_pips
-
-            if viewing_basic_room:
-                kwargs = self.get_form_kwargs()
-
-                # instantiate carryover data
-                initial_args_chat = {}
-                if 'chat_carryover' in request.session:
-                    initial_args_chat['chat_text'] = request.session['chat_carryover']
-                    del request.session['chat_carryover']
-                if 'recipient_carryover' in request.session:
-                    initial_args_chat['recipient'] = request.session['recipient_carryover']
-                    del request.session['recipient_carryover']
-                    start_whisper = True
-                else:
-                    start_whisper = False
-                if 'dice_pool_carryover' in request.session:
-                    initial_args = request.session['dice_pool_carryover']
-                    del request.session['dice_pool_carryover']
-                else:
-                    initial_args = {}
-
-                dice_form = SW_Dice_Roll(initial_args)
-                chat_form = SW_Room_Chat_Form(initial_args_chat, **kwargs)
-
-                chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
-                chat_log = []
-                for chat in chats_all[:100]:
-                    if not room_users_link_list.filter(user_id=chat.user)[0].banned:
-                        chat_log.append(chat)
-                if len(chat_log) > 0:
-                    last_chat_time = chat_log[0].created_on
-                else:
-                    last_chat_time = room.created_on
-
-                actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
-                action_log = []
-                for action in actions_all[:100]:
-                    if not room_users_link_list.filter(user_id=action.user)[0].banned:
-                        action_log.append(action)
-                if len(action_log) > 0:
-                    last_action_time = action_log[0].created
-                else:
-                    last_action_time = room.created_on
-
-                update_times = UpdateTimes(last_action_time, last_chat_time)
-
-                args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
-                        'room_number': swroom_id, 'chat_log': chat_log, 'chat_form': chat_form, 'destiny': room_destiny,
-                        'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
-                        'dice_form': dice_form, 'users_in_room': room_users_link_list,
-                        'update_times': update_times, 'viewing_basic_room': viewing_basic_room,
-                        'start_whisper': start_whisper, } #  'start_secret_roll': start_secret_roll
-
-            elif viewing_player_info:
-                chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
-                action_log = SWDicePool.objects.filter(swroom_id=swroom_id, user_id=player_id).order_by('-created')
-                args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
-                        'room_number': swroom_id, 'chat_log': chat_log, 'destiny': room_destiny,
-                        'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
-                        'users_in_room': room_users_link_list, 'player_id': player_id,
-                        'viewing_basic_room': viewing_basic_room}
-
+                name_in_room = request.user.username
+            if request.user.userprofile.user_url_image:
+                icon_src = request.user.userprofile.user_url_image
             else:
-                chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
-                chat_log = []
-                for chat in chats_all:
-                    if not room_users_link_list.filter(user_id=chat.user)[0].banned:
-                        chat_log.append(chat)
-                actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
-                action_log = []
-                for action in actions_all:
-                    if not room_users_link_list.filter(user_id=action.user)[0].banned:
-                        action_log.append(action)
-                args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
-                        'room_number': swroom_id, 'chat_log': chat_log, 'destiny': room_destiny,
-                        'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
-                        'users_in_room': room_users_link_list, 'viewing_basic_room': viewing_basic_room}
+                icon_src = ""
 
-            return render(request, self.template_name, args)
+        if not SWRoomDestiny.objects.filter(room_id_id=swroom_id):          # can remove next re-initialization
+            destiny = SWRoomDestiny()                                       # maybe not
+            destiny.room_id_id = swroom_id
+            destiny.dark_pips = 0
+            destiny.light_pips = 0
+            destiny.save()
+        room_destiny = SWRoomDestiny.objects.get(room_id=swroom_id)
+
+        if len(gm_link) > 0:
+            player_is_gm = 1 if gm_id == request.user.id else 0
+        else:
+            player_is_gm = 0
+
+        light_pips = room_destiny.light_pips
+        dark_pips = room_destiny.dark_pips
+
+        if viewing_basic_room:
+            kwargs = self.get_form_kwargs()
+
+            # instantiate carryover data
+            initial_args_chat = {}
+            if 'chat_carryover' in request.session:
+                initial_args_chat['chat_text'] = request.session['chat_carryover']
+                del request.session['chat_carryover']
+            if 'recipient_carryover' in request.session:
+                initial_args_chat['recipient'] = request.session['recipient_carryover']
+                del request.session['recipient_carryover']
+                start_whisper = True
+            else:
+                start_whisper = False
+            if 'dice_pool_carryover' in request.session:
+                initial_args = request.session['dice_pool_carryover']
+                del request.session['dice_pool_carryover']
+            else:
+                initial_args = {}
+
+            dice_form = SW_Dice_Roll(initial_args)  # update
+            chat_form = SW_Room_Chat_Form(initial_args_chat, **kwargs)
+
+            chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
+            chat_log = []
+            for chat in chats_all[:100]:
+                if not room_users_link_list.filter(user_id=chat.user)[0].banned:
+                    chat_log.append(chat)
+            if len(chat_log) > 0:
+                last_chat_time = chat_log[0].created_on
+            else:
+                last_chat_time = room.created_on
+
+            actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            action_log = []
+            for action in actions_all[:100]:
+                if not room_users_link_list.filter(user_id=action.user)[0].banned:
+                    action_log.append(action)
+            if len(action_log) > 0:
+                last_action_time = action_log[0].created
+            else:
+                last_action_time = room.created_on
+
+            update_times = UpdateTimes(last_action_time, last_chat_time)
+
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
+                    'room_number': swroom_id, 'chat_log': chat_log, 'chat_form': chat_form, 'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'dice_form': dice_form, 'users_in_room': room_users_link_list,
+                    'update_times': update_times, 'viewing_basic_room': viewing_basic_room,
+                    'start_whisper': start_whisper, }  # 'start_secret_roll': start_secret_roll
+
+        elif viewing_player_info:
+            player_id = self.kwargs['player_id']
+            try:
+                player = VanLevyUser.objects.get(pk=player_id)
+            except VanLevyUser.DoesNotExist:
+                return redirect(info_url, swroom_id)
+
+            chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
+            action_log = SWDicePool.objects.filter(swroom_id=swroom_id, user_id=player_id).order_by('-created')
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
+                    'room_number': swroom_id, 'chat_log': chat_log, 'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'users_in_room': room_users_link_list, 'player_id': player_id,
+                    'viewing_basic_room': viewing_basic_room}
+
+        else:
+            chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
+            chat_log = []
+            for chat in chats_all:
+                if not room_users_link_list.filter(user_id=chat.user)[0].banned:
+                    chat_log.append(chat)
+            actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            action_log = []
+            for action in actions_all:
+                if not room_users_link_list.filter(user_id=action.user)[0].banned:
+                    action_log.append(action)
+            args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
+                    'room_number': swroom_id, 'chat_log': chat_log, 'destiny': room_destiny,
+                    'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
+                    'users_in_room': room_users_link_list, 'viewing_basic_room': viewing_basic_room}
+
+        return render(request, self.template_name, args)
 

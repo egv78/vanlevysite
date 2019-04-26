@@ -1,4 +1,4 @@
-{% extends 'swdice/swroom.html' %}
+{% extends 'gendice/room_gen.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
@@ -13,8 +13,8 @@
 <span class="d-inline-block text-truncate" style="max-width: 650px; color:white; font-size: 150%; margin-right: 10px;">
     {{room.name}}
 </span>
-<a class="navbar-brand" style="color:white;" href="{% url 'swdice:dockingbay' %}">
-    <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+<a class="navbar-brand" style="color:white;" href="{% url 'gendice:confluence' %}">
+    <img src="{% static '/gendice/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
     {% block subtitle %}{% endblock %}
 </a>
 <span class="d-inline-block" style="color:white; font-size: 150%;"> Player Info Page</span>
@@ -214,7 +214,7 @@
 </div>
 <div class="container-fluid">
     <p>
-    <a href="{% url 'swdice:swroom' room_number %}">
+    <a href="{% url 'gendice:genroom' room_number %}">
         <button type="button" class="btn btn-info align-right" name="back to page">
             <strong>&#12298</strong> Back to Live Page
         </button>
@@ -222,7 +222,7 @@
         <br>
     </p>
     <p>
-    <a href="{% url 'swdice:swroom_info' room_number %}">
+    <a href="{% url 'gendice:genroom_info' room_number %}">
         <button type="button" class="btn btn-outline-info align-right" name="back to info page">
             <strong>&#12298</strong> Back to Info Page
         </button>

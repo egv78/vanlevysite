@@ -13,8 +13,13 @@
       <w>logins</w>
       <w>makeroom</w>
       <w>modiphius</w>
+      <w>myzdice</w>
+      <w>myzroom</w>
       <w>navbar</w>
       <w>passcode</w>
+      <w>polydice</w>
+      <w>polydiceroller</w>
+      <w>polyroom</w>
       <w>postgresql</w>
       <w>smtp</w>
       <w>storages</w>
@@ -25,6 +30,7 @@
       <w>userprofile</w>
       <w>vanlevy</w>
       <w>vanlevysite</w>
+      <w>vert</w>
       <w>whitenoise</w>
     </words>
   </dictionary>

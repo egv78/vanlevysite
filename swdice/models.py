@@ -12,14 +12,16 @@ class SWRoom(models.Model):
     created_by = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
     open_to_all = models.BooleanField(choices=OPEN_CHOICES, default=False)
     genesys = models.BooleanField(choices=BOOL_CHOICES, default=False)
+    polydice = models.BooleanField(choices=BOOL_CHOICES, default=False)
+    myzdice = models.BooleanField(choices=BOOL_CHOICES, default=False)
     disabled = models.BooleanField(choices=BOOL_CHOICES, default=False)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "S.W. Room"
-        verbose_name_plural = "S.W. Rooms"
+        verbose_name = "Dice Room"
+        verbose_name_plural = "Dice Rooms"
 
 
 class SWRoomToUser(models.Model):
@@ -41,8 +43,8 @@ class SWRoomToUser(models.Model):
         return name_string
 
     class Meta:
-        verbose_name = "S.W. Room to User Link"
-        verbose_name_plural = "S.W. Room to User Links"
+        verbose_name = "Room to User Link"
+        verbose_name_plural = "Room to User Links"
 
 
 # need to implement saving at some point?

@@ -1,4 +1,4 @@
-{% extends 'sw_base.html' %}
+{% extends 'poly_base.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
@@ -31,8 +31,12 @@
                             <td align="right" valign="bottom"></td>
                             <td><strong>Room ID:</strong>
                             <br>
-                                <!--{{form.room_number}}-->
+                                <!---->
+                                {% if room_id %}
                                 <input id="room_number" type="number" name="room_number" value="{{ room_id }}" readonly>
+                                {% else %}
+                                {{form.room_number}}
+                                {% endif %}
                             <br>
                                 {% if request.method.post %}
                                 <strong>{{ form.room_number.errors }}</strong>

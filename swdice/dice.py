@@ -3,6 +3,7 @@ import random
 
 class Die:
     def __init__(self, name, meanings, initial):
+        # Leave initial as "" for numerical; this changes the results output to numerical total
         self.name = name
         self.meanings = meanings
         self.initial = initial
@@ -15,16 +16,21 @@ class Die:
         all_faces = []
         self.times = times
         i = 0
+        total = 0
         while i < self.times:
             number = random.randint(1, len(self.meanings))
             this_face = self.initial
-            this_face += (str(number).zfill(2))
+            this_face += (str(number))  # .zfill(2)
             this_face += ","
             all_faces.append(this_face)
             this_result = self.meanings[(number-1)]
             self.results.append(this_result)
+            if self.initial == "":
+                total += number
             i += 1
         self.faces = ''.join(all_faces)
+        if self.initial == "":
+            self.results = total
         return self.faces, self.results
 
 
@@ -131,6 +137,10 @@ def roll_sw_dice(boost=0, ability=0, proficiency=0, setback=0, difficulty=0, cha
     return faces_strings, net_results
 
 
+# faces for SW and Genesys Dice
+# (S)uccess, (A)dvantage, Trium(P)h
+# (F)ailure, (T)hreat, Despai(R)
+# (L)ight, (D)ark
 boost_meanings = ["-", "-", "S", "SA", "AA", "A"]
 ability_meanings = ["-", "S", "S", "SS", "A", "A", "SA", "AA"]
 proficiency_meanings = ["-", "S", "S", "SS", "SS", "A", "SA", "SA", "SA", "AA", "AA", "P"]
@@ -139,6 +149,7 @@ difficulty_meanings = ["-", "F", "FF", "T", "T", "T", "TT", "FT"]
 challenge_meanings = ["-", "F", "F", "FF", "FF", "T", "T", "FT", "FT", "TT", "TT", "R"]
 force_meanings = ["D", "D", "D", "D", "D", "D", "DD", "L", "L", "LL", "LL", "LL"]
 
+# SW and Genesys Dice
 BOOST = Die("Boost", boost_meanings, "B")
 SETBACK = Die("Setback", setback_meanings, "S")
 ABILITY = Die("Ability", ability_meanings, "A")
@@ -148,3 +159,12 @@ CHALLENGE = Die("Challenge", challenge_meanings, "C")
 FORCE = Die("Force", force_meanings, "F")
 
 
+# Polyhedral Dice
+# Initial left as "" to return sum of the face values as second returned value
+D4 = Die("D4", range(1, 5), "")
+D6 = Die("D6", range(1, 7), "")
+D8 = Die("D8", range(1, 9), "")
+D10 = Die("D10", range(1, 11), "")
+D12 = Die("D12", range(1, 13), "")
+D20 = Die("D20", range(1, 21), "")
+D100 = Die("D4", range(1, 101), "")

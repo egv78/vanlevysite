@@ -1,15 +1,15 @@
-{% extends 'sw_base.html' %}
+{% extends 'poly_base.html' %}
 
 {% block head %}
     <meta charset="UTF-8">
-    <title>Docking Bay</title>
+    <title>Dungeon</title>
 {% endblock %}
 
-{% block subtitle %} Docking Bay{% endblock %}
+{% block subtitle %} Dungeon{% endblock %}
 
 {% block body %}
 
-{% block link_dice_sw %}
+{% block link_polyhedral %}
 {% endblock %}
 {% load static %}
 <div class="container">
@@ -23,13 +23,13 @@
                 {% endif %}
             </h1>
             <p>
-                This is your personal <strong>Docking Bay</strong>.
-                From here, you will be able to join and make rooms that use FFG's Edge of the Empire dice.
+                Welcome to the <strong>Dungeon</strong>!
+                From here, you will be able to join and make rooms that use Polyhedral Dice.
             </p>
         </div>
         <div class="col-md-8">
             <br>
-            <img src="{% static '/swdice/DockingBay.png' %}" alt="Docking Bay Banner" width="100%">
+            <img src="{% static '/polydice/Dungeon.png' %}" alt="Dungeon Banner" width="100%">
             <p></p>
         </div>
     </div>
@@ -47,7 +47,7 @@
                 <h5 class="card-title">
                     {% if my_rooms_list %}
                         Rooms you've been in:
-                    {% if has_archived_sw_rooms %}
+                    {% if has_archived_rooms %}
                     <button class="btn btn-outline-secondary btn-sm align-right" type="button" data-toggle="collapse"
                                 data-target=".multi-collapse" aria-expanded="false" aria-controls="Regular Archived"
                                 style="margin-right: 20px; display: inline;" id="archivedButton" onclick="switchButton()">
@@ -81,7 +81,7 @@
                         <tr style="border-top: 1px solid #ddd;">
                             <td class="room_name_table">
                                 <div>
-                                    <a href="{% url 'swdice:swroom' room.id %}">{{ room.name }}</a>
+                                    <a href="{% url 'polydice:polyroom' room.id %}">{{ room.name }}</a>
                                 </div>
                             </td>
                             <td>
@@ -120,7 +120,7 @@
                                 </td>
                                 <td colspan="2">
                                     <strong>Copy direct link:</strong>
-                                    <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
+                                    <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'polydice:polyroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
                                     <button type="button" style="padding: 0;margin-left: 10px;"
                                             onclick="copyURL(link_{{room.id}})">
                                     <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
@@ -137,7 +137,7 @@
                                 </td>
                                 <td>
                                     <strong>Info Page: </strong>
-                                    <a href="{% url 'swdice:swroom_info' room.id %}">
+                                    <a href="{% url 'polydice:polyroom_info' room.id %}">
                                     <img src="{% static '/vanlevy/info_32.png' %}" alt="info" width="20" height="20">
                                     </a>
                                 </td>
@@ -147,10 +147,10 @@
                         {% endfor %}
                     </table>
                     {% else %}
-                        {% if has_archived_sw_rooms %}
-                        All of your Star Wars rooms have been archived.
+                        {% if has_archived_rooms %}
+                        All of your Polyhedral Dice rooms have been archived.
                         {% else %}
-                        Once you've been in a room, this will be a list of direct links to get back in.
+                        Once you've been in a Polyhedral Dice Room, this will be a list of direct links to get back in.
                         {% endif %}
                     {% endif %}
                     </div>
@@ -169,7 +169,7 @@
                         <tr style="border-top: 1px solid #ddd;">
                             <td class="room_name_table">
                                 <div>
-                                    <a href="{% url 'swdice:swroom' room.id %}">{{ room.name }}</a>
+                                    <a href="{% url 'polydice:polyroom' room.id %}">{{ room.name }}</a>
                                 </div>
                             </td>
                             <td>
@@ -200,7 +200,7 @@
                                 </td>
                                 <td colspan="2">
                                     <strong>Copy direct link:</strong>
-                                    <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
+                                    <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'polydice:polyroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
                                     <button type="button" style="padding: 0;margin-left: 10px;"
                                             onclick="copyURL(link_{{room.id}})">
                                     <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
@@ -217,7 +217,7 @@
                                 </td>
                                 <td>
                                     <strong>Info Page: </strong>
-                                    <a href="{% url 'swdice:swroom_info' room.id %}">
+                                    <a href="{% url 'polydice:polyroom_info' room.id %}">
                                     <img src="{% static '/vanlevy/info_32.png' %}" alt="info" width="20" height="20">
                                     </a>
                                 </td>
@@ -325,11 +325,11 @@
                 <div class="row">
                     <div class="col-9">
                         <p class="card-text">
-                            Create a new Star Wars Dice Room where you are the GM.
+                            Create a new Polyhedral Dice Room where you are the GM.
                         </p>
                     </div>
                     <div class="col-3">
-                        <a href="{% url 'swdice:make_swroom' %}">
+                        <a href="{% url 'polydice:make_polyroom' %}">
                             <button type="button" class="btn btn-primary align-right">
                                 <strong>&#12299</strong>
                             </button>

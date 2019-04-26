@@ -1,0 +1,873 @@
+{% extends 'poly_base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Poly Dice Room</title>
+{% endblock %}
+
+{% block navbar_space_part_1 %}
+<!--exclude space-->
+{% endblock %}
+
+{% block brand %}
+    {% load static %}
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+        <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+    </a>
+
+    <a class="navbar-brand">
+        <span class="d-inline-block text-truncate room-name" >
+            {{room.name}}
+        </span>
+    </a>
+
+    <a class="navbar-brand" style="color:white;" href="{% url 'polydice:dungeon' %}">
+        <img src="{% static '/polydice/d20_color.png' %}" alt="Polyhedral Dice Roller" height="32" width="32">
+        {% block subtitle %}{% endblock %}
+    </a>
+{% endblock brand %}
+
+{% block other_navbar_right %}
+<a href="{% url 'polydice:polyroom_info' room_number %}">
+    <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
+    {% block info_label %}
+        <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
+            Info
+        </span>
+    {% endblock info_label %}
+</a>
+{% endblock other_navbar_right %}
+
+
+{% block navbar_space_part_2 %}
+<!--exclude space-->
+{% endblock %}
+
+{% block body %}
+
+{% load static %}
+<div class="container-fluid">
+<br>
+    {% if not viewing_basic_room %}
+    <div class="row no-gutters">
+        <div class="col-md-9">
+            {% block user_table %}
+            {% endblock %}
+            {% block gm_stuff %}
+            {% endblock %}
+        </div>
+        <div class="col-md-3">
+            {% block room_header %}
+            {% endblock %}
+        </div>
+    </div>
+    {% endif %}
+    {% block form_inputs %}
+    {% if not room.disabled %}
+    <form id="destiny" method="POST" autocomplete="off">
+        {% csrf_token %}
+        <div class="row no-gutters">
+            <div class="col-md-9">
+                {% block dice_box %}
+                <div class="dice-box">
+                    <div class="row no-gutters justify-content-start">
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/die_d4.png' %}" width="40" title="d4">
+                                        {{ dice_form.num_d4 }}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('d4')"
+                                                class="btn btn-light btn-sm">
+                                            &#9650
+                                        </button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('d4')"
+                                                class="btn btn-light btn-sm">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/die_d6.png' %}" width="40" title="d6">
+                                        {{ dice_form.num_d6 }}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('d6')"
+                                                class="btn btn-light btn-sm">
+                                            &#9650
+                                        </button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('d6')"
+                                                class="btn btn-light btn-sm">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                            <tr>
+                                <td>
+                                    <img src="{% static 'polydice/Dice/die_d8.png' %}" width="40" title="d8">
+                                    {{ dice_form.num_d8 }}
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            onclick="addOne('d8')"
+                                            class="btn btn-light btn-sm">
+                                        &#9650
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            onclick="subtractOne('d8')"
+                                            class="btn btn-light btn-sm">
+                                        &#9660
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/die_d10.png' %}" width="40" title="d10">
+                                        {{ dice_form.num_d10 }}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('d10')"
+                                                class="btn btn-light btn-sm">
+                                            &#9650
+                                        </button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('d10')"
+                                                class="btn btn-light btn-sm">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/die_d12.png' %}" width="40" title="d12">
+                                        {{ dice_form.num_d12 }}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('d12')"
+                                                class="btn btn-light btn-sm">
+                                            &#9650
+                                        </button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('d12')"
+                                                class="btn btn-light btn-sm">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/die_d20.png' %}" width="40" title="d20">
+                                        {{ dice_form.num_d20 }}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('d20')"
+                                                class="btn btn-light btn-sm">
+                                            &#9650
+                                        </button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('d20')"
+                                                class="btn btn-light btn-sm">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/die_d100_vert.png' %}" width="40" title="d100">
+                                        {{ dice_form.num_d100 }}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('d100')"
+                                                class="btn btn-light btn-sm">
+                                            &#9650
+                                        </button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('d100')"
+                                                class="btn btn-light btn-sm">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <table class="dice_table_sml">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/plus_minus.png' %}" width="20" title="bonus">
+                                        {{ dice_form.bonus }}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('bonus')"
+                                                class="btn btn-light btn-sm"
+                                                style="margin-right: -5px;">
+                                            &#9650
+                                        </button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('bonus')"
+                                                class="btn btn-light btn-sm"
+                                                style="margin-right: -5px;">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <table class="dice_table_lrg">
+                                <tr>
+                                    <td>
+                                        <img src="{% static 'polydice/Dice/die_numerical.png' %}" width="80" title="d100">
+                                        <span class="big-font"> d</span>
+                                        {{ dice_form.numerical_dice_sides }}
+                                        {{ dice_form.num_numerical_dice }}
+                                    <td>
+                                        <button type="button"
+                                                onclick="addOne('numerical')"
+                                                class="btn btn-light btn-sm">&#9650</button>
+                                        <br>
+                                        <button type="button"
+                                                onclick="subtractOne('numerical')"
+                                                class="btn btn-light btn-sm">
+                                            &#9660
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <table class="dice_table_lrg">
+                                <tr>
+                                    <td>
+                                        {{ dice_form.caption }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-12 col-md-6 col-lg-4" style="text-align:center">
+                            <table class="dice_table_lrg">
+                                <tr>
+                                    <td>
+                                        <button type="submit" class="btn btn-warning btn-lg"
+                                                name="roll_dice" style="margin: auto"
+                                                id="roll_dice_button">
+                                            <strong>Roll 'Em!</strong>
+                                        </button>
+                                        <button type="submit" class="btn btn-outline-warning btn-lg"
+                                                name="roll_dice_secret" style="margin: auto; display: none;"
+                                                id="roll_dice_secret_button">
+                                            <strong>Roll 'Em</strong><em>, secretly!</em>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4" style="text-align:center">
+                            <table class="dice_table_lrg">
+                                <tr>
+                                    <td>
+                                        <button type="button" id="show_secret_roll_button"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                onclick="showSecretRoll()" style="display: block; margin: auto;">
+                                            Switch to Secret Roll
+                                        </button>
+                                        <button type="button" id="hide_secret_roll_button"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                onclick="hideSecretRoll()" style="display: none; margin: auto">
+                                            Switch to Regular Roll
+                                        </button>
+                                        <span id="secret_warning" style="display:none">
+                                            {% if player_is_gm %}
+                                            <em>As GM, only you will see this roll.</em>
+                                            {% else %}
+                                            <em>You and the GM will see this roll.</em>
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4" style="text-align:center">
+                            <table class="dice_table_lrg">
+                                <tr>
+                                    <td>
+                                        <button type="button" id="reset_dice"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                onclick="resetDice()" style="margin: auto;">
+                                            Reset Dice
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endblock dice_box %}
+            </div>
+            <div class="col-md-3">
+                {% block player_info %}
+                <table style="width: 100%;">
+                    <tr>
+                        {% if icon %}
+                        <td rowspan="2" style="width:90px">
+                            <img src="{{ icon }}" width="80">
+                        </td>
+                        <td>
+                            <span style="color:gray">You are signed in as: </span>
+                            <br>
+                            <strong>{{ name_in_room }}</strong>
+                        </td>
+                        {% else %}<td colspan="2">
+                            <span style="color:gray">You are signed in as: </span>
+                            <br>
+                            <strong>{{ name_in_room }}</strong>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="{% url 'polydice:switch_avatar_room' room_number %}">
+                            <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
+                                Switch Avatar <strong>&#12299</strong>
+                            </button>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                {% endblock player_info %}
+                {% block chat_header %}
+                <hr>
+                <h5>Chat</h5>
+                {% endblock chat_header %}
+                {% block chat_input %}
+                <div class="container-fluid" id="chat_input" style="padding:0">
+                    {{ chat_form.chat_text }}
+                    {{ chat_form.recipient }}
+                    <button type="submit" name="chat" id="chat_submit"
+                            class="btn {%if start_whisper%}btn-outline-warning{%else%}btn-outline-dark{%endif%} btn-sm" >
+                        {%if start_whisper%}Whisper{%else%}Add Chat{%endif%}
+                    </button>
+                </div>
+                {% endblock chat_input %}
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <h3>This room has been archived by the GM.</h3>
+    <p>No new rolls or chats may be made in it.</p>
+    {% endif %}
+    {% endblock form_inputs %}
+    <div class="row">
+        <div class="col-md-9">
+            <hr>
+            {% block alt_destiny %}
+            {% endblock %}
+            {% block actions_header %}
+            {% endblock actions_header %}
+            {% block action_log %}
+            <div class="container-fluid" id="action_log" style="padding:0">
+                {% if action_log is empty %}
+                    <p>This room has no actions.</p>
+                {% else %}
+                <table id="action_table">
+                    <col width="50px">
+                    {% for action in action_log %}
+                    {% if not action.secret_roll or player_is_gm or action.user == user %}
+                    {% if not action.secret_roll %}
+                        <tr>
+                    {% elif action.user == user %}
+                        <tr style="background-color:#fff3a2;">
+                    {% else %}
+                        <tr style="background-color:#fff372;">
+                    {% endif %}
+                        {% if action.is_just_caption %}
+                            <td>
+                            {% if action.image_url %}
+                                <img src="{{ action.image_url }}"
+                                     title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                     width="40">
+                            {% else %}
+                                {% if action.avatar %}
+                                  <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ action.avatar.avatar_name }}</strong></span>
+                                {% else %}
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ action.user.username }}</strong></span>
+                                  </div>
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                            <td>
+                                {% if action.secret_roll %}
+                                <em>secret roll</em><br>
+                                {% endif %}
+                                <em>says: </em>
+                            {{ action.caption }}
+                            </td>
+                        {% else %}
+                            <td>
+                            {% if action.image_url %}
+                                <img src="{{ action.image_url }}"
+                                     title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                     width="40">
+                            {% else %}
+                                {% if action.avatar %}
+                                  <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ action.avatar.avatar_name }}</strong></span>
+                                {% else %}
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ action.user.username }}</strong></span>
+                                  </div>
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                            <td>
+                            {% if action.secret_roll %}
+                            <em>secret roll</em><br>
+                            {% endif %}
+
+                            {% if not action.is_just_caption %}
+                              <div style="padding: 0px; margin: 6px;">
+                                <!--<strong>Rolled: </strong>-->
+                                {% if action.results_d4 %}
+                                  {% for number in action.results_d4|split_string %}
+                                    {% if number %}
+                                      <div style="display: inline-block; height: 48px; width: 48px;
+                                                background-image: url('{% static 'polydice/Results/d004.png' %}');
+                                                background-position: center; background-repeat: no-repeat;
+                                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                                            title="d4">
+                                          <strong>{{ number }}</strong>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                {% if action.results_d6 %}
+                                  {% for number in action.results_d6|split_string %}
+                                    {% if number %}
+                                      <div style="display: inline-block; height: 48px; width: 48px;
+                                                background-image: url('{% static 'polydice/Results/d006.png' %}');
+                                                background-position: center; background-repeat: no-repeat;
+                                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                                            title="d6">
+                                        <strong>{{ number }}</strong>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                {% if action.results_d8 %}
+                                  {% for number in action.results_d8|split_string %}
+                                    {% if number %}
+                                      <div style="display: inline-block; height: 48px; width: 48px;
+                                                background-image: url('{% static 'polydice/Results/d008.png' %}');
+                                                background-position: center; background-repeat: no-repeat;
+                                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                                            title="d8">
+                                        <strong>{{ number }}</strong>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                {% if action.results_d10 %}
+                                  {% for number in action.results_d10|split_string %}
+                                    {% if number %}
+                                      <div style="display: inline-block; height: 48px; width: 48px;
+                                                background-image: url('{% static 'polydice/Results/d010_2.png' %}');
+                                                background-position: center; background-repeat: no-repeat;
+                                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                                            title="d10">
+                                        <strong>{{ number }}</strong>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                {% if action.results_d12 %}
+                                  {% for number in action.results_d12|split_string %}
+                                    {% if number %}
+                                      <div style="display: inline-block; height: 48px; width: 48px;
+                                                background-image: url('{% static 'polydice/Results/d012.png' %}');
+                                                background-position: center; background-repeat: no-repeat;
+                                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                                            title="d12">
+                                        <strong>{{ number }}</strong>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                {% if action.results_d20 %}
+                                  {% for number in action.results_d20|split_string %}
+                                    {% if number %}
+                                      <div style="display: inline-block; height: 48px; width: 48px;
+                                                background-image: url('{% static 'polydice/Results/d020.png' %}');
+                                                background-position: center; background-repeat: no-repeat;
+                                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                                            title="d20">
+                                        <strong>{{ number }}</strong>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                {% if action.results_d100 %}
+                                  {% for number in action.results_d100|split_string %}
+                                    {% if number %}
+                                      <div style="display: inline-block; height: 48px; width: 48px;
+                                                background-image: url('{% static 'polydice/Results/d100.png' %}');
+                                                background-position: center; background-repeat: no-repeat;
+                                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                                            title="d100">
+                                        <strong>{{ number }}</strong>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                {% if action.results_numerical %}
+                                  {% for number in action.results_numerical|split_string %}
+                                    {% if number %}
+                                        (
+                                        <span style="border-style: solid; border-color: black; border-width: 1px;
+                                            display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;">
+                                            {{ number }}
+                                        </span>
+                                        /
+                                        <span style="border-style: groove; border-color: black; border-width: 1px;
+                                            display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;
+                                            border-radius: 10px">
+                                          d {{ action.numerical_dice_sides }}
+                                        </span>
+                                        )
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                                  <!-- bonus and total go here -->
+                                {% if action.bonus > 0 %}
+                                  <span style="color: darkblue; font-size: 1.5em;">
+                                    <strong>( +{{ action.bonus }} )</strong>
+                                  </span>
+                                {% elif action.bonus < 0 %}
+                                  <span style="color: darkred; font-size: 1.5em">
+                                    <strong>( {{ action.bonus }} )</strong>
+                                  </span>
+                                {% endif %}
+                                <br>
+                                  <strong>Total: </strong><em>{{action.results_total}}</em>
+
+                                {% if action.results_cancel %}
+                                  <br><em>All dice have cancelled.</em>
+                                {% endif %}
+                              </div>
+                            {% endif %}
+                            {% if action.caption %}
+                                <p style="padding: 0px; margin: 6px;">
+                                <strong>Caption: </strong>
+                                {{ action.caption }}
+                                </p>
+                            {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+                {% endif %}
+            </div>
+            {% endblock action_log %}
+        </div>
+        <div class="col-md-3" style="padding:0;">
+            {% block alt_chat_header %}
+            {% endblock %}
+            {% block chat_log %}
+            <div class="container-fluid" id="chat_log" style="padding:0">
+            <hr>
+            {% block glossary %}
+                <input type="checkbox" id="showblock">
+                <div id="slideout">
+                    <label id="slideout_tab" for="showblock" title="Dice Meanings">
+                        <i>Dice</i>
+                    </label>
+                    <div id="slideout_inner">
+                        <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
+                        <ul style="list-style-type:none; color: white;">
+                            <li><img src="{% static 'polydice/Dice/die_d4.png' %}" width="32" title="d4"> d4</li>
+                            <li><img src="{% static 'polydice/Dice/die_d6.png' %}" width="32" title="d6"> d6</li>
+                            <li><img src="{% static 'polydice/Dice/die_d8.png' %}" width="32" title="d8"> d8</li>
+                            <li><img src="{% static 'polydice/Dice/die_d10.png' %}" width="32" title="d10"> d10</li>
+                            <li><img src="{% static 'polydice/Dice/die_d12.png' %}" width="32" title="d12"> d12</li>
+                            <li><img src="{% static 'polydice/Dice/die_d20.png' %}" width="32" title="d20"> d20</li>
+                            <li><img src="{% static 'polydice/Dice/die_d100.png' %}" width="32" title="d100"> d100</li>
+                            <li><img src="{% static 'polydice/Dice/die_numerical.png' %}" width="32" title="Numerical"> Numerical</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endblock glossary %}
+            {% if chat_log is empty %}
+                <p>This room has no chats</p>
+            {% else %}
+                <table id="chat_table">
+                    <col width="50px">
+                {% for chat in chat_log %}
+                    {% if chat.is_private %}
+                        {% if chat.recipient == user %}
+                            <tr>
+                                <td>
+                                {% if chat.image_url %}
+                                    <img src="{{ chat.image_url }}"
+                                         title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                         width="40">
+                                {% endif %}
+                                </td>
+                                <td style="background-color:#fff372;">
+                                    {% if chat.avatar %}
+                                    <em>{{ chat.avatar.avatar_name }} whispers to you:</em>
+                                    {% else %}
+                                    <em>{{ chat.user.username }} whispers to you:</em>
+                                    {% endif %}
+                                    <br>{{chat.chat_text}}
+                                </td>
+                            </tr>
+                        {% elif chat.user == user %}
+                            <tr>
+                                <td>
+                                {% if chat.image_url %}
+                                    <img src="{{ chat.image_url }}"
+                                         title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                         width="40">
+                                {% endif %}
+                                </td>
+                                <td style="background-color:#fff3a2;">
+                                    <em>You whisper to
+                                        {% if chat.recipient_avatar %}
+                                            {{ chat.recipient_avatar.avatar_name }}:
+                                        {% else %}
+                                        {{ chat.recipient.username }}:</em>
+                                    {% endif %}
+                                    <br>{{chat.chat_text}}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% else %}
+                        <tr>
+                            <td>
+                            {% if chat.image_url %}
+                                <img src="{{ chat.image_url }}"
+                                     title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                                     width="40">
+                            {% else %}
+                                {% if chat.avatar %}
+                                  <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ chat.avatar.avatar_name }}</strong></span>
+                                {% else %}
+                                    <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                                    <strong>{{ chat.user.username }}</strong></span>
+                                  </div>
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                            <td>
+                                {{chat.chat_text}}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            {% endif %}
+            </div>
+            {% endblock %}
+            {% block page_updates %}
+            <div class="container-fluid" id="last_times">
+                <p style="display: none">Last action taken: <span id="actionTime">{{ update_times.action.isoformat }}</span></p>
+                <p style="display: none">Last chat made: <span id="chatTime">{{ update_times.chat.isoformat }}</span></p>
+            </div>
+            <div class="container-fluid">
+                <p style="display: none">Page last updated: <span id="updateTime"></span></p>
+            </div>
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% block page_scripts %}
+<script>
+$(function () {
+    var dt = new Date();
+    document.getElementById('updateTime').innerText = dt.toISOString();
+    update_times();
+});
+</script>
+<script>
+function addOne(id) {
+    document.getElementById(id).stepUp(1);
+};
+function subtractOne(id) {
+    document.getElementById(id).stepDown(1);
+};
+</script>
+<script>
+function showSecretRoll() {
+    document.getElementById('secret_warning').style.display='block';
+    document.getElementById('show_secret_roll_button').style.display='none';
+    document.getElementById('hide_secret_roll_button').style.display='block';
+    document.getElementById('roll_dice_button').style.display='none';
+    document.getElementById('roll_dice_secret_button').style.display='block';
+};
+function hideSecretRoll() {
+    document.getElementById('secret_warning').style.display='none';
+    document.getElementById('show_secret_roll_button').style.display='block';
+    document.getElementById('hide_secret_roll_button').style.display='none';
+    document.getElementById('roll_dice_button').style.display='block';
+    document.getElementById('roll_dice_secret_button').style.display='none';
+};
+</script>
+<script>
+function resetDice() {
+    document.getElementById('d4').value = 0;
+    document.getElementById('d6').value = 0;
+    document.getElementById('d8').value = 0;
+    document.getElementById('d10').value = 0;
+    document.getElementById('d12').value = 0;
+    document.getElementById('d20').value = 0;
+    document.getElementById('d100').value = 0;
+    document.getElementById('numerical').value = 0;
+    document.getElementById('sides').value = 999;
+    document.getElementById('bonus').value = 0;
+};
+</script>
+<script>
+function highlightChat() {
+  var number = document.getElementById("id_recipient").selectedIndex;
+  var button = document.getElementById("chat_submit");
+  var chat_area = document.getElementById("chat_text");
+  if (number > 0) {
+    button.classList.remove('btn-outline-dark');
+    button.classList.add('btn-outline-warning');
+    button.textContent = 'Whisper';
+    chat_area.classList.add('chat_whisper');
+    chat_area.classList.remove('chat_regular');
+  } else {
+    button.classList.remove('btn-outline-warning');
+    button.classList.add('btn-outline-dark');
+    button.textContent = 'Add Chat';
+    chat_area.classList.remove('chat_whisper');
+    chat_area.classList.add('chat_regular');
+  };
+};
+</script>
+<script>
+$(function () {
+  var number = document.getElementById("id_recipient").selectedIndex;
+  var button = document.getElementById("chat_submit");
+  var chat_area = document.getElementById("chat_text");
+  if (number > 0) {
+    chat_area.classList.add('chat_whisper');
+    chat_area.classList.remove('chat_regular');
+  };
+});
+</script>
+<script>
+var myForm = $("#destiny");
+myForm.submit(function(){
+    myForm.submit(function(){
+        return false;
+    });
+});
+var mySecondForm = $("#dice");
+mySecondForm.submit(function(){
+    mySecondForm.submit(function(){
+        return false;
+    });
+});
+var myThirdForm = $("#chat");
+myThirdForm.submit(function(){
+    myThirdForm.submit(function(){
+        return false;
+    });
+});
+</script>
+<script>
+function refresh_action_log(){
+    var url_actions = document.URL + ' #action_log';
+    var url_destiny = document.URL + ' #destiny_box';
+    $('#action_log').load(url_actions);
+    $('#destiny_box').load(url_destiny);
+};
+function refresh_chat_log() {
+    var url_chat_log = document.URL + ' #chat_log';
+    $('#chat_log').load(url_chat_log);
+};
+function check_and_update() {
+    var pageUpdate = new Date(document.getElementById('updateTime').innerText);
+    var actionUpdate = new Date($("#actionTime").text());
+    var chatUpdate = new Date($("#chatTime").text());
+    var now = new Date();
+    if (actionUpdate > pageUpdate && chatUpdate > pageUpdate) {
+        refresh_action_log();
+        refresh_chat_log();
+        document.getElementById('updateTime').innerText = now.toISOString();
+    } else if (actionUpdate > pageUpdate) {
+        refresh_action_log();
+        document.getElementById('updateTime').innerText = now.toISOString();
+    } else if (chatUpdate > pageUpdate) {
+        refresh_chat_log();
+        document.getElementById('updateTime').innerText = now.toISOString();
+    };
+};
+function update_times() {
+    var url_action_time = document.URL + ' #last_times';
+    $('#last_times').load(url_action_time, function () {
+        // When it loads, schedule the next request for 1s later
+        setTimeout(update_times, 1000)
+    });
+    check_and_update();
+};
+</script>
+{% endblock page_scripts %}
+{% endblock body %}

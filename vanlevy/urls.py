@@ -1,4 +1,5 @@
 from django.urls import path, re_path
+from django.conf.urls import handler404
 
 from . import views
 
@@ -14,6 +15,8 @@ urlpatterns = [
     path('dice-rollers/', views.vl_dice_rollers_view, name='dice_rollers'),
     path('portal/', views.personal_portal, name='portal'),
     path('terms/', views.vl_terms_view, name='terms'),
+    path('404/', views.vl_error, name='404')
 
 ]
 
+handler404 = views.vl_error

@@ -1,0 +1,40 @@
+{% extends 'sw_base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Bad Room ID</title>
+{% endblock %}
+
+{% block subtitle %} Uh Oh!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <br>
+    <h1>Stepping through the portal, you find... nothing.</h1>
+    <h5><em>How did you manage to do that?</em></h5>
+    <p><br></p>
+    <p>
+        I dunno where you think you were going, but the
+        {% if bad_room_url %}
+            {{ bad_room_url }}
+        {% else %}
+            room information
+        {% endif %}
+        you gave goes to a room that doesn't exist.
+    </p>
+    <p>
+        I don't mean an archived room, I mean one that was never created, does not exist, is entirely hypothetical,
+        exists solely <em>in potentia</em>, and, in short, <em><strong>fails to be</strong></em>.
+    </p>
+    {% if bad_room_id %}
+    <p>
+        You tried to enter the room numbered: {{ bad_room_id }}.  This does not exist.
+    </p>
+    {% endif %}
+    <p>
+        So, uh, I dunno.  Maybe try one of the links in the Navbar up top?
+    </p>
+
+</div>
+{% endblock %}
