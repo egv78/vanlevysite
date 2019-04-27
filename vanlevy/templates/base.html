@@ -168,8 +168,8 @@
                                              alt="Polyhedral Icon" height="32" width="32">
                                         The Dungeon</a>
                                     {% else %}
-                                    <a class="dropdown-item" href="#"><span style="text-decoration: line-through;">
-                                        Dice Roller (D20)</span></a>
+                                    <a class="dropdown-item" href="{% url 'polydice:about' %}">
+                                        Dice Roller (D20)</a>
                                     {% endif %}
                                 {% endblock %}
 

@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# Remember to duplicate in prod.py
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'vanlevy.apps.VanlevyConfig',

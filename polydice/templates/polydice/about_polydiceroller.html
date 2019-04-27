@@ -173,32 +173,40 @@
                   </div>
                   <div class="card card-body">
                     <p class="card-text">
-                      The Star Wars Dice Roller uses eight different dice.
+                      The Polyhedral Dice Roller uses eight different dice, plus a bonus.
                     </p>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-3">
                             <ul style="list-style-type:none;">
-                                <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" height="32">
-                                    Boost</li>
-                                <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" height="32">
-                                    Ability</li>
-                                <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" height="32">
-                                    Proficiency</li>
-                                <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" height="32">
-                                    Force</li>
+                                <li><img src="{% static 'polydice/Dice/die_d4.png' %}" width="32" height="32">
+                                    d4</li>
+                                <li><img src="{% static 'polydice/Dice/die_d6.png' %}" width="32" height="32">
+                                    d6</li>
+                                <li><img src="{% static 'polydice/Dice/die_d8.png' %}" width="32" height="32">
+                                    d8</li>
                             </ul>
                         </div>
-                        <div class="col">
+                        <div class="col-3">
                             <ul style="list-style-type:none;">
-                                <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" height="32">
-                                    Setback</li>
-                                <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" height="32">
-                                    Difficulty</li>
-                                <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" height="32">
-                                    Challenge</li>
-                                <li><img src="{% static 'swdice/Dice/D100.png' %}"
+                                <li><img src="{% static 'polydice/Dice/die_d10.png' %}" width="32" height="32">
+                                    d10</li>
+                                <li><img src="{% static 'polydice/Dice/die_d12.png' %}" width="32" height="32">
+                                    d12</li>
+                                <li><img src="{% static 'polydice/Dice/die_d20.png' %}" width="32" height="32">
+                                    d20</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul style="list-style-type:none;">
+                                <li><img src="{% static 'polydice/Dice/plus_minus.png' %}"
+                                         style="margin-left: 8px;" height="32">
+                                    Bonus</li>
+                                <li><img src="{% static 'polydice/Dice/die_d100.png' %}"
                                          style="margin-left: -32px;" width="64" height="32">
-                                    Numerical</li>
+                                    d100</li>
+                                <li><img src="{% static 'polydice/Dice/die_numerical.png' %}"
+                                         style="margin-left: -32px;" width="64" height="32">
+                                    Numerical (any number from 1-999)</li>
                             </ul>
                         </div>
                     </div>
@@ -206,46 +214,80 @@
                 </div>
               </div>
               <div class="collapse" id="Success" data-parent="#DiceMechanics">
-                <div class="card-group">
                 <div class="card border-dark mb-3" style="max-width: 100%;">
                   <div class="card-header bg-primary text-white ">
-                    <h5>Successes and Failures</h5>
+                    <h5>Dice Results</h5>
                   </div>
                   <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                      <li>Success
-                        <img src="{% static 'swdice/Results/Suc01.png' %}" width="20" height="20" title="Success">
-                        and Failure
-                        <img src="{% static 'swdice/Results/Fai01.png' %}" width="20" height="20" title="Failure">
-                        pips cancel each other.
-                      </li>
-                      <li>In order to succeed in a roll, the results must have (at least) one more Success pip than Failures.</li>
-                      <li>A roll with no uncancelled success pips is a failure. (E.g. a roll with two successes and two failures.)</li>
-                    </ul>
+                      <p>
+                          Basic dice results are displayed as a face, and are always shown in order rolled and in order
+                          of dice type (d4, d6, d8, d10, d12, d20, d100).
+                          The face shown matches the shape and color of the die.  E.g.:
+                      </p>
+                      <div style="display: inline">
+                      <div style="display: inline-block; height: 48px; width: 48px;
+                                background-image: url('{% static 'polydice/Results/d004.png' %}');
+                                background-position: center; background-repeat: no-repeat;
+                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                            title="d4">
+                          <strong>4</strong>
+                      </div>
+                      <div style="display: inline-block; height: 48px; width: 48px;
+                                background-image: url('{% static 'polydice/Results/d006.png' %}');
+                                background-position: center; background-repeat: no-repeat;
+                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                            title="d6">
+                          <strong>6</strong>
+                      </div>
+                      <div style="display: inline-block; height: 48px; width: 48px;
+                                background-image: url('{% static 'polydice/Results/d008.png' %}');
+                                background-position: center; background-repeat: no-repeat;
+                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                            title="d8">
+                          <strong>8</strong>
+                      </div>
+                      <div style="display: inline-block; height: 48px; width: 48px;
+                                background-image: url('{% static 'polydice/Results/d010.png' %}');
+                                background-position: center; background-repeat: no-repeat;
+                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                            title="d10">
+                          <strong>10</strong>
+                      </div>
+                      <div style="display: inline-block; height: 48px; width: 48px;
+                                background-image: url('{% static 'polydice/Results/d012.png' %}');
+                                background-position: center; background-repeat: no-repeat;
+                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                            title="d12">
+                          <strong>12</strong>
+                      </div>
+                      <div style="display: inline-block; height: 48px; width: 48px;
+                                background-image: url('{% static 'polydice/Results/d020.png' %}');
+                                background-position: center; background-repeat: no-repeat;
+                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                            title="d20">
+                          <strong>20</strong>
+                      </div>
+                      <div style="display: inline-block; height: 48px; width: 48px;
+                                background-image: url('{% static 'polydice/Results/d100_2.png' %}');
+                                background-position: center; background-repeat: no-repeat;
+                                background-size: 48px 48px; text-align: center; line-height: 48px"
+                            title="d4">
+                          <strong>100</strong>
+                      </div>
+                      (
+                        <span style="border-style: solid; border-color: black; border-width: 1px;
+                            display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;">
+                            123
+                        </span>
+                        /
+                        <span style="border-style: groove; border-color: black; border-width: 1px;
+                            display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;
+                            border-radius: 10px">
+                          d 999
+                        </span>
+                      )
+                      </div>
                   </div>
-                </div>
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Advantage and Threat</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                      <li>
-                        Advantage
-                        <img src="{% static 'swdice/Results/Adv01.png' %}" width="20" height="20" title="Advantage">
-                        and Threat
-                        <img src="{% static 'swdice/Results/Thr01.png' %}" width="20" height="20" title="Threat">
-                        pips cancel each other.
-                      </li>
-                      <li>
-                        It is possible to succeed on a roll, but with threat, just as it is possible to fail with advantage.
-                      </li>
-                      <li>
-                        See the Core Rulebooks for how these results play out narratively.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
                 </div>
               </div>
               <div class="collapse" id="Triumph" data-parent="#DiceMechanics">
@@ -339,11 +381,11 @@
           <div class="btn-group-vertical align-right" style="width: 100%;">
             <button class="btn btn-outline-info" type="button" data-toggle="collapse"
                     data-target="#CoreRuleBooks" aria-expanded="false" aria-controls="CoreRuleBooks">
-                Core Rulebooks
+                Dungeons & Dragons
             </button>
             <button class="btn btn-outline-info" type="button" data-toggle="collapse"
                     data-target="#Supplements" aria-expanded="false" aria-controls="Supplements">
-                Supplements
+                Pathfinder
             </button>
             <button class="btn btn-outline-info" type="button" data-toggle="collapse"
                     data-target="#Additional" aria-expanded="false" aria-controls="Additional">
@@ -356,22 +398,22 @@
               <div class="collapse show" id="CoreRuleBooks" data-parent="#Resources">
                 <div class="card border-dark mb-3" style="max-width: 100%;">
                   <div class="card-header bg-info text-white ">
-                    <h5>Core Rule Books (CRBs)</h5>
+                    <h5>Dungeons and Dragons</h5>
                   </div>
                   <div class="card card-body">
-                    <ul>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire/">
-                                Edge of the Empire</a>
-                             - Focuses on Smugglers, Bounty Hunters, Bantha Fodder, and Nerf Herders.
+                    <ul style="margin-left: -20px;">
+                        <li><a href="http://dnd.wizards.com/">
+                                Official Website</a>
+                             - Wizards of the Coast's website.  Find all things D&D here.
                         </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny/">
-                                Force and Destiny</a>
-                             - Jedis are the centerpiece of this CRB.  Force powers galore.
+                        <li><a href="http://www.d20srd.org/index.htm">
+                                SRD for 3.5</a>
+                             - (System Reference Document) A fan run site with tons of resources
                         </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-age-of-rebellion/">
-                            Age of Rebellion</a>
-                            - You know all those pilots and fighters that get killed in the movies?
-                            Be one of them (and maybe <em>not</em> die)!
+                        <li><a href="https://5thsrd.org/">
+                                SRD for 5E</a>
+                            - "3.5"? "5E"?  Being the original, D&D has been around so long there are a plethora of
+                            editions to choose from.  5E is the current.
                         </li>
                     </ul>
                   </div>
@@ -380,20 +422,21 @@
               <div class="collapse" id="Supplements" data-parent="#Resources">
                 <div class="card border-info mb-3" style="max-width: 100%;">
                   <div class="card-header bg-info text-white ">
-                    <h5>Supplements</h5>
+                    <h5>Pathfinder</h5>
                   </div>
                   <div class="card card-body">
-                    <p class="card-text">
-                      These are just a few examples.
-                    </p>
                     <ul style="margin-left: -20px;">
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire/products/beyond-the-rim/">
-                                Beyond the Rim</a>
-                             - Adventure module for Edge of the Empire.
+                        <li><a href="https://paizo.com/pathfinder/rpg">
+                                Official Pathfinder Site</a>
+                            - You can also find info about <a href="https://paizo.com/starfinder">Starfinder</a>.
                         </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire/products/enter-the-unknown/">
-                            Enter the Unknown</a>
-                            - Rules Supplement for Edge of the Empire; this book adds three specializations for the Explorer.
+                        <li><a href="https://www.d20pfsrd.com/">
+                                d20 Pathfinder SRD</a>
+                             - Basically, think of this as a Wiki for Pathfinder, except you're not allowed to edit it.
+                        </li>
+                        <li><a href="https://aonprd.com/">
+                            Archives of Nethys</a>
+                            - Another really useful fan site with Pathfinder (and Starfinder) resources.
                         </li>
                     </ul>
                   </div>

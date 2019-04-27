@@ -485,7 +485,17 @@
                                                 background-position: center; background-repeat: no-repeat;
                                                 background-size: 48px 48px; text-align: center; line-height: 48px"
                                             title="d4">
-                                          <strong>{{ number }}</strong>
+                                          <strong>
+                                          {% if number == "1" %}
+                                              <span style="color: red;">{{ number }}</span>
+                                          {% elif number == "4" %}
+                                              <span class="critical_roll">
+                                                {{ number }}
+                                              </span>
+                                          {% else %}
+                                              <span style="color: black;">{{ number }}</span>
+                                          {% endif %}
+                                          </strong>
                                       </div>
                                     {% endif %}
                                   {% endfor %}
@@ -498,7 +508,17 @@
                                                 background-position: center; background-repeat: no-repeat;
                                                 background-size: 48px 48px; text-align: center; line-height: 48px"
                                             title="d6">
-                                        <strong>{{ number }}</strong>
+                                        <strong>
+                                          {% if number == "1" %}
+                                              <span style="color: red;">{{ number }}</span>
+                                          {% elif number == "6" %}
+                                              <span class="critical_roll">
+                                                {{ number }}
+                                              </span>
+                                          {% else %}
+                                              <span style="color: black;">{{ number }}</span>
+                                          {% endif %}
+                                        </strong>
                                       </div>
                                     {% endif %}
                                   {% endfor %}
@@ -507,11 +527,21 @@
                                   {% for number in action.results_d8|split_string %}
                                     {% if number %}
                                       <div style="display: inline-block; height: 48px; width: 48px;
-                                                background-image: url('{% static 'polydice/Results/d008.png' %}');
+                                                background-image: url('{% static 'polydice/Results/d008_v3.png' %}');
                                                 background-position: center; background-repeat: no-repeat;
                                                 background-size: 48px 48px; text-align: center; line-height: 48px"
                                             title="d8">
-                                        <strong>{{ number }}</strong>
+                                        <strong>
+                                          {% if number == "1" %}
+                                              <span style="color: red;">{{ number }}</span>
+                                          {% elif number == "8" %}
+                                              <span class="critical_roll">
+                                                {{ number }}
+                                              </span>
+                                          {% else %}
+                                              <span style="color: black;">{{ number }}</span>
+                                          {% endif %}
+                                        </strong>
                                       </div>
                                     {% endif %}
                                   {% endfor %}
@@ -524,7 +554,17 @@
                                                 background-position: center; background-repeat: no-repeat;
                                                 background-size: 48px 48px; text-align: center; line-height: 48px"
                                             title="d10">
-                                        <strong>{{ number }}</strong>
+                                        <strong>
+                                          {% if number == "1" %}
+                                              <span style="color: red;">{{ number }}</span>
+                                          {% elif number == "10" %}
+                                              <span class="critical_roll">
+                                                {{ number }}
+                                              </span>
+                                          {% else %}
+                                              <span style="color: black;">{{ number }}</span>
+                                          {% endif %}
+                                        </strong>
                                       </div>
                                     {% endif %}
                                   {% endfor %}
@@ -537,7 +577,17 @@
                                                 background-position: center; background-repeat: no-repeat;
                                                 background-size: 48px 48px; text-align: center; line-height: 48px"
                                             title="d12">
-                                        <strong>{{ number }}</strong>
+                                        <strong>
+                                          {% if number == "1" %}
+                                              <span style="color: red;">{{ number }}</span>
+                                          {% elif number == "12" %}
+                                              <span class="critical_roll">
+                                                {{ number }}
+                                              </span>
+                                          {% else %}
+                                              <span style="color: black;">{{ number }}</span>
+                                          {% endif %}
+                                        </strong>
                                       </div>
                                     {% endif %}
                                   {% endfor %}
@@ -546,11 +596,21 @@
                                   {% for number in action.results_d20|split_string %}
                                     {% if number %}
                                       <div style="display: inline-block; height: 48px; width: 48px;
-                                                background-image: url('{% static 'polydice/Results/d020.png' %}');
+                                                background-image: url('{% static 'polydice/Results/d020_v6.png' %}');
                                                 background-position: center; background-repeat: no-repeat;
                                                 background-size: 48px 48px; text-align: center; line-height: 48px"
                                             title="d20">
-                                        <strong>{{ number }}</strong>
+                                        <strong>
+                                          {% if number == "1" %}
+                                              <span style="color: red;">{{ number }}</span>
+                                          {% elif number == "20" %}
+                                              <span class="critical_roll">
+                                                {{ number }}
+                                              </span>
+                                          {% else %}
+                                              <span style="color: black;">{{ number }}</span>
+                                          {% endif %}
+                                        </strong>
                                       </div>
                                     {% endif %}
                                   {% endfor %}
@@ -559,11 +619,21 @@
                                   {% for number in action.results_d100|split_string %}
                                     {% if number %}
                                       <div style="display: inline-block; height: 48px; width: 48px;
-                                                background-image: url('{% static 'polydice/Results/d100.png' %}');
+                                                background-image: url('{% static 'polydice/Results/d100_v3.png' %}');
                                                 background-position: center; background-repeat: no-repeat;
                                                 background-size: 48px 48px; text-align: center; line-height: 48px"
                                             title="d100">
-                                        <strong>{{ number }}</strong>
+                                        <strong>
+                                          {% if number == "1" %}
+                                              <span style="color: red;">{{ number }}</span>
+                                          {% elif number == "100" %}
+                                              <span class="critical_roll">
+                                                {{ number }}
+                                              </span>
+                                          {% else %}
+                                              <span style="color: black;">{{ number }}</span>
+                                          {% endif %}
+                                        </strong>
                                       </div>
                                     {% endif %}
                                   {% endfor %}

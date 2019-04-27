@@ -84,14 +84,15 @@ style="padding: 20px 0px 0px 0px"
                 <div class="row no-gutters">
                     <div class="col-6">
                         <p class="card-text">
-                            <em>COMING SOON</em>
                         </p>
                         <p class="card-text">
                             This Dice Roller uses basic Polyhedral Dice; d4, d6, d8, d10, d12, 20, d100, & d#.
                         </p>
                         <p class="card-text">
                             To learn more about this dice roller, please visit the
-                            <a href="#">info page</a>.
+                            <a href="{% url 'polydice:about' %}">info page</a>.
+                            To learn more about game systems that use these dice, feel free to start at
+                            <a href="http://www.d20srd.org/index.htm">d20 SRD</a>.
                         </p>
                     </div>
                     <div class="col-6">
@@ -102,11 +103,11 @@ style="padding: 20px 0px 0px 0px"
               </div>
               <div class="card-footer">
                 {% if user.is_authenticated %}
-                  <a href="#" class="btn btn-sm btn-primary disabled">
+                  <a href="{% url 'polydice:dungeon' %}" class="btn btn-sm btn-primary">
                     The Dungeon <strong>&#12299</strong>
                   </a>
                 {% else %}
-                  <a href="#" class="btn btn-sm btn-primary disabled">
+                  <a href="{% url 'polydice:about' %}" class="btn btn-sm btn-primary">
                     Info Page <strong>&#12299</strong>
                   </a>
                 {% endif %}

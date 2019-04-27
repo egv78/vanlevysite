@@ -391,7 +391,7 @@ style="padding: 20px 0px 0px 0px"
                                 <tr>
                                     <td class="room_name_table">
                                         <div>
-                                            <a href="#">{{ room.room_name }}</a>
+                                            <a href="{% url 'polydice:polyroom' room.id %}">{{ room.room_name }}</a>
                                         </div>
                                     </td>
                                     <td>{{ room.avatar }}</td>
