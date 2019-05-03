@@ -190,11 +190,11 @@ style="padding: 20px 0px 0px 0px"
               </div>
               <div class="card-footer">
                 {% if user.is_authenticated %}
-                  <a href="#" class="btn btn-sm btn-primary disabled">
+                  <a href="{% url 'myzdice:the_zone' %}" class="btn btn-sm btn-primary">
                     The Zone <strong>&#12299</strong>
                   </a>
                 {% else %}
-                  <a href="#" class="btn btn-sm btn-primary disabled">
+                  <a href="{% url 'myzdice:about' %}" class="btn btn-sm btn-primary">
                     Info Page <strong>&#12299</strong>
                   </a>
                 {% endif %}
