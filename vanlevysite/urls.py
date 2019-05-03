@@ -25,5 +25,6 @@ urlpatterns = [
     path('swdice/', include('swdice.urls', namespace='swdice')),
     path('gendice/', include('gendice.urls', namespace='gendice')),
     path('polydice/', include('polydice.urls', namespace='polydice')),
+    path('myzdice/', include('myzdice.urls', namespace='myzdice')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

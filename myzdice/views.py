@@ -7,11 +7,14 @@ from django.template.defaulttags import register
 from accounts.models import VanLevyUser, Avatar
 from swdice.dice import *
 from swdice.models import SWRoomToUser, SWRoomChat, SWRoom
-from swdice.forms import SW_Room_Chat_Form, SW_Dice_Roll
+from swdice.forms import SW_Room_Chat_Form
 from swdice.views import make_user_room_link, get_chat_carryover, read_chat, UpdateTimes
 
-from .forms import PolyDicePoolForm
-from .models import PolyDicePool
+from .forms import MYZDicePoolForm
+from .models import MYZDicePool
+
+# from .forms import PolyDicePoolForm
+# from .models import PolyDicePool
 
 
 # Filters for Jinja2
@@ -32,19 +35,24 @@ def split_string(string):
 
 
 # Methods for use in view classes
-def read_poly_dice(dice_form):
-    num_d4 = dice_form.cleaned_data['num_d4']
+def read_myz_dice(dice_form):
+    num_base_dice = dice_form.cleaned_data['num_base_dice']
+    num_skill_dice = dice_form.cleaned_data['num_skill_dice']
+    num_gear_dice = dice_form.cleaned_data['num_gear_dice']
     num_d6 = dice_form.cleaned_data['num_d6']
-    num_d8 = dice_form.cleaned_data['num_d8']
-    num_d10 = dice_form.cleaned_data['num_d10']
-    num_d12 = dice_form.cleaned_data['num_d12']
-    num_d20 = dice_form.cleaned_data['num_d20']
-    num_d100 = dice_form.cleaned_data['num_d100']
+    num_d66 = dice_form.cleaned_data['num_d66']
+    num_d666 = dice_form.cleaned_data['num_d666']
+    add_trauma = dice_form.cleaned_data['additional_trauma']
+    add_failure = dice_form.cleaned_data['additional_failure']
+    add_damage = dice_form.cleaned_data['additional_damage']
+    add_success_base = dice_form.cleaned_data['additional_success_base']
+    add_success_skill = dice_form.cleaned_data['additional_success_skill']
+    add_success_gear = dice_form.cleaned_data['additional_success_gear']
     numerical_sides = dice_form.cleaned_data['numerical_dice_sides']
     numerical_dice = dice_form.cleaned_data['num_numerical_dice']
     caption = dice_form.cleaned_data['caption']
-    bonus = dice_form.cleaned_data['bonus']
-    total_dice = (num_d4 + num_d6 + num_d8 + num_d10 + num_d12 + num_d20 + num_d100 + numerical_dice)
+    is_pushed = dice_form.cleaned_data['is_pushed']
+    total_dice = (num_base_dice + abs(num_skill_dice) + num_gear_dice + num_d6 + num_d66 + num_d666 + numerical_dice)
 
     if caption or total_dice > 0:
         valid_pool = True
@@ -56,9 +64,12 @@ def read_poly_dice(dice_form):
         just_caption = False
         valid_pool = False
 
-    dice_pool = {'caption': caption, "total_dice": total_dice, 'bonus': bonus,
-                 "num_d4": num_d4, "num_d6": num_d6, "num_d8": num_d8, "num_d10": num_d10,
-                 "num_d12": num_d12, "num_d20": num_d20, "num_d100": num_d100, "just_caption": just_caption,
+    dice_pool = {'caption': caption, "total_dice": total_dice,
+                 "num_base_dice": num_base_dice, "num_skill_dice": num_skill_dice, "num_gear_dice": num_gear_dice,
+                 "num_d6": num_d6, "num_d66": num_d66, "num_d666": num_d666, "just_caption": just_caption,
+                 "add_trauma": add_trauma, "add_failure": add_failure,  "add_damage": add_damage,
+                 "add_success_base": add_success_base,  "add_success_skill": add_success_skill,
+                 "add_success_gear": add_success_gear, "is_pushed": is_pushed,
                  "num_numerical_dice": numerical_dice, "numerical_dice_sides": numerical_sides,
                  "valid_pool": valid_pool,
                  }
@@ -67,7 +78,7 @@ def read_poly_dice(dice_form):
 
 def get_dice_carryover(request, dice_form):
     if dice_form.is_valid():
-        dice_pool = read_poly_dice(dice_form)
+        dice_pool = read_myz_dice(dice_form)
         total_dice = dice_pool['total_dice']
         del dice_pool['total_dice']
         valid_pool = dice_pool['valid_pool']
@@ -82,68 +93,88 @@ def get_dice_carryover(request, dice_form):
         pass
 
 
-def save_dice_pool(user, avatar, room, image_url, caption="", bonus=0,
-                   num_d4=0, num_d6=0, num_d8=0, num_d10=0, num_d12=0, num_d20=0, num_d100=0,
-                   num_numerical_dice=0, numerical_dice_sides=0, just_caption=True, secret_roll=False):
-    new_dice_pool = PolyDicePool()
+def save_myz_dice_pool(user, avatar, room, image_url, caption="", is_pushed=False,
+                       num_base_dice=0, num_skill_dice=0, num_gear_dice=0, num_d6=0, num_d66=0, num_d666=0,
+                       add_trauma=0, add_damage=0, add_failure=0,
+                       add_success_base=0, add_success_gear=0, add_success_skill=0,
+                       num_numerical_dice=0, numerical_dice_sides=0, just_caption=True, secret_roll=False):
+    new_dice_pool = MYZDicePool()
     new_dice_pool.user = user
     new_dice_pool.avatar = avatar
     new_dice_pool.swroom_id = room
     new_dice_pool.caption = caption
     new_dice_pool.image_url = image_url
-    new_dice_pool.num_d4 = num_d4
+    new_dice_pool.num_base_dice = num_base_dice
+    new_dice_pool.num_skill_dice = num_skill_dice
+    new_dice_pool.num_gear_dice = num_gear_dice
     new_dice_pool.num_d6 = num_d6
-    new_dice_pool.num_d8 = num_d8
-    new_dice_pool.num_d10 = num_d10
-    new_dice_pool.num_d12 = num_d12
-    new_dice_pool.num_d20 = num_d20
-    new_dice_pool.num_d100 = num_d100
-    new_dice_pool.bonus = bonus
+    new_dice_pool.num_d66 = num_d66
+    new_dice_pool.num_d666 = num_d666
+    new_dice_pool.additional_base_success = add_success_base
+    new_dice_pool.additional_skill_success = add_success_skill
+    new_dice_pool.additional_gear_success = add_success_gear
+    new_dice_pool.additional_trauma = add_trauma
+    new_dice_pool.additional_negative_success = add_failure
+    new_dice_pool.additional_gear_damage = add_damage
+    new_dice_pool.roll_is_pushed = is_pushed
     new_dice_pool.num_numerical_dice = num_numerical_dice
     new_dice_pool.numerical_dice_sides = numerical_dice_sides
     new_dice_pool.is_just_caption = just_caption
     new_dice_pool.secret_roll = secret_roll
 
-    d4_string, d4_results = D4.roll(num_d4)
-    d6_string, d6_results = D6.roll(num_d6)
-    d8_string, d8_results = D8.roll(num_d8)
-    d10_string, d10_results = D10.roll(num_d10)
-    d12_string, d12_results = D12.roll(num_d12)
-    d20_string, d20_results = D20.roll(num_d20)
-    d100_string, d100_results = D100.roll(num_d100)
+    args = {'base': num_base_dice, 'skill': num_skill_dice, 'gear': num_gear_dice, 'is_pushed': is_pushed,
+            'add_trauma': add_trauma, 'add_damage': add_damage, 'add_failure': add_failure,
+            'add_success_base': add_success_base, 'add_success_gear': add_success_gear,
+            'add_success_skill': add_success_skill}
+
+    faces_string, net_results, can_be_pushed, additional_sides = roll_myz_dice(**args)
+
+    d6_string, d6_results = D6_MYZ.roll(num_d6)
+    d66_string, d66_results = D66_MYZ.roll(num_d66)
+    d666_string, d666_results = D666_MYZ.roll(num_d666)
     numerical_meanings = range(1, (numerical_dice_sides + 1))
     numerical_die = Die("Numerical", numerical_meanings, "", True)
     numerical_string, numerical_results = numerical_die.roll(num_numerical_dice)
+    total_myz_dice = num_base_dice + num_gear_dice + abs(num_skill_dice)
 
-    new_dice_pool.results_d4 = d4_string
-    new_dice_pool.results_d6 = d6_string
-    new_dice_pool.results_d8 = d8_string
-    new_dice_pool.results_d10 = d10_string
-    new_dice_pool.results_d12 = d12_string
-    new_dice_pool.results_d20 = d20_string
-    new_dice_pool.results_d100 = d100_string
+    new_dice_pool.faces_summary = faces_string
+    new_dice_pool.holdover_faces = additional_sides
+    new_dice_pool.results_success = net_results[0]
+    new_dice_pool.results_failure = net_results[1]
+    new_dice_pool.results_trauma = net_results[2]
+    new_dice_pool.results_damage = net_results[3]
+    new_dice_pool.num_base_on_push = net_results[4]
+    new_dice_pool.num_skill_on_push = net_results[5]
+    new_dice_pool.num_gear_on_push = net_results[6]
+    new_dice_pool.num_base_suc_on_push = net_results[7]
+    new_dice_pool.num_skill_suc_on_push = net_results[8]
+    new_dice_pool.num_gear_suc_on_push = net_results[9]
+    new_dice_pool.num_trauma_on_push = net_results[10]
+    new_dice_pool.num_neg_suc_on_push = net_results[11]
+    new_dice_pool.num_damage_on_push = net_results[12]
+
+    new_dice_pool.results_d6 = d6_results
+    new_dice_pool.results_d66 = d66_results
+    new_dice_pool.results_d666 = d666_results
     new_dice_pool.results_numerical = numerical_string
-
-    new_dice_pool.results_total = (d4_results + d6_results + d8_results + d10_results + d12_results +
-                                   d20_results + d100_results + numerical_results + bonus)
-
-    new_dice_pool.results_cancel = False
+    new_dice_pool.roll_can_be_pushed = can_be_pushed
+    new_dice_pool.results_cancel = (sum(net_results) == 0 and total_myz_dice != 0)
 
     new_dice_pool.save()
 
 
 # View methods and classes
 def about(request):
-    template_name = 'polydice/about_polydiceroller.html'
+    template_name = 'myzdice/about_myz_diceroller.html'
     return render(request, template_name)
 
 
 def error(request):
-    template_name = '404_poly.html'
+    template_name = '404_myz.html'
     return render(request, template_name)
 
 
-class PolyRoomViews(FormMixin, TemplateView):
+class MYZRoomViews(FormMixin, TemplateView):
 
     def get_form_kwargs(self):
         swroom_id = self.kwargs['swroom_id']
@@ -258,7 +289,7 @@ class PolyRoomViews(FormMixin, TemplateView):
                 chat_text = chat_form.data['chat_text']
 
                 # grab any dice stuff not submitted and keep around
-                dice_form = PolyDicePoolForm(request.POST)
+                dice_form = MYZDicePoolForm(request.POST)
                 get_dice_carryover(request, dice_form)
 
                 if chat_text != "":
@@ -274,13 +305,11 @@ class PolyRoomViews(FormMixin, TemplateView):
                 chat_form = SW_Room_Chat_Form(**kwargs)
                 get_chat_carryover(request, chat_form, current_user_id)
 
-                dice_form = PolyDicePoolForm(request.POST)
+                dice_form = MYZDicePoolForm(request.POST)
                 secret_roll = "roll_dice_secret" in request.POST
 
                 if dice_form.is_valid():
-                    if gendice:
-                        dice_form.cleaned_data['num_force_dice'] = 0
-                    dice_pool = read_poly_dice(dice_form)
+                    dice_pool = read_myz_dice(dice_form)
                     total_dice = dice_pool['total_dice']
                     del dice_pool['total_dice']
                     valid_pool = dice_pool['valid_pool']
@@ -292,8 +321,9 @@ class PolyRoomViews(FormMixin, TemplateView):
                         kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "image_url": image_url, }
                         kwargs.update(dice_pool)
                         kwargs.update({"secret_roll": secret_roll})
-                        save_dice_pool(**kwargs)
+                        save_myz_dice_pool(**kwargs)
                     else:
+                        print('bad dice pool')
                         pass
                 else:
                     print("Form's busted")
@@ -456,7 +486,7 @@ class PolyRoomViews(FormMixin, TemplateView):
             else:
                 initial_args = {}
 
-            dice_form = PolyDicePoolForm(initial_args)  # update
+            dice_form = MYZDicePoolForm(initial_args)  # update
             chat_form = SW_Room_Chat_Form(initial_args_chat, **kwargs)
 
             chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
@@ -469,7 +499,7 @@ class PolyRoomViews(FormMixin, TemplateView):
             else:
                 last_chat_time = room.created_on
 
-            actions_all = PolyDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            actions_all = MYZDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
             action_log = []
             for action in actions_all[:100]:
                 if not room_users_link_list.filter(user_id=action.user)[0].banned:
@@ -479,13 +509,41 @@ class PolyRoomViews(FormMixin, TemplateView):
             else:
                 last_action_time = room.created_on
 
+            if len(action_log) > 0:
+                last_action = action_log[0]
+                allow_push = last_action.roll_can_be_pushed and last_action.user == request.user
+                push_base = last_action.num_base_on_push
+                push_skill = last_action.num_skill_on_push
+                push_gear = last_action.num_gear_on_push
+                push_base_suc = last_action.num_base_suc_on_push + last_action.additional_base_success
+                push_skill_suc = last_action.num_skill_suc_on_push + last_action.additional_skill_success
+                push_gear_suc = last_action.num_gear_suc_on_push + last_action.additional_gear_success
+                push_trauma = last_action.results_trauma + last_action.num_trauma_on_push
+                push_neg_suc = last_action.results_failure + last_action.num_neg_suc_on_push + last_action.additional_negative_success
+                push_damage = last_action.results_damage + last_action.num_damage_on_push
+            else:
+                allow_push = False
+                push_base = 0
+                push_skill = 0
+                push_gear = 0
+                push_base_suc = 0
+                push_skill_suc = 0
+                push_gear_suc = 0
+                push_trauma = 0
+                push_neg_suc = 0
+                push_damage = 0
+
             update_times = UpdateTimes(last_action_time, last_chat_time)
 
             args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                     'room_number': swroom_id, 'chat_log': chat_log, 'chat_form': chat_form, 'action_log': action_log,
                     'dice_form': dice_form, 'users_in_room': room_users_link_list,
                     'update_times': update_times, 'viewing_basic_room': viewing_basic_room,
-                    'start_whisper': start_whisper, }
+                    'start_whisper': start_whisper, 'allow_push': allow_push,
+                    'push_base': push_base, 'push_skill': push_skill, 'push_gear': push_gear,
+                    'push_base_suc': push_base_suc, 'push_skill_suc': push_skill_suc, 'push_gear_suc': push_gear_suc,
+                    'push_trauma': push_trauma, 'push_neg_suc': push_neg_suc, 'push_damage': push_damage
+                    }
 
         elif viewing_player_info:
             player_id = self.kwargs['player_id']
@@ -495,7 +553,7 @@ class PolyRoomViews(FormMixin, TemplateView):
                 return redirect(info_url, swroom_id)
 
             chat_log = SWRoomChat.objects.filter(room_id_id=swroom_id, user_id=player_id).order_by('-created_on')
-            action_log = PolyDicePool.objects.filter(swroom_id=swroom_id, user_id=player_id).order_by('-created')
+            action_log = MYZDicePool.objects.filter(swroom_id=swroom_id, user_id=player_id).order_by('-created')
             args = {'room': room, 'name_in_room': name_in_room, 'icon': icon_src, 'player_is_gm': player_is_gm,
                     'room_number': swroom_id, 'chat_log': chat_log, 'action_log': action_log,
                     'users_in_room': room_users_link_list, 'player_id': player_id,
@@ -507,7 +565,7 @@ class PolyRoomViews(FormMixin, TemplateView):
             for chat in chats_all:
                 if not room_users_link_list.filter(user_id=chat.user)[0].banned:
                     chat_log.append(chat)
-            actions_all = PolyDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
+            actions_all = MYZDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
             action_log = []
             for action in actions_all:
                 if not room_users_link_list.filter(user_id=action.user)[0].banned:

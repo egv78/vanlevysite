@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'swdice.apps.SwdiceConfig',
     'gendice.apps.GendiceConfig',
     'polydice.apps.PolydiceConfig',
+    'myzdice.apps.MyzdiceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

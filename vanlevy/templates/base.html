@@ -175,14 +175,13 @@
 
                                 {% block link_dice_myz %}
                                     {% if user.is_authenticated %}
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{% url 'myzdice:the_zone' %}">
                                         <img src="{% static '/vanlevy/MutantYearZero_32.png' %}"
                                              alt="Mutant Year Zero Icon" height="32" width="32">
-                                        <span style="text-decoration: line-through;">
-                                        The Zone</span></a>
+                                        The Zone</a>
                                     {% else %}
-                                    <a class="dropdown-item" href="#"><span style="text-decoration: line-through;">
-                                        Dice Roller (MYZ)</span></a>
+                                    <a class="dropdown-item" href="{% url 'myzdice:about' %}">
+                                        Dice Roller (MYZ)</a>
                                     {% endif %}
                                 {% endblock %}
                             </div>

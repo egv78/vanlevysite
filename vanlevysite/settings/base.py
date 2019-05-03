@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'swdice.apps.SwdiceConfig',
     'gendice.apps.GendiceConfig',
     'polydice.apps.PolydiceConfig',
+    'myzdice.apps.MyzdiceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,7 +54,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['vanlevy/templates', 'accounts/templates', 'swdice/templates', 'gendice/templates',
-                 'polydice/templates'
+                 'polydice/templates', 'myzdice/templates'
                  ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -157,6 +158,7 @@ LOGIN_EXEMPT_URLS = (
     '/swdice/',
     '/gendice/',
     '/polydice/',
+    '/myzdice/'
 )
 
 

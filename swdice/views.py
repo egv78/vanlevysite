@@ -117,7 +117,7 @@ def save_dice_pool(user, avatar, room, image_url, caption="",
     new_dice_pool.results_dark_pips = net_results[6]
     new_dice_pool.results_light_pips = net_results[7]
     numerical_meanings = range(1, (numerical_dice_sides + 1))
-    numerical_die = Die("Numerical", numerical_meanings, "")
+    numerical_die = Die("Numerical", numerical_meanings, "", True)
     numerical_string, numerical_results = numerical_die.roll(num_numerical_dice)
     new_dice_pool.results_numerical = numerical_string
     sum_results = 0
@@ -363,6 +363,8 @@ class MakeDiceRoom(TemplateView, FormMixin):
                     return redirect('gendice:404')
                 elif 'polydice' in request.path:
                     return redirect('polydice:404')
+                elif 'myzdice' in request.path:
+                    return redirect('myzdice:404')
                 else:
                     return redirect('swdice:404')
 

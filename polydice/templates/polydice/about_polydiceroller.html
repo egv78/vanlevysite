@@ -58,7 +58,7 @@
                         </li>
                         <li>
                             If you know the Room ID and Passcode, you can enter them (and choose your Avatar) while in
-                            the <a href="{% url 'swdice:dockingbay' %}">Docking Bay</a>.
+                            the <a href="{% url 'polydice:dungeon' %}">Dungeon</a>.
                         </li>
                     </ul>
                     <p class="card-text">
@@ -74,7 +74,7 @@
                   </div>
                   <div class="card card-body">
                     <p class="card-text">
-                      To make a new room, you must be in the <a href="{% url 'swdice:dockingbay' %}">Docking Bay</a>,
+                      To make a new room, you must be in the <a href="{% url 'polydice:dungeon' %}">Dungeon</a>,
                         and then click on the button (bottom right) to make a new room.
                         You will be asked to give the room a Name and choose to have the room Open or Closed.
                     </p>
@@ -135,7 +135,7 @@
                         <li>Ban/Unban players; GMs can also make a player the GM for that room.</li>
                         <li>
                             Archive a room.  Archived Rooms are hidden (but still accessible) on the
-                            <a href="{% url 'swdice:dockingbay' %}">Docking Bay</a>;
+                            <a href="{% url 'polydice:dungeon' %}">Dungeon</a>;
                             they also have Dice and Chat turned off.
                         </li>
                     </ul>
@@ -387,10 +387,6 @@
                     data-target="#Supplements" aria-expanded="false" aria-controls="Supplements">
                 Pathfinder
             </button>
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#Additional" aria-expanded="false" aria-controls="Additional">
-                Additional
-            </button>
           </div>
         </div>
         <div class="col-lg-10 col-md-9 col-sm-8">
@@ -437,30 +433,6 @@
                         <li><a href="https://aonprd.com/">
                             Archives of Nethys</a>
                             - Another really useful fan site with Pathfinder (and Starfinder) resources.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="collapse" id="Additional" data-parent="#Resources">
-                <div class="card border-info mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Additional</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-the-force-awakens-beginner-game/">
-                                The Force Awakens Beginner Game</a>
-                             - Starter Game pack that follows the same rules / mechanics as the linked CRBs.
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire/products/game-masters-kit-1-2-3-4-5/">
-                            Game Master's Kit</a>
-                            - Screen, info about NPCs, stuff for GMs.
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/star-wars-roleplaying-accessories/products/star-wars-roleplaying-dice-1/">
-                            Dice</a>
-                            - You know how this is a virtual dice roller website?  Well, buying those dice will let you
-                            roll <em>in real life!</em>  Crazy!
                         </li>
                     </ul>
                   </div>

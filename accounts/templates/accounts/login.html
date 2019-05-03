@@ -155,9 +155,6 @@ $(function () {
     var clear_bad_login_time =  moment(first_bad_login_time).add(bad_logins, 'm').toDate();
     if ((bad_logins > 3) && (now < clear_bad_login_time)) {
         var delay = delay_time * 1000;
-        console.log(bad_logins);
-        console.log(delay_time);
-        console.log(delay);
         showDelayAlert();
         setTimeout(showSubmitAndClose, delay);
     } else {

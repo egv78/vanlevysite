@@ -412,7 +412,7 @@ style="padding: 20px 0px 0px 0px"
                     <div class="card border-primary mb-3">
                         <div class="card-header">
                             <h5 class="card-title" style="margin-bottom: 0px;">
-                                <a href="#">
+                                <a href="{% url 'myzdice:about' %}">
                                     <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
                                         alt="SW Dice Roller" height="32" width="32">
                                     </a>
@@ -425,16 +425,38 @@ style="padding: 20px 0px 0px 0px"
                                 min-height: 240px;">
                             <h5 class="card-title">
                                 <strong>Hub: </strong>
-                                <a href="#">The Zone</a>
+                                <a href="{% url 'myzdice:the_zone' %}">The Zone</a>
                             </h5>
+                            {% if my_myz_rooms_list %}
+                                <table width="100%">
+                                <col width="60%">
+                                <col width="20%">
+                                <col width="20%">
+                                <tr>
+                                    <td><strong>Room Name</strong></td>
+                                    <td><strong>Avatar</strong></td>
+                                    <td><strong>GM</strong></td>
+                                </tr>
+                                {% for room in my_myz_rooms_list %}
+                                <tr>
+                                    <td class="room_name_table">
+                                        <div>
+                                            <a href="{% url 'myzdice:myzroom' room.id %}">{{ room.room_name }}</a>
+                                        </div>
+                                    </td>
+                                    <td>{{ room.avatar }}</td>
+                                    <td>{{ room.gm }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            {% else %}
                             <p></p>
-                            <p>
-                                <em>
+                                <p><em>
                                     You have not entered any Mutant Year Zero rooms yet.
-                                    It may have something to do with the fact that they don't yet exist.
-                                </em>
-                            </p>
+                                    To make a room or join someone else's, go to the Zone.
+                                </em></p>
                             <p><br></p>
+                            {% endif %}
                         </div>
                     </div>
 

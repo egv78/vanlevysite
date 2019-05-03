@@ -78,6 +78,7 @@ def personal_portal(request):
     my_sw_rooms_list = []
     my_gen_rooms_list = []
     my_poly_rooms_list = []
+    my_myz_rooms_list = []
 
     for room in my_rooms_reversed_list:
         this_room = SWRoom.objects.filter(pk=room.room_id_id)[0]
@@ -107,12 +108,15 @@ def personal_portal(request):
         elif this_room.polydice:
             if len(my_poly_rooms_list) < number_rooms and not this_room.disabled:
                 my_poly_rooms_list.append(new_room)
+        elif this_room.myzdice:
+            if len(my_myz_rooms_list) < number_rooms and not this_room.disabled:
+                my_myz_rooms_list.append(new_room)
         else:
             if len(my_sw_rooms_list) < number_rooms and not this_room.disabled:
                 my_sw_rooms_list.append(new_room)
 
     template_name = 'vanlevy/vl_portal.html'
     args = {'user': request.user, 'my_sw_rooms_list': my_sw_rooms_list, 'my_gen_rooms_list': my_gen_rooms_list,
-            'my_poly_rooms_list': my_poly_rooms_list,
+            'my_poly_rooms_list': my_poly_rooms_list, 'my_myz_rooms_list': my_myz_rooms_list,
             'my_avatars_list': my_avatars, 'has_avatars': has_avatars, 'number_rooms': number_rooms}
     return render(request, template_name, args)
