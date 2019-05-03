@@ -71,8 +71,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
             </div>
-        </div>
             <div class="col-lg-6">
                 <h2>Edit Profile</h2>
                 <br>Emails cannot be changed at this time.
@@ -132,14 +133,120 @@
                 <p><br></p>
             </div>
         </div>
+        <div class="row">
+          <div class="col">
+              <h4>Pregenerated Images</h4>
+            <div class="card-group">
+              <div class="card border-dark mb-3" style="text-align: center;">
+                  <div class="card-header">
+                      <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
+                  </div>
+                  <div class="card-body text-dark">
+                      <img src="{{ gravatar }}" width="90%">
+                      <p></p>
+                      <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
+                              onclick="useGravatar('{{ gravatar }}', 'gravatar_button')"
+                      >
+                          Pick me!
+                      </button>
+                  </div>
+              </div>
+              <div class="card border-dark mb-3" style="text-align: center;">
+                  <div class="card-header">
+                      <h5 class="card-title">Identicon</h5>
+                  </div>
+                  <div class="card-body text-dark">
+                      <img src="{{ identicon }}" width="90%">
+                      <p></p>
+                      <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
+                              onclick="useGravatar('{{ identicon }}', 'identicon_button')">
+                          Pick me!
+                      </button>
+                  </div>
+              </div>
+              <div class="card border-dark mb-3" style="text-align: center;">
+                  <div class="card-header">
+                      <h5 class="card-title">Monster</h5>
+                  </div>
+                  <div class="card-body text-dark">
+                      <img src="{{ monsterid }}" width="90%">
+                      <p></p>
+                      <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
+                              onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
+                          Pick me!
+                      </button>
+                  </div>
+              </div>
+              <div class="card border-dark mb-3" style="text-align: center;">
+                  <div class="card-header">
+                      <h5 class="card-title">Wavatar</h5>
+                  </div>
+                  <div class="card-body text-dark">
+                      <img src="{{ wavatar }}" width="90%">
+                      <p></p>
+                      <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
+                              onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
+                          Pick me!
+                      </button>
+                  </div>
+              </div>
+              <div class="card border-dark mb-3" style="text-align: center;">
+                  <div class="card-header">
+                      <h5 class="card-title">Retro</h5>
+                  </div>
+                  <div class="card-body text-dark">
+                      <img src="{{ retro }}" width="90%">
+                      <p></p>
+                      <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
+                              onclick="useGravatar('{{ retro }}', 'retro_button')">
+                          Pick me!
+                      </button>
+                  </div>
+              </div>
+              <div class="card border-dark mb-3" style="text-align: center;">
+                  <div class="card-header">
+                      <h5 class="card-title">Robohash</h5>
+                  </div>
+                  <div class="card-body text-dark">
+                      <img src="{{ robohash }}" width="90%">
+                      <p></p>
+                      <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
+                              onclick="useGravatar('{{ robohash }}', 'robohash_button')">
+                          Pick me!
+                      </button>
+                  </div>
+                </div>
+            </div>
+              <p>
+                  These are pregenerated images that you can use as profile or avatar images.
+                  The first is your <a href="https://en.gravatar.com/">Gravatar</a> that you control.
+                  (Gravatar is its own website that allows users to upload an image that is used consistently on
+                  multiple sites.)  Your Gravatar is linked to the email address you provided to us.
+              </p>
+              <p>
+                  Since half of the fun of Roll Playing Games is having different characters, we also provide you with
+                  some alternative possibilities; these use Gravatar, but based on a slightly modified email.
+              </p>
+          </div>
+        </div>
     </div>
-    <p></p><br><p></p><br>
-
 </div>
 
-{% endblock %}
-
-{% block page_scripts %}
+<script>
+function enableAllButtons () {
+    document.getElementById('gravatar_button').disabled = false;
+    document.getElementById('identicon_button').disabled = false;
+    document.getElementById('monsterid_button').disabled = false;
+    document.getElementById('wavatar_button').disabled = false;
+    document.getElementById('retro_button').disabled = false;
+    document.getElementById('robohash_button').disabled = false;
+};
+function useGravatar(url, button) {
+    document.getElementById('image_url').value = url;
+    enableAllButtons();
+    document.getElementById(button).disabled = true;
+}
+</script>
 <script>
 var $myForm = $("#editProfile");
 $myForm.submit(function(){
@@ -148,4 +255,10 @@ $myForm.submit(function(){
     });
 });
 </script>
+
+{% endblock %}
+
+
+
+{% block page_scripts %}
 {% endblock %}

@@ -62,7 +62,7 @@ class EditProfileForm(forms.ModelForm):
     user_image = forms.ImageField(required=False)
     user_url_image = forms.URLField(required=False, label='URL for Image',
                                     widget=forms.Textarea(
-                                        attrs={'rows': 3, 'cols': 55,
+                                        attrs={'rows': 3, 'cols': 55, 'id': 'image_url',
                                                'placeholder':
                                                    'Images need to be valid URLs to a web-hosted image file.'}
                                         )
@@ -95,7 +95,7 @@ class EditAvatarForm(forms.ModelForm):
     avatar_image = forms.ImageField(required=False)
     avatar_url_image = forms.URLField(required=False, label='URL for Image',
                                       widget=forms.Textarea(
-                                          attrs={'rows': 3, 'cols': 60,
+                                          attrs={'rows': 3, 'cols': 60, 'id': 'image_url',
                                                  'placeholder':
                                                      'Images need to be valid URLs to a web-hosted image file.'
                                                  }

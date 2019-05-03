@@ -6,10 +6,15 @@ from django.contrib.auth import update_session_auth_hash
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormMixin
 from .models import VanLevyUser, Avatar
+from .gravatar import *
 from accounts.forms import RegistrationForm, EditProfileForm, EditUserForm, EditAvatarForm, DeleteAvatarForm
 import datetime
 
 
+# methods and classes used in view
+
+
+# view methods and classes
 def about(request):
     template_name = 'accounts/about_accounts.html'
     return render(request, template_name)
@@ -68,7 +73,17 @@ def edit_profile(request):
             return render(request, template_name, args)
     else:
         profile_form = EditProfileForm(instance=request.user.userprofile)
-        args = {'profile_form': profile_form}
+        email = request.user.email
+        vanlevy_email = str(request.user.username) + "@vanlevy.com"
+        gravatar_real = gravatar_url_identicon(email)
+        gravatar_identicon = gravatar_url_identicon(vanlevy_email)
+        gravatar_monsterid = gravatar_url_monsterid(vanlevy_email)
+        gravatar_wavatar = gravatar_url_wavatar(vanlevy_email)
+        gravatar_retro = gravatar_url_retro(vanlevy_email)
+        gravatar_robohash = gravatar_url_robohash(vanlevy_email)
+        args = {'profile_form': profile_form, 'gravatar': gravatar_real, 'identicon': gravatar_identicon,
+                'monsterid': gravatar_monsterid, 'wavatar': gravatar_wavatar, 'retro': gravatar_retro,
+                'robohash': gravatar_robohash, }
         template_name = 'accounts/profile_edit.html'
         return render(request, template_name, args)
 
@@ -129,15 +144,31 @@ def edit_avatar(request, avatar_id=0):
                     return render(request, bad_form_template_name, bad_form_args)
 
         else:  # request.method == GET
+            email = request.user.email
+            vanlevy_email = str(request.user.username) + "@vanlevy.com"
+            gravatar_real = gravatar_url_identicon(email)
+            gravatar_identicon = gravatar_url_identicon(vanlevy_email)
+            gravatar_monsterid = gravatar_url_monsterid(vanlevy_email)
+            gravatar_wavatar = gravatar_url_wavatar(vanlevy_email)
+            gravatar_retro = gravatar_url_retro(vanlevy_email)
+            gravatar_robohash = gravatar_url_robohash(vanlevy_email)
+
             if "create" in request.path:
                 # initial_args = {'user_id': current_user_id, 'created_on': timestamp}
                 avatar_form = EditAvatarForm()
                 template_name = 'accounts/profile_avatar_create.html'
-                args = {'avatar_form': avatar_form}
+                args = {'avatar_form': avatar_form, 'gravatar': gravatar_real,
+                        'identicon': gravatar_identicon, 'monsterid': gravatar_monsterid,
+                        'wavatar': gravatar_wavatar, 'retro': gravatar_retro, 'robohash': gravatar_robohash
+                        }
             elif "edit" in request.path:
                 avatar_form = EditAvatarForm(instance=this_avatar)
                 template_name = 'accounts/profile_avatar_edit.html'
-                args = {'avatar_form': avatar_form, 'this_avatar': this_avatar}
+
+                args = {'avatar_form': avatar_form, 'this_avatar': this_avatar, 'gravatar': gravatar_real,
+                        'identicon': gravatar_identicon, 'monsterid': gravatar_monsterid,
+                        'wavatar': gravatar_wavatar, 'retro': gravatar_retro, 'robohash': gravatar_robohash
+                        }
             elif "delete" in request.path:
                 avatar_form = DeleteAvatarForm(instance=this_avatar)
                 template_name = 'accounts/profile_avatar_delete.html'
