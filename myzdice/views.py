@@ -44,7 +44,6 @@ def read_myz_dice(dice_form):
     num_d666 = dice_form.cleaned_data['num_d666']
     add_trauma = dice_form.cleaned_data['additional_trauma']
     add_failure = dice_form.cleaned_data['additional_failure']
-    print('form additional failure: ' + str(add_failure))
     add_damage = dice_form.cleaned_data['additional_damage']
     add_success_base = dice_form.cleaned_data['additional_success_base']
     add_success_skill = dice_form.cleaned_data['additional_success_skill']
@@ -122,7 +121,6 @@ def save_myz_dice_pool(user, avatar, room, image_url, caption="", is_pushed=Fals
     new_dice_pool.numerical_dice_sides = numerical_dice_sides
     new_dice_pool.is_just_caption = just_caption
     new_dice_pool.secret_roll = secret_roll
-    print('additional failures: ' + str(add_failure))
 
     args = {'base': num_base_dice, 'skill': num_skill_dice, 'gear': num_gear_dice, 'is_pushed': is_pushed,
             'add_trauma': add_trauma, 'add_damage': add_damage, 'add_failure': add_failure,
@@ -326,10 +324,8 @@ class MYZRoomViews(FormMixin, TemplateView):
                         kwargs.update({"secret_roll": secret_roll})
                         save_myz_dice_pool(**kwargs)
                     else:
-                        print('bad dice pool')
                         pass
                 else:
-                    print("Form's busted")
                     return redirect(room_url, swroom_id)
 
                 return redirect(room_url, swroom_id)
