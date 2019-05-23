@@ -28,6 +28,9 @@ urlpatterns = [
     path('room/<int:swroom_id>/player-info/<int:player_id>',
          views.SWRoomViews.as_view(template_name="gendice/room_gen_info_player.html"), name='genroom_player_info'),
 
+    path('room_nc/<int:swroom_id>/',
+         views.SWRoomViews.as_view(template_name="gendice/room_gen_nc.html"), name='genroom_nc'),
+
     path('room/<int:swroom_id>/direct/<slug:slug>',
          views.DirectLink.as_view(template_name="swdice/room_gen_link_direct"), name='room_gen_link_direct'),
 

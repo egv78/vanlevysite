@@ -26,6 +26,8 @@ urlpatterns = [
     path('profile/create_avatar/', views.edit_avatar, name='create_avatar'),
     path('profile/delete_avatar/<int:avatar_id>', views.edit_avatar, name='delete_avatar'),
     path('profile/edit_avatar/<int:avatar_id>', views.edit_avatar, name='edit_avatar'),
+    path('profile/view_avatar/<int:avatar_id>', views.ViewAvatar.as_view()
+         , name='view_avatar'),
     path('profile/password/', views.change_password, name='password'),
     path('profile/password/success/', views.change_password_success, name='password_success'),
 

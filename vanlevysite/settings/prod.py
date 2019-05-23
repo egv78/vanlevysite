@@ -42,8 +42,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'vanlevysite/static'),
 ]
 
-STATIC_URL = '//www.vanlevy.com.s3-website.us-east-2.amazonaws.com/static/'
-STATIC_ROOT = 'http://www.vanlevy.com.s3-website.us-east-2.amazonaws.com/'
+
+# STATIC_URL = 'http://www.vanlevy.com.s3-website.us-east-2.amazonaws.com/static/'
+# STATIC_ROOT = 'http://www.vanlevy.com.s3-website.us-east-2.amazonaws.com/'
+STATIC_URL = 'https://d10yucgh4c5knj.cloudfront.net/static/'
+STATIC_ROOT = 'https://d10yucgh4c5knj.cloudfront.net/'
 # end static files
 
 # DATABASE
@@ -61,5 +64,8 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+
+# trying something
+# CONN_MAX_AGE = 1800
 # end database
 

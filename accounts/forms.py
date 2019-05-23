@@ -2,7 +2,7 @@ from django import forms
 from accounts.models import UserProfile
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.contrib.auth import get_user_model
-from .models import Avatar
+from .models import Avatar, PDFCharSheet
 from django.core.validators import EMPTY_VALUES
 
 
@@ -133,4 +133,42 @@ class DeleteAvatarForm(forms.ModelForm):
             if avatar_name in EMPTY_VALUES:
                 self.errors['avatar_name'] = self.error_class(['Please enter a name for your Avatar'])
         return self.cleaned_data
+
+
+class NewPDFForm(forms.ModelForm):
+    pdf_name = forms.CharField(required=False, label='name',
+                               widget=forms.Textarea(
+                                      attrs={'rows': 1, 'cols': 60, 'placeholder': 'You must give this pdf a name.'}
+                                      )
+                               )
+    pdf_url = forms.URLField(required=False, label='URL for PDF',
+                             widget=forms.Textarea(
+                                    attrs={'rows': 3, 'cols': 60, 'id': 'image_url',
+                                           'placeholder': 'PDFs need to be valid URLs to a web-hosted file.\r'
+                                                          'You can use PDFs from your Google Drive.  '
+                                                          'Right click, select "Get shareable link", and paste the '
+                                                          'link here.'
+                                           }
+                                    )
+                             )
+
+    class Meta:
+        model = PDFCharSheet
+        fields = ('pdf_name',
+                  'pdf_url'
+                  )
+
+
+class SelectPDF(forms.Form):
+    class Meta:
+        widgets = {'select_pdf': forms.Select()}
+        fields = ('select_pdf', )
+
+    def __init__(self, *args, **kwargs):
+        imported_list = kwargs.pop('select_pdf')
+        super().__init__(*args, **kwargs)
+        self.fields['select_pdf'].choices = imported_list
+
+    select_pdf = forms.ChoiceField(choices=[])
+
 

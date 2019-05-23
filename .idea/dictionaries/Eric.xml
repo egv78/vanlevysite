@@ -4,9 +4,11 @@
       <w>amazonaws</w>
       <w>diceroller</w>
       <w>dockingbay</w>
+      <w>dropdown</w>
       <w>elif</w>
       <w>endblock</w>
       <w>endfor</w>
+      <w>endwith</w>
       <w>gendice</w>
       <w>gendiceroller</w>
       <w>genesys</w>
@@ -20,6 +22,7 @@
       <w>myzroom</w>
       <w>navbar</w>
       <w>passcode</w>
+      <w>pdfs</w>
       <w>polydice</w>
       <w>polydiceroller</w>
       <w>polyroom</w>

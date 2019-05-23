@@ -1,0 +1,216 @@
+{% extends 'accounts_base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>View Avatar</title>
+{% endblock %}
+
+{% block accounts_page %}
+    {% load static %}
+    <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
+    <span style="color: white;">Edit Avatar</span>
+{% endblock %}
+
+{% block navbar_Rooms_button %}
+{% endblock %}
+
+
+{% block body %}
+<br>
+<div class="container">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card border-secondary mb-3">
+          <h4 class="card-header">
+            {{ this_avatar.avatar_name }} - Current Version
+          </h4>
+          <div class="card-body">
+            {% if this_avatar.avatar_url_image %}
+              <p><img src="{{ this_avatar.avatar_url_image }}" width="100%"></p>
+            {% else %}
+              This avatar has no image.
+            {% endif %}
+            <p class="card-text">
+              <strong>Description</strong><br>
+              {{ this_avatar.avatar_description }}
+            </p>
+            <p>
+              <a href="{% url 'accounts:edit_avatar' this_avatar.id %}">
+                <button type="button" class="btn btn-outline-primary btn-sm align-right">
+                  Edit {{ this_avatar.avatar_name }} <strong>&#12299</strong>
+                </button>
+              </a>
+            </p>
+          </div>
+        </div>
+        <p>
+          <a href="{% url 'accounts:view_profile' %}">
+            <button type="button" class="btn btn-primary">
+              <strong>&#12298</strong> Profile and Avatars
+            </button>
+          </a>
+        </p>
+      </div>
+      <div class="col-lg-8">
+        <form method="POST" enctype="multipart/form-data" id="editCharSheet">
+          {% csrf_token %}
+          <table width="100%">
+            <col width="25%">
+            <col width="75%">
+            <tr>
+              <td colspan="2">
+                <h4>
+                {% if this_avatar.use_char_sheet == 0 %}
+                  <em>No character sheet in use.</em>
+                {% elif this_avatar.use_char_sheet == 1 %}
+                  {{ this_avatar.char_pdf.pdf_name }}
+                  <button type="button" class="btn btn-outline-primary btn-sm align-right" style="display: inline;"
+                          data-toggle="collapse" data-target=".multi-collapse{{room.id}}" aria-expanded="false"
+                          aria-controls="row0 row1 row2 row3 row4 row5" id="addButton" onclick="switchToHide()">
+                    Show Options
+                  </button>
+                  <button type="button" class="btn btn-outline-primary btn-sm align-right" style="display: none;"
+                          data-toggle="collapse" data-target=".multi-collapse{{room.id}}" aria-expanded="false"
+                          aria-controls="row0 row1 row2 row3 row4 row5" id="cancelButton" onclick="switchToShow()">
+                    Hide
+                  </button>
+                {% elif this_avatar.use_char_sheet == 2 %}
+                  {{ this_avatar.char_pdf.pdf_name }}
+                  <button type="button" class="btn btn-outline-primary btn-sm align-right" style="display: inline;"
+                          data-toggle="collapse" data-target=".multi-collapse{{room.id}}" aria-expanded="false"
+                          aria-controls="row0 row1 row2 row3 row4 row5" id="addButton" onclick="switchToHide()">
+                    Show Options
+                  </button>
+                  <button type="button" class="btn btn-outline-primary btn-sm align-right" style="display: none;"
+                          data-toggle="collapse" data-target=".multi-collapse{{room.id}}" aria-expanded="false"
+                          aria-controls="row0 row1 row2 row3 row4 row5" id="cancelButton" onclick="switchToShow()">
+                    Hide
+                  </button>
+                {% endif %}
+                </h4>
+              </td>
+            </tr>
+            <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row0">
+              <td></td>
+              <td><hr>
+                <h4 style="color: darkred;">PDFs are still in beta testing.</h4>
+                <p>They only show up in Genesys and Star Wars rooms.</p>
+                <p>Use at your own risk.</p>
+              </td>
+            </tr>
+            <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row1">
+              <td style="text-align: right; vertical-align: top;">
+                <strong>Existing PDF:</strong>
+              </td>
+              <td>
+                <p>{{ pdf_dropdown.select_pdf }}</p>
+                <button type="submit" class="btn btn-outline-success btn-sm align-right" name="old_pdf">
+                  Use PDF
+                </button>
+                <br>
+                <hr>
+              </td>
+            </tr>
+            <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row2">
+              <td style="text-align: right; vertical-align: top;">
+                <strong>New PDF:</strong>
+              </td>
+              <td>
+                  <p>{{ new_pdf_form.pdf_name }}</p>
+                  <p>{{ new_pdf_form.pdf_url }}</p>
+                  <button type="submit" class="btn btn-outline-success btn-sm align-right" name="new_pdf">
+                    New PDF
+                  </button>
+                <br>
+                <hr>
+              </td>
+            </tr>
+            {% if 1 == 0 %}
+            <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row3">
+              <td style="text-align: right; vertical-align: top;">
+                <strong>Built-in:</strong>
+              </td>
+              <td>
+                <em>Use one of our built-in character sheets</em><br>
+                {% if not has_chart %}False{% endif %}<br>
+              </td>
+            </tr>
+            <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row4">
+              <td style="text-align: right; vertical-align: top;">
+                <strong>Existing Char Sheets:</strong>
+              </td>
+              <td>
+                <em>dropdown \/</em><br>
+                <button type="button" class="btn btn-outline-success btn-sm align-right">
+                  Use Char Sheet
+                </button>
+              </td>
+            </tr>
+            <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row5">
+              <td style="text-align: right; vertical-align: top;">
+                <strong>New Char Sheets:</strong>
+              </td>
+              <td>
+                <button type="button" class="btn btn-outline-success btn-sm">
+                  Genesys <strong>&#12299</strong>
+                </button>
+              </td>
+            </tr>
+            {% endif %}
+            {% if avatar_form.errors %}
+              {% for field in avatar_form %}
+                {% for error in field.errors %}
+                  <tr><td colspan="2">
+                    <div class="alert alert-warning">
+                      <a class="close" href="#" data-dismiss="alert">×</a>
+                      {{ error }}
+                    </div>
+                  </td></tr>
+                {% endfor %}
+              {% endfor %}
+            {% endif %}
+          </table>
+        </form>
+        <!--<hr>-->
+        {% if this_avatar.use_char_sheet == 0 %}
+        {% elif this_avatar.use_char_sheet == 1 %}
+        <p></p>
+          <!--<div class="container-fluid">-->
+            <iframe src="{{ this_avatar.char_pdf.pdf_url }}" style="width: 100%; height: 900px;"></iframe>
+          <!--</div>-->
+        {% elif this_avatar.use_char_sheet == 2 %}
+          {{ GenCharSheet.char_name }}
+        {% endif %}
+
+        <!--<object data="{ this_avatar.char_pdf.pdf_url }" type="application/pdf" width="100%">-->
+          <!--alt : <a href="{ this_avatar.char_pdf.pdf_url }">{ this_avatar.char_pdf.pdf_name } pdf</a>-->
+        <!--</object>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var $myForm = $("#editCharSheet");
+$myForm.submit(function(){
+  $myForm.submit(function(){
+    return false;
+  });
+});
+</script>
+<script>
+function switchToHide () {
+  document.getElementById('addButton').style.display='none';
+  document.getElementById('cancelButton').style.display='inline';
+};
+function switchToShow () {
+  document.getElementById('addButton').style.display='inline';
+  document.getElementById('cancelButton').style.display='none';
+};
+</script>
+
+{% endblock %}
+
+{% block page_scripts %}
+{% endblock %}

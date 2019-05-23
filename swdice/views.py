@@ -885,6 +885,28 @@ class SWRoomViews(FormMixin, TemplateView):
                       "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
+        elif request.method == "POST" and "clear_destiny" in request.POST:
+            # grab any chat stuff not submitted and keep around
+            kwargs = self.get_form_kwargs()
+            chat_form = SW_Room_Chat_Form(**kwargs)
+            get_chat_carryover(request, chat_form, current_user_id)
+
+            # grab any dice stuff not submitted and keep around
+            dice_form = SW_Dice_Roll(request.POST)
+            if 'gendice' in self.template_name:
+                dice_form.num_force_dice = 0
+            get_dice_carryover(request, dice_form)
+
+            destiny = SWRoomDestiny.objects.filter(room_id=room)[0]
+            light = destiny.light_pips
+            dark = destiny.dark_pips
+            caption = " removed all story points." if genesys else " removed all destiny points."
+            delta_light = -1 * light
+            delta_dark = -1 * dark
+            kwargs = {"user": current_user, "avatar": avatar, "room": swroom_id, "caption": caption,
+                      "image_url": image_url, "delta_light": delta_light, "delta_dark": delta_dark}
+            change_destiny(**kwargs)
+            return redirect(room_url, swroom_id)
         elif request.method == "POST" and ("roll_dice" in request.POST or "roll_dice_secret" in request.POST):
             # grab any chat stuff not submitted and keep around
             kwargs = self.get_form_kwargs()
@@ -1024,11 +1046,22 @@ class SWRoomViews(FormMixin, TemplateView):
             default_avatar = Avatar.objects.filter(pk=avatar_id)[0]
             if not default_avatar.deleted:
                 name_in_room = default_avatar.avatar_name
+                use_pdf_char = default_avatar.use_char_sheet == 1
+                use_gen_char = default_avatar.use_char_sheet == 2
+                has_char = (use_pdf_char + use_gen_char) > 0
+                char_pdf = default_avatar.char_pdf if use_pdf_char else ""
+                avatar_id = default_avatar.id
+
                 if default_avatar.avatar_url_image:
                     icon_src = default_avatar.avatar_url_image
                 else:
                     icon_src = ""
             else:
+                use_pdf_char = False
+                use_gen_char = False
+                has_char = False
+                char_pdf = ""
+                avatar_id = 0
                 if request.user.userprofile.user_first_name:
                     name_in_room = request.user.userprofile.user_first_name
                 else:
@@ -1038,6 +1071,11 @@ class SWRoomViews(FormMixin, TemplateView):
                 else:
                     icon_src = ""
         else:
+            use_pdf_char = False
+            use_gen_char = False
+            has_char = False
+            char_pdf = ""
+            avatar_id = 0
             if request.user.userprofile.user_first_name:
                 name_in_room = request.user.userprofile.user_first_name
             else:
@@ -1088,7 +1126,7 @@ class SWRoomViews(FormMixin, TemplateView):
 
             chats_all = SWRoomChat.objects.filter(room_id_id=swroom_id).order_by('-created_on')
             chat_log = []
-            for chat in chats_all[:100]:
+            for chat in chats_all[:50]:
                 if not room_users_link_list.filter(user_id=chat.user)[0].banned:
                     chat_log.append(chat)
             if len(chat_log) > 0:
@@ -1098,7 +1136,7 @@ class SWRoomViews(FormMixin, TemplateView):
 
             actions_all = SWDicePool.objects.filter(swroom_id=swroom_id).order_by('-created')
             action_log = []
-            for action in actions_all[:100]:
+            for action in actions_all[:50]:
                 if not room_users_link_list.filter(user_id=action.user)[0].banned:
                     action_log.append(action)
             if len(action_log) > 0:
@@ -1113,7 +1151,9 @@ class SWRoomViews(FormMixin, TemplateView):
                     'light_pips': light_pips, 'dark_pips': dark_pips, 'action_log': action_log,
                     'dice_form': dice_form, 'users_in_room': room_users_link_list,
                     'update_times': update_times, 'viewing_basic_room': viewing_basic_room,
-                    'start_whisper': start_whisper, }  # 'start_secret_roll': start_secret_roll
+                    'start_whisper': start_whisper, 'use_pdf_char': use_pdf_char, 'use_gen_char': use_gen_char,
+                    'has_char': has_char, 'char_pdf': char_pdf, 'avatar_id': avatar_id,
+                    }  # 'start_secret_roll': start_secret_roll
 
         elif viewing_player_info:
             player_id = self.kwargs['player_id']

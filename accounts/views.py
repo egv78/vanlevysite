@@ -5,9 +5,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormMixin
-from .models import VanLevyUser, Avatar
+from .models import VanLevyUser, Avatar, PDFCharSheet
 from .gravatar import *
-from accounts.forms import RegistrationForm, EditProfileForm, EditUserForm, EditAvatarForm, DeleteAvatarForm
+from accounts.forms import RegistrationForm, EditProfileForm, EditUserForm, EditAvatarForm, DeleteAvatarForm, \
+                           NewPDFForm, SelectPDF
 import datetime
 
 
@@ -96,13 +97,20 @@ def edit_avatar(request, avatar_id=0):
         should_leave = False
         avatar_form = EditAvatarForm()
     elif "edit" in request.path:
-        this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+        # this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+        try:
+            this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+        except IndexError:
+            return redirect('accounts:view_profile')
         timestamp = this_avatar.created_on
         should_leave = not(this_avatar.user_id == current_user_id)
         initial_args = {'user_id': current_user_id, 'created_on': timestamp}
         avatar_form = EditAvatarForm(initial_args)
     else:  # Delete avatar
-        this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+        try:
+            this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+        except IndexError:
+            return redirect('accounts:view_profile')
         timestamp = datetime.datetime.now()
         should_leave = False
         initial_args = {'user_id': current_user_id, 'created_on': timestamp}
@@ -176,6 +184,132 @@ def edit_avatar(request, avatar_id=0):
             else:
                 return redirect('accounts:view_profile')
 
+            return render(request, template_name, args)
+
+
+class ViewAvatar(FormMixin, TemplateView):
+    # request, avatar_id=0
+
+    def get_form_kwargs(self):
+        # get avatar choices for enter room forms
+        kwargs = super().get_form_kwargs()
+        current_user_id = self.request.user.id
+        my_pdfs = PDFCharSheet.objects.filter(user=current_user_id)
+        if len(my_pdfs) > 0:
+            pdfs_list = [(0, 'Remove PDF')]
+            for pdf in my_pdfs:
+                pdfs_list.append((pdf.id, pdf.pdf_name))
+        else:
+            pdfs_list = [(0, 'no saved pdfs')]
+        kwargs['select_pdf'] = pdfs_list
+        return kwargs
+
+    def get(self, request, *args, **kwargs):
+        kwargs = self.get_form_kwargs()
+        dropdown_form = SelectPDF(**kwargs)
+        current_user_id = request.user.id
+        try:
+            avatar_id = self.kwargs['avatar_id']
+            if not avatar_id > 0:
+                raise ValueError
+        except ValueError:
+            return redirect('accounts:view_profile')
+
+        try:
+            this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+        except IndexError:
+            return redirect('accounts:view_profile')
+
+        if this_avatar.user_id != current_user_id:
+            return redirect('accounts:view_profile')
+
+        new_pdf_form = NewPDFForm()
+        has_no_sheet = (this_avatar.use_char_sheet == 0)
+        args = {'this_avatar': this_avatar, 'new_pdf_form': new_pdf_form, 'pdf_dropdown': dropdown_form,
+                'has_no_sheet': has_no_sheet}
+        template_name = 'accounts/profile_avatar_view.html'
+
+        return render(request, template_name, args)
+
+    def post(self, request, *args, **kwargs):
+        current_user_id = request.user.id
+        try:
+            avatar_id = self.kwargs['avatar_id']
+            if not avatar_id > 0:
+                raise ValueError
+        except ValueError:
+            return redirect('accounts:view_profile')
+
+        try:
+            this_avatar = Avatar.objects.filter(pk=avatar_id)[0]
+        except IndexError:
+            return redirect('accounts:view_profile')
+
+        if this_avatar.user_id != current_user_id:
+            return redirect('accounts:view_profile')
+
+        if (request.method == 'POST' or request.method == 'FILES') and "new_pdf" in request.POST:
+            new_pdf_form = NewPDFForm(request.POST, request.FILES)
+
+            if new_pdf_form.is_valid():
+                new_pdf_post = new_pdf_form.save(commit=False)
+                test_url = new_pdf_post.pdf_url
+                if 'drive.google.com' in test_url:
+                    if 'open?id=' in test_url:
+                        test_url = test_url.replace('open?id=', 'file/d/', 1)
+                    if 'preview' not in test_url:
+                        if 'view' in test_url:
+                            test_url = test_url.replace('view', 'preview', 1)
+                        else:
+                            test_url += '/preview'
+                    new_pdf_post.pdf_url = test_url
+                new_pdf_post.user_id = current_user_id
+                new_pdf_post.created_on = datetime.datetime.now()
+                new_pdf_post.save()
+                try:
+                    use_this_pdf = PDFCharSheet.objects.filter(id=new_pdf_post.id)[0]
+                    this_avatar.use_char_sheet = 1
+                    this_avatar.char_pdf = use_this_pdf
+                    this_avatar.save()
+                except IndexError:
+                    pass
+
+                return redirect('accounts:view_profile')
+            else:
+                args = {'this_avatar': this_avatar, 'new_pdf_form': new_pdf_form}
+                template_name = 'accounts/profile_avatar_view.html'
+
+                return render(request, template_name, args)
+
+        elif (request.method == 'POST' or request.method == 'FILES') and "old_pdf" in request.POST:
+            kwargs = self.get_form_kwargs()
+            new_pdf_form = SelectPDF(**kwargs)
+            pdf_id = new_pdf_form.data['select_pdf']
+
+            if new_pdf_form.is_valid():
+                if pdf_id == '0':
+                    this_avatar.use_char_sheet = 0
+                    this_avatar.char_pdf = None
+                    this_avatar.save()
+                try:
+                    use_this_pdf = PDFCharSheet.objects.filter(id=pdf_id)[0]
+                    this_avatar.use_char_sheet = 1
+                    this_avatar.char_pdf = use_this_pdf
+                    this_avatar.save()
+                except IndexError:
+                    pass
+
+                return redirect('accounts:view_profile')
+            else:
+                args = {'this_avatar': this_avatar, 'new_pdf_form': new_pdf_form}
+                template_name = 'accounts/profile_avatar_view.html'
+
+                return render(request, template_name, args)
+
+        else:
+            new_pdf_form = NewPDFForm()
+            args = {'this_avatar': this_avatar, 'new_pdf_form': new_pdf_form}
+            template_name = 'accounts/profile_avatar_view.html'
             return render(request, template_name, args)
 
 

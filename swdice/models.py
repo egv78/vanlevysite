@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import VanLevyUser, Avatar
 
+
 BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
 OPEN_CHOICES = ((True, 'Open'), (False, 'Restricted'))
 

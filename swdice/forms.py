@@ -92,7 +92,7 @@ class SW_Room_Chat_Form(forms.ModelForm):
         attrs={'onchange': "highlightChat();", }))
     chat_text = forms.CharField(required=False, widget=forms.Textarea(
         attrs={
-            'id': "chat_text", 'rows': 3, 'width': "50%", 'maxlength': "255", }
+            'id': "chat_text", 'rows': 3, 'class': "chat-textbox", 'maxlength': "255", }  # 'width': "50%"
     ))
 
     class Meta:

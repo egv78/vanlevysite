@@ -51,7 +51,7 @@ class PolyDicePoolForm(forms.ModelForm):
     bonus = forms.IntegerField(widget=forms.NumberInput(
         attrs={
             'max': 99, 'min': -99, 'title': "Bonus", 'value': 0, 'required': False, 'id': "bonus",
-            'label': "Bonus", 'class': "med-input"
+            'label': "Bonus", 'class': "med-input-b"
         }
     ))
     num_numerical_dice = forms.IntegerField(widget=forms.NumberInput(

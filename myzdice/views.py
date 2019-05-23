@@ -44,6 +44,7 @@ def read_myz_dice(dice_form):
     num_d666 = dice_form.cleaned_data['num_d666']
     add_trauma = dice_form.cleaned_data['additional_trauma']
     add_failure = dice_form.cleaned_data['additional_failure']
+    print('form additional failure: ' + str(add_failure))
     add_damage = dice_form.cleaned_data['additional_damage']
     add_success_base = dice_form.cleaned_data['additional_success_base']
     add_success_skill = dice_form.cleaned_data['additional_success_skill']
@@ -121,6 +122,7 @@ def save_myz_dice_pool(user, avatar, room, image_url, caption="", is_pushed=Fals
     new_dice_pool.numerical_dice_sides = numerical_dice_sides
     new_dice_pool.is_just_caption = just_caption
     new_dice_pool.secret_roll = secret_roll
+    print('additional failures: ' + str(add_failure))
 
     args = {'base': num_base_dice, 'skill': num_skill_dice, 'gear': num_gear_dice, 'is_pushed': is_pushed,
             'add_trauma': add_trauma, 'add_damage': add_damage, 'add_failure': add_failure,
@@ -158,7 +160,8 @@ def save_myz_dice_pool(user, avatar, room, image_url, caption="", is_pushed=Fals
     new_dice_pool.results_d666 = d666_results
     new_dice_pool.results_numerical = numerical_string
     new_dice_pool.roll_can_be_pushed = can_be_pushed
-    new_dice_pool.results_cancel = (sum(net_results) == 0 and total_myz_dice != 0)
+    check_list = net_results[0:3]
+    new_dice_pool.results_cancel = (sum(check_list) == 0 and total_myz_dice != 0)
 
     new_dice_pool.save()
 
@@ -519,7 +522,7 @@ class MYZRoomViews(FormMixin, TemplateView):
                 push_skill_suc = last_action.num_skill_suc_on_push + last_action.additional_skill_success
                 push_gear_suc = last_action.num_gear_suc_on_push + last_action.additional_gear_success
                 push_trauma = last_action.results_trauma + last_action.num_trauma_on_push
-                push_neg_suc = last_action.results_failure + last_action.num_neg_suc_on_push + last_action.additional_negative_success
+                push_neg_suc = last_action.num_neg_suc_on_push + last_action.additional_negative_success
                 push_damage = last_action.results_damage + last_action.num_damage_on_push
             else:
                 allow_push = False

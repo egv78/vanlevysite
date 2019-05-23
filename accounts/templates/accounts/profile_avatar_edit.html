@@ -18,204 +18,244 @@
 {% block body %}
 <br>
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card border-secondary mb-3">
-                    <h4 class="card-header">
-                        {{ this_avatar.avatar_name }} - Current Version
-                    </h4>
-                    <div class="card-body">
-                        {% if this_avatar.avatar_url_image %}
-                            <p><img src="{{ this_avatar.avatar_url_image }}" width="100%"></p>
-                        {% else %}
-                            This avatar has no image.
-                        {% endif %}
-                        <p class="card-text">
-                            <strong>Description</strong><br>
-                            {{ this_avatar.avatar_description }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <h4 style="margin-left: 90px;">Edit {{ this_avatar.avatar_name }}</h4>
-                <form method="POST" enctype="multipart/form-data" id="editAvatar">
-                    {% csrf_token %}
-                    <table>
-                        <col width="80">
-                        <col width="280">
-                        <tr>
-                            <td class="align-right">
-                                <strong>Name:</strong>
-                            </td>
-                            <td>
-                                {{avatar_form.avatar_name}} <span style="color:red">*</span> Required field
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-right">
-                                <strong>Description:</strong>
-                            </td>
-                            <td>
-                                {{avatar_form.avatar_description}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-right">
-                                <strong>Image:</strong>
-                            </td>
-                            <td>
-                                {{avatar_form.avatar_url_image}}
-                            </td>
-                        </tr>
-                        {% if avatar_form.errors %}
-                          {% for field in avatar_form %}
-                            {% for error in field.errors %}
-                              <tr><td colspan="2">
-                                <div class="alert alert-warning">
-                                  <a class="close" href="#" data-dismiss="alert">×</a>
-                                  {{ error }}
-                                </div>
-                              </td></tr>
-                            {% endfor %}
-                          {% endfor %}
-                        {% endif %}
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button type="submit" class="btn btn-success">Submit Changes</button>
-                                <a href="{% url 'accounts:view_profile' %}">
-                                    <button type="button" class="btn btn-outline-danger btn-sm align-right">
-                                        Cancel <strong>&#12299</strong>
-                                    </button>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-          <div class="col">
-                <h4>Pregenerated Images</h4>
-            <div class="card-group">
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ gravatar }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
-                              onclick="useGravatar('{{ gravatar }}', 'gravatar_button')"
-                      >
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Identicon</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ identicon }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
-                              onclick="useGravatar('{{ identicon }}', 'identicon_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Monster</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ monsterid }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
-                              onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Wavatar</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ wavatar }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
-                              onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Retro</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ retro }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
-                              onclick="useGravatar('{{ retro }}', 'retro_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Robohash</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ robohash }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
-                              onclick="useGravatar('{{ robohash }}', 'robohash_button')">
-                          Pick me!
-                      </button>
-                  </div>
-                </div>
-            </div>
-              <p>
-                  These are pregenerated images that you can use as profile or avatar images.
-                  The first is your <a href="https://en.gravatar.com/">Gravatar</a> that you control.
-                  (Gravatar is its own website that allows users to upload an image that is used consistently on
-                  multiple sites.)  Your Gravatar is linked to the email address you provided to us.
-              </p>
-              <p>
-                  Since half of the fun of Roll Playing Games is having different characters, we also provide you with
-                  some alternative possibilities; these use Gravatar, but based on a slightly modified email.
-              </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card border-secondary mb-3">
+          <h4 class="card-header">
+            {{ this_avatar.avatar_name }} - Current Version
+          </h4>
+          <div class="card-body">
+            {% if this_avatar.avatar_url_image %}
+              <p><img src="{{ this_avatar.avatar_url_image }}" width="100%"></p>
+            {% else %}
+              This avatar has no image.
+            {% endif %}
+            <p class="card-text">
+              <strong>Description</strong><br>
+              {{ this_avatar.avatar_description }}
+            </p>
           </div>
         </div>
+      </div>
+      <div class="col-lg-8">
+        <form method="POST" enctype="multipart/form-data" id="editAvatar">
+          {% csrf_token %}
+          <table>
+            <col width="80">
+            <col width="280">
+            <tr>
+              <td></td>
+              <td><h4>Edit {{ this_avatar.avatar_name }}</h4></td>
+            </tr>
+            <tr>
+              <td class="align-right">
+                <strong>Name:</strong>
+              </td>
+              <td>
+                {{avatar_form.avatar_name}} <span style="color:red">*</span> Required field
+              </td>
+            </tr>
+            <tr>
+              <td class="align-right">
+                <strong>Description:</strong>
+              </td>
+              <td>
+                {{avatar_form.avatar_description}}
+              </td>
+            </tr>
+            <tr>
+              <td class="align-right">
+                <strong>Image:</strong>
+              </td>
+              <td>
+                {{avatar_form.avatar_url_image}}
+              </td>
+            </tr>
+            {% if avatar_form.errors %}
+              {% for field in avatar_form %}
+                {% for error in field.errors %}
+                  <tr><td colspan="2">
+                    <div class="alert alert-warning">
+                      <a class="close" href="#" data-dismiss="alert">×</a>
+                      {{ error }}
+                    </div>
+                  </td></tr>
+                {% endfor %}
+              {% endfor %}
+            {% endif %}
+            <tr>
+              <td></td>
+              <td>
+                <button type="submit" class="btn btn-success">Submit Changes</button>
+                <a href="{% url 'accounts:view_profile' %}">
+                  <button type="button" class="btn btn-outline-danger btn-sm align-right">
+                    Cancel <strong>&#12299</strong>
+                  </button>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><p><br></p></td>
+            </tr>
+            <!--<tr>-->
+              <!--<td></td>-->
+              <!--<td><h5>Character Sheet</h5></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td class="align-right">-->
+                <!--<strong></strong>-->
+              <!--</td>-->
+              <!--<td>-->
+                <!--% if this_avatar.use_char_sheet == 0 %-->
+                  <!--<em>No character sheet in use.</em>-->
+                <!--% elif this_avatar.use_char_sheet == 1 %-->
+                  <!--{ PDFCharSheet.pdf_name }-->
+                <!--% elif this_avatar.use_char_sheet == 2 %-->
+                  <!--{ GenCharSheet.char_name }-->
+                <!--% endif %-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td class="align-right">-->
+                <!--<strong></strong>-->
+              <!--</td>-->
+              <!--<td>-->
+                <!--<a href="% url 'accounts:view_avatar' this_avatar.id %">-->
+                  <!--<button type="button" class="btn btn-outline-success btn-sm">-->
+                    <!--% if this_avatar.use_char_sheet == 0 %Add-->
+                    <!--% else %Change-->
+                    <!--% endif %-->
+                    <!--Character Sheet <strong>&#12299</strong>-->
+                  <!--</button>-->
+                <!--</a>-->
+              <!--</td>-->
+            <!--</tr>-->
+          </table>
+        </form>
+      </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <h4>Pregenerated Images</h4>
+        <div class="card-group">
+          <div class="card border-dark mb-3" style="text-align: center;">
+            <div class="card-header">
+              <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
+            </div>
+            <div class="card-body text-dark">
+              <img src="{{ gravatar }}" width="90%">
+              <p></p>
+              <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
+                      onclick="useGravatar('{{ gravatar }}', 'gravatar_button')">
+                Pick me!
+              </button>
+            </div>
+          </div>
+          <div class="card border-dark mb-3" style="text-align: center;">
+            <div class="card-header">
+              <h5 class="card-title">Identicon</h5>
+            </div>
+            <div class="card-body text-dark">
+              <img src="{{ identicon }}" width="90%">
+              <p></p>
+              <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
+                      onclick="useGravatar('{{ identicon }}', 'identicon_button')">
+                Pick me!
+              </button>
+            </div>
+          </div>
+          <div class="card border-dark mb-3" style="text-align: center;">
+            <div class="card-header">
+              <h5 class="card-title">Monster</h5>
+            </div>
+            <div class="card-body text-dark">
+              <img src="{{ monsterid }}" width="90%">
+              <p></p>
+              <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
+                      onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
+                Pick me!
+              </button>
+            </div>
+          </div>
+          <div class="card border-dark mb-3" style="text-align: center;">
+            <div class="card-header">
+              <h5 class="card-title">Wavatar</h5>
+            </div>
+            <div class="card-body text-dark">
+              <img src="{{ wavatar }}" width="90%">
+              <p></p>
+              <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
+                      onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
+                Pick me!
+              </button>
+            </div>
+          </div>
+          <div class="card border-dark mb-3" style="text-align: center;">
+            <div class="card-header">
+              <h5 class="card-title">Retro</h5>
+            </div>
+            <div class="card-body text-dark">
+              <img src="{{ retro }}" width="90%">
+              <p></p>
+              <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
+                      onclick="useGravatar('{{ retro }}', 'retro_button')">
+                Pick me!
+              </button>
+            </div>
+          </div>
+          <div class="card border-dark mb-3" style="text-align: center;">
+            <div class="card-header">
+              <h5 class="card-title">Robohash</h5>
+            </div>
+            <div class="card-body text-dark">
+              <img src="{{ robohash }}" width="90%">
+              <p></p>
+              <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
+                      onclick="useGravatar('{{ robohash }}', 'robohash_button')">
+                Pick me!
+              </button>
+            </div>
+          </div>
+        </div>
+          <p>
+            These are pregenerated images that you can use as profile or avatar images.
+            The first is your <a href="https://en.gravatar.com/">Gravatar</a> that you control.
+            (Gravatar is its own website that allows users to upload an image that is used consistently on
+            multiple sites.)  Your Gravatar is linked to the email address you provided to us.
+          </p>
+          <p>
+            Since half of the fun of Roll Playing Games is having different characters, we also provide you with
+            some alternative possibilities; these use Gravatar, but based on a fake (non-existent) email tied to
+            your account here at vanlevy.com.
+          </p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
 function enableAllButtons () {
-    document.getElementById('gravatar_button').disabled = false;
-    document.getElementById('identicon_button').disabled = false;
-    document.getElementById('monsterid_button').disabled = false;
-    document.getElementById('wavatar_button').disabled = false;
-    document.getElementById('retro_button').disabled = false;
-    document.getElementById('robohash_button').disabled = false;
+  document.getElementById('gravatar_button').disabled = false;
+  document.getElementById('identicon_button').disabled = false;
+  document.getElementById('monsterid_button').disabled = false;
+  document.getElementById('wavatar_button').disabled = false;
+  document.getElementById('retro_button').disabled = false;
+  document.getElementById('robohash_button').disabled = false;
 };
 function useGravatar(url, button) {
-    document.getElementById('image_url').value = url;
-    enableAllButtons();
-    document.getElementById(button).disabled = true;
+  document.getElementById('image_url').value = url;
+  enableAllButtons();
+  document.getElementById(button).disabled = true;
 }
 </script>
 <script>
 var $myForm = $("#editAvatar");
 $myForm.submit(function(){
-    $myForm.submit(function(){
-        return false;
-    });
+  $myForm.submit(function(){
+    return false;
+  });
 });
 </script>
 

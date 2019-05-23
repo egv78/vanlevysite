@@ -70,6 +70,14 @@ def create_profile(sender, **kwargs):
 post_save.connect(create_profile, sender=VanLevyUser)
 
 
+class PDFCharSheet(models.Model):
+    user = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
+    pdf_url = models.URLField(max_length=300, blank=True, default='')
+    pdf_name = models.CharField(max_length=200, default='', blank=True)
+    archived = models.BooleanField(choices=BOOL_CHOICES, default=False)
+    created_on = models.DateTimeField(blank=True, null=True)
+
+
 class Avatar(models.Model):
     user = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
     avatar_name = models.CharField(max_length=200, default='', blank=True)
@@ -78,6 +86,9 @@ class Avatar(models.Model):
     avatar_url_image = models.URLField(max_length=300, blank=True, default='')
     created_on = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(choices=BOOL_CHOICES, default=False)
+    use_char_sheet = models.PositiveSmallIntegerField(default=0)
+    char_pdf = models.ForeignKey(PDFCharSheet, on_delete=models.CASCADE, blank=True, null=True)
+    char_gen = models.ForeignKey('gendice.GenCharSheet', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         if self.avatar_name == '':
