@@ -573,6 +573,7 @@ class HubView(FormMixin, TemplateView):
                 passcode_candidate = form.cleaned_data['passcode']
                 avatar_id = form.cleaned_data['default_avatar']
                 instance = form.save(commit=False)
+                instance.user = request.user
 
                 use_user_id = True if int(avatar_id) == 0 else False
 
@@ -601,6 +602,7 @@ class HubView(FormMixin, TemplateView):
                             game_master = False
                             banned = False
                             make_user_room_link(swroom_id, request.user.id, game_master, banned, use_user_id, avatar_id)
+                            instance.save()
                             return redirect(room_url, swroom_id)
                         else:
                             return redirect(enter_url, swroom_id)

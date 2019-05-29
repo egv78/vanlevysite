@@ -48,11 +48,11 @@ class SWRoomToUser(models.Model):
         verbose_name_plural = "Room to User Links"
 
 
-# need to implement saving at some point?
 class EnterSWRoom(models.Model):
     room_number = models.IntegerField(blank=False)
     passcode = models.CharField(max_length=100, blank=True, null=True)
     default_avatar = models.IntegerField(default=0)
+    user = models.ForeignKey(VanLevyUser, on_delete=models.CASCADE)
 
 
 class SWRoomDestiny(models.Model):
