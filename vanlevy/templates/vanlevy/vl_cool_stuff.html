@@ -1,66 +1,81 @@
 {% extends 'vl_base.html' %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>VanLevy Cool Stuff</title>
+  <meta charset="UTF-8">
+  <title>VanLevy Cool Stuff</title>
+{% endblock %}
+
+{% load static %}
+{% block brand %}
+  <h3>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+        Van Levy
+    </a>
+    <a class="navbar-brand">
+      <span style="color: white; margin-left: -18px;"> - Links to Cool Stuff</span>
+    </a>
+  </h3>
+{% endblock %}
+
+{% block bottom_links %}
+{% endblock %}
+{% block bottom_terms %}
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <br>
-        <h1>Cool Stuff</h1>
-        <p>
-            These are some of our favorite things that other people have done.
-        </p>
-        <table>
-            <tr>
-                <th>
-                    Link
-                </th>
-                <th>
-                    Category
-                </th>
-                <th>
-                    Description
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    <a href="https://dice.owenmead.com/">Owen Mead's Dice Roller</a>
-                </td>
-                <td>
-                    Star Wars Dice Roller
-                </td>
-                <td>
-                    Awesome site; simple.  First Star Wars Dice Roller web page we used.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="https://roll20.net/">Roll 20</a>
-                </td>
-                <td>
-                    Online "table" for tabletop games.
-                </td>
-                <td>
-                    Awesome!  We use this a lot, and for many games.  You can have maps, players can push around their
-                    icons.  You can roll numerical dice in app.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="http://www.legendsofthegalaxy.com/Oggdude/">OggDude's SW Char Gen</a>
-                </td>
-                <td>
-                    Character Generator
-                </td>
-                <td>
-                    Awesome!  (Windows only.)  Download the program.  Due to copyright constraints, descriptions need
-                    to be kept as references to FFG books, however, for your own use, you can use the data editor and
-                    add in any text you need.  All stats, stat modifiers, dice, talent labels, skill labels are
-                    included.
-                </td>
-            </tr>
-        </table>
-    </div>
+  <div class="container">
+    <br>
+    <h1>Cool Stuff</h1>
+    <p>
+      These are some of our favorite things that other people have done.
+    </p>
+    <table>
+      <col width="10%">
+      <col width="15%">
+      <col width="75%">
+      <tr>
+        <th>Link</th>
+        <th>Category</th>
+        <th>Description</th>
+      </tr>
+        <tr>
+          <td>
+            <a href="https://dice.owenmead.com/">Owen Mead's Dice Roller</a>
+          </td>
+          <td>
+            Star Wars Dice Roller
+          </td>
+          <td>
+            Awesome site; simple.  First Star Wars Dice Roller web page we used.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="https://roll20.net/">Roll 20</a>
+          </td>
+          <td>
+            Online "table" for tabletop games.
+          </td>
+          <td>
+            Awesome!  We use this a lot, and for many games.  You can have maps, players can push around their
+            icons.  You can roll numerical dice in app.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="http://www.legendsofthegalaxy.com/Oggdude/">OggDude's SW Char Gen</a>
+          </td>
+          <td>
+            Character Generator
+          </td>
+          <td>
+            Awesome!  (Windows only.)  Download the program.  Due to copyright constraints, descriptions need
+            to be kept as references to FFG books, however, for your own use, you can use the data editor and
+            add in any text you need.  All stats, stat modifiers, dice, talent labels, skill labels are
+            included.
+          </td>
+        </tr>
+    </table>
+  </div>
 {% endblock %}

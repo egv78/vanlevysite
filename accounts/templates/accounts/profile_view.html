@@ -123,7 +123,6 @@
             {% endif %}
           </p>
           <p class="card-text">
-
           </p>
         </div>
       </div>
@@ -135,8 +134,7 @@
           <div class="card border-secondary mb-3">
             <h5 class="card-header">
               <img src="{% static '/vanlevy/avatar_32.png' %}" height="32" width="32" title="Avatar">
-              {{ avatar.avatar_name }}
-
+                {{ avatar.avatar_name }}
             </h5>
             <div class="card-body">
               <div class="row">
@@ -156,11 +154,15 @@
                     {{ avatar.avatar_description }}
                   </p>
                   <p>
-                  <a href="{% url 'accounts:edit_avatar' avatar.id %}">
-                <button type="button" class="btn btn-outline-primary btn-sm align-right">
-                  Edit {{ avatar.avatar_name }} <strong>&#12299</strong>
-                </button>
-                  </a></p><p><br></p><hr>
+                    <a href="{% url 'accounts:edit_avatar' avatar.id %}">
+                      <button type="button" class="btn btn-outline-primary btn-sm align-right">
+                        Edit
+                        <!--{ avatar.avatar_name }-->
+                        <strong>&#12299</strong>
+                      </button>
+                    </a>
+                  </p>
+                  <p><br></p><hr>
                   <p class="card-text">
                     <strong>Character Sheet</strong><br>
                     {% if avatar.use_char_sheet == 0 %}

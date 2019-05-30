@@ -1,22 +1,25 @@
 {% extends 'vl_base.html' %}
 {% load static %}
 {% block brand %}
-    <h3>
-        <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-            <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
-                Van Levy
-        </a>
-        <a class="navbar-brand">
-            <img src="{% static '/vanlevy/Doors_32.png' %}" alt="Van Levy Icon" height="32" width="32">
-            <span style="color: white;">Dice Rollers</span>
-        </a>
-    </h3>
+  <h3>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+        Van Levy
+    </a>
+    <a class="navbar-brand">
+      <span style="color: white; margin-left: -18px;"> - Dice Rollers</span>
+    </a>
+  </h3>
 {% endblock %}
 {% block bottom_navbar_padding %}
-style="padding: 20px 0px 0px 0px"
+  style="padding: 20px 0px 0px 0px"
 {% endblock %}
 {% block bottom_navbar_style %}
-    style="bottom: 0; "
+  style="bottom: 0; "
+{% endblock %}
+{% block bottom_dice %}
+{% endblock %}
+{% block bottom_terms %}
 {% endblock %}
 
 {% block head %}
@@ -26,181 +29,175 @@ style="padding: 20px 0px 0px 0px"
 
 {% block body %}
 <div class="container">
-    <br>
-    <!--<h3>Dice Rollers</h3>-->
-    <!--<p>-->
-        <!--We've made (or will soon make) dice roller apps for the following games:-->
-    <!--</p>-->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card border-dark mb-3" style="background-color: #d6e9f9;">
-              <div class="card-header">
-                <h4 class="card-title" style="display: inline;">Star Wars</h4> - by Fantasy Flight Games
-              </div>
-              <div class="card-body"
-                    style="background-image: url({% static '/vanlevy/CardImageDroid.png' %});
-                           background-repeat: no-repeat; background-color: #d6e9f9; background-position: 5% 25%;
-                           background-size: 40%; min-height: 240px;">
-                  <div class="row no-gutters">
-                      <div class="col-6">
-                          <p class="card-text">
-                            This Dice Roller uses Fantasy Flight Game's Star Wars RPG system.
-                        </p>
-                        <p class="card-text">
-                            To learn more about the rules that the dice roller uses, see the
-                              <a href="{% url 'swdice:about' %}">info page.</a>
-                            To learn more about the system, please visit
-                              <a href="https://www.fantasyflightgames.com/en/starwarsrpg/">Fantasy Flight Games</a>.
-                          </p>
-                      </div>
-                      <div class="col-6">
-                          <img src="{% static '/vanlevy/Dice_Edge_500_500.jpg' %}" alt="Edge Dice" width="90%"
-                          class="align-right">
-                      </div>
-                  </div>
-              </div>
-              <div class="card-footer">
-                {% if user.is_authenticated %}
-                  <a href="{% url 'swdice:dockingbay' %}" class="btn btn-sm btn-primary">
-                    Docking Bay <strong>&#12299</strong>
-                  </a>
-                {% else %}
-                  <a href="{% url 'swdice:about' %}" class="btn btn-sm btn-primary">
-                    Info Page <strong>&#12299</strong>
-                  </a>
-                {% endif %}
-              </div>
-            </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card border-dark mb-3" style="background-color: #d6e9f9;">
+        <div class="card-header">
+          <h4 class="card-title" style="display: inline;">Star Wars</h4> - by Fantasy Flight Games
         </div>
-        <div class="col-md-6">
-            <div class="card border-dark mb-3" style="background-color: #D7D9F4;">
-              <div class="card-header">
-                  <h4 class="card-title" style="display: inline;">Polyhedral</h4> - e.g. for D20 games
-              </div>
-              <div class="card-body"
-                   style="background-image: url({% static '/vanlevy/d20_reverse.png' %});
-                   background-repeat: no-repeat; background-color: #D7D9F4; background-position: 5% 25%;
-                   background-size: 40%; min-height: 240px;">
-                <div class="row no-gutters">
-                    <div class="col-6">
-                        <p class="card-text">
-                        </p>
-                        <p class="card-text">
-                            This Dice Roller uses basic Polyhedral Dice; d4, d6, d8, d10, d12, 20, d100, & d#.
-                        </p>
-                        <p class="card-text">
-                            To learn more about this dice roller, please visit the
-                            <a href="{% url 'polydice:about' %}">info page</a>.
-                            To learn more about game systems that use these dice, feel free to start at
-                            <a href="http://www.d20srd.org/index.htm">d20 SRD</a>.
-                        </p>
-                    </div>
-                    <div class="col-6">
-                        <img src="{% static '/vanlevy/Dice_Poly_500_500.jpg' %}" alt="Polyhedral Dice" width="90%"
-                             class="align-right">
-                    </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                {% if user.is_authenticated %}
-                  <a href="{% url 'polydice:dungeon' %}" class="btn btn-sm btn-primary">
-                    The Dungeon <strong>&#12299</strong>
-                  </a>
-                {% else %}
-                  <a href="{% url 'polydice:about' %}" class="btn btn-sm btn-primary">
-                    Info Page <strong>&#12299</strong>
-                  </a>
-                {% endif %}
-              </div>
+        <div class="card-body"
+             style="background-image: url({% static '/vanlevy/CardImageDroid.png' %});
+                     background-repeat: no-repeat; background-color: #d6e9f9; background-position: 5% 25%;
+                     background-size: 40%; min-height: 240px;">
+          <div class="row no-gutters">
+            <div class="col-6 col-md-8 col-lg-6">
+              <p class="card-text">
+                This Dice Roller uses Fantasy Flight Game's Star Wars RPG system.
+              </p>
+              <p class="card-text">
+                To learn more about the rules that the dice roller uses, see the
+                  <a href="{% url 'swdice:about' %}">info page.</a>
+                To learn more about the system, please visit
+                  <a href="https://www.fantasyflightgames.com/en/starwarsrpg/">Fantasy Flight Games</a>.
+                </p>
             </div>
+            <div class="col-6 col-md-4 col-lg-6">
+              <img src="{% static '/vanlevy/Dice_Edge_500_500.jpg' %}" alt="Edge Dice" width="90%"
+                   class="align-right">
+            </div>
+          </div>
         </div>
+        <div class="card-footer">
+          {% if user.is_authenticated %}
+            <a href="{% url 'swdice:dockingbay' %}" class="btn btn-sm btn-primary">
+              Docking Bay <strong>&#12299</strong>
+            </a>
+          {% else %}
+            <a href="{% url 'swdice:about' %}" class="btn btn-sm btn-primary">
+              Info Page <strong>&#12299</strong>
+            </a>
+          {% endif %}
+        </div>
+      </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <br>
+    <div class="col-lg-6">
+      <div class="card border-dark mb-3" style="background-color: #D7D9F4;">
+        <div class="card-header">
+          <h4 class="card-title" style="display: inline;">Polyhedral</h4> - e.g. for D20 games
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card border-dark mb-3" style="background-color: #fdecd9;">
-              <div class="card-header">
-                  <h4 class="card-title" style="display: inline;">Genesys</h4> - by Fantasy Flight Games
-              </div>
-              <div class="card-body"
-                   style="background-image: url({% static '/vanlevy/Genesys_reverse.png' %});
-                   background-repeat: no-repeat; background-color: #fdecd9; background-position: 5% 25%;
-                   background-size: 40%; min-height: 240px;">
-                <div class="row no-gutters">
-                    <div class="col-6">
-                        <p class="card-text">
-                            This Dice Roller uses Fantasy Flight Game's Genesys RPG system.
-                        </p>
-                        <p class="card-text">
-                            To learn more about the rules that the dice roller uses, see the
-                              <a href="{% url 'gendice:about' %}">info page.</a>
-                            To learn more about the system, please visit
-                              <a href="https://www.fantasyflightgames.com/en/products/genesys/">Fantasy Flight Games</a>.
-                        </p>
-                    </div>
-                    <div class="col-6">
-                        <img src="{% static '/vanlevy/Dice_Gen_500_500.jpg' %}" alt="Genesys Dice" width="90%"
-                        class="align-right">
-                    </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                {% if user.is_authenticated %}
-                  <a href="{% url 'gendice:confluence' %}" class="btn btn-sm btn-primary">
-                    Confluence <strong>&#12299</strong>
-                  </a>
-                {% else %}
-                  <a href="{% url 'gendice:about' %}" class="btn btn-sm btn-primary">
-                    Info Page <strong>&#12299</strong>
-                  </a>
-                {% endif %}
-              </div>
+        <div class="card-body"
+             style="background-image: url({% static '/vanlevy/d20_reverse.png' %});
+             background-repeat: no-repeat; background-color: #D7D9F4; background-position: 5% 25%;
+             background-size: 40%; min-height: 240px;">
+          <div class="row no-gutters">
+            <div class="col-6 col-md-8 col-lg-6">
+              <p class="card-text">
+                This Dice Roller uses basic Polyhedral Dice; d4, d6, d8, d10, d12, 20, d100, & d#.
+              </p>
+              <p class="card-text">
+                To learn more about this dice roller, please visit the
+                <a href="{% url 'polydice:about' %}">info page</a>.
+                To learn more about game systems that use these dice, feel free to start at
+                <a href="http://www.d20srd.org/index.htm">d20 SRD</a>.
+              </p>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card border-dark mb-3" style="background-color: #F8EEC6;">
-              <div class="card-header">
-                  <h4 class="card-title" style="display: inline;">Mutant Year Zero</h4> - by M&omacr;diphi&uuml;s
-              </div>
-              <div class="card-body"
-                   style="background-image: url({% static '/vanlevy/MutantYearZero_pale_200_2.png' %});
-                   background-repeat: no-repeat; background-color: #F8EEC6; background-position: 5% 25%;
-                   background-size: 40%; min-height: 240px;">
-                <div class="row no-gutters">
-                    <div class="col-6">
-                        <p class="card-text">
-                            This Dice Roller uses M&omacr;diphi&uuml;s's Mutant Year Zero RPG system.
-                        </p>
-                        <p class="card-text">
-                            To learn more about the rules that the dice roller uses, see the
-                              <a href="{% url 'myzdice:about' %}">info page.</a>
-                            To learn more about the system, please visit
-                              <a href="https://www.modiphius.com/mutant.html">M&omacr;diphi&uuml;s</a>.
-                        </p>
-                    </div>
-                    <div class="col-6">
-                        <img src="{% static '/vanlevy/Dice_MYZ_500_500.jpg' %}" alt="Mutant Year Zero Dice" width="90%"
-                        class="align-right">
-                    </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                {% if user.is_authenticated %}
-                  <a href="{% url 'myzdice:the_zone' %}" class="btn btn-sm btn-primary">
-                    The Zone <strong>&#12299</strong>
-                  </a>
-                {% else %}
-                  <a href="{% url 'myzdice:about' %}" class="btn btn-sm btn-primary">
-                    Info Page <strong>&#12299</strong>
-                  </a>
-                {% endif %}
-              </div>
+            <div class="col-6 col-md-4 col-lg-6">
+              <img src="{% static '/vanlevy/Dice_Poly_500_500.jpg' %}" alt="Polyhedral Dice" width="90%"
+                   class="align-right">
             </div>
+          </div>
         </div>
+        <div class="card-footer">
+          {% if user.is_authenticated %}
+            <a href="{% url 'polydice:dungeon' %}" class="btn btn-sm btn-primary">
+              The Dungeon <strong>&#12299</strong>
+            </a>
+          {% else %}
+            <a href="{% url 'polydice:about' %}" class="btn btn-sm btn-primary">
+              Info Page <strong>&#12299</strong>
+            </a>
+          {% endif %}
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <br>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card border-dark mb-3" style="background-color: #fdecd9;">
+        <div class="card-header">
+          <h4 class="card-title" style="display: inline;">Genesys</h4> - by Fantasy Flight Games
+        </div>
+        <div class="card-body"
+             style="background-image: url({% static '/vanlevy/Genesys_reverse.png' %});
+             background-repeat: no-repeat; background-color: #fdecd9; background-position: 5% 25%;
+             background-size: 40%; min-height: 240px;">
+          <div class="row no-gutters">
+            <div class="col-6 col-md-8 col-lg-6">
+              <p class="card-text">
+                This Dice Roller uses Fantasy Flight Game's Genesys RPG system.
+              </p>
+              <p class="card-text">
+                To learn more about the rules that the dice roller uses, see the
+                  <a href="{% url 'gendice:about' %}">info page.</a>
+                To learn more about the system, please visit
+                  <a href="https://www.fantasyflightgames.com/en/products/genesys/">Fantasy Flight Games</a>.
+              </p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-6">
+              <img src="{% static '/vanlevy/Dice_Gen_500_500.jpg' %}" alt="Genesys Dice" width="90%"
+                   class="align-right">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          {% if user.is_authenticated %}
+            <a href="{% url 'gendice:confluence' %}" class="btn btn-sm btn-primary">
+              Confluence <strong>&#12299</strong>
+            </a>
+          {% else %}
+            <a href="{% url 'gendice:about' %}" class="btn btn-sm btn-primary">
+              Info Page <strong>&#12299</strong>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card border-dark mb-3" style="background-color: #F8EEC6;">
+        <div class="card-header">
+          <h4 class="card-title" style="display: inline;">Mutant Year Zero</h4> - by M&omacr;diphi&uuml;s
+        </div>
+        <div class="card-body"
+             style="background-image: url({% static '/vanlevy/MutantYearZero_pale_200_2.png' %});
+             background-repeat: no-repeat; background-color: #F8EEC6; background-position: 5% 25%;
+             background-size: 40%; min-height: 240px;">
+          <div class="row no-gutters">
+            <div class="col-6 col-md-8 col-lg-6">
+              <p class="card-text">
+                This Dice Roller uses M&omacr;diphi&uuml;s's Mutant Year Zero RPG system.
+              </p>
+              <p class="card-text">
+                To learn more about the rules that the dice roller uses, see the
+                  <a href="{% url 'myzdice:about' %}">info page.</a>
+                To learn more about the system, please visit
+                  <a href="https://www.modiphius.com/mutant.html">M&omacr;diphi&uuml;s</a>.
+              </p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-6">
+              <img src="{% static '/vanlevy/Dice_MYZ_500_500.jpg' %}" alt="Mutant Year Zero Dice" width="90%"
+              class="align-right">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          {% if user.is_authenticated %}
+            <a href="{% url 'myzdice:the_zone' %}" class="btn btn-sm btn-primary">
+              The Zone <strong>&#12299</strong>
+            </a>
+          {% else %}
+            <a href="{% url 'myzdice:about' %}" class="btn btn-sm btn-primary">
+              Info Page <strong>&#12299</strong>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
