@@ -445,7 +445,10 @@ class HubView(FormMixin, TemplateView):
         my_avatars_choices = [(0, user_name)]
         for avatar in my_avatars:
             if avatar.deleted != 1:
-                my_avatars_choices.append((avatar.id, avatar.avatar_name))
+                if len(avatar.avatar_name) < 40:
+                    my_avatars_choices.append((avatar.id, avatar.avatar_name))
+                else:
+                    my_avatars_choices.append((avatar.id, avatar.avatar_name[:37]+"..."))
         kwargs['avatar_list'] = my_avatars_choices
         return kwargs
 

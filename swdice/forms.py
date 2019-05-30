@@ -48,16 +48,19 @@ class Enter_SW_Room(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['default_avatar'].choices = imported_list
 
-    default_avatar = forms.ChoiceField(choices=[])
+    default_avatar = forms.ChoiceField(choices=[],
+                                       widget=forms.Select(
+                                           attrs={'style': "width: 30ch;"}
+                                       ))
     room_number = forms.IntegerField(required=True, label='Room ID',
                                      widget=forms.NumberInput(
-                                         attrs={'placeholder': "Input a number"}
+                                         attrs={'placeholder': "Room #",
+                                                'style': "width: 10ch;"}
                                      ))
     passcode = forms.CharField(required=False, label='Passcode',
                                widget=forms.TextInput(
-                                   attrs={'placeholder': "CaSe sENsiTivE"}
-                               )
-                               )
+                                   attrs={'placeholder': "CaSe sENsiTivE", 'style': "width: 30ch;"}
+                               ))
 
 
 class Enter_SW_Direct(forms.ModelForm):
