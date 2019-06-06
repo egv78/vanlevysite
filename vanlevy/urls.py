@@ -15,8 +15,8 @@ urlpatterns = [
     path('dice-rollers/', views.vl_dice_rollers_view, name='dice_rollers'),
     path('portal/', views.personal_portal, name='portal'),
     path('terms/', views.vl_terms_view, name='terms'),
+    path('contact/', views.ContactPage.as_view(), name='contact'),
     path('404/', views.vl_error, name='404')
-
 ]
 
 handler404 = views.vl_error

@@ -5,31 +5,56 @@
     <title>Personal Portal Page</title>
 
 <style>
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
 
-th, td {
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
+  /* xs */
+  @media (max-width: 575.9px) {
+    #info_row {min-height: 300px;}
+  }
+
+  /* sm */
+  @media (min-width: 576px) {
+    #info_row {min-height: 280px;}
+  }
+  /* md */
+  @media (min-width: 768px) {
+    #info_row {min-height: 230px;}
+    #profile_card {margin: 0px -15px 0px 0px; padding: 0px 15px 0px 0px;}
+    #char_sheets_card  {margin: 0px 0px 0px 15px; padding: 0px 0px 0px 15px;}
+  }
+  /* lg */
+  @media (min-width: 992px) {
+    #info_row {min-height: 215px;}
+    #profile_card {margin: 0px -15px 0px 0px; padding: 0px;}
+    #char_sheets_card  {margin: 0px -15px 0px 0px; padding: 0px;}
+  }
+  /* xl */
+  @media (min-width: 1200px) {
+    #info_row {min-height: 200px;}
+  }
 </style>
 
 {% endblock %}
 
 {% load static %}
 {% block brand %}
-    <h3>
-        <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-            <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
-                Van Levy
-        </a>
-        <a class="navbar-brand">
-            <img src="{% static '/vanlevy/Doors_32.png' %}" alt="Van Levy Icon" height="32" width="32">
-            <span style="color: white;">Portal Page</span>
-        </a>
-    </h3>
+  <h3>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+        Van Levy
+    </a>
+    <a class="navbar-brand">
+      <img src="{% static '/vanlevy/Doors_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+      <span style="color: white;">Portal Page</span>
+    </a>
+  </h3>
 {% endblock %}
 
 {% block bottom_navbar_padding %}
@@ -44,11 +69,11 @@ style="padding: 20px 0px 0px 0px"
 {% endblock %}
 
 {% block other_navbar_right %}
-    <button class="btn btn-info btn-sm align-right" type="button" data-toggle="collapse"
-            data-target="#infoPanel" aria-expanded="false" aria-controls="infoPanel"
-            style="margin-right: 20px;">
-        Info Panel
-    </button>
+  <button class="btn btn-info btn-sm align-right" type="button" data-toggle="collapse"
+          data-target="#infoPanel" aria-expanded="false" aria-controls="infoPanel"
+          style="margin-right: 20px;">
+    Info Panel
+  </button>
 {% endblock %}
 
 {% block body %}
@@ -57,415 +82,500 @@ style="padding: 20px 0px 0px 0px"
 {% endblock %}
 <p></p>
 <div class="container">
-    <div class="collapse" id="infoPanel">
-      <div class="row no-gutters"  style="min-height: 200px;">
-        <div class="col-md-10">
-            <div class="container" id="allInfoCollapse">
-                <div class="collapse show" id="ProfileInfo" data-parent="#allInfoCollapse">
-                    <div class="card border-info mb-3" style="width: 100%;">
-                        <div class="card card-body">
-                            <h6 class="card-title" style="margin-bottom: 3px;">Profile & Avatars</h6>
-                            <p style="font-size:0.83em">
-                                Your <strong>Profile</strong> is the default information about you.
-                                Other players will always be able see your username in dice rooms.
-                                You can always use your Profile in a dice room.
-                                <br>
-                                <strong>Avatars</strong> are other personas you can use in dice rooms.
-                                Think of Avatars like masks at a fancy ball; they let you play as someone else,
-                                but, when the clock strikes 12, everyone really knows who everyone else is.
-                                You can have as many Avatars as you like, and change them in dice rooms.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse" id="DiceTypesInfo" data-parent="#allInfoCollapse">
-                    <div class="card border-info mb-3" style="width: 100%;">
-                        <div class="card card-body">
-                            <h6 class="card-title">Dice Types</h6>
-                            <p style="font-size:0.83em">
-                                Different games use different <strong>Dice Types</strong>.
-                                Most of the dice types in these rollers use (at least some) non-numerical pips.
-                                That is, faces have particular meanings, other than just a number.
-                            <br>
-                                The rules for the dice can be found on the about pages, which you can get to by clicking on
-                                the info button next to the dice type.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse" id="HubsVsRooms" data-parent="#allInfoCollapse">
-                    <div class="card border-info mb-3" style="width: 100%;">
-                        <div class="card card-body">
-                            <h6 class="card-title">Hubs vs. Rooms</h6>
-                            <p style="font-size:0.83em">
-                                Each Dice Type has its own <strong>Hub Page</strong>.
-                                On a Hub Page, you can see all of the rooms (for that dice type) you've been in,
-                                make a new room, or join a room using a its ID and Passcode.
-                            <br>
-                                <strong>Rooms</strong> are where you actually play using the dice rollers.
-                                On this page, you can see the five rooms you have most recently joined for each dice type.
-                                To see all of the rooms you have joined, please go to the Hub.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse" id="PlayerRoles" data-parent="#allInfoCollapse">
-                    <div class="card border-info mb-3" style="width: 100%;">
-                        <div class="card card-body">
-                            <h6 class="card-title">Players & GM's</h6>
-                            <p style="font-size:0.83em">
-                                The <strong>GM</strong> is, by default, the person who makes a particular dice room.
-                                <strong>Players</strong> may join any dice room  when they know the
-                                <em>Room ID</em> and the <em>Passcode</em> (if the GM has set one).
-                            <br>
-                                While playing, GM's will see all secret rolls, while players will see only the
-                                secret rolls they themselves make.
-                                On the Room Info Page, GM's can make another player the GM, or Ban a player.
-                                GM's can also see the room details, such as the Passcode
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="collapse" id="infoPanel">
+    <div class="row no-gutters" id="info_row">
+      <div class="col-12 hide_md" style="text-align: center;">
+        <div class="btn-group" style="margin-bottom: 6px;">
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#ProfileInfo" aria-expanded="false"
+                  aria-controls="ProfileInfo">
+            Profile & Avatars
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#DiceTypesInfo" aria-expanded="false" aria-controls="DiceTypesInfo">
+            Dice Types
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#HubsVsRooms" aria-expanded="false" aria-controls="HubsVsRooms">
+            Hubs vs. Rooms
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#PlayerRoles" aria-expanded="false" aria-controls="PlayerRoles">
+            Players & GM's
+          </button>
         </div>
-        <div class="col-md-2">
-            <div class="btn-group-vertical align-right" style="margin-bottom: 12px;">
-                <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
-                        data-target="#ProfileInfo" aria-expanded="false"
-                        aria-controls="ProfileInfo">
-                    Profile & Avatars
-                </button>
-                <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
-                        data-target="#DiceTypesInfo" aria-expanded="false" aria-controls="DiceTypesInfo">
-                    Dice Types
-                </button>
-                <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
-                        data-target="#HubsVsRooms" aria-expanded="false" aria-controls="HubsVsRooms">
-                    Hubs vs. Rooms
-                </button>
-                <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
-                        data-target="#PlayerRoles" aria-expanded="false" aria-controls="PlayerRoles">
-                    Players & GM's
-                </button>
+      </div>
+      <div class="col-md-10">
+        <div class="container" id="allInfoCollapse">
+          <div class="collapse show" id="ProfileInfo" data-parent="#allInfoCollapse">
+            <div class="card border-info mb-3" style="width: 100%;">
+              <div class="card card-body">
+                <h6 class="card-title" style="margin-bottom: 3px;">Profile & Avatars</h6>
+                <p style="font-size:0.83em">
+                  Your <strong>Profile</strong> is the default information about you.
+                  Other players will always be able see your username in dice rooms.
+                  You can always use your Profile in a dice room.
+                  <br>
+                  <strong>Avatars</strong> are other personas you can use in dice rooms.
+                  Think of Avatars like masks at a fancy ball; they let you play as someone else,
+                  but, when the clock strikes 12, everyone really knows who everyone else is.
+                  You can have as many Avatars as you like, and change them in dice rooms.
+                </p>
+              </div>
             </div>
-            <p><br></p>
+          </div>
+          <div class="collapse" id="DiceTypesInfo" data-parent="#allInfoCollapse">
+            <div class="card border-info mb-3" style="width: 100%;">
+              <div class="card card-body">
+                <h6 class="card-title">Dice Types</h6>
+                <p style="font-size:0.83em">
+                  Different games use different <strong>Dice Types</strong>.
+                  Most of the dice types in these rollers use (at least some) non-numerical pips.
+                  That is, faces have particular meanings, other than just a number.
+                <br>
+                  The rules for the dice can be found on the about pages, which you can get to by clicking on
+                  the info button next to the dice type.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="HubsVsRooms" data-parent="#allInfoCollapse">
+            <div class="card border-info mb-3" style="width: 100%;">
+              <div class="card card-body">
+                <h6 class="card-title">Hubs vs. Rooms</h6>
+                <p style="font-size:0.83em">
+                  Each Dice Type has its own <strong>Hub Page</strong>.
+                  On a Hub Page, you can see all of the rooms (for that dice type) you've been in,
+                  make a new room, or join a room using a its ID and Passcode.
+                <br>
+                  <strong>Rooms</strong> are where you actually play using the dice rollers.
+                  On this page, you can see the five rooms you have most recently joined for each dice type.
+                  To see all of the rooms you have joined, please go to the Hub.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="PlayerRoles" data-parent="#allInfoCollapse">
+            <div class="card border-info mb-3" style="width: 100%;">
+              <div class="card card-body">
+                <h6 class="card-title">Players & GM's</h6>
+                <p style="font-size:0.83em">
+                  The <strong>GM</strong> is, by default, the person who makes a particular dice room.
+                  <strong>Players</strong> may join any dice room  when they know the
+                  <em>Room ID</em> and the <em>Passcode</em> (if the GM has set one).
+                <br>
+                  While playing, GM's will see all secret rolls, while players will see only the
+                  secret rolls they themselves make.
+                  On the Room Info Page, GM's can make another player the GM, or Ban a player.
+                  GM's can also see the room details, such as the Passcode
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 show_md">
+        <div class="btn-group-vertical align-right" style="margin-bottom: 12px;">
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#ProfileInfo" aria-expanded="false"
+                  aria-controls="ProfileInfo">
+            Profile & Avatars
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#DiceTypesInfo" aria-expanded="false" aria-controls="DiceTypesInfo">
+            Dice Types
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#HubsVsRooms" aria-expanded="false" aria-controls="HubsVsRooms">
+            Hubs vs. Rooms
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#PlayerRoles" aria-expanded="false" aria-controls="PlayerRoles">
+            Players & GM's
+          </button>
         </div>
       </div>
     </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-6">
-            <h4>Profile</h4>
-            <div class="card border-dark mb-3">
-                <div class="card-header">
-                    <h4 class="card-title" style="margin-bottom: 0px;">
-                        {{user}}
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title" style="margin-bottom: 0px;">
-                        {% if user.userprofile.user_first_name or user.userprofile.user_last_name%}
-                            <strong>{{user.userprofile.user_first_name}}</strong>
-                            <strong>{{user.userprofile.user_last_name}}</strong>
-                        {% else %}
-                            <em>no name given</em>
-                        {% endif %}
-                    </h4>
-                    <br>
-                    <div class="row no-gutters">
-                        <div class="col-4">
-                            {% if user.userprofile.user_url_image %}
-                                <img src="{{ user.userprofile.user_url_image }}" width="100%">
-                            {% else %}
-                                <p><strong>No image</strong></p>
-                            {% endif %}
-                            <p><u>Location:</u> <br>
-                                {{ user.userprofile.user_location }}</p>
-                        </div>
-                        <div class="col-8">
-                            <p style="margin-left: 10px;">
-                                <u>About Me:</u> <br>
-                                {% if user.userprofile.user_bio %}
-                                    {{ user.userprofile.user_bio }}
-                                {% else %}
-                                    <em>View your profile to enter a bio.</em>
-                                {% endif %}
-                            </p>
-                            <p style="margin-left: 10px;">
-                                <u>Gaming Interests:</u> <br>
-                                {{user.userprofile.user_description}}
-                            </p>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <a href="{% url 'accounts:view_profile' %}">
-{% if user.userprofile.user_first_name and user.userprofile.user_last_name and user.userprofile.user_url_image %}
-                        <button type="button" class="btn btn-outline-primary btn-sm">
-                            View Profile & Avatars <strong>&#12299</strong>
-                        </button>
-                    {% else %}
-                        <button type="button" class="btn btn-primary">
-                            View Profile & Avatars <strong>&#12299</strong>
-                        </button>
-                    {% endif %}
-                    </a>
-                </div>
-            </div>
-            <p></p>
-
-            {% if has_avatars %}
-            <h4>Avatars</h4>
-                {% for avatar in my_avatars_list %}
-                    <div class="card border-secondary mb-3">
-                        <div class="card-body">
-                            <h4>
-                                {% if avatar.avatar_name %}
-                                    <strong>{{ avatar.avatar_name }}</strong>
-                                {% else %}
-                                    <em>no name given</em>
-                                {% endif %}
-                            </h4>
-                            <div class="row no-gutters">
-                                <div class="col-4">
-                                    {% if avatar.avatar_url_image %}
-                                        <p><img src="{{ avatar.avatar_url_image }}" width="100%"></p>
-                                    {% else %}
-                                        This avatar has no image.
-                                    {% endif %}
-                                </div>
-                                <div class="col-6">
-
-                                    <p style="margin-left: 10px;"><u>Description:</u> <br>
-                                        {{ avatar.avatar_description }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-            <div class="container">
-                <h4>Avatars</h4>
-                <p><strong>You have not created any avatars.</strong></p>
-            </div>
-            {% endif %}
-
-        </div>
-        <div class="col-lg-8 col-md-6">
-            <h4>
-                Dice Types
-            </h4>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card border-primary mb-3">
-                        <div class="card-header">
-                            <h5 class="card-title" style="margin-bottom: 0px;">
-                                <a href="{% url 'swdice:about' %}">
-                                    <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
-                                        alt="SW Dice Roller" height="32" width="32">
-                                </a>
-                                Star Wars
-                            </h5>
-                        </div>
-                        <div class="card-body" style="background-image: url({% static '/vanlevy/CardImageDroid.png' %});
-                                    background-repeat: no-repeat; background-color: #d6e9f9; background-position: center;
-                                    min-height: 240px;">
-                            <h5 class="card-title">
-                                <strong>Hub: </strong>
-                                <a href="{% url 'swdice:dockingbay' %}">Docking Bay</a>
-                            </h5>
-                            {% if my_sw_rooms_list %}
-                                <table width="100%">
-                                <col width="60%">
-                                <col width="20%">
-                                <col width="20%">
-                                <tr>
-                                    <td><strong>Room Name</strong></td>
-                                    <td><strong>Avatar</strong></td>
-                                    <td><strong>GM</strong></td>
-                                </tr>
-                                {% for room in my_sw_rooms_list %}
-                                <tr>
-                                    <td class="room_name_table">
-                                        <div>
-                                            <a href="{% url 'swdice:swroom' room.id %}">{{ room.room_name }}</a>
-                                        </div>
-                                    </td>
-                                    <td>{{ room.avatar }}</td>
-                                    <td>{{ room.gm }}</td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                            {% else %}
-                            <p></p>
-                                <p><em>
-                                    You have not entered any Star Wars rooms yet.
-                                    To make a room or join someone else's, go to the Docking Bay.
-                                </em></p>
-                            <p><br></p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="card border-primary mb-3">
-                        <div class="card-header">
-                            <h5 class="card-title" style="margin-bottom: 0px;">
-                                <a href="{% url 'gendice:about' %}">
-                                    <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
-                                        alt="SW Dice Roller" height="32" width="32">
-                                    </a>
-                                Genesys
-                            </h5>
-                        </div>
-                        <div class="card-body" style="background-image: url({% static '/vanlevy/Genesys_reverse.png' %});
-                                background-repeat: no-repeat; background-color: #fdecd9; background-position: center;
-                                min-height: 240px;">
-                            <h5 class="card-title">
-                                <strong>Hub: </strong>
-                                <a href="{% url 'gendice:confluence' %}">Confluence</a>
-                            </h5>
-                            {% if my_gen_rooms_list %}
-                                <table width="100%">
-                                <col width="60%">
-                                <col width="20%">
-                                <col width="20%">
-                                <tr>
-                                    <td><strong>Room Name</strong></td>
-                                    <td><strong>Avatar</strong></td>
-                                    <td><strong>GM</strong></td>
-                                </tr>
-                                {% for room in my_gen_rooms_list %}
-                                <tr>
-                                    <td class="room_name_table">
-                                        <div>
-                                            <a href="{% url 'gendice:genroom' room.id %}">{{ room.room_name }}</a>
-                                        </div>
-                                    </td>
-                                    <td>{{ room.avatar }}</td>
-                                    <td>{{ room.gm }}</td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                            {% else %}
-                            <p></p>
-                                <p><em>
-                                    You have not entered any Genesys rooms yet.
-                                    To make a room or join someone else's, go to the Confluence.
-                                </em></p>
-                            <p><br></p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card border-primary mb-3">
-                        <div class="card-header">
-                            <h5 class="card-title" style="margin-bottom: 0px;">
-                                <a href="{% url 'polydice:about' %}">
-                                    <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
-                                        alt="Polyhedral Dice Roller" height="32" width="32">
-                                    </a>
-                                Polyhedral
-                            </h5>
-                        </div>
-                        <div class="card-body"
-                                style="background-image: url({% static '/vanlevy/d20_reverse.png' %});
-                                background-repeat: no-repeat; background-color: #D7D9F4; background-position: center;
-                                min-height: 240px;">
-                            <h5 class="card-title">
-                                <strong>Hub: </strong>
-                                <a href="{% url 'polydice:dungeon' %}">The Dungeon</a>
-                            </h5>
-                            {% if my_poly_rooms_list %}
-                                <table width="100%">
-                                <col width="60%">
-                                <col width="20%">
-                                <col width="20%">
-                                <tr>
-                                    <td><strong>Room Name</strong></td>
-                                    <td><strong>Avatar</strong></td>
-                                    <td><strong>GM</strong></td>
-                                </tr>
-                                {% for room in my_poly_rooms_list %}
-                                <tr>
-                                    <td class="room_name_table">
-                                        <div>
-                                            <a href="{% url 'polydice:polyroom' room.id %}">{{ room.room_name }}</a>
-                                        </div>
-                                    </td>
-                                    <td>{{ room.avatar }}</td>
-                                    <td>{{ room.gm }}</td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                            {% else %}
-                            <p></p>
-                                <p><em>
-                                    You have not entered any Polyhedral Dice rooms yet.
-                                    To make a room or join someone else's, go to the Dungeon.
-                                </em></p>
-                            <p><br></p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="card border-primary mb-3">
-                        <div class="card-header">
-                            <h5 class="card-title" style="margin-bottom: 0px;">
-                                <a href="{% url 'myzdice:about' %}">
-                                    <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
-                                        alt="SW Dice Roller" height="32" width="32">
-                                    </a>
-                                Mutant Year Zero
-                            </h5>
-                        </div>
-                        <div class="card-body"
-                                style="background-image: url({% static '/vanlevy/MutantYearZero_pale_200_2.png' %});
-                                background-repeat: no-repeat; background-color: #F8EEC6; background-position: center;
-                                min-height: 240px;">
-                            <h5 class="card-title">
-                                <strong>Hub: </strong>
-                                <a href="{% url 'myzdice:the_zone' %}">The Zone</a>
-                            </h5>
-                            {% if my_myz_rooms_list %}
-                                <table width="100%">
-                                <col width="60%">
-                                <col width="20%">
-                                <col width="20%">
-                                <tr>
-                                    <td><strong>Room Name</strong></td>
-                                    <td><strong>Avatar</strong></td>
-                                    <td><strong>GM</strong></td>
-                                </tr>
-                                {% for room in my_myz_rooms_list %}
-                                <tr>
-                                    <td class="room_name_table">
-                                        <div>
-                                            <a href="{% url 'myzdice:myzroom' room.id %}">{{ room.room_name }}</a>
-                                        </div>
-                                    </td>
-                                    <td>{{ room.avatar }}</td>
-                                    <td>{{ room.gm }}</td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                            {% else %}
-                            <p></p>
-                                <p><em>
-                                    You have not entered any Mutant Year Zero rooms yet.
-                                    To make a room or join someone else's, go to the Zone.
-                                </em></p>
-                            <p><br></p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row">
-
-            </div>
-        </div>
+  </div>
+  {% if message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Thank you for contacting us.</strong>
+      <p>
+        Your message has been sent to the Ogres running this site.
+        No one is even sure if they can read, but, hey, you tried.
+      </p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">OK</span>
+      </button>
     </div>
+  {% endif %}
+  <div class="row">
+    <div class="col-lg-8 col-md-12">
+      <h4>
+        Dice Types
+      </h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card border-primary mb-3">
+            <div class="card-header">
+              <h5 class="card-title" style="margin-bottom: 0px;">
+                <a href="{% url 'swdice:about' %}">
+                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                       alt="SW Dice Roller" height="32" width="32">
+                </a>
+                Star Wars
+              </h5>
+            </div>
+            <div class="card-body" style="background-image: url({% static '/vanlevy/CardImageDroid.png' %});
+                        background-repeat: no-repeat; background-color: #d6e9f9; background-position: center;
+                        min-height: 240px;">
+              <h5 class="card-title">
+                <strong>Hub: </strong>
+                <a href="{% url 'swdice:dockingbay' %}">Docking Bay</a>
+              </h5>
+              {% if my_sw_rooms_list %}
+                <table width="100%">
+                  <col width="60%">
+                  <col width="20%">
+                  <col width="20%">
+                  <tr>
+                    <td><strong>Room Name</strong></td>
+                    <td><strong>Avatar</strong></td>
+                    <td><strong>GM</strong></td>
+                  </tr>
+                  {% for room in my_sw_rooms_list %}
+                    <tr>
+                      <td class="room_name_table">
+                        <div>
+                          <a href="{% url 'swdice:swroom' room.id %}">{{ room.room_name }}</a>
+                        </div>
+                      </td>
+                      <td>{{ room.avatar }}</td>
+                      <td>{{ room.gm }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+              {% else %}
+              <p></p>
+                <p><em>
+                  You have not entered any Star Wars rooms yet.
+                  To make a room or join someone else's, go to the Docking Bay.
+                </em></p>
+              <p><br></p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="card border-primary mb-3">
+            <div class="card-header">
+              <h5 class="card-title" style="margin-bottom: 0px;">
+                <a href="{% url 'gendice:about' %}">
+                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                       alt="SW Dice Roller" height="32" width="32">
+                </a>
+                Genesys
+              </h5>
+            </div>
+              <div class="card-body" style="background-image: url({% static '/vanlevy/Genesys_reverse.png' %});
+                      background-repeat: no-repeat; background-color: #fdecd9; background-position: center;
+                      min-height: 240px;">
+                <h5 class="card-title">
+                  <strong>Hub: </strong>
+                  <a href="{% url 'gendice:confluence' %}">Confluence</a>
+                </h5>
+                {% if my_gen_rooms_list %}
+                  <table width="100%">
+                    <col width="60%">
+                    <col width="20%">
+                    <col width="20%">
+                    <tr>
+                      <td><strong>Room Name</strong></td>
+                      <td><strong>Avatar</strong></td>
+                      <td><strong>GM</strong></td>
+                    </tr>
+                    {% for room in my_gen_rooms_list %}
+                      <tr>
+                        <td class="room_name_table">
+                          <div>
+                            <a href="{% url 'gendice:genroom' room.id %}">{{ room.room_name }}</a>
+                          </div>
+                        </td>
+                        <td>{{ room.avatar }}</td>
+                        <td>{{ room.gm }}</td>
+                      </tr>
+                    {% endfor %}
+                  </table>
+                {% else %}
+                <p></p>
+                    <p><em>
+                        You have not entered any Genesys rooms yet.
+                        To make a room or join someone else's, go to the Confluence.
+                    </em></p>
+                <p><br></p>
+                {% endif %}
+              </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-primary mb-3">
+            <div class="card-header">
+              <h5 class="card-title" style="margin-bottom: 0px;">
+                <a href="{% url 'polydice:about' %}">
+                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                      alt="Polyhedral Dice Roller" height="32" width="32">
+                </a>
+                Polyhedral
+              </h5>
+            </div>
+            <div class="card-body"
+                 style="background-image: url({% static '/vanlevy/d20_reverse.png' %});
+                       background-repeat: no-repeat; background-color: #D7D9F4; background-position: center;
+                       min-height: 240px;">
+              <h5 class="card-title">
+                <strong>Hub: </strong>
+                <a href="{% url 'polydice:dungeon' %}">The Dungeon</a>
+              </h5>
+              {% if my_poly_rooms_list %}
+                <table width="100%">
+                <col width="60%">
+                <col width="20%">
+                <col width="20%">
+                <tr>
+                  <td><strong>Room Name</strong></td>
+                  <td><strong>Avatar</strong></td>
+                  <td><strong>GM</strong></td>
+                </tr>
+                {% for room in my_poly_rooms_list %}
+                <tr>
+                  <td class="room_name_table">
+                    <div>
+                      <a href="{% url 'polydice:polyroom' room.id %}">{{ room.room_name }}</a>
+                    </div>
+                  </td>
+                  <td>{{ room.avatar }}</td>
+                  <td>{{ room.gm }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+              {% else %}
+              <p></p>
+                <p><em>
+                  You have not entered any Polyhedral Dice rooms yet.
+                  To make a room or join someone else's, go to the Dungeon.
+                </em></p>
+              <p><br></p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="card border-primary mb-3">
+            <div class="card-header">
+              <h5 class="card-title" style="margin-bottom: 0px;">
+                <a href="{% url 'myzdice:about' %}">
+                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                      alt="SW Dice Roller" height="32" width="32">
+                </a>
+                Mutant Year Zero
+              </h5>
+            </div>
+            <div class="card-body"
+                 style="background-image: url({% static '/vanlevy/MutantYearZero_pale_200_2.png' %});
+                       background-repeat: no-repeat; background-color: #F8EEC6; background-position: center;
+                       min-height: 240px;">
+              <h5 class="card-title">
+                <strong>Hub: </strong>
+                <a href="{% url 'myzdice:the_zone' %}">The Zone</a>
+              </h5>
+              {% if my_myz_rooms_list %}
+                <table width="100%">
+                <col width="60%">
+                <col width="20%">
+                <col width="20%">
+                <tr>
+                  <td><strong>Room Name</strong></td>
+                  <td><strong>Avatar</strong></td>
+                  <td><strong>GM</strong></td>
+                </tr>
+                {% for room in my_myz_rooms_list %}
+                <tr>
+                  <td class="room_name_table">
+                    <div>
+                      <a href="{% url 'myzdice:myzroom' room.id %}">{{ room.room_name }}</a>
+                    </div>
+                  </td>
+                  <td>{{ room.avatar }}</td>
+                  <td>{{ room.gm }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+              {% else %}
+              <p></p>
+                <p><em>
+                  You have not entered any Mutant Year Zero rooms yet.
+                  To make a room or join someone else's, go to the Zone.
+                </em></p>
+              <p><br></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-12 order-lg-first">
+      <h4>Profile</h4>
+      <div class="row no-gutters">
+        <div class="col-lg-12 col-md-8 col-12" id="profile_card">
+        <div class="card border-dark mb-3">
+          <div class="card-header">
+            <h4 class="card-title" style="margin-bottom: 0px;">
+              {{user}}
+            </h4>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" style="margin-bottom: 10px;">
+              {% if user.userprofile.user_first_name or user.userprofile.user_last_name%}
+                <strong>{{user.userprofile.user_first_name}}</strong>
+                <strong>{{user.userprofile.user_last_name}}</strong>
+              {% else %}
+                <em>no name given</em>
+              {% endif %}
+            </h4>
+            <div class="row no-gutters">
+              <div class="col-4">
+                {% if user.userprofile.user_url_image %}
+                  <img src="{{ user.userprofile.user_url_image }}" width="100%">
+                {% else %}
+                  <p><strong>No image</strong></p>
+                {% endif %}
+              </div>
+              <div class="col-8">
+                <p style="margin-left: 10px;">
+                  <u>About Me:</u> <br>
+                  {% if user.userprofile.user_bio %}
+                    {{ user.userprofile.user_bio }}
+                  {% else %}
+                    <em>View your profile to enter a bio.</em>
+                  {% endif %}
+                </p>
+                <p style="margin-left: 10px;">
+                  <u>Location:</u> <br>
+                  {{ user.userprofile.user_location }}
+                </p>
+              </div>
+              <div class="col-12">
+                <p>
+                  <u>Gaming Interests:</u> <br>
+                  {{user.userprofile.user_description}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="{% url 'accounts:view_profile' %}">
+              <!--user.userprofile.user_first_name and user.userprofile.user_last_name and user.userprofile.user_url_image-->
+            {% if outline_button %}
+              <button type="button" class="btn btn-outline-primary btn-sm">
+                View Profile & Avatars <strong>&#12299</strong>
+              </button>
+            {% else %}
+              <button type="button" class="btn btn-primary">
+                View Profile & Avatars <strong>&#12299</strong>
+              </button>
+            {% endif %}
+            </a>
+          </div>
+        </div>
+        </div>
+          <p></p>
+        <div class="col-lg-12 col-md-4 col-12" id="char_sheets_card">
+          <div class="card border-dark mb-3">
+            <div class="card-header">
+              <h5 class="card-title" style="margin-bottom: 0px;">
+                Character Sheets
+              </h5>
+            </div>
+              <div class="card-body">
+                <p class="card-text">
+                  <span style="font-size: 1.25em;"><strong>PDFs: </strong></span>
+                  You can use links to web-hosted PDFs (e.g. Google Drive) to show in Dice Rooms.
+                  <a href="{% url 'accounts:pdf_charsheets' %}">
+                    <button type="button" class="btn btn-outline-primary btn-sm align-right">
+                      PDF Character Sheets <strong>&#12299</strong>
+                    </button>
+                  </a>
+                </p>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col">
+      <hr>
+      <h4>Avatars</h4><br>
+      <div class="row">
+        {% if has_avatars %}
+          {% for avatar in my_avatars_list %}
+            <div class="col-lg-4 col-md-6">
+              <div class="card border-secondary mb-3">
+                <div class="card-body">
+                  <h4>
+                    {% if avatar.avatar_name %}
+                      <strong>{{ avatar.avatar_name }}</strong>
+                    {% else %}
+                      <em>no name given</em>
+                    {% endif %}
+                  </h4>
+                  <div class="row no-gutters">
+                    <div class="col-4">
+                      {% if avatar.avatar_url_image %}
+                        <p><img src="{{ avatar.avatar_url_image }}" width="100%"></p>
+                      {% else %}
+                        This avatar has no image.
+                      {% endif %}
+                    </div>
+                    <div class="col-8">
+                      <p style="margin-left: 10px;"><u>Description:</u> <br>
+                        {{ avatar.avatar_description }}
+                      </p>
+                    </div>
+                    <div class="col-12">
+                      <strong>Character Sheet</strong><br>
+                      {% if avatar.use_char_sheet == 0 %}
+                        <em>None attached</em>
+                        <a href="{% url 'accounts:view_avatar' avatar.id %}">
+                          <button type="button" class="btn btn-primary btn-sm align-right">
+                            Add <strong>&#12299</strong>
+                          </button>
+                        </a>
+                      {% elif avatar.use_char_sheet == 1 %}
+                        <em>{{ avatar.char_pdf.pdf_name }}</em>
+                        <a href="{% url 'accounts:view_avatar' avatar.id %}">
+                          <button type="button" class="btn btn-outline-primary btn-sm align-right">
+                            View / Change <strong>&#12299</strong>
+                          </button>
+                        </a>
+                      {% elif avatar.use_char_sheet == 2 %}
+                        <em>Genesys Built-In</em>
+                        <a href="{% url 'accounts:view_avatar' avatar.id %}">
+                          <button type="button" class="btn btn-outline-primary btn-sm align-right">
+                            View / Change <strong>&#12299</strong>
+                          </button>
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="container">
+            <p><strong>You have not created any avatars.</strong></p>
+            <p><em>insert button to make one</em></p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

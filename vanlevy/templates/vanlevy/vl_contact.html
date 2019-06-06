@@ -1,0 +1,146 @@
+{% extends 'vl_base.html' %}
+{% load static %}
+{% block brand %}
+  <h3>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+        Van Levy
+    </a>
+    <a class="navbar-brand">
+      <span style="color: white; margin-left: -18px;"> - Contact Us</span>
+    </a>
+  </h3>
+{% endblock %}
+{% block bottom_dice %}
+{% endblock %}
+{% block bottom_resources %}
+{% endblock %}
+{% block bottom_links %}
+{% endblock %}
+
+{% block head %}
+<meta charset="UTF-8">
+<title>VanLevy Contact Us</title>
+
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <br>
+  <div class="row">
+    <div class="col" style="text-align: center;">
+      <h2>Contact someone at www.VanLevy.com</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 col-12"></div>
+    <div class="col-lg-8">
+      <p style="font-size: 0.80em;">
+        Please fill out this form to send us your thoughts, comments, questions, queries, or quantities... of money.
+        The kobolds that bring us these messages are specially trained to bring us offers of money quickly.
+        For all other topics, they've been known to get ... distracted.  I wouldn't expect too much, if I were you.
+      </p>
+    </div>
+    <div class="col-lg-2 col-12"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-2 col-12"></div>
+    <div class="col-lg-8">
+      <form method="post"  autocomplete="off">
+      {% csrf_token %}
+        <div class="row">
+          <div class="col-8">
+            <p>
+              Is there a part of the website you wanted to talk about?<br>
+              {{ contact_form.area_of_concern }}<br>
+            </p>
+          </div>
+          <div class="col-4">
+            {% for error in contact_form.area_of_concern.errors %}
+              <div class="alert alert-danger alert-dismissible fade show">
+                <strong>{{ error|escape }}</strong>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+           <p>
+             Is there an issue you wanted to tell us about?<br>
+             {{ contact_form.issue_type }}<br>
+           </p>
+          </div>
+          <div class="col-4">
+            {% for error in contact_form.issue_type.errors %}
+              <div class="alert alert-danger alert-dismissible fade show">
+                <strong>{{ error|escape }}</strong>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <p>
+          Message<br>
+          {{ contact_form.message }}<br>
+        </p>
+        <p>
+          <em>optional:</em> If you want us to be able to contact you, please leave your email below.<br>
+          {{ contact_form.given_email }}<br>
+        </p>
+        <p><br></p>
+        {% if contact_form.errors %}
+          {% for field in contact_form %}
+            {% for error in field.errors %}
+              <div class="alert alert-danger alert-dismissible fade show">
+                <strong>{{ error|escape }}</strong>
+              </div>
+            {% endfor %}
+          {% endfor %}
+          {% for error in contact_form.non_field_errors %}
+            <div class="alert alert-warning alert-dismissible fade show">
+              <strong>{{ error|escape }}</strong>
+            </div>
+          {% endfor %}
+        {% endif %}
+        <p>Once you've finished the form, click below,</p>
+        <button type="button" id="fake_submit" class="btn btn-outline-success" style="display: inline;"
+                onclick="switchButtons()">
+          Finished
+        </button>
+        <span style="display: none; color: darkred" id="submit_message"><strong>
+          Are you sure you want to send this message? Press that button over there. &#8594;
+        </strong></span>
+        <button type="submit" id="real_submit" class="btn btn-success btn-lg align-right" style="display: none;">
+          SEND
+        </button>
+      </form>
+      <div class="row" id="other_submit_message" style="display: none; text-align: right;">
+        <div class="col" style="text-align: right;">
+          <p>
+            Nothing happens 'til you hit that "SEND" button. &#8593;
+            <br>Check your message; find that typo,
+            <br>and click the button, already!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-12"></div>
+  </div>
+</div>
+
+<script>
+function switchButtons() {
+  document.getElementById('fake_submit').style.display='none';
+  document.getElementById('real_submit').style.display='inline';
+  document.getElementById('submit_message').style.display='inline';
+  document.getElementById('other_submit_message').style.display='inline';
+}
+</script>
+
+{% endblock %}
+
+
+{% block page_scripts %}
+
+{% endblock %}

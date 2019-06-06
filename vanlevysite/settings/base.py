@@ -143,6 +143,7 @@ LOGIN_EXEMPT_URLS = (
     '/resources/',
     '/dice-rollers/',
     '/terms/',
+    '/contact/',
     # Accounts pages - About and necessary to login/logout, register, reset password
     # Accounts login is handled explicitly in middleware
     LOGIN_REQUIRED_URL,

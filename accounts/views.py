@@ -187,6 +187,89 @@ def edit_avatar(request, avatar_id=0):
             return render(request, template_name, args)
 
 
+class ViewPDFChars(FormMixin, TemplateView):
+
+    def post(self, request, *args, **kwargs):
+        current_user = request.user
+        if request.method == "POST" and "archive" in request.POST:
+            pdf_id = request.POST['archive']
+            pdf_to_archive = PDFCharSheet.objects.get(id=pdf_id)
+            pdf_to_archive.archived = True
+            pdf_to_archive.save()
+            return redirect('accounts:pdf_charsheets')
+        elif request.method == "POST" and "activate" in request.POST:
+            pdf_id = request.POST['activate']
+            pdf_to_archive = PDFCharSheet.objects.get(id=pdf_id)
+            pdf_to_archive.archived = False
+            pdf_to_archive.save()
+            return redirect('accounts:pdf_charsheets')
+        elif request.method == "POST" and "new_pdf" in request.POST:
+            new_pdf_form = NewPDFForm(request.POST)
+            if new_pdf_form.is_valid():
+                new_pdf_post = new_pdf_form.save(commit=False)
+                test_url = new_pdf_post.pdf_url
+                if 'drive.google.com' in test_url:
+                    if 'open?id=' in test_url:
+                        test_url = test_url.replace('open?id=', 'file/d/', 1)
+                    if 'preview' not in test_url:
+                        if 'view' in test_url:
+                            test_url = test_url.replace('view', 'preview', 1)
+                        else:
+                            test_url += '/preview'
+                    new_pdf_post.pdf_url = test_url
+                new_pdf_post.user = current_user
+                new_pdf_post.created_on = datetime.datetime.now()
+                new_pdf_post.save()
+                return redirect('accounts:pdf_charsheets')
+            else:
+                pdf_list_active = PDFCharSheet.objects.filter(user=current_user, archived=False)
+                if len(pdf_list_active) > 0:
+                    num_pdfs_active = len(pdf_list_active)
+                else:
+                    num_pdfs_active = 0
+
+                pdf_list_archived = PDFCharSheet.objects.filter(user=current_user, archived=True)
+                if len(pdf_list_archived) > 0:
+                    num_pdfs_archived = len(pdf_list_archived)
+                else:
+                    num_pdfs_archived = 0
+
+                num_pdfs_total = num_pdfs_active + num_pdfs_archived
+
+                args = {'pdf_list_active': pdf_list_active, 'pdf_list_archived': pdf_list_archived,
+                        'num_pdfs_total': num_pdfs_total, 'num_pdfs_active': num_pdfs_active,
+                        'num_pdfs_archived': num_pdfs_archived, 'new_pdf_form': new_pdf_form}
+                template_name = 'accounts/profile_pdf_chars.html'
+                return render(request, template_name, args)
+
+        else:
+            return redirect('vanlevy:portal')
+
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+        pdf_list_active = PDFCharSheet.objects.filter(user=current_user, archived=False).order_by('-created_on')
+        if len(pdf_list_active) > 0:
+            num_pdfs_active = len(pdf_list_active)
+        else:
+            num_pdfs_active = 0
+
+        pdf_list_archived = PDFCharSheet.objects.filter(user=current_user, archived=True).order_by('-created_on')
+        if len(pdf_list_archived) > 0:
+            num_pdfs_archived = len(pdf_list_archived)
+        else:
+            num_pdfs_archived = 0
+
+        new_pdf_form = NewPDFForm()
+
+        num_pdfs_total = num_pdfs_active + num_pdfs_archived
+
+        args = {'pdf_list_active': pdf_list_active, 'pdf_list_archived': pdf_list_archived,
+                'num_pdfs_total': num_pdfs_total, 'num_pdfs_active': num_pdfs_active,
+                'num_pdfs_archived': num_pdfs_archived, 'new_pdf_form': new_pdf_form}
+        template_name = 'accounts/profile_pdf_chars.html'
+        return render(request, template_name, args)
+
+
 class ViewAvatar(FormMixin, TemplateView):
     # request, avatar_id=0
 
@@ -194,7 +277,7 @@ class ViewAvatar(FormMixin, TemplateView):
         # get avatar choices for enter room forms
         kwargs = super().get_form_kwargs()
         current_user_id = self.request.user.id
-        my_pdfs = PDFCharSheet.objects.filter(user=current_user_id)
+        my_pdfs = PDFCharSheet.objects.filter(user=current_user_id, archived=False)
         if len(my_pdfs) > 0:
             pdfs_list = [(0, 'Remove PDF')]
             for pdf in my_pdfs:

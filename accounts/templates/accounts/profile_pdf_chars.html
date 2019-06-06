@@ -1,0 +1,320 @@
+{% extends 'accounts_base.html' %}
+
+{% block head %}
+  <meta charset="UTF-8">
+  <title>My PDFs</title>
+
+<style>
+  /* xs */
+  @media (max-width: 575px) { #info_row {min-height: 320px;} }
+
+  /* sm */
+  @media (min-width: 576px) { #info_row {min-height: 300px;} }
+  /* md */
+  @media (min-width: 768px) { #info_row {min-height: 230px;} }
+  /* lg */
+  @media (min-width: 992px) { #info_row {min-height: 215px;} }
+  /* xl */
+  @media (min-width: 1200px) {#info_row {min-height: 200px;} }
+</style>
+{% endblock %}
+
+{% block Title_link_auth %}{% url 'accounts:about' %}{% endblock %}
+{% block Title_link_not_auth %}{% url 'accounts:about' %}{% endblock %}
+{% block Title %}Accounts{% endblock %}
+
+{% block accounts_page %}
+  {% load static %}
+  <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile" height="32" width="32">
+  <span style="color: white;">PDF Character Sheets</span>
+{% endblock %}
+
+{% block other_navbar_right %}
+  <button class="btn btn-info btn-sm align-right" type="button" data-toggle="collapse"
+          data-target="#infoPanel" aria-expanded="false" aria-controls="infoPanel"
+          style="margin-right: 20px;">
+    Info Panel
+  </button>
+{% endblock %}
+
+{% block body %}
+<br>
+<div class="container">
+  <div class="collapse" id="infoPanel">
+    <div class="row no-gutters" id="info_row">
+      <div class="col-12 hide_md" style="text-align: center;">
+        <div class="btn-group" style="margin-bottom: 6px;">
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#ProfileInfo" aria-expanded="false"
+                  aria-controls="ProfileInfo">
+            PDF Basics
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#DiceTypesInfo" aria-expanded="false" aria-controls="DiceTypesInfo">
+            Archived PDFs
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#HubsVsRooms" aria-expanded="false" aria-controls="HubsVsRooms">
+            PDFs & Avatars
+          </button>
+        </div>
+      </div>
+      <div class="col-md-10">
+        <div class="container" id="allInfoCollapse">
+          <div class="collapse show" id="ProfileInfo" data-parent="#allInfoCollapse">
+            <div class="card border-info mb-3" style="width: 100%;">
+              <div class="card card-body">
+                <img src="{% static '/vanlevy/Tabs.png' %}" width="45px" height="114px"
+                      style="position: absolute; top: 10px; right: 5px;">
+                <h6 class="card-title" style="margin-bottom: 3px;">PDF Basics</h6>
+                <p style="font-size:0.83em; padding-right: 50px;">
+                  PDF's will be displayed in Dice Rooms.  You access them by clicking on the Char tab (like the one
+                  shown in the image to the right). In theory, these are for Character Sheets, but you can use
+                  <em>any</em> pdf that you like.  (So, e.g. GM's could use a pdf sheet of all their NPC's.)
+                  <br>
+                  We don't host your PDFs for you, you have to host them online and submit a link.  The easiest way
+                  to do this is to use (e.g.) Google Drive and the share link.  (Right click on the item in your drive
+                  and select "get shareable link".)
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="DiceTypesInfo" data-parent="#allInfoCollapse">
+            <div class="card border-info mb-3" style="width: 100%;">
+              <div class="card card-body">
+                <h6 class="card-title">Archived PDFs</h6>
+                <p style="font-size:0.83em">
+                  You can upload as many links to PDFs as you like. To help you organize your PDFs, you can
+                  <strong>archive</strong> PDFs you no longer want to use.  This doesn't actually delete them; you can
+                  always <em>activate</em> an archived PDF later.
+                  <br>
+                  <strong>Archived</strong> PDFs aren't removed from Avatars that already have them attached;
+                  they just won't show in the list when you attach a PDF to an Avatar.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="HubsVsRooms" data-parent="#allInfoCollapse">
+            <div class="card border-info mb-3" style="width: 100%;">
+              <div class="card card-body">
+                <h6 class="card-title">PDFs & Avatars</h6>
+                <p style="font-size:0.83em">
+                  You can attach a single PDF to as many different Avatars as you like.  However, each Avatar can have
+                  only one PDF.
+                <br>
+                  This means that, if you want to have the same name and picture, but different character sheets in
+                  two different Dice Rooms, you will need to make two different Avatars.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 show_md">
+        <div class="btn-group-vertical align-right" style="margin-bottom: 12px;">
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#ProfileInfo" aria-expanded="false"
+                  aria-controls="ProfileInfo">
+            PDF Basics
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#DiceTypesInfo" aria-expanded="false" aria-controls="DiceTypesInfo">
+            Archived PDFs
+          </button>
+          <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
+                  data-target="#HubsVsRooms" aria-expanded="false" aria-controls="HubsVsRooms">
+            PDFs & Avatars
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="collapse" id="controlPanel">
+      <div class="row no-gutters" id="control_row">
+        <div class="col-lg-8">
+          <hr>
+          <table width="100%">
+            <col width="25%">
+            <col width="75%">
+            <tr>
+              <td style="text-align: right; vertical-align: top;">
+                <strong>PDF Name</strong>
+              </td>
+              <td>
+                {{ new_pdf_form.pdf_name }}
+                <p></p>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right; vertical-align: top;">
+                <strong>PDF URL</strong>
+              </td>
+              <td>
+                {{ new_pdf_form.pdf_url }}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <button class="btn btn-sm btn-outline-success" type="submit" name="new_pdf">
+                  Submit New PDF
+                </button>
+              </td>
+            </tr>
+          </table>
+          <hr>
+          <!--<br>-->
+        </div>
+        <div class="col-lg-4">
+          <button class="btn btn-outline-info btn-sm align-right" type="button" data-toggle="collapse"
+              data-target="#controlPanel" aria-expanded="false" aria-controls="controlPanel"
+              onclick="showAddNew()" style="position: absolute; bottom: 30px; right: 0px;">
+            Close Control Panel
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        {% if num_pdfs_total > 0 %}
+          <p>
+            You currently have {{ num_pdfs_total }} total linked PDFs.<br>
+            Of which, {{ num_pdfs_active }} are active and {{ num_pdfs_archived }} are archived.
+          </p>
+        {% else %}
+          <p>
+            You have not linked in any PDFs.  To link in a PDF, go to the Profile page, select an Avatar, and click on
+            the "Add" button.  This will let you link a PDF to that Avatar.
+          </p>
+        {% endif %}
+      </div>
+      <div class="col-8">
+        <h4>
+          PDF Character Sheets
+          <button class="btn btn-outline-info btn-sm" type="button" style="margin-left: 20px; display: none;"
+              onclick="viewFirstPDF()" id="view_first_pdf_button">
+            View Instruction PDF
+          </button>
+          <button class="btn btn-info btn-sm align-right" type="button" data-toggle="collapse"
+              data-target="#controlPanel" aria-expanded="false" aria-controls="controlPanel"
+              onclick="hideAddNew()" id="add_new_button">
+            Add New PDF
+          </button>
+        </h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        {% if num_pdfs_total > 0 %}
+          <div class="collapse multi-collapse show" id="activePDFs">
+            {% if num_pdfs_active > 0 %}
+              <h5>
+                Active PDFs
+                {% if num_pdfs_archived > 0 %}
+                  <button class="btn btn-outline-secondary btn-sm align-right" type="button" data-toggle="collapse"
+                      data-target=".multi-collapse" aria-expanded="false" aria-controls="archivedPDFs activePDFS">
+                    Show Archived
+                  </button>
+                {% endif %}
+              </h5>
+              <br>
+              {% for pdf in pdf_list_active %}
+                <div class="card border-primary mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ pdf.pdf_name }}</h5>
+                    <p class="card-text">
+                      <strong>Uploaded:</strong> {{ pdf.created_on|date:"D d M Y" }}
+                      <span id="pdf_{{ pdf.id}}" style="display: none;">{{ pdf.pdf_url }}</span><br><br>
+                      <button class="btn btn-sm btn-outline-danger" type="submit" name="archive" value="{{ pdf.id }}">
+                        Archive {{ pdf.pdf_name }}
+                      </button>
+                      <button class="btn btn-sm btn-outline-primary align-right" type="button"
+                              onclick="viewPDF(pdf_{{ pdf.id}})">
+                        Show {{ pdf.pdf_name }}
+                      </button>
+                    </p>
+                  </div>
+                </div>
+                <p></p>
+              {% endfor %}
+            {% else %}
+              <h5>
+                Active PDFs
+                {% if num_pdfs_archived > 0 %}
+                  <button class="btn btn-primary btn-sm align-right" type="button" data-toggle="collapse"
+                      data-target=".multi-collapse" aria-expanded="false" aria-controls="archivedPDFs activePDFS">
+                    Show Archived
+                  </button>
+                {% endif %}
+              </h5>
+              <br>
+              <p style="color: darkred;">
+                <strong>All of your PDFs have been archived.</strong>
+              </p>
+            {% endif %}
+          </div>
+          <div class="collapse multi-collapse" id="archivedPDFs">
+            <h5>
+              Archived PDFs
+              <button class="btn btn-outline-primary btn-sm align-right" type="button" data-toggle="collapse"
+                  data-target=".multi-collapse" aria-expanded="false" aria-controls="archivedPDFs activePDFs">
+                Show Active
+              </button>
+            </h5>
+            <br>
+            {% for pdf in pdf_list_archived %}
+              <div class="card border-secondary mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">{{ pdf.pdf_name }}</h5>
+                  <p class="card-text">
+                    <strong>Uploaded:</strong> {{ pdf.created_on|date:"D d M Y" }}
+                    <span id="pdf_{{ pdf.id}}" style="display: none;">{{ pdf.pdf_url }}</span><br><br>
+                    <button class="btn btn-sm btn-warning" type="submit" name="activate" value="{{ pdf.id }}">
+                      Activate {{ pdf.pdf_name }}
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary align-right" type="button"
+                            onclick="viewPDF(pdf_{{ pdf.id}})">
+                      Show {{ pdf.pdf_name }}
+                    </button>
+                  </p>
+                </div>
+              </div>
+              <p></p>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>
+            Once you have linked in PDFs, they will appear here.
+          </p>
+        {% endif %}
+      </div>
+      <div class="col-8">
+        <iframe src="{% static '/vanlevy/PDFCharSheet.pdf' %}" style="width: 100%; height: 900px;" id="pdf_display"></iframe>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+function viewPDF(pdf_id) {
+  var new_url = $(pdf_id).text();
+  pdfFrame = $('#pdf_display');
+  pdfFrame.attr('src', new_url);
+  document.getElementById('view_first_pdf_button').style.display='inline';
+};
+function viewFirstPDF() {
+  var url = "{% static '/vanlevy/PDFCharSheet.pdf' %}";
+  pdfFrame = $('#pdf_display');
+  pdfFrame.attr('src', url);
+  document.getElementById('view_first_pdf_button').style.display='none';
+};
+function hideAddNew() {
+  document.getElementById('add_new_button').style.display='none';
+};
+function showAddNew() {
+  document.getElementById('add_new_button').style.display='inline';
+};
+</script>
+{% endblock %}

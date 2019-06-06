@@ -114,15 +114,28 @@
                   <strong>Make New Avatar &#12299</strong>
                 </button>
               </a>
+            <br>
             {% else %}
+              When an Avatar has a Character Sheet, the sheet can be found in a tab in the Dice Rooms.
               <a href="{% url 'accounts:create_avatar' %}">
                 <button type="button" class="btn btn-outline-primary btn-sm align-right">
                   Make New Avatar <strong>&#12299</strong>
                 </button>
               </a>
+            <br>
             {% endif %}
           </p>
+          <hr>
+          <h5 class="card-title">
+            <strong>PDFs: </strong>
+            <a href="{% url 'accounts:pdf_charsheets' %}">
+              <button type="button" class="btn btn-outline-primary btn-sm align-right">
+                PDF Character Sheets <strong>&#12299</strong>
+              </button>
+            </a>
+          </h5>
           <p class="card-text">
+            You can use links to web-hosted PDFs (e.g. Google Drive) to show in Dice Rooms.
           </p>
         </div>
       </div>
@@ -187,10 +200,7 @@
                         </button>
                       </a>
                     {% endif %}
-
-
                   <p><br></p>
-
                 </div>
               </div>
             </div>
