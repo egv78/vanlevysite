@@ -1,14 +1,14 @@
 {% extends 'accounts_base.html' %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>Create Avatar</title>
+  <meta charset="UTF-8">
+  <title>Create Avatar</title>
 {% endblock %}
 
 {% block accounts_page %}
-    {% load static %}
-    <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
-    <span style="color: white;">New Avatar</span>
+  {% load static %}
+  <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
+  <span style="color: white;">New Avatar</span>
 {% endblock %}
 
 {% block navbar_Rooms_button %}
@@ -21,205 +21,234 @@
 
 <br>
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <div class="col-5">
-                <!-- One of two columns -->
-                <h1>Profile</h1>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card border-dark mb-3">
+        <h4 class="card-header">
+          <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="preview()">
+            Show edits
+          </button>
+          <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+          {{user}}<br>New Avatar
+        </h4>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <img src="{% static '/vanlevy/NoImage.png' %}" width="100%" id="new_image">
             </div>
-            <div class="col-7">
-                <!-- Two of two columns -->
-                <h1>Avatar</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <!-- One of two columns -->
-                <p><strong>First Name:</strong> {{user.userprofile.user_first_name}}</p>
-                <p><strong>Last Name:</strong> {{user.userprofile.user_last_name}}</p>
-                <p><strong>Bio:</strong> {{ user.userprofile.user_bio }}</p>
-                <p><strong>Description:</strong> {{user.userprofile.user_description}}</p>
-                {% if user.userprofile.user_url_image %}
-                    <p><img src="{{ user.userprofile.user_url_image }}" width="240"></p>
-                {% else %}
-                    <p><strong>No image uploaded</strong></p>
-                {% endif %}
-            </div>
-            <div class="col-8">
-                <!-- Two of two columns -->
-                <br>
-                <form method="POST" enctype="multipart/form-data" id="createAvatar">
-                    {% csrf_token %}
-                    <table>
-                        <col width="80">
-                        <col width="280">
-                        <tr>
-                            <td class="align-right">
-                                <strong>Name:</strong>
-                            </td>
-                            <td>
-                                {{avatar_form.avatar_name}} <span style="color:red">*</span> Required field
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-right">
-                                <strong>Description:</strong>
-                            </td>
-                            <td>
-                                {{avatar_form.avatar_description}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-right">
-                                <strong>Image:</strong>
-                            </td>
-                            <td>
-                                {{avatar_form.avatar_url_image}}
-                            </td>
-                        </tr>
-                        {% if avatar_form.errors %}
-                          {% for field in avatar_form %}
-                            {% for error in field.errors %}
-                              <tr><td colspan="2">
-                                <div class="alert alert-warning">
-                                  <a class="close" href="#" data-dismiss="alert">×</a>
-                                  {{ error }}
-                                </div>
-                              </td></tr>
-                            {% endfor %}
-                          {% endfor %}
-                        {% endif %}
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button type="submit" class="btn btn-outline-primary">Create your Avatar</button>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-          <div class="col">
-              <h4>Pregenerated Images</h4>
-            <div class="card-group">
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ gravatar }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
-                              onclick="useGravatar('{{ gravatar }}', 'gravatar_button')"
-                      >
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Identicon</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ identicon }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
-                              onclick="useGravatar('{{ identicon }}', 'identicon_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Monster</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ monsterid }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
-                              onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Wavatar</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ wavatar }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
-                              onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Retro</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ retro }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
-                              onclick="useGravatar('{{ retro }}', 'retro_button')">
-                          Pick me!
-                      </button>
-                  </div>
-              </div>
-              <div class="card border-dark mb-3" style="text-align: center;">
-                  <div class="card-header">
-                      <h5 class="card-title">Robohash</h5>
-                  </div>
-                  <div class="card-body text-dark">
-                      <img src="{{ robohash }}" width="90%">
-                      <p></p>
-                      <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
-                              onclick="useGravatar('{{ robohash }}', 'robohash_button')">
-                          Pick me!
-                      </button>
-                  </div>
-                </div>
-            </div>
-              <p>
-                  These are pregenerated images that you can use as profile or avatar images.
-                  The first is your <a href="https://en.gravatar.com/">Gravatar</a> that you control.
-                  (Gravatar is its own website that allows users to upload an image that is used consistently on
-                  multiple sites.)  Your Gravatar is linked to the email address you provided to us.
+            <div class="col-6">
+              <p style="font-size: 1.33em">
+                <strong>
+                  <span id="new_name">Your Avatar's Name</span>
+                </strong>
               </p>
               <p>
-                  Since half of the fun of Roll Playing Games is having different characters, we also provide you with
-                  some alternative possibilities; these use Gravatar, but based on a slightly modified email.
+                <u>Description:</u> <br>
+                <span id="new_description">Your Avatar's Description</span>
               </p>
+              <p><u>Character Sheet:</u> <br>
+                <span style="font-size: 0.8em;">
+                  Once your avatar has been created, you can attach a character sheet.
+                </span>
+              </p>
+            </div>
           </div>
         </div>
+      </div>
     </div>
+    <div class="col-lg-6">
+      <br>
+      <form method="POST" enctype="multipart/form-data" id="createAvatar">
+        {% csrf_token %}
+        <table>
+          <col width="80">
+          <col width="280">
+          <tr>
+            <td class="align-right">
+              <strong>Name:</strong>
+            </td>
+            <td>
+              {{avatar_form.avatar_name}} <span style="color:red">*</span> Required field
+            </td>
+          </tr>
+          <tr>
+            <td class="align-right">
+              <strong>Description:</strong>
+            </td>
+            <td>
+              {{avatar_form.avatar_description}}
+            </td>
+          </tr>
+          <tr>
+            <td class="align-right">
+              <strong>Image URL:</strong><br>
+              <button type="button" class="btn btn-outline-secondary btn-sm align-right" onclick="clearImageURL()"
+                      style="margin-top: 6px;">
+                Clear
+              </button>
+            </td>
+            <td>
+              {{avatar_form.avatar_url_image}}
+            </td>
+          </tr>
+          {% if avatar_form.errors %}
+            {% for field in avatar_form %}
+              {% for error in field.errors %}
+                <tr><td colspan="2">
+                  <div class="alert alert-warning">
+                    <a class="close" href="#" data-dismiss="alert">×</a>
+                    {{ error }}
+                  </div>
+                </td></tr>
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+          <tr>
+            <td></td>
+            <td>
+              <button type="submit" class="btn btn-outline-primary">Create your Avatar</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h4>Pregenerated Images</h4>
+      <div class="card-group">
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ gravatar }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
+                    onclick="useGravatar('{{ gravatar }}', 'gravatar_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Identicon</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ identicon }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
+                    onclick="useGravatar('{{ identicon }}', 'identicon_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Monster</h5>
+          </div>
+            <div class="card-body text-dark">
+              <img src="{{ monsterid }}" width="90%">
+              <p></p>
+              <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
+                      onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
+                Pick me!
+              </button>
+            </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Wavatar</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ wavatar }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
+                    onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Retro</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ retro }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
+                    onclick="useGravatar('{{ retro }}', 'retro_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Robohash</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ robohash }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
+                    onclick="useGravatar('{{ robohash }}', 'robohash_button')">
+              Pick me!
+            </button>
+          </div>
+          </div>
+      </div>
+        <p>
+          These are pregenerated images that you can use as profile or avatar images.
+          The first is your <a href="https://en.gravatar.com/">Gravatar</a> that you control.
+          (Gravatar is its own website that allows users to upload an image that is used consistently on
+          multiple sites.)  Your Gravatar is linked to the email address you provided to us.
+        </p>
+        <p>
+          Since half of the fun of Roll Playing Games is having different characters, we also provide you with
+          some alternative possibilities; these use Gravatar, but based on a hypothetical email.
+        </p>
+    </div>
+  </div>
 </div>
 
 <script>
-function enableAllButtons () {
+  function enableAllButtons () {
     document.getElementById('gravatar_button').disabled = false;
     document.getElementById('identicon_button').disabled = false;
     document.getElementById('monsterid_button').disabled = false;
     document.getElementById('wavatar_button').disabled = false;
     document.getElementById('retro_button').disabled = false;
     document.getElementById('robohash_button').disabled = false;
-};
-function useGravatar(url, button) {
+  };
+  function useGravatar(url, button) {
     document.getElementById('image_url').value = url;
+    $('#new_image').attr('src', url);
     enableAllButtons();
     document.getElementById(button).disabled = true;
-}
-</script>
-<script>
-var $myForm = $("#createAvatar");
-$myForm.submit(function(){
+  };
+  function clearImageURL() {
+    var old_url = "{% static '/vanlevy/NoImage.png' %}";
+    document.getElementById('image_url').value = "";
+    $('#new_image').attr('src', old_url);
+  };
+  function preview() {
+    var new_url = document.getElementById('image_url').value;
+    if (new_url == "") {
+      new_url = "{% static '/vanlevy/NoImage.png' %}";
+    };
+    var new_first_name = document.getElementById('name').value;
+    var new_description_text = document.getElementById('description').value;
+
+    $('#new_image').attr('src', new_url);
+
+    $('#new_name').text(new_first_name);
+    $('#new_description').text(new_description_text);
+  };
+  var $myForm = $("#createAvatar");
+  $myForm.submit(function(){
     $myForm.submit(function(){
-        return false;
+      return false;
     });
-});
+  });
 </script>
 
 {% endblock %}
