@@ -18,241 +18,321 @@
 {% block body %}
 <br>
 <div class="container">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="card border-dark mb-3">
-          <h4 class="card-header">
-            <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
-            Current Profile for {{user}}
-          </h4>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-6">
-                {% if user.userprofile.user_url_image %}
-                  <p><img src="{{ user.userprofile.user_url_image }}" width="100%"></p>
-                {% else %}
-                  <p><strong>No image uploaded</strong></p>
-                {% endif %}
+  <div class="row no-gutters">
+    <div class="col-lg-6">
+      <div class="container-fluid" id="profile_cards" style="margin-left: -15px;">
+        <div class="collapse multi-collapse show" id="current_profile" data-parent="#profile_cards">
+          <div class="card border-dark mb-3">
+            <h4 class="card-header">
+              <button class="btn btn-outline-success btn-sm align-right" type="button" data-toggle="collapse"
+                    data-target=".multi-collapse" aria-expanded="false" aria-controls="current_profile edited_profile"
+                    onclick="preview()">
+                Show edits
+              </button>
+              <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+              {{user}}<br>Current Profile
+            </h4>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  {% if user.userprofile.user_url_image %}
+                    <p><img src="{{ user.userprofile.user_url_image }}" width="100%"></p>
+                  {% else %}
+                    <p><strong>No image uploaded</strong></p>
+                  {% endif %}
+                </div>
+                <div class="col-6">
+                  <p>
+                    {% if user.userprofile.user_first_name %}
+                      <span style="font-size: 1.33em"><strong>{{user.userprofile.user_first_name}}</strong></span>
+                    {% else %}
+                      <em>you have not entered a first name</em>
+                    {% endif %}
+                    <br>
+                    {% if user.userprofile.user_last_name %}
+                      <span style="font-size: 1.33em"><strong>{{user.userprofile.user_last_name}}</strong></span>
+                    {% else %}
+                      <em>you have not entered a last name</em>
+                    {% endif %}
+                  </p>
+                  <p><u>Location:</u> <br>
+                    {{ user.userprofile.user_location }}
+                  </p>
+                  <p>* <u>Email:</u> <br>
+                    {{user.email}}<br>
+                  </p>
+                  <p><u>About Me:</u> <br>
+                    {% if user.userprofile.user_bio %}
+                      {{ user.userprofile.user_bio }}
+                    {% else %}
+                      <em>You can add information about you.</em>
+                    {% endif %}
+                  </p>
+                  <p><u>Gaming Interests:</u> <br>
+                    {% if user.userprofile.user_description %}
+                      {{user.userprofile.user_description}}
+                    {% else %}
+                      <em>You can add gaming interests.</em>
+                    {% endif %}
+                  </p>
+                </div>
               </div>
-              <div class="col-6">
-                <p>
-                  {% if user.userprofile.user_first_name %}
-                    <span style="font-size: 1.33em"><strong>{{user.userprofile.user_first_name}}</strong></span>
-                  {% else %}
-                    <em>you have not entered a first name</em>
-                  {% endif %}
-                  <br>
-                  {% if user.userprofile.user_last_name %}
-                    <span style="font-size: 1.33em"><strong>{{user.userprofile.user_last_name}}</strong></span>
-                  {% else %}
-                    <em>you have not entered a last name</em>
-                  {% endif %}
-                </p>
-                <p><u>Location:</u> <br>
-                  {{ user.userprofile.user_location }}
-                </p>
-                <p><u>Email:</u> <br>
-                  {{user.email}}<br>
-                </p>
-                <p><u>About Me:</u> <br>
-                  {% if user.userprofile.user_bio %}
-                    {{ user.userprofile.user_bio }}
-                  {% else %}
-                    <em>You can add information about you.</em>
-                  {% endif %}
-                </p>
-                <p><u>Gaming Interests:</u> <br>
-                  {% if user.userprofile.user_description %}
-                    {{user.userprofile.user_description}}
-                  {% else %}
-                    <em>You can add gaming interests.</em>
-                  {% endif %}
-                </p>
+            </div>
+          </div>
+        </div>
+        <div class="collapse multi-collapse" id="edited_profile" data-parent="#profile_cards">
+          <div class="card border-success mb-3">
+            <h4 class="card-header">
+              <button class="btn btn-outline-dark btn-sm align-right" type="button" data-toggle="collapse"
+                    data-target=".multi-collapse" aria-expanded="false"
+                      aria-controls="current_profile edited_profile">
+                Show Original
+              </button>
+              <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+              {{user}}<br>Edited Profile
+              <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="preview()">
+                Refresh
+              </button>
+            </h4>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <img src="{{ user.userprofile.user_url_image }}" width="100%" id="new_image">
+                </div>
+                <div class="col-6">
+                  <p style="font-size: 1.33em">
+                    <strong>
+                      <span id="new_first_name">{{user.userprofile.user_first_name}}</span>
+                    </strong>
+                    <br>
+                    <strong>
+                      <span id="new_last_name">{{user.userprofile.user_last_name}}</span>
+                    </strong>
+                  </p>
+                  <p><u>Location:</u> <br>
+                    <span id="new_location">{{ user.userprofile.user_location }}</span>
+                  </p>
+                  <p>* <u>Email: </u> <br>
+                    {{user.email}}<br>
+                  </p>
+                  <p><u>About Me:</u> <br>
+                    <span id="new_about_me">{{ user.userprofile.user_bio }}</span>
+                  </p>
+                  <p><u>Gaming Interests:</u> <br>
+                    <span id="new_gaming_interests">{{user.userprofile.user_description}}</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6">
-        <h2>Edit Profile</h2>
-        <br>Emails cannot be changed at this time.
-        <p></p>
-        <form method="post" enctype="multipart/form-data" id="editProfile">
-          {% csrf_token %}
-          <table>
-            <tr>
-              <td class="align-right"><strong>First Name:</strong></td>
-              <td>{{profile_form.user_first_name}} </td>
-            </tr>
-            <tr>
-              <td class="align-right"><strong>Last Name:</strong></td>
-              <td>{{profile_form.user_last_name}} </td>
-            </tr>
-            <tr>
-              <td class="align-right"><strong>Location:</strong></td>
-              <td>{{profile_form.user_location}}</td>
-            </tr>
-            <tr>
-              <td class="align-right"><strong>About Me:</strong></td>
-              <td>{{profile_form.user_bio}} </td>
-            </tr>
-            <tr>
-              <td class="align-right"><strong>Gaming<br>Interests:</strong></td>
-              <td>{{profile_form.user_description}} </td>
-            </tr>
-            <tr>
-              <td class="align-right"><strong>Image URL:</strong></td>
-              <td>{{profile_form.user_url_image}} </td>
-            </tr>
-            {% if profile_form.errors %}
-              {% for field in profile_form %}
-                {% for error in field.errors %}
-                  <tr><td colspan="2">
-                    <div class="alert alert-warning">
-                      <a class="close" href="#" data-dismiss="alert">×</a>
-                      {{ error }}
-                    </div>
-                  </td></tr>
-                {% endfor %}
+      <em>* Emails cannot be changed at this time.</em>
+    </div>
+    <div class="col-lg-6">
+      <h2>Edit Profile</h2>
+      <form method="post" enctype="multipart/form-data" id="editProfile">
+        {% csrf_token %}
+        <table>
+          <tr>
+            <td class="align-right"><strong>First Name:</strong></td>
+            <td>{{profile_form.user_first_name}} </td>
+          </tr>
+          <tr>
+            <td class="align-right"><strong>Last Name:</strong></td>
+            <td>{{profile_form.user_last_name}} </td>
+          </tr>
+          <tr>
+            <td class="align-right"><strong>Location:</strong></td>
+            <td>{{profile_form.user_location}}</td>
+          </tr>
+          <tr>
+            <td class="align-right"><strong>About Me:</strong></td>
+            <td>{{profile_form.user_bio}} </td>
+          </tr>
+          <tr>
+            <td class="align-right"><strong>Gaming<br>Interests:</strong></td>
+            <td>{{profile_form.user_description}} </td>
+          </tr>
+          <tr>
+            <td class="align-right">
+              <strong>Image URL:</strong><br>
+              <button type="button" class="btn btn-outline-secondary btn-sm align-right" onclick="revertImageURL()"
+                      style="margin-top: 6px;">
+                Revert
+              </button>
+            </td>
+            <td>{{ profile_form.user_url_image }} </td>
+          </tr>
+          {% if profile_form.errors %}
+            {% for field in profile_form %}
+              {% for error in field.errors %}
+                <tr><td colspan="2">
+                  <div class="alert alert-warning">
+                    <a class="close" href="#" data-dismiss="alert">×</a>
+                    {{ error }}
+                  </div>
+                </td></tr>
               {% endfor %}
-            {% endif %}
-            <tr>
-              <td></td>
-              <td>
-                <button type="submit" class="btn btn-success">Submit Changes</button>
-                <a href="{% url 'accounts:view_profile' %}">
-                  <button type="button" class="btn btn-outline-danger btn-sm align-right">
-                    Cancel <strong>&#12299</strong>
-                  </button>
-                </a>
-              </td>
-            </tr>
-          </table>
-        </form>
-        <p><br></p>
-      </div>
+            {% endfor %}
+          {% endif %}
+          <tr>
+            <td></td>
+            <td>
+              <button type="submit" class="btn btn-success">Submit Changes</button>
+              <a href="{% url 'accounts:view_profile' %}">
+                <button type="button" class="btn btn-outline-danger btn-sm align-right">
+                  Cancel <strong>&#12299</strong>
+                </button>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <p><br></p>
     </div>
-    <div class="row">
-      <div class="col">
-        <h4>Pregenerated Images</h4>
-        <div class="card-group">
-          <div class="card border-dark mb-3" style="text-align: center;">
-            <div class="card-header">
-              <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
-            </div>
-            <div class="card-body text-dark">
-              <img src="{{ gravatar }}" width="90%">
-              <p></p>
-              <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
-                      onclick="useGravatar('{{ gravatar }}', 'gravatar_button')">
-                Pick me!
-              </button>
-            </div>
+  </div>
+  <div class="row" style="margin-top: 25px;">
+    <div class="col">
+      <h4>Pregenerated Images</h4>
+      <div class="card-group">
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
           </div>
-          <div class="card border-dark mb-3" style="text-align: center;">
-            <div class="card-header">
-              <h5 class="card-title">Identicon</h5>
-            </div>
-            <div class="card-body text-dark">
-              <img src="{{ identicon }}" width="90%">
-              <p></p>
-              <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
-                      onclick="useGravatar('{{ identicon }}', 'identicon_button')">
-                Pick me!
-              </button>
-            </div>
-          </div>
-          <div class="card border-dark mb-3" style="text-align: center;">
-            <div class="card-header">
-              <h5 class="card-title">Monster</h5>
-            </div>
-            <div class="card-body text-dark">
-              <img src="{{ monsterid }}" width="90%">
-              <p></p>
-              <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
-                      onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
-                Pick me!
-              </button>
-            </div>
-          </div>
-          <div class="card border-dark mb-3" style="text-align: center;">
-            <div class="card-header">
-              <h5 class="card-title">Wavatar</h5>
-            </div>
-            <div class="card-body text-dark">
-              <img src="{{ wavatar }}" width="90%">
-              <p></p>
-              <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
-                      onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
-                Pick me!
-              </button>
-            </div>
-          </div>
-          <div class="card border-dark mb-3" style="text-align: center;">
-            <div class="card-header">
-              <h5 class="card-title">Retro</h5>
-            </div>
-            <div class="card-body text-dark">
-              <img src="{{ retro }}" width="90%">
-              <p></p>
-              <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
-                      onclick="useGravatar('{{ retro }}', 'retro_button')">
-                Pick me!
-              </button>
-            </div>
-          </div>
-          <div class="card border-dark mb-3" style="text-align: center;">
-            <div class="card-header">
-              <h5 class="card-title">Robohash</h5>
-            </div>
-            <div class="card-body text-dark">
-              <img src="{{ robohash }}" width="90%">
-              <p></p>
-              <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
-                      onclick="useGravatar('{{ robohash }}', 'robohash_button')">
-                Pick me!
-              </button>
-            </div>
+          <div class="card-body text-dark">
+            <img src="{{ gravatar }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
+                    onclick="useGravatar('{{ gravatar }}', 'gravatar_button')">
+              Pick me!
+            </button>
           </div>
         </div>
-          <p>
-            These are pregenerated images that you can use as profile or avatar images.
-            The first is your <a href="https://en.gravatar.com/">Gravatar</a> that you control.
-            (Gravatar is its own website that allows users to upload an image that is used consistently on
-            multiple sites.)  Your Gravatar is linked to the email address you provided to us.
-          </p>
-          <p>
-            Since half of the fun of Roll Playing Games is having different characters, we also provide you with
-            some alternative possibilities; these use Gravatar, but based on a fake (non-existent) email tied to
-            your account here at vanlevy.com.
-          </p>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Identicon</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ identicon }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
+                    onclick="useGravatar('{{ identicon }}', 'identicon_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Monster</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ monsterid }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
+                    onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Wavatar</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ wavatar }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
+                    onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Retro</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ retro }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
+                    onclick="useGravatar('{{ retro }}', 'retro_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
+        <div class="card border-dark mb-3" style="text-align: center;">
+          <div class="card-header">
+            <h5 class="card-title">Robohash</h5>
+          </div>
+          <div class="card-body text-dark">
+            <img src="{{ robohash }}" width="90%">
+            <p></p>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
+                    onclick="useGravatar('{{ robohash }}', 'robohash_button')">
+              Pick me!
+            </button>
+          </div>
+        </div>
       </div>
+        <p>
+          These are pregenerated images that you can use as profile or avatar images.
+          The first is your <a href="https://en.gravatar.com/">Gravatar</a> that you control.
+          (Gravatar is its own website that allows users to upload an image that is used consistently on
+          multiple sites.)  Your Gravatar is linked to the email address you provided to us.
+        </p>
+        <p>
+          Since half of the fun of Roll Playing Games is having different characters, we also provide you with
+          some alternative possibilities; these use Gravatar, but based on a fake (non-existent) email tied to
+          your account here at vanlevy.com.
+        </p>
     </div>
+    <p style="display: none;" id="initial_url">{{ user.userprofile.user_url_image }}</p>
   </div>
 </div>
 
 <script>
 function enableAllButtons () {
-    document.getElementById('gravatar_button').disabled = false;
-    document.getElementById('identicon_button').disabled = false;
-    document.getElementById('monsterid_button').disabled = false;
-    document.getElementById('wavatar_button').disabled = false;
-    document.getElementById('retro_button').disabled = false;
-    document.getElementById('robohash_button').disabled = false;
+  document.getElementById('gravatar_button').disabled = false;
+  document.getElementById('identicon_button').disabled = false;
+  document.getElementById('monsterid_button').disabled = false;
+  document.getElementById('wavatar_button').disabled = false;
+  document.getElementById('retro_button').disabled = false;
+  document.getElementById('robohash_button').disabled = false;
 };
 function useGravatar(url, button) {
-    document.getElementById('image_url').value = url;
-    enableAllButtons();
-    document.getElementById(button).disabled = true;
-}
+  document.getElementById('image_url').value = url;
+  enableAllButtons();
+  document.getElementById(button).disabled = true;
+};
+function revertImageURL() {
+  var old_url = document.getElementById('initial_url').innerText;
+  document.getElementById('image_url').value = old_url;
+};
+function preview() {
+  var new_url = document.getElementById('image_url').value;
+  var new_first = document.getElementById('first_name').value;
+  var new_last = document.getElementById('last_name').value;
+  var new_about = document.getElementById('about_me').value;
+  var new_gaming = document.getElementById('gaming_interests').value;
+  var new_location = document.getElementById('location').value;
+
+  img_element = $('#new_image');
+  img_element.attr('src', new_url);
+
+  $('#new_first_name').text(new_first);
+  $('#new_last_name').text(new_last);
+  $('#new_about_me').text(new_about);
+  $('#new_gaming_interests').text(new_gaming);
+  $('#new_location').text(new_location);
+};
 </script>
 <script>
 var $myForm = $("#editProfile");
 $myForm.submit(function(){
-    $myForm.submit(function(){
-        return false;
-    });
+  $myForm.submit(function(){
+    return false;
+  });
 });
 </script>
 
@@ -260,3 +340,11 @@ $myForm.submit(function(){
 
 {% block page_scripts %}
 {% endblock %}
+
+<!--
+  var icon_url = "{ static '/vanlevy/profile_background.png' }";
+  img_element = $('#temp_pic');
+  img_element.attr('src', icon_url);
+  document.getElementById('clear_button').style.display='none';
+  document.getElementById('preview_text_1').style.display='none';
+  document.getElementById('preview_text_2').style.display='none';-->
