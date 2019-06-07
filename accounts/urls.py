@@ -22,7 +22,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('register/success/', views.register_success, name='register_success'),
     path('profile/', views.view_profile, name='view_profile'),
-    path('profile/<int:other_user_id>/', views.view_profile_other, name='view_profile_other'),
+    # path('profile/<int:other_user_id>/', views.view_profile_other, name='view_profile_other'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
 
     path('profile/create_avatar/', views.edit_avatar, name='create_avatar'),
