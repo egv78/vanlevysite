@@ -28,6 +28,11 @@
 {% endblock brand %}
 
 {% block other_navbar_right %}
+<button type="button" class="btn btn-sm btn-light" data-toggle="collapse" style="margin-right: 15px; display: none;"
+      data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
+      id="show_chat_input_navbar" onclick="hide('show_chat_input_navbar')">
+  Show Chat
+</button>
 <a href="{% url 'gendice:genroom_info' room_number %}">
   <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
   {% block info_label %}
@@ -43,7 +48,7 @@
 <!-- endblock -->
 
 {% block body %}
-<div class="container">
+<div class="container" style="padding: 0px;">
 <br>
   {% if not viewing_basic_room %}
     <div class="row no-gutters">
@@ -63,12 +68,12 @@
   {% if not room.disabled %}
   <form id="destiny" method="POST" autocomplete="off">
     {% csrf_token %}
-      <div class="row no-gutters" style="margin-bottom: 12px;">
-        <div class="col-lg-9 col-xl-8">
+      <div class="row no-gutters" style="padding: 0px; margin-bottom: 12px;">
+        <div class="col-12 col-lg-9 col-xl-8" style="padding: 0px;">
           {% block destiny %}
             <div class="dice-box" id="destiny_area">
               <div class="row no-gutters">
-                <div class="col-6 col-md-3 col-lg-2">
+                <div class="col-4 col-sm-3 col-md-2">
                   <table class="destiny_table">
                     <tr>
                       <td style="width:12px;">
@@ -92,24 +97,11 @@
                     </tr>
                   </table>
                 </div>
-                <div class="col-12 order-last col-md-6 order-md-4 col-lg-8">
-                  <span class="container-fluid" id="destiny_box">
-                    {% if dark_pips == 0  and light_pips == 0 %}
-                      There are no Story Points
-                    {% endif %}
-                    {% for i in dark_pips|get_range %}
-                      <img src="{% static 'gendice/Pips/gm.png' %}" width="40" title="GM">
-                    {% endfor %}
-                    {% for i in light_pips|get_range %}
-                      <img src="{% static 'gendice/Pips/player.png' %}" width="40" title="Player">
-                    {% endfor %}
-                  </span>
-                </div>
-                <div class="col-6 col-md-3 order-md-last col-lg-2 order-lg-last">
+                <div class="col-4 col-sm-3 col-md-2 offset-4 offset-sm-0 order-sm-last">
                   <table class="destiny_table">
                     <tr>
                       <td style="width:36px;"> <!-- style="width:36px;" -->
-                        <button type="submit" class="btn btn-outline-dark" name="use_light"
+                        <button type="submit" class="btn btn-outline-dark align-right" name="use_light" style="padding: 6px;"
                                 id="use_light" title="Flip a Story Point from Player to GM"
                                 {% if light_pips == 0 %}disabled{% endif %}>
                           Use<br>Player
@@ -129,32 +121,26 @@
                     </tr>
                   </table>
                 </div>
+                <div class="col-12 col-sm-6 col-md-8 order-first order-sm-3">
+                  <span class="container-fluid" id="destiny_box">
+                    {% if dark_pips == 0  and light_pips == 0 %}
+                      There are no Story Points
+                    {% endif %}
+                    {% for i in dark_pips|get_range %}
+                      <img src="{% static 'gendice/Pips/gm.png' %}" width="40" title="GM">
+                    {% endfor %}
+                    {% for i in light_pips|get_range %}
+                      <img src="{% static 'gendice/Pips/player.png' %}" width="40" title="Player">
+                    {% endfor %}
+                  </span>
+                </div>
               </div>
             </div>
             {% endblock destiny %}
             {% block dice_box %}
               <div class="dice-box">
                 <div class="row no-gutters justify-content-start">
-                  <div class="col-6 col-md-3 col-lg-2">
-                    <table class="dice_table_sml">
-                      <tr>
-                        <td>
-                          <img src="{% static 'gendice/Dice/gen_boost.png' %}" width="40" title="Boost">
-                          {{ dice_form.num_boost_dice }}
-                        </td>
-                        <td>
-                          <button type="button" onclick="addOne('boost')" class="btn btn-light btn-sm">
-                            &#9650
-                          </button>
-                          <br>
-                          <button type="button" onclick="subtractOne('boost')" class="btn btn-light btn-sm">
-                            &#9660
-                          </button>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -173,7 +159,7 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -192,26 +178,26 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
-                          <img src="{% static 'gendice/Dice/gen_setback.png' %}" width="40" title="Setback">
-                          {{ dice_form.num_setback_dice }}
+                          <img src="{% static 'gendice/Dice/gen_boost.png' %}" width="40" title="Boost">
+                          {{ dice_form.num_boost_dice }}
                         </td>
                         <td>
-                          <button type="button" onclick="addOne('setback')" class="btn btn-light btn-sm">
+                          <button type="button" onclick="addOne('boost')" class="btn btn-light btn-sm">
                             &#9650
                           </button>
                           <br>
-                          <button type="button" onclick="subtractOne('setback')" class="btn btn-light btn-sm">
+                          <button type="button" onclick="subtractOne('boost')" class="btn btn-light btn-sm">
                             &#9660
                           </button>
                         </td>
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -230,7 +216,7 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -249,13 +235,26 @@
                       </tr>
                     </table>
                   </div>
-                  <!--<div class="col-6 col-md-3 col-lg-2">-->
-                    <!--<table class="dice_table_sml">-->
-                      <!--<tr><td>-->
-                      <!--</td></tr>-->
-                    <!--</table>-->
-                  <!--</div>-->
-                  <div class="col-12 col-md-6 col-lg-4">
+                  <div class="col-4 col-sm-3 col-md-2">
+                    <table class="dice_table_sml">
+                      <tr>
+                        <td>
+                          <img src="{% static 'gendice/Dice/gen_setback.png' %}" width="40" title="Setback">
+                          {{ dice_form.num_setback_dice }}
+                        </td>
+                        <td>
+                          <button type="button" onclick="addOne('setback')" class="btn btn-light btn-sm">
+                            &#9650
+                          </button>
+                          <br>
+                          <button type="button" onclick="subtractOne('setback')" class="btn btn-light btn-sm">
+                            &#9660
+                          </button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-8 col-sm-6 col-md-4">
                     <table class="dice_table_lrg">
                       <tr>
                         <td>
@@ -275,7 +274,12 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-4">
+                  <div class="col-4 col-sm-3 col-md-2 d-inline d-sm-none">
+                    <table class="dice_table_sml">
+                      <tr><td></td></tr>
+                    </table>
+                  </div>
+                  <div class="col-8 col-sm-6 col-md-4">
                     <table class="dice_table_lrg">
                       <tr>
                         <td>
@@ -284,15 +288,9 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-4">
-                    <table class="dice_table_lrg">
+                  <div class="col-4 col-sm-3 col-md-2 d-none d-md-inline">
+                    <table class="dice_table_sml">
                       <tr><td style="text-align: center;">
-                        {% if player_is_gm %}
-                          <button type="submit" class="btn btn-outline-secondary btn-sm" id="clear_destiny"
-                                  name="clear_destiny" {% if dark_pips == 0 and light_pips == 0 %}disabled{% endif %}>
-                            Clear ALL <br>Story Points
-                          </button>
-                        {% endif %}
                       </td></tr>
                     </table>
                     <div class="container-fluid" style="display: none;">
@@ -302,9 +300,21 @@
                       {{ dice_form.additional_dark_pips }}
                     </div>
                   </div>
+                  <div class="col-4 col-sm-3 col-md-2">
+                    <table class="dice_table_sml">
+                      <tr><td style="text-align: center;">
+                        {% if player_is_gm %}
+                          <button type="submit" class="btn btn-outline-secondary btn-sm" id="clear_destiny"
+                                  name="clear_destiny" {% if dark_pips == 0 and light_pips == 0 %}disabled{% endif %}>
+                            Clear ALL <br>Story Points
+                          </button>
+                        {% endif %}
+                      </td></tr>
+                    </table>
+                  </div>
                 </div>
                 <div class="row no-gutters" id="hidden_fields_1" style="display:none">
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -323,7 +333,7 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -342,7 +352,7 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -361,7 +371,15 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2 d-none d-sm-inline">
+                    <table class="dice_table_sml">
+                      <tr>
+                        <td>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -380,7 +398,7 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -399,7 +417,7 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-6 col-md-3 col-lg-2">
+                  <div class="col-4 col-sm-3 col-md-2">
                     <table class="dice_table_sml">
                       <tr>
                         <td>
@@ -418,25 +436,14 @@
                       </tr>
                     </table>
                   </div>
-                </div>
-                <div class="row no-gutters">
-                  <div class="col-12 col-md-6 col-lg-4" style="text-align:center">
-                    <table class="dice_table_lrg">
-                      <tr>
-                        <td>
-                          <button type="submit" class="btn btn-warning btn-lg" id="roll_dice_button"
-                                  name="roll_dice" style="margin: auto">
-                            <strong>Roll 'Em!</strong>
-                          </button>
-                          <button type="submit" class="btn btn-outline-warning btn-lg" id="roll_dice_secret_button"
-                                  name="roll_dice_secret" style="margin: auto; display: none;">
-                            <strong>Roll 'Em</strong><em>, secretly!</em>
-                          </button>
-                        </td>
-                      </tr>
+                  <div class="col-4 col-sm-3 col-md-2 d-none d-sm-inline">
+                    <table class="dice_table_sml">
+                      <tr><td></td></tr>
                     </table>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-4" style="text-align:center">
+                </div>
+                <div class="row no-gutters">
+                  <div class="col-8 col-sm-6 col-md-4" style="text-align:center">
                     <table class="dice_table_lrg">
                       <tr>
                         <td>
@@ -459,8 +466,8 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-4" style="text-align:center">
-                    <table class="dice_table_lrg">
+                  <div class="col-4 col-sm-3 col-md-2" style="text-align:center">
+                    <table class="dice_table_sml">
                       <tr>
                         <td>
                           <button type="button" id="show_pips_button" class="btn btn-outline-secondary btn-sm"
@@ -472,6 +479,28 @@
                             Hide Extras
                           </button>
                         </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-8 col-sm-6 col-md-4 order-md-first" style="text-align:center">
+                    <table class="dice_table_lrg">
+                      <tr>
+                        <td>
+                          <button type="submit" class="btn btn-warning btn-lg" id="roll_dice_button"
+                                  name="roll_dice" style="margin: auto">
+                            <strong>Roll 'Em!</strong>
+                          </button>
+                          <button type="submit" class="btn btn-outline-warning btn-lg" id="roll_dice_secret_button"
+                                  name="roll_dice_secret" style="margin: auto; display: none;">
+                            <strong>Roll 'Em</strong><em>, secretly!</em>
+                          </button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-4 col-sm-3 col-md-2" style="text-align:center">
+                    <table class="dice_table_sml">
+                      <tr>
                         <td>
                           <button type="button" id="reset_dice" class="btn btn-outline-secondary btn-sm"
                                   onclick="resetDice()" style="margin: auto;">
@@ -485,64 +514,145 @@
               </div>
             {% endblock dice_box %}
         </div>
-        <div class="col-lg-3 col-xl-4">
-          {% block player_info %}
-            <table style="width: 100%;">
-              <tr>
-                {% if icon %}
-                  <td rowspan="2" style="width:90px">
-                    <img src="{{ icon }}" width="80">
-                  </td>
-                  <td>
-                    <span style="color:gray">You are signed in as: </span>
-                    <br>
-                    {% if avatar_id == 0 %}
-                      <img src="{% static 'vanlevy/Profile_32.png' %}" width="24" title="Profile">
-                    {% else %}
-                      <img src="{% static 'vanlevy/avatar_32.png' %}" width="24" title="Avatar">
-                    {% endif %}
-                    <strong>{{ name_in_room }}</strong>
-                  </td>
-                {% else %}
-                  <td colspan="2">
-                    <span style="color:gray">You are signed in as: </span>
-                    <br>
-                    <strong>{{ name_in_room }}</strong>
-                  </td>
-                {% endif %}
-              </tr>
-              <tr>
-                <td>
-                  <a href="{% url 'gendice:switch_avatar_room_gen' room_number %}">
-                    <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
-                      Switch {% if avatar_id == 0 %}to an{% endif %} Avatar
-                    </button>
-                  </a>
-                  {% if not has_char and avatar_id != 0 %}
-                    <a href="{% url 'accounts:view_avatar' avatar_id %}">
-                      <button type="button" class="btn btn-sm btn-light align-right">
-                        Add Char. Sheet
-                      </button>
-                    </a>
-                  {% endif %}
-                </td>
-              </tr>
-            </table>
-          {% endblock player_info %}
-          {% block chat_header %}
-            <hr>
-            <h5>Chat</h5>
-            {% endblock chat_header %}
-            {% block chat_input %}
-            <div class="container-fluid" id="chat_input" style="padding:0">
-              {{ chat_form.chat_text }}
-              {{ chat_form.recipient }}
-              <button type="submit" name="chat" id="chat_submit"
-                      class="btn {%if start_whisper%}btn-outline-warning{%else%}btn-outline-dark{%endif%} btn-sm" >
-                {%if start_whisper%}Whisper{%else%}Add Chat{%endif%}
-              </button>
+        <div class="col-lg-3 d-none d-lg-block d-xl-none" style="padding-left: 30px;">
+          <!-- This section is only visible when page is lg -->
+          <p>
+            <span style="color:gray">
+              Signed in as:
+            </span>
+            <br>
+            {% if avatar_id == 0 %}
+              <img src="{% static 'vanlevy/Profile_32.png' %}" width="24" title="Profile">
+            {% else %}
+              <img src="{% static 'vanlevy/avatar_32.png' %}" width="24" title="Avatar">
+            {% endif %}
+            <strong>{{ name_in_room }}</strong>
+          </p>
+          <div class="row">
+            {% if icon %}
+              <div class="col-6">
+                <img src="{{ icon }}" width="80" >
+              </div>
+            {% endif %}
+            <div class="col-6">
+              {% if avatar_id > 0 %}
+                <a href="{% url 'swdice:switch_avatar_room' room_number %}">
+                  <button type="button" class="btn btn-light btn-sm align-right" name="switch_avatar">
+                    Switch Avatar
+                  </button>
+                </a>
+              {% endif %}
+              <p><br></p>
+              {% if not has_char and avatar_id != 0 %}
+                <a href="{% url 'accounts:view_avatar' avatar_id %}">
+                  <button type="button" class="btn btn-sm btn-light align-right">
+                    Add Char. Sheet
+                  </button>
+                </a>
+              {% endif %}
             </div>
-            {% endblock chat_input %}
+          </div>
+          {% if avatar_id == 0 %}
+          <br>
+            <a href="{% url 'swdice:switch_avatar_room' room_number %}">
+              <button type="button" class="btn btn-light btn-sm " name="switch_avatar">
+                Switch to an Avatar
+              </button>
+            </a>
+          {% endif %}
+          <button type="button" class="btn btn-sm btn-light" name="switch_to_chat" data-toggle="collapse"
+                data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
+                style="position: absolute; bottom: 0; right: 0; display: none;" id="show_chat_input"
+                onclick="hide('show_chat_input')">
+            Show Chat Input
+          </button>
+        </div>
+        <div class="col-12 col-xl-4">
+          <div class="row no-gutters collapse show" id="chatAndInfo">
+            <div class="col-md-6 col-xl-12 d-block d-lg-none d-xl-inline">
+              {% block player_info %}
+                <hr class="d-xl-none">
+                <table style="width: 100%;">
+                  <tr>
+                    {% if icon %}
+                      <td rowspan="2" style="width:90px">
+                        <img src="{{ icon }}" width="80">
+                      </td>
+                      <td>
+                        <span style="color:gray">You are signed in as: </span>
+                        <br>
+                        {% if avatar_id == 0 %}
+                          <img src="{% static 'vanlevy/Profile_32.png' %}" width="24" title="Profile">
+                        {% else %}
+                          <img src="{% static 'vanlevy/avatar_32.png' %}" width="24" title="Avatar">
+                        {% endif %}
+                        <strong>{{ name_in_room }}</strong>
+                      </td>
+                    {% else %}
+                      <td colspan="2">
+                        <span style="color:gray">You are signed in as: </span>
+                        <br>
+                        <strong>{{ name_in_room }}</strong>
+                      </td>
+                    {% endif %}
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="{% url 'gendice:switch_avatar_room_gen' room_number %}">
+                        <button type="button" class="btn btn-light btn-sm align-right" name="switch_avatar">
+                          Switch {% if avatar_id == 0 %}to an{% endif %} Avatar
+                        </button>
+                      </a>
+                      {% if not has_char and avatar_id != 0 %}
+                        <a href="{% url 'accounts:view_avatar' avatar_id %}">
+                          <button type="button" class="btn btn-sm btn-light">
+                            Add Char. Sheet
+                          </button>
+                        </a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                </table>
+              {% endblock player_info %}
+            </div>
+            <div class="col-md-6 col-lg-12">
+              {% block chat_header %}
+                <hr>
+                <div class="row">
+                  <div class="col-12 col-lg-1 col-xl-12">
+                    <h5>Chat</h5>
+                  </div>
+                  {% endblock chat_header %}
+                  {% block chat_input %}
+                  <div class="col-12 col-lg-6 col-xl-12">
+                    {{ chat_form.chat_text }}
+                  </div>
+                  <div class="col-12 col-lg-5 col-xl-12">
+                    {{ chat_form.recipient }}
+                    <br>
+                    <button type="submit" name="chat" id="chat_submit" style="margin-top: 10px;"
+                            class="btn {%if start_whisper%}btn-outline-warning{%else%}btn-outline-dark{%endif%} btn-sm" >
+                      {%if start_whisper%}Whisper{%else%}Add Chat{%endif%}
+                    </button>
+                    <button type="button" class="btn btn-sm btn-light d-none d-lg-inline d-xl-none"
+                            name="hide_chat_info" data-toggle="collapse"
+                            data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
+                            style="position: absolute; right: 0; bottom: 0;" id="hide_chat_input"
+                            onclick="show('show_chat_input')">
+                      Hide Chat Input
+                    </button>
+                    <button type="button" class="btn btn-sm btn-light d-inline d-lg-none"
+                            name="hide_chat_info" data-toggle="collapse"
+                            data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
+                            style="position: absolute; right: 0; bottom: 0;" id="hide_chat_input_2"
+                            onclick="show('show_chat_input_navbar')">
+                      Hide Chat Input
+                    </button>
+                  </div>
+                </div>
+              {% endblock chat_input %}
+            </div>
+          </div>
         </div>
       </div>
   </form>
@@ -551,8 +661,8 @@
   <p>No new rolls or chats may be made in it.</p>
   {% endif %}
   {% endblock form_inputs %}
-    <div class="row no-gutters">
-      <div class="col-lg-9 col-xl-8">
+    <div class="row">
+      <div class="col-12 col-lg-9 col-xl-8">
         {% block alt_destiny %}
         {% endblock %}
         {% block actions_header %}
@@ -569,9 +679,9 @@
                 {% if not action.secret_roll %}
                   <tr>
                 {% elif action.user == user %}
-                  <tr style="background-color:#C3EBCD;"> <!-- GM fff3a2 68C4B0 94C7A0 A8CAB1 B2D6BB -->
+                  <tr style="background-color:#C3EBCD;">
                 {% else %}
-                  <tr style="background-color:#D2FCDC;"> <!-- fff372 7CEBD3 AEEBBC C3EBCD CDF7D8 -->
+                  <tr style="background-color:#D2FCDC;">
                 {% endif %}
                   {% if action.is_just_caption %}
                     <td>
@@ -599,9 +709,6 @@
                             <em>secret roll</em><br>
                           {% endif %}
                         {% endif %}
-                        <!--<strong>-->
-                          <!--{%if action.avatar%}{{action.avatar.avatar_name}}{%else%}{{action.user.username}}{%endif%}-->
-                        <!--</strong>:-->
                         {{ action.caption }}
                       </td>
                   {% else %}
@@ -729,7 +836,7 @@
           </div>
         {% endblock action_log %}
       </div>
-      <div class="col-lg-3 col-xl-4" style="padding:0;">
+      <div class="col-12 col-lg-3 col-xl-4" style="padding:0;">
         {% block alt_chat_header %}
         {% endblock %}
         {% block chat_log %}
@@ -1036,74 +1143,74 @@
           {% else %}
             <table id="chat_table">
               <col width="50px">
-            {% for chat in chat_log %}
-              {% if chat.is_private %}
-                {% if chat.recipient == user %}
-                  <tr style="background-color:#B1DAF2;"> <!--fff372 6CA3BA 76B2CC 8DD4F2 94DFFF-->
-                    <td>
-                      {% if chat.image_url %}
-                        <img src="{{ chat.image_url }}"
-                             title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                             width="40">
-                      {% endif %}
-                    </td>
-                    <td>
-                      {% if chat.avatar %}
-                        <em>{{ chat.avatar.avatar_name }} whispers to you:</em>
-                      {% else %}
-                        <em>{{ chat.user.username }} whispers to you:</em>
-                      {% endif %}
-                      <br>
-                      <em>{{chat.chat_text}}</em>
-                    </td>
-                  </tr>
-                {% elif chat.user == user %}
-                  <tr style="background-color:#9EC3D9;"> <!--fff3a2 5C8A9E 6CA3BA 7EBDD9-->
-                    <td>
-                      {% if chat.image_url %}
-                        <img src="{{ chat.image_url }}"
-                             title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                             width="40">
-                      {% endif %}
-                    </td>
-                    <td>
-                      <em>You whisper to
-                        {% if chat.recipient_avatar %}
-                          {{ chat.recipient_avatar.avatar_name }}:
-                        {% else %}
-                          {{ chat.recipient.username }}:
+              {% for chat in chat_log %}
+                {% if chat.is_private %}
+                  {% if chat.recipient == user %}
+                    <tr style="background-color:#B1DAF2;">
+                      <td>
+                        {% if chat.image_url %}
+                          <img src="{{ chat.image_url }}"
+                               title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                               width="40">
                         {% endif %}
-                      </em>
-                      <br>
-                      <em>{{chat.chat_text}}</em>
+                      </td>
+                      <td>
+                        {% if chat.avatar %}
+                          <em>{{ chat.avatar.avatar_name }} whispers to you:</em>
+                        {% else %}
+                          <em>{{ chat.user.username }} whispers to you:</em>
+                        {% endif %}
+                        <br>
+                        <em>{{chat.chat_text}}</em>
+                      </td>
+                    </tr>
+                  {% elif chat.user == user %}
+                    <tr style="background-color:#9EC3D9;">
+                      <td>
+                        {% if chat.image_url %}
+                          <img src="{{ chat.image_url }}"
+                               title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                               width="40">
+                        {% endif %}
+                      </td>
+                      <td>
+                        <em>You whisper to
+                          {% if chat.recipient_avatar %}
+                            {{ chat.recipient_avatar.avatar_name }}:
+                          {% else %}
+                            {{ chat.recipient.username }}:
+                          {% endif %}
+                        </em>
+                        <br>
+                        <em>{{chat.chat_text}}</em>
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% else %}
+                  <tr>
+                    <td>
+                      {% if chat.image_url %}
+                        <img src="{{ chat.image_url }}"
+                             title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                             width="40">
+                      {% else %}
+                        <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
+                        {% if chat.avatar %}
+                          <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                          <strong>{{ chat.avatar.avatar_name }}</strong></span>
+                        {% else %}
+                          <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                          <strong>{{ chat.user.username }}</strong></span>
+                        {% endif %}
+                        </div>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {{chat.chat_text}}
                     </td>
                   </tr>
                 {% endif %}
-              {% else %}
-                <tr>
-                  <td>
-                    {% if chat.image_url %}
-                      <img src="{{ chat.image_url }}"
-                           title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                           width="40">
-                    {% else %}
-                      <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
-                      {% if chat.avatar %}
-                        <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                        <strong>{{ chat.avatar.avatar_name }}</strong></span>
-                      {% else %}
-                        <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                        <strong>{{ chat.user.username }}</strong></span>
-                      {% endif %}
-                      </div>
-                    {% endif %}
-                  </td>
-                  <td>
-                    {{chat.chat_text}}
-                  </td>
-                </tr>
-              {% endif %}
-            {% endfor %}
+              {% endfor %}
             </table>
           {% endif %}
           </div>
@@ -1274,6 +1381,12 @@ function update_times() {
         setTimeout(update_times, 1000)
     });
     check_and_update();
+};
+function show(id) {
+    document.getElementById(id).style.display='inline';
+};
+function hide(id) {
+    document.getElementById(id).style.display='none';
 };
 </script>
 {% endblock %}

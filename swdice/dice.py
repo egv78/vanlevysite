@@ -131,8 +131,9 @@ def roll_sw_dice(boost=0, ability=0, proficiency=0, setback=0, difficulty=0, cha
         for i in range(additional_dark_pips):
             additional_sides += "Add08,"
 
-    faces_strings = (boost_sides + ability_sides + proficiency_sides + setback_sides + difficulty_sides +
-                     challenge_sides + force_sides + additional_sides)
+    faces_strings = (ability_sides + proficiency_sides + boost_sides +
+                     difficulty_sides + challenge_sides + setback_sides +
+                     force_sides + additional_sides)
 
     good_results = boost_results + ability_results + proficiency_results
     bad_results = setback_results + difficulty_results + challenge_results
