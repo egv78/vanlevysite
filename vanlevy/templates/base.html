@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
 
 
   {% load static %}
-  <link rel="stylesheet" type="text/css" href="{% static '/vanlevy/base_style_19_06_11.css' %}" />
+  {% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static '/vanlevy/files/css/base_style_19_06_11.css' %}" />
+  {% endblock %}
   <link rel="shortcut icon" type="image/png" href="{% static 'vanlevy/favicon32.png' %}">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,12 +21,16 @@
 
 {% block base_scripts %}
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+        crossorigin="anonymous"></script>
 {% endblock %}
 
 </head>
@@ -40,7 +46,7 @@
 
     {% block brand %}
       <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-        <h3><img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+        <h3><img src="{% static '/vanlevy/images/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
           Van Levy
         </h3>
       </a>
@@ -63,7 +69,7 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="{% static '/vanlevy/Profile_32.png' %}" alt="Profile Options"
+                <img src="{% static '/vanlevy/images/Profile_32.png' %}" alt="Profile Options"
                                      height="32" width="32" title="Profile">
               </a>
               <div class="dropdown-menu dropdown-menu-right">
@@ -81,7 +87,7 @@
                 {% block portals %}
                   {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'vanlevy:portal' %}">
-                      <img src="{% static '/vanlevy/Doors_32.png' %}" alt="SW Dice Roller"
+                      <img src="{% static '/vanlevy/images/Doors_32.png' %}" alt="SW Dice Roller"
                            height="32" width="32">
                       Portal Page
                     </a>
@@ -92,7 +98,7 @@
                 {% block link_account %}
                   {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'accounts:view_profile' %}">
-                      <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile Icon"
+                      <img src="{% static '/vanlevy/images/ProfileAvatars_32.png' %}" alt="Profile Icon"
                            height="32" width="32">
                       Profile/Avatars
                     </a>
@@ -104,7 +110,7 @@
                 {% block new_avatar %}
                   {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'accounts:create_avatar' %}">
-                      <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar Icon"
+                      <img src="{% static '/vanlevy/images/NewAvatar_32.png' %}" alt="New Avatar Icon"
                            height="32" width="32">
                       New Avatar
                     </a>
@@ -114,7 +120,7 @@
                 {% block link_logout %}
                   {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'accounts:logout' %}">
-                      <img src="{% static '/vanlevy/Logout_32.png' %}" alt="Logout Icon"
+                      <img src="{% static '/vanlevy/images/Logout_32.png' %}" alt="Logout Icon"
                            height="32" width="32">
                       Logout
                     </a>
@@ -132,8 +138,8 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="{% static '/vanlevy/d20_3colors_32_outline.png' %}" alt="Navigate" title="Dice Rollers"
-                                     height="32" width="32">
+                <img src="{% static '/vanlevy/images/d20_3colors_32_outline.png' %}" alt="Navigate"
+                     title="Dice Rollers" height="32" width="32">
               </a>
               <div class="dropdown-menu dropdown-menu-right">
                 <span class="navbar-text" style="color: black; margin-left: 24px">Dice Rollers</span>
@@ -142,7 +148,7 @@
                   {% block link_dice_sw %}
                     {% if user.is_authenticated %}
                       <a class="dropdown-item" href="{% url 'swdice:dockingbay' %}">
-                        <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller"
+                        <img src="{% static '/vanlevy/images/droid_background_32.png' %}" alt="SW Dice Roller"
                              height="32" width="32">
                         Docking Bay
                       </a>
@@ -154,7 +160,7 @@
                   {% block link_dice_gen %}
                     {% if user.is_authenticated %}
                       <a class="dropdown-item" href="{% url 'gendice:confluence' %}">
-                        <img src="{% static '/vanlevy/Genesys_32.png' %}" alt="Genesys Icon"
+                        <img src="{% static '/vanlevy/images/Genesys_32.png' %}" alt="Genesys Icon"
                                  height="32" width="32">
                         Confluence
                       </a>
@@ -181,7 +187,7 @@
                   {% block link_dice_myz %}
                     {% if user.is_authenticated %}
                       <a class="dropdown-item" href="{% url 'myzdice:the_zone' %}">
-                          <img src="{% static '/vanlevy/MutantYearZero_32.png' %}"
+                          <img src="{% static '/vanlevy/images/MutantYearZero_32.png' %}"
                                alt="Mutant Year Zero Icon" height="32" width="32">
                           The Zone
                       </a>
@@ -209,6 +215,8 @@
     {% endblock %}
 
   {% block body %}
+    {% block scripts %}
+    {% endblock %}
   {% endblock %}
 
   {% block bottom_navbar %}

@@ -96,7 +96,7 @@
                                 aria-expanded="false"
                                 aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}"
                                 id="plusButton_{{room.id}}" onclick="switchToMinus({{room.id}})">
-                          <img src="{% static '/vanlevy/plus_clear_40.png' %}"
+                          <img src="{% static '/vanlevy/images/plus_clear_40.png' %}"
                                alt="info" width="16" height="16">
                         </button>
                         <button class="align-right" type="button" style="padding: 0; display: none;"
@@ -104,7 +104,7 @@
                                 aria-expanded="false"
                                 aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}"
                                 id="minusButton_{{room.id}}" onclick="switchToPlus({{room.id}})">
-                          <img src="{% static '/vanlevy/minus_clear_40.png' %}"
+                          <img src="{% static '/vanlevy/images/minus_clear_40.png' %}"
                                alt="info" width="16" height="16">
                         </button>
                       {% endif %}
@@ -124,7 +124,7 @@
                         <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'polydice:polyroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
                         <button type="button" style="padding: 0;margin-left: 10px;"
                                 onclick="copyURL(link_{{room.id}})">
-                          <img src="{% static '/vanlevy/copy_button_40_clear.png' %}"
+                          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}"
                                alt="info" width="20" height="20">
                         </button>
                       </td>
@@ -140,7 +140,7 @@
                       <td>
                         <strong>Info Page: </strong>
                         <a href="{% url 'polydice:polyroom_info' room.id %}">
-                          <img src="{% static '/vanlevy/info_32.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/info_32.png' %}" alt="info" width="20" height="20">
                         </a>
                       </td>
                     </tr>
@@ -185,7 +185,7 @@
                               data-target=".multi-collapse{{room.id}}"
                               aria-expanded="false"
                               aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}">
-                        <img src="{% static '/vanlevy/plus_clear_40.png' %}" alt="info" width="16" height="16">
+                        <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
                       </button>
                     {% endif %}
                   </td>
@@ -204,7 +204,7 @@
                         <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'polydice:polyroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
                         <button type="button" style="padding: 0;margin-left: 10px;"
                                 onclick="copyURL(link_{{room.id}})">
-                          <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
                         </button>
                       </td>
                     </tr>
@@ -219,7 +219,7 @@
                       <td>
                         <strong>Info Page: </strong>
                         <a href="{% url 'polydice:polyroom_info' room.id %}">
-                          <img src="{% static '/vanlevy/info_32.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/info_32.png' %}" alt="info" width="20" height="20">
                         </a>
                       </td>
                     </tr>

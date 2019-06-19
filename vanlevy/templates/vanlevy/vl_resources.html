@@ -9,7 +9,7 @@
 {% block brand %}
   <h3>
     <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-      <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+      <img src="{% static '/vanlevy/images/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
         Van Levy
     </a>
     <a class="navbar-brand">
@@ -30,13 +30,15 @@
     <p>
       These are the resources that we have created that we want to share with the world.  Enjoy!
     </p>
-    <table>
-      <col width="10%">
-      <col width="15%">
-      <col width="75%">
+    <table class="resource-table">
+      <col class="col-link">
+      <col class="col-category">
+      <col class="col-system">
+      <col class="col-description">
       <tr>
         <th>Link</th>
         <th>Category</th>
+        <th>System</th>
         <th>Description</th>
       </tr>
         <tr>
@@ -44,7 +46,10 @@
             <a href="https://goo.gl/P2GwTw">Kobolds Ate My Baby Char Gen</a>
           </td>
           <td>
-            Character generator - Kobolds Ate My Baby (in color!)
+            Character generator
+          </td>
+          <td>
+            Kobolds Ate My Baby (in color!)
           </td>
           <td>
             This is a link to a view-only Google Spreadsheet.  In order to use it, you will have to  <br>
@@ -63,7 +68,10 @@
             <a href="https://goo.gl/cjGKUu">Aeon Trinity Char Gen</a>
           </td>
           <td>
-            Character Generator - Aeon Trinity
+            Character Generator
+          </td>
+          <td>
+            Aeon Trinity
           </td>
           <td>
             Link to a view-only Google Spreadsheet.  Make your self a copy.

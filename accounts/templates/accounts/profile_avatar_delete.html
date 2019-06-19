@@ -7,7 +7,7 @@
 
 {% block accounts_page %}
     {% load static %}
-    <img src="{% static '/vanlevy/AvatarDelete_32.png' %}" height="32" width="32" title="Avatar">
+    <img src="{% static '/vanlevy/images/AvatarDelete_32.png' %}" height="32" width="32" title="Avatar">
     <span style="color: white;">Delete {{this_avatar.avatar_name}}?</span>
 {% endblock %}
 
@@ -73,13 +73,11 @@ $("#id_deleted").click(function () {
     var revert = 'In order to delete {{avatar_data.avatar_name}}, you must check "Yes" <em>and then</em>'
         + ' click the button.';
     if (document.getElementById('id_deleted_0').checked) {
-        console.log("True")
         button.removeClass('btn btn-outline-success');
         button.addClass('btn btn-outline-danger');
         button.html('I am sure.<br>FEED THIS AVATAR TO THE SARLAAC!<br>(I mean, "Delete this Avatar.")');
         language.innerHTML = new_words;
     } else {
-        console.log("False")
         button.removeClass('btn btn-outline-danger');
         button.addClass('btn btn-outline-success');
         button.html('Never mind.<br>Return to Profile page');

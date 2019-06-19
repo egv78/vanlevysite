@@ -1,22 +1,19 @@
 {% extends 'accounts_base.html' %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>Logout</title>
+  <meta charset="UTF-8">
+  <title>Logout</title>
 {% endblock %}
 
-
-
 {% block body %}
-    <div class="container">
-        <br>
-        <h2>You have logged out.</h2>
-        <p>
-            Thanks for playing!
-        </p>
-        <p>
-            <a href="{% url 'accounts:login' %}">Log back in?</a>
-        </p>
-
-    </div>
+  <div class="container">
+    <br>
+    <h2>You have logged out.</h2>
+    <p>
+      Thanks for playing!
+    </p>
+    <p>
+      <a href="{% url 'accounts:login' %}">Log back in?</a>
+    </p>
+  </div>
 {% endblock %}

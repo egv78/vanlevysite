@@ -25,7 +25,7 @@
 
 {% block accounts_page %}
   {% load static %}
-  <img src="{% static '/vanlevy/ProfileAvatars_32.png' %}" alt="Profile" height="32" width="32">
+  <img src="{% static '/vanlevy/images/ProfileAvatars_32.png' %}" alt="Profile" height="32" width="32">
   <span style="color: white;">PDF Character Sheets</span>
 {% endblock %}
 
@@ -64,7 +64,7 @@
           <div class="collapse show" id="ProfileInfo" data-parent="#allInfoCollapse">
             <div class="card border-info mb-3" style="width: 100%;">
               <div class="card card-body">
-                <img src="{% static '/vanlevy/Tabs.png' %}" width="45px" height="114px"
+                <img src="{% static '/vanlevy/images/Tabs.png' %}" width="45px" height="114px"
                       style="position: absolute; top: 10px; right: 5px;">
                 <h6 class="card-title" style="margin-bottom: 3px;">PDF Basics</h6>
                 <p style="font-size:0.83em; padding-right: 50px;">
@@ -291,7 +291,7 @@
         {% endif %}
       </div>
       <div class="col-8">
-        <iframe src="{% static '/vanlevy/PDFCharSheet.pdf' %}" style="width: 100%; height: 900px;" id="pdf_display"></iframe>
+        <iframe src="{% static '/vanlevy/files/other/PDFCharSheet.pdf' %}" style="width: 100%; height: 900px;" id="pdf_display"></iframe>
       </div>
     </div>
   </form>
@@ -305,7 +305,7 @@ function viewPDF(pdf_id) {
   document.getElementById('view_first_pdf_button').style.display='inline';
 };
 function viewFirstPDF() {
-  var url = "{% static '/vanlevy/PDFCharSheet.pdf' %}";
+  var url = "{% static '/vanlevy/files/other/PDFCharSheet.pdf' %}";
   pdfFrame = $('#pdf_display');
   pdfFrame.attr('src', url);
   document.getElementById('view_first_pdf_button').style.display='none';

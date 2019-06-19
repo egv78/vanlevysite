@@ -8,7 +8,7 @@
 {% block brand %}
 {% load static %}
     <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-        <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+        <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
     </a>
 <span class="d-inline-block text-truncate" style="max-width: 700px; color:white; font-size: 150%; margin-right: 10px;">
     {{room.name}}
@@ -111,7 +111,7 @@
                     <li><strong>Direct Link:</strong>
                         <button type="button" style="padding: 0;margin-left: 10px;"
                                 onclick="copyURL(link_{{room.id}})">
-                          <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
                         </button>
                         <br>
                         <span style="word-wrap: break-word;" id="link_{{room.id}}">

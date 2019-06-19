@@ -702,7 +702,6 @@ class SWRoomViews(FormMixin, TemplateView):
         room = SWRoom.objects.get(pk=swroom_id)
         current_user = self.request.user
         current_user_id = self.request.user.id
-        # genesys = 'genroom' in self.template_name
         genesys = room.genesys
         room_url = 'gendice:genroom' if genesys else 'swdice:swroom'
         hub_url = 'gendice:confluence' if genesys else 'swdice:dockingbay'

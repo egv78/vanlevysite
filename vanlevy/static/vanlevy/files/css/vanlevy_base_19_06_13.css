@@ -1,0 +1,114 @@
+/* universal elements, size-independent */
+body  {overflow-y:scroll;}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] { -moz-appearance:textfield;}
+
+.align-right {
+    float: right;
+    margin: 15px 0px 0px 0px;
+}
+
+.outline-me { border: 1px solid black; }
+
+.resource-table tr:nth-child(odd){background-color: #e8e8e8;}
+.resource-table tr:nth-child(even){background-color: #fafafa;}
+.resource-table tr{border-bottom: 1px solid #bbb;}
+
+.room_name_table div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+.room_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.room_table th, td {
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* RESPONSIVE DESIGN GROUPS*/
+/* Keep all responsive designs in these*/
+
+/* xs  */
+@media (max-width: 575px) {
+    .col-description {width: 200px;}
+    .col-system      {width: 80px;}
+    .col-category    {width: 80px;}
+    .col-link        {width: 80px;}
+
+    .dice-image      {width: 160px;}
+
+    #info_row {min-height: 300px;}
+}
+
+/* sm */
+@media (min-width: 576px) {
+    .col-description {width: 300px;}
+    .col-system      {width: 80px;}
+    .col-category    {width: 80px;}
+    .col-link        {width: 80px;}
+
+    .dice-image      {width: 216px;}
+
+    #info_row {min-height: 280px;}
+    .col-user-name {width: 94px;}
+    .col-room-name {width: 280px;}
+}
+
+/* md */
+@media (min-width: 768px) {
+    .col-description {width: 450px;}
+    .col-system      {width: 90px;}
+    .col-category    {width: 90px;}
+    .col-link        {width: 90px;}
+
+    .dice-image      {width: 288px;}
+
+    #info_row {min-height: 230px;}
+    #profile_card {margin: 0px -15px 0px 0px; padding: 0px 15px 0px 0px;}
+    #char_sheets_card  {margin: 0px 0px 0px 15px; padding: 0px 0px 0px 15px;}
+    .col-user-name {width: 60px;}
+    .col-room-name {width: 168px;}
+}
+
+/* lg */
+@media (min-width: 992px) {
+    .col-description {width: 660px;}
+    .col-system      {width: 100px;}
+    .col-category    {width: 100px;}
+    .col-link        {width: 100px;}
+
+    .dice-image      {width: 192px;}
+
+    #info_row {min-height: 215px;}
+    #profile_card {margin: 0px -15px 0px 0px; padding: 0px;}
+    #char_sheets_card  {margin: 0px -15px 0px 0px; padding: 0px;}
+    .col-user-name {width: 51px;}
+    .col-room-name {width: 145px;}
+}
+
+/* xl */
+@media (min-width: 1200px) {
+    .col-description {width: 798px;}
+    .col-system      {width: 114px;}
+    .col-category    {width: 114px;}
+    .col-link        {width: 114px;}
+
+    .dice-image      {width: 228px;}
+
+    #info_row {min-height: 200px;}
+    .col-user-name {width: 62px;}
+    .col-room-name {width: 184px;}
+}
+/* end responsive groups */

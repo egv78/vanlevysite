@@ -8,7 +8,7 @@
 {% load static %}
 {% block brand %}
   <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-    <img src="{% static '/vanlevy/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+    <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
   </a>
 
   <a class="navbar-brand">
@@ -18,7 +18,7 @@
   </a>
 
   <a class="navbar-brand" style="color:white;" href="{% url 'swdice:dockingbay' %}">
-    <img src="{% static '/vanlevy/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+    <img src="{% static '/vanlevy/images/droid_background_32.png' %}" alt="SW Dice Roller" height="32" width="32">
     {% block subtitle %}{% endblock %}
   </a>
 {% endblock brand %}
@@ -71,12 +71,12 @@
                       <td style="width:12px;">
                         <button type="submit" class="btn btn-light btn-sm" name="add_dark"
                                 title="Add a Dark Destiny Point">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="submit" class="btn btn-light btn-sm" name="rem_dark"
                                 title="Remove a Dark Destiny Point">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                       <td style="width:33px;">
@@ -102,12 +102,12 @@
                       <td style="width:12px;">
                         <button type="submit" class="btn btn-light btn-sm" name="add_light"
                                 title="Add a Light Destiny Point">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="submit" class="btn btn-light btn-sm" name="rem_light"
                                 title="Remove a Light Destiny Point">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -119,10 +119,10 @@
                       There are no Destiny Points
                     {% endif %}
                     {% for i in dark_pips|get_range %}
-                      <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Dark">
+                      <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Dark" alt="Black Pip">
                     {% endfor %}
                     {% for i in light_pips|get_range %}
-                      <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Light">
+                      <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Light" alt="White Pip">
                     {% endfor %}
                   </span>
                 </div>
@@ -136,16 +136,16 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/ability.png' %}" width="40" title="Ability">
+                        <img src="{% static 'swdice/Dice/ability.png' %}" width="40" title="Ability" alt="ability">
                         {{ dice_form.num_ability_dice }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('ability')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('ability')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -155,16 +155,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/proficiency.png' %}" width="40" title="Proficiency">
+                        <img src="{% static 'swdice/Dice/proficiency.png' %}" width="40" title="Proficiency"
+                             alt="Proficiency">
                         {{ dice_form.num_proficiency_dice }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('proficiency')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('proficiency')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -174,16 +175,16 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/boost.png' %}" width="40" title="Boost">
+                        <img src="{% static 'swdice/Dice/boost.png' %}" width="40" title="Boost" alt="boost">
                         {{ dice_form.num_boost_dice }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('boost')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('boost')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -193,16 +194,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/difficulty.png' %}" width="40" title="Difficulty">
+                        <img src="{% static 'swdice/Dice/difficulty.png' %}" width="40" title="Difficulty"
+                             alt="difficulty">
                         {{ dice_form.num_difficulty_dice }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('difficulty')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('difficulty')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -212,16 +214,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/challenge.png' %}" width="40" title="Challenge">
+                        <img src="{% static 'swdice/Dice/challenge.png' %}" width="40" title="Challenge"
+                             alt="challenge">
                         {{ dice_form.num_challenge_dice }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('challenge')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('challenge')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -231,16 +234,16 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/setback.png' %}" width="40" title="Setback">
+                        <img src="{% static 'swdice/Dice/setback.png' %}" width="40" title="Setback" alt="setback">
                         {{ dice_form.num_setback_dice }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('setback')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('setback')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -250,17 +253,18 @@
                   <table class="dice_table_lrg">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/D100.png' %}" width="80" title="Numerical Dice">
+                        <img src="{% static 'swdice/Dice/D100.png' %}" width="80" title="Numerical Dice"
+                             alt="numerical dice">
                         <span class="big-font"> d</span>
                         {{ dice_form.numerical_dice_sides }}
                         {{ dice_form.num_numerical_dice }}
                       <td>
                         <button type="button" onclick="addOne('numerical')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('numerical')" class="btn btn-light btn-sm">
-                            &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -270,16 +274,16 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Dice/force.png' %}" width="40" title="Force">
+                        <img src="{% static 'swdice/Dice/force.png' %}" width="40" title="Force" alt="force">
                         {{ dice_form.num_force_dice }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('force')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('force')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -312,16 +316,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add01.png' %}" title='Automatic Triumph'>
+                        <img src="{% static 'swdice/Faces/Add01.png' %}" title='Automatic Triumph'
+                             alt="automatic triumph">
                         {{ dice_form.additional_triumph }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('triumph')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('triumph')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -331,16 +336,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add03.png' %}" title='Automatic Success'>
+                        <img src="{% static 'swdice/Faces/Add03.png' %}" title='Automatic Success'
+                             alt="Automatic Success">
                         {{ dice_form.additional_success }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('success')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('success')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -350,16 +356,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add05.png' %}" title='Automatic Advantage'>
+                        <img src="{% static 'swdice/Faces/Add05.png' %}" title='Automatic Advantage'
+                             alt="automatic advantage">
                         {{ dice_form.additional_advantage }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('advantage')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('advantage')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -369,16 +376,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add07.png' %}" title='Automatic Light'>
+                        <img src="{% static 'swdice/Faces/Add07.png' %}" title='Automatic Light'
+                             alt="automatic light">
                         {{ dice_form.additional_light_pips }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('lightpip')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('lightpip')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -396,16 +404,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add02.png' %}" title='Automatic Despair'>
+                        <img src="{% static 'swdice/Faces/Add02.png' %}" title='Automatic Despair'
+                             alt="automatic despair">
                         {{ dice_form.additional_despair }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('despair')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('despair')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -415,16 +424,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add04.png' %}" title='Automatic Failure'>
+                        <img src="{% static 'swdice/Faces/Add04.png' %}" title='Automatic Failure'
+                             alt="automatic failure">
                         {{ dice_form.additional_failure }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('failure')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('failure')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -434,16 +444,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add06.png' %}" title='Automatic Threat'>
+                        <img src="{% static 'swdice/Faces/Add06.png' %}" title='Automatic Threat'
+                             alt="automatic threat">
                         {{ dice_form.additional_threat }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('threat')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('threat')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -453,16 +464,17 @@
                   <table class="dice_table_sml">
                     <tr>
                       <td>
-                        <img src="{% static 'swdice/Faces/Add08.png' %}" title='Automatic Dark'>
+                        <img src="{% static 'swdice/Faces/Add08.png' %}" title='Automatic Dark'
+                             alt="automatic dark">
                         {{ dice_form.additional_dark_pips }}
                       </td>
                       <td>
                         <button type="button" onclick="addOne('darkpip')" class="btn btn-light btn-sm">
-                          &#9650
+                          &#9650;
                         </button>
                         <br>
                         <button type="button" onclick="subtractOne('darkpip')" class="btn btn-light btn-sm">
-                          &#9660
+                          &#9660;
                         </button>
                       </td>
                     </tr>
@@ -551,7 +563,6 @@
                     </tr>
                   </table>
                 </div>
-                <td>
               </div>
             </div>
           {% endblock dice_box %}
@@ -564,42 +575,39 @@
             </span>
             <br>
             {% if avatar_id == 0 %}
-              <img src="{% static 'vanlevy/Profile_32.png' %}" width="24" title="Profile">
+              <img src="{% static 'vanlevy/images/Profile_32.png' %}" width="24" title="Profile" alt="Profile Pic">
             {% else %}
-              <img src="{% static 'vanlevy/avatar_32.png' %}" width="24" title="Avatar">
+              <img src="{% static 'vanlevy/images/avatar_32.png' %}" width="24" title="Avatar" alt="Avatar Pic">
             {% endif %}
             <strong>{{ name_in_room }}</strong>
           </p>
           <div class="row">
             {% if icon %}
               <div class="col-6">
-                <img src="{{ icon }}" width="80" >
+                <img src="{{ icon }}" width="80" alt="Your Pic">
               </div>
             {% endif %}
             <div class="col-6">
               {% if avatar_id > 0 %}
-                <a href="{% url 'swdice:switch_avatar_room' room_number %}">
-                  <button type="button" class="btn btn-light btn-sm align-right" name="switch_avatar">
-                    Switch Avatar
-                  </button>
+                <a href="{% url 'swdice:switch_avatar_room' room_number %}" role="button"
+                       class="btn btn-light btn-sm align-right" id="switch_avatar_1">
+                  Switch Avatar
                 </a>
               {% endif %}
               <p><br></p>
               {% if not has_char and avatar_id != 0 %}
-                <a href="{% url 'accounts:view_avatar' avatar_id %}">
-                  <button type="button" class="btn btn-sm btn-light align-right">
-                    Add Char. Sheet
-                  </button>
+                <a href="{% url 'accounts:view_avatar' avatar_id %}" role="button"
+                       class="btn btn-sm btn-light align-right">
+                  Add Char. Sheet
                 </a>
               {% endif %}
             </div>
           </div>
           {% if avatar_id == 0 %}
           <br>
-            <a href="{% url 'swdice:switch_avatar_room' room_number %}">
-              <button type="button" class="btn btn-light btn-sm " name="switch_avatar">
-                Switch to an Avatar
-              </button>
+            <a href="{% url 'swdice:switch_avatar_room' room_number %}" role="button"
+                   class="btn btn-light btn-sm " id="switch_to_an_avatar">
+              Switch to an Avatar
             </a>
           {% endif %}
           <button type="button" class="btn btn-sm btn-light" name="switch_to_chat" data-toggle="collapse"
@@ -618,15 +626,17 @@
                   <tr>
                     {% if icon %}
                       <td rowspan="2" style="width:90px">
-                        <img src="{{ icon }}" width="80">
+                        <img src="{{ icon }}" width="80" alt="Your Pic">
                       </td>
                       <td>
                         <span style="color:gray">You are signed in as: </span>
                         <br>
                         {% if avatar_id == 0 %}
-                          <img src="{% static 'vanlevy/Profile_32.png' %}" width="24" title="Profile">
+                          <img src="{% static 'vanlevy/images/Profile_32.png' %}" width="24" title="Profile"
+                               alt="Profile Pic">
                         {% else %}
-                          <img src="{% static 'vanlevy/avatar_32.png' %}" width="24" title="Avatar">
+                          <img src="{% static 'vanlevy/images/avatar_32.png' %}" width="24" title="Avatar"
+                               alt="Avatar Pic">
                         {% endif %}
                         <strong>{{ name_in_room }}</strong>
                       </td>
@@ -640,16 +650,14 @@
                   </tr>
                   <tr>
                     <td>
-                      <a href="{% url 'swdice:switch_avatar_room' room_number %}">
-                        <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
-                          Switch {% if avatar_id == 0 %}to an{% endif %} Avatar
-                        </button>
+                      <a href="{% url 'swdice:switch_avatar_room' room_number %}" role="button"
+                             class="btn btn-light btn-sm" id="switch_avatar">
+                        Switch {% if avatar_id == 0 %}to an{% endif %} Avatar
                       </a>
                       {% if not has_char and avatar_id != 0 %}
-                        <a href="{% url 'accounts:view_avatar' avatar_id %}">
-                          <button type="button" class="btn btn-sm btn-light">
-                            Add Char. Sheet
-                          </button>
+                        <a href="{% url 'accounts:view_avatar' avatar_id %}" role="button"
+                               class="btn btn-sm btn-light">
+                          Add Char. Sheet
                         </a>
                       {% endif %}
                     </td>
@@ -699,8 +707,8 @@
       </div>
     </form>
     {% else %}
-    <h3>This room has been archived by the GM.</h3>
-    <p>No new rolls or chats may be made in it.</p>
+      <h3>This room has been archived by the GM.</h3>
+      <p>No new rolls or chats may be made in it.</p>
     {% endif %}
     {% endblock form_inputs %}
     <div class="row">
@@ -716,7 +724,8 @@
             <p>This room has no actions.</p>
           {% else %}
             <table id="action_table">
-              <col width="50px">
+              <col style="width: 50px">
+              <col>
               {% for action in action_log %}
               {% if not action.secret_roll or player_is_gm or action.user == user %}
                 {% if not action.secret_roll %}
@@ -729,7 +738,7 @@
                   {% if action.is_just_caption %}
                     <td>
                       {% if action.image_url %}
-                        <img src="{{ action.image_url }}"
+                        <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
                              title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
                              width="40">
                       {% endif %}
@@ -745,7 +754,7 @@
                   {% else %}
                     <td>
                       {% if action.image_url %}
-                        <img src="{{ action.image_url }}"
+                        <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
                              title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
                              width="40">
                       {% else %}
@@ -771,7 +780,7 @@
                         {% for face in action.faces_summary|split_string %}
                           {% if face %}
                             {% with 'swdice/Faces/'|add:face|add:'.png' as face_image %}
-                              <img src="{% static face_image %}" title="{{face}}">
+                              <img src="{% static face_image %}" title="{{face}}" alt="{{face}}">
                             {% endwith %}
                           {% endif %}
                         {% endfor %}
@@ -791,42 +800,50 @@
                         {% endif %}
                         {% if action.results_triumph > 0 %}
                           {% for i in action.results_triumph|get_range %}
-                            <img src="{% static 'swdice/Results/Tri01.png' %}" title="{{action.results_triumph}} Triumph">
+                            <img src="{% static 'swdice/Results/Tri01.png' %}" alt="triumph"
+                                 title="{{action.results_triumph}} Triumph">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_despair > 0 %}
                           {% for i in action.results_despair|get_range %}
-                            <img src="{% static 'swdice/Results/Des01.png' %}" title="{{action.results_despair}} Despair">
+                            <img src="{% static 'swdice/Results/Des01.png' %}" alt="despair"
+                                 title="{{action.results_despair}} Despair">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_success > 0 %}
                           {% for i in action.results_success|get_range %}
-                            <img src="{% static 'swdice/Results/Suc01.png' %}" title="{{action.results_success}} Success">
+                            <img src="{% static 'swdice/Results/Suc01.png' %}" alt="success"
+                                 title="{{action.results_success}} Success">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_failure > 0 %}
                           {% for i in action.results_failure|get_range %}
-                            <img src="{% static 'swdice/Results/Fai01.png' %}" title="{{action.results_failure}} Failure">
+                            <img src="{% static 'swdice/Results/Fai01.png' %}" alt="failure"
+                                 title="{{action.results_failure}} Failure">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_advantage > 0 %}
                           {% for i in action.results_advantage|get_range %}
-                            <img src="{% static 'swdice/Results/Adv01.png' %}" title="{{action.results_advantage}} Advantage">
+                            <img src="{% static 'swdice/Results/Adv01.png' %}" alt="advantage"
+                                 title="{{action.results_advantage}} Advantage">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_threat > 0 %}
                           {% for i in action.results_threat|get_range %}
-                            <img src="{% static 'swdice/Results/Thr01.png' %}" title="{{action.results_threat}} Threat">
+                            <img src="{% static 'swdice/Results/Thr01.png' %}" alt="threat"
+                                 title="{{action.results_threat}} Threat">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_light_pips > 0 %}
                           {% for i in action.results_light_pips|get_range %}
-                            <img src="{% static 'swdice/Results/Lig01.png' %}" title="{{action.results_light_pips}} Light Pips">
+                            <img src="{% static 'swdice/Results/Lig01.png' %}" alt="light pip"
+                                 title="{{action.results_light_pips}} Light Pips">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_dark_pips > 0 %}
                           {% for i in action.results_dark_pips|get_range %}
-                            <img src="{% static 'swdice/Results/Dar01.png' %}" title="{{action.results_dark_pips}} Dark Pips">
+                            <img src="{% static 'swdice/Results/Dar01.png' %}" alt="dark pip"
+                                 title="{{action.results_dark_pips}} Dark Pips">
                           {% endfor %}
                         {% endif %}
                         {% if action.results_numerical %}
@@ -869,28 +886,27 @@
             {% if has_char %}
               <input type="checkbox" id="showblock3">
               <div id="slideout3">
-              <label id="slideout_tab3" for="showblock3" title="Character Sheet">
-                <i>Char</i>
-              </label>
-              <div id="slideout_inner3">
-                <p style="margin-left: 20px;">
-                  {% if not use_pdf_char %}
-                    <strong>Character Sheet - </strong>
-                  {% else %}
-                    <strong>Character Sheet - {{char_pdf.pdf_name}}</strong>
-                  {% endif %}
-                  <a href="{% url 'accounts:view_avatar' avatar_id %}">
-                    <button type="button" class="btn btn-sm btn-outline-dark align-right" style="margin-right: 40px;">
+                <label id="slideout_tab3" for="showblock3" title="Character Sheet">
+                  <i>Char</i>
+                </label>
+                <div id="slideout_inner3">
+                  <p style="margin-left: 20px;">
+                    {% if not use_pdf_char %}
+                      <strong>Character Sheet - </strong>
+                    {% else %}
+                      <strong>Character Sheet - {{char_pdf.pdf_name}}</strong>
+                    {% endif %}
+                    <a href="{% url 'accounts:view_avatar' avatar_id %}" role="button"
+                       class="btn btn-sm btn-outline-dark align-right" style="margin-right: 40px;">
                       Change Character Sheet
-                    </button>
-                  </a>
-                </p>
-                {% if not use_pdf_char %}
-                {% else %}
-                <iframe src="{{ char_pdf.pdf_url }}" style="width: 100%; height: 900px;"></iframe>
-                {% endif %}
+                    </a>
+                  </p>
+                  {% if not use_pdf_char %}
+                  {% else %}
+                  <iframe src="{{ char_pdf.pdf_url }}" style="width: 100%; height: 900px;"></iframe>
+                  {% endif %}
+                </div>
               </div>
-            </div>
             {% endif %}
               <input type="checkbox" id="showblock">
               <div id="{% if has_char %}slideout_c{% else %}slideout{% endif %}">
@@ -900,14 +916,31 @@
                 <div id="slideout_inner">
                   <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
                   <ul style="list-style-type:none; color: white;">
-                    <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost"> Boost</li>
-                    <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability"> Ability</li>
-                    <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
-                    <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback"> Setback</li>
-                    <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
-                    <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge"> Challenge</li>
-                    <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
-                    <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force"> Force</li>
+                    <li>
+                      <img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost" alt="boost">
+                      Boost
+                    </li>
+                    <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability" alt="ability">
+                      Ability
+                    </li>
+                    <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency" alt="proficiency">
+                      Proficiency
+                    </li>
+                    <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback" alt="setback">
+                      Setback
+                    </li>
+                    <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty" alt="difficulty">
+                      Difficulty
+                    </li>
+                    <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge" alt="challenge">
+                      Challenge
+                    </li>
+                    <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical" alt="numerical">
+                      Numerical
+                    </li>
+                    <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force" alt="force">
+                      Force
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -919,14 +952,14 @@
                 <div id="slideout_inner2">
                   <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
                   <ul style="list-style-type:none;">
-                    <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success"> Success</li>
-                    <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure"> Failure</li>
-                    <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
-                    <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat"> Threat</li>
-                    <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
-                    <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair"> Despair</li>
-                    <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light"> Light</li>
-                    <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark"> Dark</li>
+                    <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success" alt="success"> Success</li>
+                    <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure" alt="failure"> Failure</li>
+                    <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage" alt="advantage"> Advantage</li>
+                    <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat" alt="threat"> Threat</li>
+                    <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph" alt="triumph"> Triumph</li>
+                    <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair" alt="despair"> Despair</li>
+                    <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light" alt="light pip"> Light</li>
+                    <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark" alt="dark pip"> Dark</li>
                   </ul>
                 </div>
               </div>
@@ -935,14 +968,15 @@
             <p>This room has no chats</p>
           {% else %}
             <table id="chat_table">
-              <col width="50px">
+              <col style="width: 50px">
+              <col>
                 {% for chat in chat_log %}
                   {% if chat.is_private %}
                     {% if chat.recipient == user %}
                       <tr style="background-color:#B1DAF2;">
                         <td>
                           {% if chat.image_url %}
-                            <img src="{{ chat.image_url }}"
+                            <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
                                  title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
                                  width="40">
                           {% endif %}
@@ -960,7 +994,7 @@
                       <tr style="background-color:#9EC3D9;">
                         <td>
                           {% if chat.image_url %}
-                            <img src="{{ chat.image_url }}"
+                            <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
                                  title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
                                  width="40">
                           {% endif %}
@@ -970,8 +1004,9 @@
                             {% if chat.recipient_avatar %}
                               {{ chat.recipient_avatar.avatar_name }}:
                             {% else %}
-                              {{ chat.recipient.username }}:</em>
+                              {{ chat.recipient.username }}:
                             {% endif %}
+                          </em>
                           <br>{{chat.chat_text}}
                         </td>
                       </tr>
@@ -980,7 +1015,7 @@
                     <tr>
                       <td>
                         {% if chat.image_url %}
-                          <img src="{{ chat.image_url }}"
+                          <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
                                title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
                                width="40">
                         {% else %}
@@ -1025,8 +1060,6 @@ $(function () {
     document.getElementById('updateTime').innerText = dt.toISOString();
     update_times();
 });
-</script>
-<script>
 function showAutoPips() {
     document.getElementById('hidden_fields_1').style.display='flex';
     document.getElementById('show_pips_button').style.display='none';
@@ -1051,16 +1084,12 @@ function hideSecretRoll() {
     document.getElementById('roll_dice_button').style.display='block';
     document.getElementById('roll_dice_secret_button').style.display='none';
 };
-</script>
-<script>
 function addOne(id) {
     document.getElementById(id).stepUp(1);
 };
 function subtractOne(id) {
     document.getElementById(id).stepDown(1);
 };
-</script>
-<script>
 function resetDice() {
     document.getElementById('boost').value = 0;
     document.getElementById('setback').value = 0;
@@ -1080,8 +1109,6 @@ function resetDice() {
     document.getElementById('lightpip').value = 0;
     document.getElementById('darkpip').value = 0;
 };
-</script>
-<script>
 function highlightChat() {
   var number = document.getElementById("id_recipient").selectedIndex;
   var button = document.getElementById("chat_submit");
@@ -1100,8 +1127,6 @@ function highlightChat() {
     chat_area.classList.add('chat_regular');
   };
 };
-</script>
-<script>
 $(function () {
   var number = document.getElementById("id_recipient").selectedIndex;
   var button = document.getElementById("chat_submit");
@@ -1111,8 +1136,6 @@ $(function () {
     chat_area.classList.remove('chat_regular');
   };
 });
-</script>
-<script>
 var myForm = $("#destiny");
 myForm.submit(function(){
     myForm.submit(function(){
@@ -1131,8 +1154,6 @@ myThirdForm.submit(function(){
         return false;
     });
 });
-</script>
-<script>
 function refresh_action_log(){
     var url_actions = document.URL + ' #action_log';
     var url_destiny = document.URL + ' #destiny_box';

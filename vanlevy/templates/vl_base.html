@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+  {% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static '/vanlevy/files/css/vanlevy_base_19_06_13.css' %}" />
+  {% endblock %}
 
 {% block navbar_characteristics %}
   <nav class="navbar navbar-blend navbar-expand-sm navbar-dark" style="background-color: #001452">
@@ -14,10 +19,6 @@
                           style="position: fixed; bottom: 0; "
                           {% endblock %} >
     <nav class="navbar bottom navbar-expand-md navbar-dark" style="background-color: #000F3D">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
-              aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
       <div class="collapse navbar-collapse" id="navbarToggler">
         {% block bottom_navbar_links %}
           <ul class="navbar-nav mr-auto">
@@ -61,17 +62,9 @@
   </div>
 </div>
 
+
+{% block scripts %}
+  <script src="{% static '/vanlevy/files/js/base.js' %}"></script>
 {% endblock %}
 
-
-<script type="text/javascript">
-  $(document).ready(function () {
-    var url = window.location;
-    $('ul.navbar-nav a[href="'+ url +'"]').parent().addClass('active');
-    $('ul.navbar-nav a').filter(function() {
-         return this.href == url;
-    }).parent().addClass('active');
-  });
-</script>
-{% block page_scripts %}
 {% endblock %}

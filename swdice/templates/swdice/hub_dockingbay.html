@@ -96,7 +96,7 @@
                                 aria-expanded="false"
                                 aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}"
                                 id="plusButton_{{room.id}}" onclick="switchToMinus({{room.id}})">
-                          <img src="{% static '/vanlevy/plus_clear_40.png' %}"
+                          <img src="{% static '/vanlevy/images/plus_clear_40.png' %}"
                                alt="info" width="16" height="16">
                         </button>
                         <button class="align-right" type="button" style="padding: 0; display: none;"
@@ -104,7 +104,7 @@
                                 aria-expanded="false"
                                 aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}"
                                 id="minusButton_{{room.id}}" onclick="switchToPlus({{room.id}})">
-                          <img src="{% static '/vanlevy/minus_clear_40.png' %}"
+                          <img src="{% static '/vanlevy/images/minus_clear_40.png' %}"
                                alt="info" width="16" height="16">
                         </button>
                       {% endif %}
@@ -124,7 +124,7 @@
                         <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
                         <button type="button" style="padding: 0;margin-left: 10px;"
                                 onclick="copyURL(link_{{room.id}})">
-                          <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
                         </button>
                       </td>
                     </tr>
@@ -139,7 +139,7 @@
                       <td>
                         <strong>Info Page: </strong>
                         <a href="{% url 'swdice:swroom_info' room.id %}">
-                          <img src="{% static '/vanlevy/info_32.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/info_32.png' %}" alt="info" width="20" height="20">
                         </a>
                       </td>
                     </tr>
@@ -184,7 +184,7 @@
                                 data-target=".multi-collapse{{room.id}}"
                                 aria-expanded="false"
                                 aria-controls="row1_room_{{room.id}} row2_room_{{room.id}}">
-                          <img src="{% static '/vanlevy/plus_clear_40.png' %}"
+                          <img src="{% static '/vanlevy/images/plus_clear_40.png' %}"
                                alt="info" width="16" height="16">
                         </button>
                       {% endif %}
@@ -204,7 +204,7 @@
                         <div style="display: none;" id="link_{{room.id}}">www.vanlevy.com{% url 'swdice:swroom' room.id %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}</div>
                         <button type="button" style="padding: 0;margin-left: 10px;"
                                 onclick="copyURL(link_{{room.id}})">
-                          <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
                         </button>
                       </td>
                     </tr>
@@ -219,7 +219,7 @@
                       <td>
                         <strong>Info Page: </strong>
                         <a href="{% url 'swdice:swroom_info' room.id %}">
-                          <img src="{% static '/vanlevy/info_32.png' %}" alt="info" width="20" height="20">
+                          <img src="{% static '/vanlevy/images/info_32.png' %}" alt="info" width="20" height="20">
                         </a>
                       </td>
                     </tr>
@@ -244,10 +244,8 @@
               </p>
             </div>
             <div class="col-3">
-              <a href="{% url 'swdice:make_swroom' %}">
-                <button type="button" class="btn btn-primary align-right">
-                  <strong>&#12299</strong>
-                </button>
+              <a href="{% url 'swdice:make_swroom' %}" role="button" class="btn btn-primary align-right">
+                <strong>&#12299;</strong>
               </a>
             </div>
           </div>
@@ -284,14 +282,14 @@
                   </div>
                   <div class="col-lg-4 col-md-5 col-sm-9 col-xs-6">
                     <strong>Avatar:</strong><br>
-                      {{form.default_avatar}} <br>
-                      Select your avatar.<br>
-                      <strong>{{ form.default_avatar.errors }}</strong>
+                    {{form.default_avatar}} <br>
+                    Select your avatar.<br>
+                    <strong>{{ form.default_avatar.errors }}</strong>
                   </div>
                   <div class="col-lg-2 col-md-3 col-sm-3 col-xs-4 offset-xs-0 offset-sm-0 offset-md-9 offset-lg-0">
                     <br>
                     <button type="submit" class="btn btn-primary align-right" id="direct-button">
-                      Enter Room <strong>&#12299</strong>
+                      Enter Room <strong>&#12299;</strong>
                     </button>
                   </div>
                 </div>
@@ -321,7 +319,7 @@
                   <div class="col-lg-2 col-md-4 col-sm-3 col-xs-12 offset-lg-0 offset-md-8">
                     <br>
                     <button type="submit" class="btn btn-primary align-right" id="passcode-button">
-                      Enter Room <strong>&#12299</strong>
+                      Enter Room <strong>&#12299;</strong>
                     </button>
                   </div>
                 </div>

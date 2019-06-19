@@ -22,7 +22,7 @@
 
 {% block accounts_page %}
   {% load static %}
-  <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
+  <img src="{% static '/vanlevy/images/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
   <span style="color: white;">Edit Avatar</span>
 {% endblock %}
 
@@ -44,7 +44,7 @@
                     onclick="preview()">
                 Show edits
               </button>
-              <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+              <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
               {{user}}<br>Current Avatar
             </h4>
             <div class="card-body">
@@ -83,7 +83,7 @@
                       aria-controls="current_profile edited_profile">
                 Show Original
               </button>
-              <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+              <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
               {{user}}<br>Edited Avatar
               <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="preview()">
                 Refresh

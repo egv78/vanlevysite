@@ -5,9 +5,10 @@
   <title>Create Avatar</title>
 {% endblock %}
 
+{% load static %}
+
 {% block accounts_page %}
-  {% load static %}
-  <img src="{% static '/vanlevy/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
+  <img src="{% static '/vanlevy/images/NewAvatar_32.png' %}" alt="New Avatar" height="32" width="32">
   <span style="color: white;">New Avatar</span>
 {% endblock %}
 
@@ -25,16 +26,18 @@
     <div class="col-lg-6">
       <div class="card border-dark mb-3">
         <h4 class="card-header">
-          <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="preview()">
+          <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile" alt="profile">
+          {{user}}
+          <button class="btn btn-outline-success btn-sm align-right" type="button"
+                  onclick="preview('{% static "/vanlevy/images/NoImage.png" %}')">
             Show edits
           </button>
-          <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
-          {{user}}<br>New Avatar
+          <br>New Avatar
         </h4>
         <div class="card-body">
           <div class="row">
             <div class="col-6">
-              <img src="{% static '/vanlevy/NoImage.png' %}" width="100%" id="new_image">
+              <img src="{% static '/vanlevy/images/NoImage.png' %}" class="w-100" id="new_image" alt="no image">
             </div>
             <div class="col-6">
               <p style="font-size: 1.33em">
@@ -61,8 +64,8 @@
       <form method="POST" enctype="multipart/form-data" id="createAvatar">
         {% csrf_token %}
         <table>
-          <col width="80">
-          <col width="280">
+          <col style="width: 80px;">
+          <col style="width: 280px;">
           <tr>
             <td class="align-right">
               <strong>Name:</strong>
@@ -82,7 +85,8 @@
           <tr>
             <td class="align-right">
               <strong>Image URL:</strong><br>
-              <button type="button" class="btn btn-outline-secondary btn-sm align-right" onclick="clearImageURL()"
+              <button type="button" class="btn btn-outline-secondary btn-sm align-right"
+                      onclick="clearImageURL('{% static "/vanlevy/images/NoImage.png" %}')"
                       style="margin-top: 6px;">
                 Clear
               </button>
@@ -119,10 +123,13 @@
       <div class="card-group">
         <div class="card border-dark mb-3" style="text-align: center;">
           <div class="card-header">
-            <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
+            <h5 class="card-title">
+              <span class="d-none d-xl-inline">Your </span>
+              <a href="https://en.gravatar.com/">Gravatar</a>
+            </h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ gravatar }}" width="90%">
+            <img src="{{ gravatar }}" class="w-100" alt="your gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
                     onclick="useGravatar('{{ gravatar }}', 'gravatar_button')">
@@ -135,7 +142,7 @@
             <h5 class="card-title">Identicon</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ identicon }}" width="90%">
+            <img src="{{ identicon }}" class="w-100" alt="identicon">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
                     onclick="useGravatar('{{ identicon }}', 'identicon_button')">
@@ -148,7 +155,7 @@
             <h5 class="card-title">Monster</h5>
           </div>
             <div class="card-body text-dark">
-              <img src="{{ monsterid }}" width="90%">
+              <img src="{{ monsterid }}" class="w-100" alt="monsterid">
               <p></p>
               <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
                       onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
@@ -161,7 +168,7 @@
             <h5 class="card-title">Wavatar</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ wavatar }}" width="90%">
+            <img src="{{ wavatar }}" class="w-100" alt="wavatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
                     onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
@@ -174,7 +181,7 @@
             <h5 class="card-title">Retro</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ retro }}" width="90%">
+            <img src="{{ retro }}" class="w-100" alt="retro">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
                     onclick="useGravatar('{{ retro }}', 'retro_button')">
@@ -187,7 +194,7 @@
             <h5 class="card-title">Robohash</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ robohash }}" width="90%">
+            <img src="{{ robohash }}" class="w-100" alt="robodash">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
                     onclick="useGravatar('{{ robohash }}', 'robohash_button')">
@@ -210,39 +217,8 @@
   </div>
 </div>
 
+<script src="{% static 'vanlevy/files/js/accounts.js' %}"></script>
 <script>
-  function enableAllButtons () {
-    document.getElementById('gravatar_button').disabled = false;
-    document.getElementById('identicon_button').disabled = false;
-    document.getElementById('monsterid_button').disabled = false;
-    document.getElementById('wavatar_button').disabled = false;
-    document.getElementById('retro_button').disabled = false;
-    document.getElementById('robohash_button').disabled = false;
-  };
-  function useGravatar(url, button) {
-    document.getElementById('image_url').value = url;
-    $('#new_image').attr('src', url);
-    enableAllButtons();
-    document.getElementById(button).disabled = true;
-  };
-  function clearImageURL() {
-    var old_url = "{% static '/vanlevy/NoImage.png' %}";
-    document.getElementById('image_url').value = "";
-    $('#new_image').attr('src', old_url);
-  };
-  function preview() {
-    var new_url = document.getElementById('image_url').value;
-    if (new_url == "") {
-      new_url = "{% static '/vanlevy/NoImage.png' %}";
-    };
-    var new_first_name = document.getElementById('name').value;
-    var new_description_text = document.getElementById('description').value;
-
-    $('#new_image').attr('src', new_url);
-
-    $('#new_name').text(new_first_name);
-    $('#new_description').text(new_description_text);
-  };
   var $myForm = $("#createAvatar");
   $myForm.submit(function(){
     $myForm.submit(function(){

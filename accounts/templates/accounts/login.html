@@ -1,134 +1,122 @@
 {% extends 'accounts_base.html' %}
+{% load static %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <meta id="my-data"
-          data-badlogins="{{ request.session.bad_logins }}"
-          data-delay="{{ request.session.delay }}"
-          data-badlogintime={{ request.session.bad_login_time }}
-    >
+  <title>Login</title>
+  <meta charset="UTF-8" id="my-data"
+        data-badlogins="{{ request.session.bad_logins }}"
+        data-delay="{{ request.session.delay }}"
+        data-badlogintime="{{ request.session.bad_login_time }}"
+  >
+
 {% endblock %}
 
 {% block link_account %}
-    {% if user.is_authenticated %}
-    {% else %}
-        <a class="dropdown-item" href="{% url 'accounts:password_reset' %}">Reset Password</a>
-    {% endif %}
+  {% if user.is_authenticated %}
+  {% else %}
+    <a class="dropdown-item" href="{% url 'accounts:password_reset' %}">Reset Password</a>
+  {% endif %}
 {% endblock %}
 
 {% block body %}
 <div class="container">
-    {% if user.is_authenticated %}
+  {% if user.is_authenticated %}
     <br>
     <h3>You are logged in with the account: {{user.username}}.</h3>
     <br>
     <p><a href="{% url 'accounts:logout' %}">Logout</a>?</p>
-    {% else %}
+  {% else %}
     {% block required_warning %}
     {% endblock %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12"></div>
-            <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
-                <div class="container-fluid"
-                     style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
-                            margin-top: {% block margin %}120px;{% endblock%}">
-                <form method="post" id="login">
-                  {% csrf_token %}
-                  <table style="width: 100%;">
-                    <tr><td>
-                    <input type="text" name="username" id="username" placeholder="Username or email"
-                           style="width: 100%; padding: 12px 20px; margin: 8px 0; text-align: center;
-                                  border: 1px solid #ccc; border-radius: 4px;"
-                           autofocus="autofocus">
-                    </td></tr>
-                    <tr><td>
-                    <input type="password" name="password" id="password" placeholder="Password"
-                           style="width: 100%; padding: 12px 20px; margin: 8px 0; text-align: center;
-                                  border: 1px solid #ccc; border-radius: 4px;">
-                    </td></tr>
-                    {% if form.errors %}
-                      {% for field in form %}
-                        {% for error in field.errors %}
-                          <tr><td>
-                            <div class="alert alert-warning" style="margin: 8px 0;">
-                              <a class="close" href="#" data-dismiss="alert">×</a>
-                              {{ error|escape }}
-                            </div>
-                          </td></tr>
-                        {% endfor %}
-                      {% endfor %}
-                      {% for error in form.non_field_errors %}
-                        <tr><td>
-                          <div class="alert alert-warning" style="margin: 8px 0;">
-                            <a class="close" href="#" data-dismiss="alert">×</a>
-                            {{ error }}
-                          </div>
-                        </td></tr>
-                      {% endfor %}
-                    {% endif %}
-                    {% if request.session.bad_logins > 3 %}
-                      <tr style="display: none;" id="delayAlertRow">
-                        <td>
-                        <div class="alert alert-danger" style="margin: 8px 0;" id="delayAlert">
+      <div class="row">
+        <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12"></div>
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+          <div class="container-fluid"
+               style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
+                      margin-top: {% block margin %}120px;{% endblock%}">
+            <form method="post" id="login">
+              {% csrf_token %}
+              <table style="width: 100%;">
+                <tr><td>
+                <input type="text" name="username" id="username" placeholder="Username or email"
+                       style="width: 100%; padding: 12px 20px; margin: 8px 0; text-align: center;
+                              border: 1px solid #ccc; border-radius: 4px;"
+                       autofocus="autofocus">
+                </td></tr>
+                <tr><td>
+                <input type="password" name="password" id="password" placeholder="Password"
+                       style="width: 100%; padding: 12px 20px; margin: 8px 0; text-align: center;
+                              border: 1px solid #ccc; border-radius: 4px;">
+                </td></tr>
+                {% if form.errors %}
+                  {% for field in form %}
+                    {% for error in field.errors %}
+                      <tr><td>
+                        <div class="alert alert-warning" style="margin: 8px 0;">
                           <a class="close" href="#" data-dismiss="alert">×</a>
-                          For security reasons, there will now be a delay of
-                            {{ request.session.delay }} seconds
-                            before you can login.
+                          {{ error|escape }}
                         </div>
-                        </td>
-                      </tr>
-                    {% endif %}
-                    <!--{ if request.session.bad_login_time }-->
-                      <!--<tr><td>-->
-                        <!--<div class="alert alert-info" style="margin: 8px 0;" id="clearAlert">-->
-                          <!--<a class="close" href="#" data-dismiss="alert">×</a>-->
-                            <!--{ request.session.bad_login_time }-->
-                        <!--</div>-->
-                        <!--</td></tr>-->
-                    <!--{ endif }-->
+                      </td></tr>
+                    {% endfor %}
+                  {% endfor %}
+                  {% for error in form.non_field_errors %}
                     <tr><td>
-                      <button type="submit" class="btn btn-primary btn-block" id="submitButton"
-                              style="margin: 8px 0px 8px 0px; display: none;">
-                        <h4 style="margin-bottom: 6px;">Login</h4>
-                      </button>
+                      <div class="alert alert-warning" style="margin: 8px 0;">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+                        {{ error }}
+                      </div>
                     </td></tr>
-                  </table>
-                </form>
-                </div>
-                <div class="container-fluid"
-                     style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
-                            margin-top: 120px;">
-                <p>
-                    If you do not have an account, please
-                </p>
-                <a href="{% url 'accounts:register' %}">
-                    <button type="button" class="btn btn-success btn-block">
-                        <h5 style="margin-bottom: 4px;">Register</h5>
-                    </button>
-                </a>
-                </div>
-                <div class="container-fluid"
-                     style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
-                            margin-top: 60px;">
-                <p>
-                    If you've forgotten your password,
-                </p>
-                <a href="{% url 'accounts:password_reset' %}">
-                    <button type="button" class="btn btn-secondary btn-block">
-                        <h5 style="margin-bottom: 4px;">Reset Password</h5>
-                    </button>
-                </a>
-                </div>
+                  {% endfor %}
+                {% endif %}
+                {% if request.session.bad_logins > 3 %}
+                  <tr style="display: none;" id="delayAlertRow">
+                    <td>
+                    <div class="alert alert-danger" style="margin: 8px 0;" id="delayAlert">
+                      <a class="close" href="#" data-dismiss="alert">×</a>
+                      For security reasons, there will now be a delay of
+                        {{ request.session.delay }} seconds
+                        before you can login.
+                    </div>
+                    </td>
+                  </tr>
+                {% endif %}
+                <tr><td>
+                  <button type="submit" class="btn btn-primary btn-block" id="submitButton"
+                          style="margin: 8px 0px 8px 0px; display: none; padding-bottom: 9px;">
+                    <span style="font-size: 1.5em;"><strong>Login</strong></span>
+                  </button>
+                </td></tr>
+              </table>
+            </form>
             </div>
-            <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12"></div>
+            <div class="container-fluid"
+                 style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
+                        margin-top: 120px;">
+              <p>
+                If you do not have an account, please
+              </p>
+              <a href="{% url 'accounts:register' %}" role="button" class="btn btn-success btn-block">
+                <h5 style="margin-bottom: 4px;">Register</h5>
+              </a>
+            </div>
+            <div class="container-fluid"
+                 style="text-align:center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;
+                        margin-top: 60px;">
+              <p>
+                If you've forgotten your password,
+              </p>
+              <a href="{% url 'accounts:password_reset' %}" role="button" class="btn btn-secondary btn-block">
+                <h5 style="margin-bottom: 4px;">Reset Password</h5>
+              </a>
+            </div>
         </div>
-        <div class="row">
-
-        </div>
+        <div class="col-lg-4 col-md-3 col-sm-2 col-xs-12"></div>
+      </div>
+      <div class="row">
+      </div>
     </div>
-    {% endif %}
+  {% endif %}
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
@@ -161,8 +149,6 @@ $(function () {
         showSubmit()
     };
 });
-</script>
-<script>
 var $myForm = $("#login");
 $myForm.submit(function(){
     $myForm.submit(function(){
@@ -170,6 +156,4 @@ $myForm.submit(function(){
     });
 });
 </script>
-
-
 {% endblock body %}

@@ -3,7 +3,7 @@
 {% block brand %}
   <h3>
     <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-      <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+      <img src="{% static '/vanlevy/images/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
         Van Levy
     </a>
     <a class="navbar-brand">
@@ -54,18 +54,14 @@
         <li><a href="#why">Why should I use this site?</a></li>
       </ul>
       <p>Not a FAQ, but this is a good spot to put a way for you to
-        <a href="https://forms.gle/XDWppYRoih8R3MYM6" target="_blank">
-          <button type="button" class="btn btn-sm btn-outline-info align-right">
-            Report a Bug &#12299
-          </button>
+        <a href="https://forms.gle/XDWppYRoih8R3MYM6" class="btn btn-sm btn-outline-info align-right" role="button">
+          Report a Bug &#12299;
         </a>
       </p>
       <p><br></p>
       <p>Also, if you need to <br>
-        <a href="{% url 'vanlevy:contact' %}">
-          <button type="button" class="btn btn-sm btn-outline-info align-right">
-            Contact Us &#12299
-          </button>
+        <a href="{% url 'vanlevy:contact' %}" class="btn btn-sm btn-outline-info align-right" role="button">
+          Contact Us &#12299;
         </a>
       </p>
     </div>
@@ -77,7 +73,7 @@
       <h4 id="who">Who are Van Levy?</h4>
       <div class="row no-gutters">
         <div class="col-md-4 col-3">
-          <img src="{% static 'vanlevy/Dave_Pic.jpg' %}" style="width: 100%">
+          <img src="{% static 'vanlevy/images/Dave_Pic.jpg' %}" class="w-100" alt="Dave">
         </div>
         <div class="col-md-2 col-3">
           <p style="padding: 10px;">
@@ -85,7 +81,7 @@
             <span style="font-size: 1.5em;"><strong>Van!</strong></span>
             <br>
             He's that guy over there <br>
-            <span style="font-size: 1.5em;"><strong>&#10230</strong></span>
+            <span style="font-size: 1.5em;"><strong>&#10230;</strong></span>
           </p>
         </div>
         <div class="col-md-2 col-3">
@@ -94,22 +90,20 @@
             <span style="font-size: 1.5em;"><strong>Levy!</strong></span>
             <br>
             He's that guy over there <br>
-            <span style="font-size: 1.5em;"><strong>&#10229</strong></span>
+            <span style="font-size: 1.5em;"><strong>&#10229;</strong></span>
           </p>
         </div>
         <div class="col-md-4 col-3">
-          <img src="{% static 'vanlevy/Eric_Pic.jpg' %}" style="width: 100%;">
+          <img src="{% static 'vanlevy/images/Eric_Pic.jpg' %}" class="w-100" alt="Eric">
         </div>
       </div>
       <div class="row">
         <div class="col">
           <p style="padding: 10px; text-align: center;">
             All clear?
-            <a href="#faq_top">
-              <button type="button" class="btn btn-sm btn-outline-info align-right"
+            <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button"
                       style="margin-right: -10px;">
-                &#12298 top
-              </button>
+              &#12298; top
             </a>
           </p>
         </div>
@@ -127,20 +121,20 @@
         dice. And, usually, not "normal dice".
       </p>
       <p>
-        <a href="#faq_top">
-          <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
         </a>
       </p>
     </div>
 
     <div class="col-6 col-md-4 col-lg-3 order-md-first">
       <hr>
-      <img src="{% static '/vanlevy/DicePoly_800.jpg' %}" alt="Poly Dice" width="100%" title="Polyhedral Dice">
+      <img src="{% static '/vanlevy/images/DicePoly_800.jpg' %}" alt="Poly Dice" class="w-100" title="Polyhedral Dice">
     </div>
 
     <div class="col-6 col-md-4 col-lg-3 order-md-last">
       <hr>
-      <img src="{% static '/vanlevy/DiceEdge_800.jpg' %}" alt="Poly Dice" width="100%" title="Star Wars Dice">
+      <img src="{% static '/vanlevy/images/DiceEdge_800.jpg' %}" alt="Poly Dice" class="w-100" title="Star Wars Dice">
       <p></p>
       <p style="font-size: 0.67em;">
         For the real terms and conditions, use <a href="{% url 'vanlevy:terms' %}">this link</a>.
@@ -177,8 +171,8 @@
         rules-lawyers, newbies, n00bs, hackers, slackers, crackers, bushwhackers, bounty hunters,
         con-men, ex-cons, nitwits, halfwits, dimwits, mugs, pugs, thugs, or Unitarians.
       </p>
-      <a href="#faq_top">
-        <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+      <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+        &#12298; top
       </a>
 
     </div>
@@ -212,8 +206,8 @@
         The "Meeple" drop-down menu will give you links to go do all of the above. (And more!)
       </p>
       <p>
-        <a href="#faq_top">
-          <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
         </a>
       </p>
     </div>
@@ -233,13 +227,12 @@
         (All links in the Dice drop-down menu go to Hub Pages.)
         Once you're on the Hub Page, look for a plus button (
         <button type="button" style="padding: 0;">
-          <img src="{% static '/vanlevy/plus_clear_40.png' %}" alt="info" width="16" height="16">
+          <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
         </button>
         ) for your room;
         clicking that reveals info that only GM's can see.  Clicking on the copy button (
-        <button type="button" style="padding: 0;"
-                onclick="copyURL(link_{{room.id}})">
-          <img src="{% static '/vanlevy/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+        <button type="button" style="padding: 0;">
+          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
         </button>
         ) will put the link in your clipboard; you can paste the link into
         an email to your players.  The other place you can find the link is in the Room Info page.
@@ -269,10 +262,9 @@
         You should also see a button that will take you to the page to add a Character Sheet to that Avatar.
         On this page, you can add, remove, or change a Character Sheet.
       </p>
-        <a href="#faq_top">
-          <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
         </a>
-      </p>
     </div>
   </div>
   <div class="row">
@@ -282,8 +274,8 @@
       <p></p>
       <p>Why should you do anything?  Does it matter? Even if it does matter, does it matter that it matters?</p>
       <p>
-        <a href="#faq_top">
-          <button type="button" class="btn btn-sm btn-outline-info align-right">&#12298 top</button>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
         </a>
       </p>
     </div>

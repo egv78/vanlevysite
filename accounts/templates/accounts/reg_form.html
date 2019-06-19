@@ -1,129 +1,137 @@
 {% extends 'accounts_base.html' %}
+{% load static %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>Registration Form</title>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
 {% endblock %}
 
 {% block link_logout %}
-    {% if user.is_authenticated %}
-    {% else %}
-        <a class="dropdown-item" href="{% url 'accounts:password_reset' %}">Reset Password</a>
-    {% endif %}
+  {% if user.is_authenticated %}
+  {% else %}
+    <a class="dropdown-item" href="{% url 'accounts:password_reset' %}">Reset Password</a>
+  {% endif %}
 {% endblock %}
 
 
 {% block body %}
 <div class="container">
+  <br>
+  {% if user.is_authenticated %}
+    <h3>You are logged in as {{user.first_name}}.</h3>
     <br>
-    {% if user.is_authenticated %}
-        <h3>You are logged in as {{user.first_name}}.</h3>
-        <br>
-        <p>To create a new account, please <a href="{% url 'accounts:logout' %}">logout</a> and then register.</p>
-    {% else %}
-        <h3 style="text-align: center;">
-            By creating an account, you agree to our <a href="{% url 'vanlevy:terms' %}">terms and conditions.</a>
-        </h3>
-        <p><br></p>
-        <form method="post" id="register">
-            {% csrf_token %}
-            <table style="margin-left: auto; margin-right: auto;">
-                <col width="190">
-                <col width="325">
-                <tr style="height: 45px;">
-                    <td style="padding-left: 5px;">{{ form.username }}</td>
-                    <td>Usernames must be unique.</td>
-                </tr>
-                <tr style="height: 45px;">
-                    <td style="padding-left: 5px;">{{ form.email }}</td>
-                    <td>One account per email.
-                        <button type="button" class="btn btn-outline-info btn-sm align-right"
-                                              style="border-radius: 10px; padding: 0px 6px;"
-                                              onclick="showWhyEmail()" id="showButton">
-                            ?
-                        </button>
-                        <!--<span style="font-size: 0.67em;"><br>See below for why we ask for an email.</span>-->
-                    </td>
-                </tr>
-                <tr style="height: 45px;">
-                    <td style="padding-left: 5px;">{{ form.password1 }}</td>
-                    <td>Passwords must be at least 8 characters long.</td>
-                </tr>
-                <tr style="height: 45px;">
-                    <td style="padding-left: 5px;">{{ form.password2 }}</td>
-                    <td>Passwords cannot be entirely numeric.</td>
-                </tr>
-                {% if form.errors %}
-                  {% for field in form %}
-                    {% for error in field.errors %}
-                <tr><td colspan="2">
-                      <div class="alert alert-warning">
-                        <a class="close" href="#" data-dismiss="alert">×</a>
-                        {{ error }}
-                          {% if error == "This email already has an account." %}
-                          <br>You can request a <a href="{% url 'accounts:password_reset' %}">Password Reset</a>.
-                          {% endif %}
-                      </div>
-                </td></tr>
-                    {% endfor %}
-                  {% endfor %}
-                {% endif %}
-                <tr>
-                    <td style="padding-right: 10px;">
-                        <button type="submit" class="btn btn-outline-primary align-right">Register</button>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr><td><br></td></tr>
-                <tr>
-                    <td colspan="2">
-                        <h4>Account Requirements</h4>
-                        <ul>
-                            <li>Your password can't be too similar to your other personal information.</li>
-                            <li>Your password can't be a commonly used password.</li>
-                            <li>Usernames can only be 100 characters or fewer.</li>
-                            <li>Usernames can only contain letters, numbers, or @ + - _ ,</li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr><td><br></td></tr>
-                <tr style="height: 45px;">
-                    <td colspan="2" style="padding-left: 5px;">
-                        <span id="whyEmail" style="display: none;">
-                        <button type="button" class="btn btn-outline-danger btn-sm align-right"
-                                              style="border-radius: 10px; padding: 0px 6px;"
-                                              onclick="hideWhyEmail()">
-                            X
-                        </button>
-                        <h5>Why is an email required?</h5>
-                        We only use your email address to contact you if you need to reset your password,
-                        or if there are other problems with your account.<br><br>
-                        To learn more, please see our <a href="{% url 'vanlevy:terms' %}">terms and conditions</a>.
-                        </span>
-                    </td>
-                </tr>
-            </table>
-        </form>
-
-    {% endif %}
+    <p>To create a new account, please <a href="{% url 'accounts:logout' %}">logout</a> and then register.</p>
+  {% else %}
+    <h3 style="text-align: center;">
+      By creating an account, you agree to our <a href="{% url 'vanlevy:terms' %}">terms and conditions.</a>
+    </h3>
+    <p><br></p>
+    <form method="post" id="register">
+      {% csrf_token %}
+      <table style="margin-left: auto; margin-right: auto;">
+        <col width="190">
+        <col width="325">
+        <tr style="height: 45px;">
+          <td style="padding-left: 5px;">{{ form.username }}</td>
+          <td>Usernames must be unique.</td>
+        </tr>
+        <tr style="height: 45px;">
+          <td style="padding-left: 5px;">{{ form.email }}</td>
+          <td>One account per email.
+            <button type="button" class="btn btn-outline-info btn-sm align-right"
+                                  style="border-radius: 10px; padding: 0px 6px;"
+                                  tabindex="-1"
+                                  onclick="showWhyEmail()" id="showButton">
+              ?
+            </button>
+          </td>
+        </tr>
+        <tr style="height: 45px;">
+          <td style="padding-left: 5px;">{{ form.password1 }}</td>
+          <td>Passwords must be at least 8 characters long.</td>
+        </tr>
+        <tr style="height: 45px;">
+          <td style="padding-left: 5px;">{{ form.password2 }}</td>
+          <td>Passwords cannot be entirely numeric.</td>
+        </tr>
+        {% if form.errors %}
+          {% for field in form %}
+            {% for error in field.errors %}
+              <tr><td colspan="2">
+                <div class="alert alert-warning">
+                  <a class="close" href="#" data-dismiss="alert">×</a>
+                  {{ error }}
+                    {% if error == "This email already has an account." %}
+                    <br>You can request a <a href="{% url 'accounts:password_reset' %}">Password Reset</a>.
+                    {% endif %}
+                </div>
+              </td></tr>
+            {% endfor %}
+          {% endfor %}
+        {% endif %}
+        <tr style="height: 40px;">
+          <td>
+            <input type="checkbox" class="align-right" value="agree" id="agree" style="margin-right: 10px;">
+          </td>
+          <td>I agree to the <a href="{% url 'vanlevy:terms' %}">terms and conditions</a>.</td>
+        </tr>
+        <tr style="height: 50px;">
+          <td style="padding-right: 10px;">
+            <button type="submit" class="btn btn-outline-primary align-right" id="submit_button"
+                    style="display: none;">
+              Register
+            </button>
+          </td>
+          <td></td>
+        </tr>
+        <tr><td><br></td></tr>
+        <tr>
+          <td colspan="2">
+            <h4>Account Requirements</h4>
+            <ul>
+              <li>Your password can't be too similar to your other personal information.</li>
+              <li>Your password can't be a commonly used password.</li>
+              <li>Usernames can only be 100 characters or fewer.</li>
+              <li>Usernames can only contain letters, numbers, or @ + - _ ,</li>
+            </ul>
+          </td>
+        </tr>
+        <tr><td><br></td></tr>
+        <tr style="height: 45px;">
+          <td colspan="2" style="padding-left: 5px;">
+            <span id="whyEmail" style="display: none;">
+              <button type="button" class="btn btn-outline-danger btn-sm align-right"
+                                    style="border-radius: 10px; padding: 0px 6px;"
+                                    onclick="hideWhyEmail()">
+                X
+              </button>
+              <h5>Why is an email required?</h5>
+              We only use your email address to contact you if you need to reset your password,
+              or if there are other problems with your account.<br><br>
+              To learn more, please see our <a href="{% url 'vanlevy:terms' %}">terms and conditions</a>.
+            </span>
+          </td>
+        </tr>
+      </table>
+    </form>
+  {% endif %}
 </div>
 
 <script>
 var $myForm = $("#register");
 $myForm.submit(function(){
-    $myForm.submit(function(){
-        return false;
-    });
+  $myForm.submit(function(){
+    return false;
+  });
+});
+$("#agree").click(function () {
+  var button = $("#submit_button");
+  if (document.getElementById('agree').checked) {
+    button.show();
+  } else {
+    button.hide();
+  };
 });
 </script>
-<script>
-function showWhyEmail() {
-    document.getElementById('whyEmail').style.display='block';
-    document.getElementById('showButton').style.display='none';
-};
-function hideWhyEmail() {
-    document.getElementById('whyEmail').style.display='none';
-    document.getElementById('showButton').style.display='inline';
-};
-</script>
+<script src="{% static 'vanlevy/files/js/accounts.js'%}"></script>
 {% endblock %}

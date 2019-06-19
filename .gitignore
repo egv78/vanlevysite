@@ -24,7 +24,7 @@ swdice/migrations/__pycache__/
 swdice/static/
 vanlevy/__pycache__/
 vanlevy/migrations/__pycache__/
-vanlevy/static/vanlevy/
+vanlevy/static/vanlevy/images/
 vanlevysite/__pycache__/
 vanlevysite/media/avatar_image/QiuYuen_ZGY3eEk.jpg
 vanlevysite/media/avatar_image/QiuYuen_sy35q8W.jpg
@@ -65,3 +65,10 @@ swdice/migrations/0022_auto_20190418_1428.py
 swdice/migrations/0023_auto_20190422_1148.py
 vanlevysite/settings/auth.csv
 /db.sqlite3
+!/vanlevy/static/vanlevy/files/base_style_19_06_05.css
+vanlevy/migrations/0001_initial.py
+!/vanlevy/static/vanlevy/files/base_style_19_06_11.css
+!/vanlevy/static/vanlevy/files/base.js
+!/vanlevy/static/vanlevy/files/vanlevy_base_19_06_13.css
+!/vanlevy/static/vanlevy/files/other/PDFCharSheet.pdf
+!/vanlevy/static/vanlevy/files/js/dice_sw.js

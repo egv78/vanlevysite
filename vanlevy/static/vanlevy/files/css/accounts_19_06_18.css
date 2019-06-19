@@ -1,0 +1,42 @@
+/* universal elements, size-independent */
+
+body {overflow-y: scroll;}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] { -moz-appearance:textfield;}
+
+.align-right {
+    float: right;
+    margin: 15px 0px 0px 0xp;
+}
+
+/* RESPONSIVE DESIGN GROUPS*/
+/* Keep all responsive designs in these*/
+
+/* xs  */
+@media (max-width: 575px) {
+}
+
+/* sm */
+@media (min-width: 576px) {
+}
+
+/* md */
+@media (min-width: 768px) {
+}
+
+/* lg */
+@media (min-width: 992px) {
+}
+
+/* xl */
+@media (min-width: 1200px) {
+
+}
+/* end responsive groups */

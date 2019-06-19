@@ -7,7 +7,7 @@
 
 {% block accounts_page %}
   {% load static %}
-  <img src="{% static '/vanlevy/Profile_32.png' %}" alt="Profile" height="32" width="32">
+  <img src="{% static '/vanlevy/images/Profile_32.png' %}" alt="Profile" height="32" width="32">
   <span style="color: white;">Edit Profile</span>
 {% endblock %}
 
@@ -29,7 +29,7 @@
                     onclick="preview()">
                 Show edits
               </button>
-              <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+              <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
               {{user}}<br>Current Profile
             </h4>
             <div class="card-body">
@@ -88,7 +88,7 @@
                       aria-controls="current_profile edited_profile">
                 Show Original
               </button>
-              <img src="{% static '/vanlevy/Profile_32.png' %}" height="32" width="32" title="Profile">
+              <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
               {{user}}<br>Edited Profile
               <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="preview()">
                 Refresh
@@ -341,10 +341,3 @@ $myForm.submit(function(){
 {% block page_scripts %}
 {% endblock %}
 
-<!--
-  var icon_url = "{ static '/vanlevy/profile_background.png' }";
-  img_element = $('#temp_pic');
-  img_element.attr('src', icon_url);
-  document.getElementById('clear_button').style.display='none';
-  document.getElementById('preview_text_1').style.display='none';
-  document.getElementById('preview_text_2').style.display='none';-->

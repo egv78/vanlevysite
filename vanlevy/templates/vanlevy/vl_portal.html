@@ -3,55 +3,17 @@
 {% block head %}
     <meta charset="UTF-8">
     <title>Personal Portal Page</title>
-
-<style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  th, td {
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-
-  /* xs */
-  @media (max-width: 575.9px) {
-    #info_row {min-height: 300px;}
-  }
-
-  /* sm */
-  @media (min-width: 576px) {
-    #info_row {min-height: 280px;}
-  }
-  /* md */
-  @media (min-width: 768px) {
-    #info_row {min-height: 230px;}
-    #profile_card {margin: 0px -15px 0px 0px; padding: 0px 15px 0px 0px;}
-    #char_sheets_card  {margin: 0px 0px 0px 15px; padding: 0px 0px 0px 15px;}
-  }
-  /* lg */
-  @media (min-width: 992px) {
-    #info_row {min-height: 215px;}
-    #profile_card {margin: 0px -15px 0px 0px; padding: 0px;}
-    #char_sheets_card  {margin: 0px -15px 0px 0px; padding: 0px;}
-  }
-  /* xl */
-  @media (min-width: 1200px) {
-    #info_row {min-height: 200px;}
-  }
-</style>
-
 {% endblock %}
 
 {% load static %}
 {% block brand %}
   <h3>
     <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-      <img src="{% static '/vanlevy/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+      <img src="{% static '/vanlevy/images/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
         Van Levy
     </a>
     <a class="navbar-brand">
-      <img src="{% static '/vanlevy/Doors_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+      <img src="{% static '/vanlevy/images/Doors_32.png' %}" alt="Van Levy Icon" height="32" width="32">
       <span style="color: white;">Portal Page</span>
     </a>
   </h3>
@@ -71,7 +33,7 @@ style="padding: 20px 0px 0px 0px"
 {% block other_navbar_right %}
   <button class="btn btn-info btn-sm align-right" type="button" data-toggle="collapse"
           data-target="#infoPanel" aria-expanded="false" aria-controls="infoPanel"
-          style="margin-right: 20px;">
+          style="margin-right: 20px; margin-bottom: 12px;">
     Info Panel
   </button>
 {% endblock %}
@@ -84,7 +46,7 @@ style="padding: 20px 0px 0px 0px"
 <div class="container">
   <div class="collapse" id="infoPanel">
     <div class="row no-gutters" id="info_row">
-      <div class="col-12 hide_md" style="text-align: center;">
+      <div class="col-12 d-inline d-md-none" style="text-align: center;">
         <div class="btn-group" style="margin-bottom: 6px;">
           <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
                   data-target="#ProfileInfo" aria-expanded="false"
@@ -174,7 +136,7 @@ style="padding: 20px 0px 0px 0px"
           </div>
         </div>
       </div>
-      <div class="col-md-2 show_md">
+      <div class="col-md-2 d-none d-md-inline">
         <div class="btn-group-vertical align-right" style="margin-bottom: 12px;">
           <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
                   data-target="#ProfileInfo" aria-expanded="false"
@@ -220,13 +182,13 @@ style="padding: 20px 0px 0px 0px"
             <div class="card-header">
               <h5 class="card-title" style="margin-bottom: 0px;">
                 <a href="{% url 'swdice:about' %}">
-                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                  <img src="{% static '/vanlevy/images/RoomInfoSimple_32.png' %}"
                        alt="SW Dice Roller" height="32" width="32">
                 </a>
                 Star Wars
               </h5>
             </div>
-            <div class="card-body" style="background-image: url({% static '/vanlevy/CardImageDroid.png' %});
+            <div class="card-body" style="background-image: url({% static '/vanlevy/images/CardImageDroid.png' %});
                         background-repeat: no-repeat; background-color: #d6e9f9; background-position: center;
                         min-height: 240px;">
               <h5 class="card-title">
@@ -234,10 +196,10 @@ style="padding: 20px 0px 0px 0px"
                 <a href="{% url 'swdice:dockingbay' %}">Docking Bay</a>
               </h5>
               {% if my_sw_rooms_list %}
-                <table width="100%">
-                  <col width="60%">
-                  <col width="20%">
-                  <col width="20%">
+                <table class="room_table">
+                  <col class="col-room-name">
+                  <col class="col-user-name">
+                  <col class="col-user-name">
                   <tr>
                     <td><strong>Room Name</strong></td>
                     <td><strong>Avatar</strong></td>
@@ -269,13 +231,13 @@ style="padding: 20px 0px 0px 0px"
             <div class="card-header">
               <h5 class="card-title" style="margin-bottom: 0px;">
                 <a href="{% url 'gendice:about' %}">
-                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                  <img src="{% static '/vanlevy/images/RoomInfoSimple_32.png' %}"
                        alt="SW Dice Roller" height="32" width="32">
                 </a>
                 Genesys
               </h5>
             </div>
-              <div class="card-body" style="background-image: url({% static '/vanlevy/Genesys_reverse.png' %});
+              <div class="card-body" style="background-image: url({% static '/vanlevy/images/Genesys_reverse.png' %});
                       background-repeat: no-repeat; background-color: #fdecd9; background-position: center;
                       min-height: 240px;">
                 <h5 class="card-title">
@@ -283,10 +245,10 @@ style="padding: 20px 0px 0px 0px"
                   <a href="{% url 'gendice:confluence' %}">Confluence</a>
                 </h5>
                 {% if my_gen_rooms_list %}
-                  <table width="100%">
-                    <col width="60%">
-                    <col width="20%">
-                    <col width="20%">
+                  <table  class="room_table">
+                    <col class="col-room-name">
+                    <col class="col-user-name">
+                    <col class="col-user-name">
                     <tr>
                       <td><strong>Room Name</strong></td>
                       <td><strong>Avatar</strong></td>
@@ -320,14 +282,14 @@ style="padding: 20px 0px 0px 0px"
             <div class="card-header">
               <h5 class="card-title" style="margin-bottom: 0px;">
                 <a href="{% url 'polydice:about' %}">
-                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                  <img src="{% static '/vanlevy/images/RoomInfoSimple_32.png' %}"
                       alt="Polyhedral Dice Roller" height="32" width="32">
                 </a>
                 Polyhedral
               </h5>
             </div>
             <div class="card-body"
-                 style="background-image: url({% static '/vanlevy/d20_reverse.png' %});
+                 style="background-image: url({% static '/vanlevy/images/d20_reverse.png' %});
                        background-repeat: no-repeat; background-color: #D7D9F4; background-position: center;
                        min-height: 240px;">
               <h5 class="card-title">
@@ -335,10 +297,10 @@ style="padding: 20px 0px 0px 0px"
                 <a href="{% url 'polydice:dungeon' %}">The Dungeon</a>
               </h5>
               {% if my_poly_rooms_list %}
-                <table width="100%">
-                <col width="60%">
-                <col width="20%">
-                <col width="20%">
+                <table class="room_table">
+                <col class="col-room-name">
+                <col class="col-user-name">
+                <col class="col-user-name">
                 <tr>
                   <td><strong>Room Name</strong></td>
                   <td><strong>Avatar</strong></td>
@@ -370,14 +332,14 @@ style="padding: 20px 0px 0px 0px"
             <div class="card-header">
               <h5 class="card-title" style="margin-bottom: 0px;">
                 <a href="{% url 'myzdice:about' %}">
-                  <img src="{% static '/vanlevy/RoomInfoSimple_32.png' %}"
+                  <img src="{% static '/vanlevy/images/RoomInfoSimple_32.png' %}"
                       alt="SW Dice Roller" height="32" width="32">
                 </a>
                 Mutant Year Zero
               </h5>
             </div>
             <div class="card-body"
-                 style="background-image: url({% static '/vanlevy/MutantYearZero_pale_200_2.png' %});
+                 style="background-image: url({% static '/vanlevy/images/MutantYearZero_pale_200_2.png' %});
                        background-repeat: no-repeat; background-color: #F8EEC6; background-position: center;
                        min-height: 240px;">
               <h5 class="card-title">
@@ -385,10 +347,10 @@ style="padding: 20px 0px 0px 0px"
                 <a href="{% url 'myzdice:the_zone' %}">The Zone</a>
               </h5>
               {% if my_myz_rooms_list %}
-                <table width="100%">
-                <col width="60%">
-                <col width="20%">
-                <col width="20%">
+                <table class="room_table">
+                <col class="col-room-name">
+                <col class="col-user-name">
+                <col class="col-user-name">
                 <tr>
                   <td><strong>Room Name</strong></td>
                   <td><strong>Avatar</strong></td>
@@ -441,7 +403,7 @@ style="padding: 20px 0px 0px 0px"
             <div class="row no-gutters">
               <div class="col-4">
                 {% if user.userprofile.user_url_image %}
-                  <img src="{{ user.userprofile.user_url_image }}" width="100%">
+                  <img src="{{ user.userprofile.user_url_image }}" class="w-100" alt="{{user}}'s Profile Pic">
                 {% else %}
                   <p><strong>No image</strong></p>
                 {% endif %}
@@ -469,18 +431,15 @@ style="padding: 20px 0px 0px 0px"
             </div>
           </div>
           <div class="card-footer">
-            <a href="{% url 'accounts:view_profile' %}">
-              <!--user.userprofile.user_first_name and user.userprofile.user_last_name and user.userprofile.user_url_image-->
             {% if outline_button %}
-              <button type="button" class="btn btn-outline-primary btn-sm">
-                View Profile & Avatars <strong>&#12299</strong>
-              </button>
+              <a href="{% url 'accounts:view_profile' %}" class="btn btn-outline-primary btn-sm" role="button">
+                View Profile & Avatars <strong>&#12299;</strong>
+              </a>
             {% else %}
-              <button type="button" class="btn btn-primary">
-                View Profile & Avatars <strong>&#12299</strong>
-              </button>
+              <a href="{% url 'accounts:view_profile' %}" class="btn btn-primary" role="button">
+                View Profile & Avatars <strong>&#12299;</strong>
+              </a>
             {% endif %}
-            </a>
           </div>
         </div>
         </div>
@@ -496,10 +455,9 @@ style="padding: 20px 0px 0px 0px"
                 <p class="card-text">
                   <span style="font-size: 1.25em;"><strong>PDFs: </strong></span>
                   You can use links to web-hosted PDFs (e.g. Google Drive) to show in Dice Rooms.
-                  <a href="{% url 'accounts:pdf_charsheets' %}">
-                    <button type="button" class="btn btn-outline-primary btn-sm align-right">
-                      PDF Character Sheets <strong>&#12299</strong>
-                    </button>
+                  <a href="{% url 'accounts:pdf_charsheets' %}" class="btn btn-outline-primary btn-sm align-right"
+                     role="button">
+                    PDF Character Sheets <strong>&#12299;</strong>
                   </a>
                 </p>
               </div>
@@ -528,7 +486,9 @@ style="padding: 20px 0px 0px 0px"
                   <div class="row no-gutters">
                     <div class="col-4">
                       {% if avatar.avatar_url_image %}
-                        <p><img src="{{ avatar.avatar_url_image }}" width="100%"></p>
+                        <p>
+                          <img src="{{ avatar.avatar_url_image }}" class="w-100" alt="{{ avatar.avatar_name }}'s Pic">
+                        </p>
                       {% else %}
                         This avatar has no image.
                       {% endif %}
@@ -542,23 +502,21 @@ style="padding: 20px 0px 0px 0px"
                       <strong>Character Sheet</strong><br>
                       {% if avatar.use_char_sheet == 0 %}
                         <em>None attached</em>
-                        <a href="{% url 'accounts:view_avatar' avatar.id %}">
-                          <button type="button" class="btn btn-primary btn-sm align-right">
-                            Add <strong>&#12299</strong>
-                          </button>
+                        <a href="{% url 'accounts:view_avatar' avatar.id %}" role="button"
+                           class="btn btn-primary btn-sm align-right">
+                          Add <strong>&#12299;</strong>
                         </a>
                       {% elif avatar.use_char_sheet == 1 %}
                         <em>{{ avatar.char_pdf.pdf_name }}</em>
-                        <a href="{% url 'accounts:view_avatar' avatar.id %}">
-                          <button type="button" class="btn btn-outline-primary btn-sm align-right">
-                            View / Change <strong>&#12299</strong>
-                          </button>
+                        <a href="{% url 'accounts:view_avatar' avatar.id %}"  role="button"
+                           class="btn btn-outline-primary btn-sm align-right">
+                          View / Change <strong>&#12299;</strong>
                         </a>
                       {% elif avatar.use_char_sheet == 2 %}
                         <em>Genesys Built-In</em>
-                        <a href="{% url 'accounts:view_avatar' avatar.id %}">
-                          <button type="button" class="btn btn-outline-primary btn-sm align-right">
-                            View / Change <strong>&#12299</strong>
+                        <a href="{% url 'accounts:view_avatar' avatar.id %}"  role="button"
+                           class="btn btn-outline-primary btn-sm align-right">
+                            View / Change <strong>&#12299;</strong>
                           </button>
                         </a>
                       {% endif %}
@@ -571,7 +529,12 @@ style="padding: 20px 0px 0px 0px"
         {% else %}
           <div class="container">
             <p><strong>You have not created any avatars.</strong></p>
-            <p><em>insert button to make one</em></p>
+            <p>
+              <a href="{% url 'accounts:create_avatar'%}"  role="button"
+                           class="btn btn-primary btn-sm">
+                Make New Avatar <strong>&#12299;</strong>
+              </a>
+            </p>
           </div>
         {% endif %}
       </div>
