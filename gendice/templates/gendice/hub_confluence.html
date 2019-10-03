@@ -30,7 +30,7 @@
     </div>
     <div class="col-lg-8">
       <br>
-      <img src="{% static '/gendice/GenesysConfluenceImage2.png' %}" alt="Confluence Banner" width="100%">
+      <img src="{% static '/gendice/GenesysConfluenceImage2.png' %}" alt="Confluence Banner" style="width: 100%;">
       <p></p>
     </div>
   </div>
@@ -68,10 +68,10 @@
         <div class="card-body text-dark">
           <div class="collapse multi-collapse show" id="Regular">
             {% if number_of_rooms > 0 %}
-              <table id="star_wars_table" width="100%">
-                <col width="60%">
-                <col width="20%">
-                <col width="20%">
+              <table class="star_wars_table" style="width: 100%;">
+                <col style="width: 60%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
                 <tr>
                   <td><strong>Name (Link)</strong></td>
                   <td><strong>Avatar</strong></td>
@@ -156,10 +156,10 @@
             {% endif %}
           </div>
           <div class="collapse multi-collapse" id="Archived">
-            <table id="star_wars_table" width="100%">
-              <col width="60%">
-              <col width="20%">
-              <col width="20%">
+            <table class="star_wars_table" style="width: 100%;">
+              <col style="width: 60%;">
+              <col style="width: 20%;">
+              <col style="width: 20%;">
               <tr>
                 <td><strong>Name (Link)</strong></td>
                 <td><strong>Avatar</strong></td>
@@ -244,10 +244,9 @@
               </p>
             </div>
             <div class="col-3">
-              <a href="{% url 'gendice:make_genroom' %}">
-                <button type="button" class="btn btn-primary align-right">
-                  <strong>&#12299</strong>
-                </button>
+              <a href="{% url 'gendice:make_genroom' %}" role="button"
+                 class="btn btn-primary align-right">
+                  <strong>&#12299;</strong>
               </a>
             </div>
           </div>
@@ -291,7 +290,7 @@
                   <div class="col-lg-2 col-md-3 col-sm-3 col-xs-4 offset-xs-0 offset-sm-0 offset-md-9 offset-lg-0">
                     <br>
                     <button type="submit" class="btn btn-primary align-right" id="direct-button">
-                      Enter Room <strong>&#12299</strong>
+                      Enter Room <strong>&#12299;</strong>
                     </button>
                   </div>
                 </div>
@@ -321,7 +320,7 @@
                   <div class="col-lg-2 col-md-4 col-sm-3 col-xs-12 offset-lg-0 offset-md-8">
                     <br>
                     <button type="submit" class="btn btn-primary align-right" id="passcode-button">
-                      Enter Room <strong>&#12299</strong>
+                      Enter Room <strong>&#12299;</strong>
                     </button>
                   </div>
                 </div>

@@ -17,7 +17,7 @@ input[type=number] { -moz-appearance:textfield;}
 
 .outline-me { border: 1px solid black; }
 
-#star_wars_table tr:nth-child(odd){background-color: #f9f9f9;}
+.star_wars_table tr:nth-child(odd){background-color: #f9f9f9;}
 
 /* Action Table Settings */
 .action-odd {
