@@ -29,8 +29,8 @@
     <form method="post" id="register">
       {% csrf_token %}
       <table style="margin-left: auto; margin-right: auto;">
-        <col width="190">
-        <col width="325">
+        <col style="width: 190px;">
+        <col style="width: 325px;">
         <tr style="height: 45px;">
           <td style="padding-left: 5px;">{{ form.username }}</td>
           <td>Usernames must be unique.</td>
@@ -84,7 +84,7 @@
           </td>
           <td></td>
         </tr>
-        <tr><td><br></td></tr>
+        <tr><td><br></td><td></td></tr>
         <tr>
           <td colspan="2">
             <h4>Account Requirements</h4>
@@ -96,10 +96,10 @@
             </ul>
           </td>
         </tr>
-        <tr><td><br></td></tr>
+        <tr><td><br></td><td></td></tr>
         <tr style="height: 45px;">
           <td colspan="2" style="padding-left: 5px;">
-            <span id="whyEmail" style="display: none;">
+            <div id="whyEmail" style="display: none;">
               <button type="button" class="btn btn-outline-danger btn-sm align-right"
                                     style="border-radius: 10px; padding: 0px 6px;"
                                     onclick="hideWhyEmail()">
@@ -109,7 +109,7 @@
               We only use your email address to contact you if you need to reset your password,
               or if there are other problems with your account.<br><br>
               To learn more, please see our <a href="{% url 'vanlevy:terms' %}">terms and conditions</a>.
-            </span>
+            </div>
           </td>
         </tr>
       </table>

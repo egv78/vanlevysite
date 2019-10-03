@@ -53,9 +53,9 @@
       <div class="col-lg-8">
         <form method="POST" enctype="multipart/form-data" id="editCharSheet">
           {% csrf_token %}
-          <table width="100%">
-            <col width="25%">
-            <col width="75%">
+          <table style="width: 100%;">
+            <col style="width: 25%;">
+            <col style="width: 75%;">
             <tr>
               <td colspan="2">
                 <h4>
@@ -93,6 +93,7 @@
               <td></td>
               <td><hr></td>
             </tr>
+            {% if not no_pdfs %}
             <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row1">
               <td style="text-align: right; vertical-align: top;">
                 <strong>Existing PDF:</strong>
@@ -115,6 +116,7 @@
                 <hr>
               </td>
             </tr>
+            {% endif %}
             <tr class="collapse {% if has_no_sheet %}show{% endif %} multi-collapse" id="row2">
               <td style="text-align: right; vertical-align: top;">
                 <strong>New PDF:</strong>

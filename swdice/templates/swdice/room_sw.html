@@ -759,8 +759,8 @@
                              width="40">
                       {% else %}
                         <strong>
-                          {% if action.avatar %}{{ action.avatar.avatar_name }}
-                          {% else %}{{ action.user.username }}
+                          {% if action.avatar %}{{ action.avatar.avatar_name|truncatechars:12|wordwrap:6 }}
+                          {% else %}{{ action.user.username|truncatechars:12|wordwrap:6 }}
                           {% endif %}
                         </strong>
                       {% endif %}

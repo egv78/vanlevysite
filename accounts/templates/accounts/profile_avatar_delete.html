@@ -1,68 +1,71 @@
 {% extends 'accounts_base.html' %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>Delete Avatar</title>
+  <meta charset="UTF-8">
+  <title>Delete Avatar</title>
 {% endblock %}
 
 {% block accounts_page %}
-    {% load static %}
-    <img src="{% static '/vanlevy/images/AvatarDelete_32.png' %}" height="32" width="32" title="Avatar">
-    <span style="color: white;">Delete {{this_avatar.avatar_name}}?</span>
+  {% load static %}
+  <img src="{% static '/vanlevy/images/AvatarDelete_32.png' %}" height="32" width="32" title="Avatar">
+  <span style="color: white;">Delete {{this_avatar.avatar_name}}?</span>
 {% endblock %}
 
 {% block body %}
 <br>
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card border-secondary mb-3">
-                    <h4 class="card-header">
-                        {{ this_avatar.avatar_name }}
-                    </h4>
-                    <div class="card-body">
-                        {% if this_avatar.avatar_url_image %}
-                            <p><img src="{{ this_avatar.avatar_url_image }}" width="100%"></p>
-                        {% else %}
-                            This avatar has no image.
-                        {% endif %}
-                        <p class="card-text">
-                            <strong>Description</strong><br>
-                            {{ this_avatar.avatar_description }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <h4>Are you REALLY sure that you want to delete {{this_avatar.avatar_name}}?</h4>
-                <h5>Once this is done, you can't undo it!</h5>
-                <p>&nbsp</p>
-                <div class="container-fluid">
-                    <form method="POST" id="deleteAvatar">
-                        {% csrf_token %}
-                    <div class="row">
-                        <div class="col">
-                            <p><em>Delete </em><strong>{{this_avatar.avatar_name}}?</strong></p>
-                                {{ avatar_form.deleted }}
-                            <p></p>
-                        </div>
-                        <div class="col">
-                            <p><br></p>
-                            <button type="submit" id="delete_button" class="btn btn-outline-success">
-                                Never mind.<br>Return to Profile page
-                            </button>
-                        </div>
-                    </div>
-                        </form>
-                    <p id="delete_language">
-                        In order to delete {{this_avatar.avatar_name}}, you must check "Yes" <em>and then</em>
-                        click the button.
-                    </p>
-                </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card border-secondary mb-3">
+          <h4 class="card-header">
+            {{ this_avatar.avatar_name }}
+          </h4>
+          <div class="card-body">
+            {% if this_avatar.avatar_url_image %}
+              <p>
+                <img src="{{ this_avatar.avatar_url_image }}" style="width: 100%;"
+                     alt="{{ this_avatar.avatar_name }}'s Pic">
+              </p>
+            {% else %}
+              This avatar has no image.
+            {% endif %}
+            <p class="card-text">
+              <strong>Description</strong><br>
+              {{ this_avatar.avatar_description }}
+            </p>
             </div>
         </div>
+      </div>
+      <div class="col-md-8">
+          <h4>Are you REALLY sure that you want to delete {{this_avatar.avatar_name}}?</h4>
+          <h5>Once this is done, you can't undo it!</h5>
+          <p>&nbsp;</p>
+          <div class="container-fluid">
+            <form method="POST" id="deleteAvatar">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col">
+                  <p><em>Delete </em><strong>{{this_avatar.avatar_name}}?</strong></p>
+                    {{ avatar_form.deleted }}
+                  <p></p>
+                </div>
+                <div class="col">
+                  <p><br></p>
+                  <button type="submit" id="delete_button" class="btn btn-outline-success">
+                    Never mind.<br>Return to Profile page
+                  </button>
+                </div>
+              </div>
+            </form>
+            <p id="delete_language">
+              In order to delete {{this_avatar.avatar_name}}, you must check "Yes" <em>and then</em>
+              click the button.
+            </p>
+          </div>
+      </div>
     </div>
+  </div>
 </div>
 <script>
 $("#id_deleted").click(function () {

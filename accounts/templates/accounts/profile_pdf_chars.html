@@ -42,7 +42,7 @@
 <div class="container">
   <div class="collapse" id="infoPanel">
     <div class="row no-gutters" id="info_row">
-      <div class="col-12 hide_md" style="text-align: center;">
+      <div class="col-12 d-inline d-md-none" style="text-align: center;">
         <div class="btn-group" style="margin-bottom: 6px;">
           <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
                   data-target="#ProfileInfo" aria-expanded="false"
@@ -64,7 +64,7 @@
           <div class="collapse show" id="ProfileInfo" data-parent="#allInfoCollapse">
             <div class="card border-info mb-3" style="width: 100%;">
               <div class="card card-body">
-                <img src="{% static '/vanlevy/images/Tabs.png' %}" width="45px" height="114px"
+                <img src="{% static '/vanlevy/images/Tabs.png' %}" width="45" height="114" alt="Tabs"
                       style="position: absolute; top: 10px; right: 5px;">
                 <h6 class="card-title" style="margin-bottom: 3px;">PDF Basics</h6>
                 <p style="font-size:0.83em; padding-right: 50px;">
@@ -110,7 +110,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2 show_md">
+      <div class="col-md-2 d-none d-md-inline">
         <div class="btn-group-vertical align-right" style="margin-bottom: 12px;">
           <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse"
                   data-target="#ProfileInfo" aria-expanded="false"
@@ -135,9 +135,9 @@
       <div class="row no-gutters" id="control_row">
         <div class="col-lg-8">
           <hr>
-          <table width="100%">
-            <col width="25%">
-            <col width="75%">
+          <table class="w-100">
+            <col class="w-25">
+            <col class="w-75">
             <tr>
               <td style="text-align: right; vertical-align: top;">
                 <strong>PDF Name</strong>
@@ -214,7 +214,7 @@
                 Active PDFs
                 {% if num_pdfs_archived > 0 %}
                   <button class="btn btn-outline-secondary btn-sm align-right" type="button" data-toggle="collapse"
-                      data-target=".multi-collapse" aria-expanded="false" aria-controls="archivedPDFs activePDFS">
+                      data-target=".multi-collapse" aria-expanded="false" aria-controls="archivedPDFs activePDFs">
                     Show Archived
                   </button>
                 {% endif %}
@@ -244,7 +244,7 @@
                 Active PDFs
                 {% if num_pdfs_archived > 0 %}
                   <button class="btn btn-primary btn-sm align-right" type="button" data-toggle="collapse"
-                      data-target=".multi-collapse" aria-expanded="false" aria-controls="archivedPDFs activePDFS">
+                      data-target=".multi-collapse" aria-expanded="false" aria-controls="archivedPDFs activePDFs">
                     Show Archived
                   </button>
                 {% endif %}

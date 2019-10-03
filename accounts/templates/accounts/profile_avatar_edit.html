@@ -7,7 +7,6 @@
 <style>
   /* xs */
   @media (max-width: 575px) { #form_table {margin-left: 0px;} }
-
   /* sm */
   @media (min-width: 576px) { #form_table {margin-left: 0px;} }
   /* md */
@@ -41,7 +40,7 @@
             <h4 class="card-header">
               <button class="btn btn-outline-success btn-sm align-right" type="button" data-toggle="collapse"
                     data-target=".multi-collapse" aria-expanded="false" aria-controls="current_profile edited_profile"
-                    onclick="preview()">
+                    onclick="preview('{% static "/vanlevy/images/NoImage.png" %}')">
                 Show edits
               </button>
               <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
@@ -51,9 +50,12 @@
               <div class="row">
                 <div class="col-6">
                   {% if this_avatar.avatar_url_image %}
-                    <p><img src="{{ this_avatar.avatar_url_image }}" width="100%"></p>
+                    <p>
+                      <img src="{{ this_avatar.avatar_url_image }}" class="w-100"
+                           alt="{{ this_avatar.avatar_name }}'s Original Image">
+                    </p>
                   {% else %}
-                    <p><strong>No image uploaded</strong></p>
+                    <img src="{% static '/vanlevy/images/NoImage.png' %}" class="w-100" alt="no image">
                   {% endif %}
                 </div>
                 <div class="col-6">
@@ -85,14 +87,16 @@
               </button>
               <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
               {{user}}<br>Edited Avatar
-              <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="preview()">
+              <button class="btn btn-outline-success btn-sm align-right" type="button"
+                      onclick="preview('{% static "/vanlevy/images/NoImage.png" %}')">
                 Refresh
               </button>
             </h4>
             <div class="card-body">
               <div class="row">
                 <div class="col-6">
-                  <img src="{{ this_avatar.avatar_url_image }}" width="100%" id="new_image">
+                  <img src="{{ this_avatar.avatar_url_image }}" class="w-100" id="new_image"
+                       alt="{{ this_avatar.avatar_name }}'s New Image">
                 </div>
                 <div class="col-6">
                   <p style="font-size: 1.33em">
@@ -122,8 +126,8 @@
       <form method="POST" enctype="multipart/form-data" id="editAvatar">
         {% csrf_token %}
         <table id="form_table">
-          <col width="80">
-          <col width="280">
+          <col style="width: 80px;">
+          <col style="width: 280px;">
           <tr>
             <td></td>
             <td><h4>Edit {{ this_avatar.avatar_name }}</h4></td>
@@ -147,7 +151,8 @@
           <tr>
             <td class="align-right">
               <strong>Image URL:</strong><br>
-              <button type="button" class="btn btn-outline-secondary btn-sm align-right" onclick="revertImageURL()"
+              <button type="button" class="btn btn-outline-secondary btn-sm align-right"
+                      onclick="revertImageURL()"
                       style="margin-top: 6px;">
                 Revert
               </button>
@@ -172,10 +177,9 @@
             <td></td>
             <td>
               <button type="submit" class="btn btn-success">Submit Changes</button>
-              <a href="{% url 'accounts:view_profile' %}">
-                <button type="button" class="btn btn-outline-danger btn-sm align-right">
-                  Cancel <strong>&#12299</strong>
-                </button>
+              <a href="{% url 'accounts:view_profile' %}" role="button"
+                 class="btn btn-outline-danger btn-sm align-right">
+                Cancel <strong>&#12299;</strong>
               </a>
             </td>
           </tr>
@@ -196,7 +200,7 @@
             <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ gravatar }}" width="90%">
+            <img src="{{ gravatar }}" class="w-100" alt="your gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
                     onclick="useGravatar('{{ gravatar }}', 'gravatar_button')">
@@ -209,7 +213,7 @@
             <h5 class="card-title">Identicon</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ identicon }}" width="90%">
+            <img src="{{ identicon }}" class="w-100" alt="identicon">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
                     onclick="useGravatar('{{ identicon }}', 'identicon_button')">
@@ -222,7 +226,7 @@
             <h5 class="card-title">Monster</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ monsterid }}" width="90%">
+            <img src="{{ monsterid }}" class="w-100" alt="monsterid">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
                     onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
@@ -235,7 +239,7 @@
             <h5 class="card-title">Wavatar</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ wavatar }}" width="90%">
+            <img src="{{ wavatar }}" class="w-100" alt="wavatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
                     onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
@@ -248,7 +252,7 @@
             <h5 class="card-title">Retro</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ retro }}" width="90%">
+            <img src="{{ retro }}" class="w-100" alt="retro">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
                     onclick="useGravatar('{{ retro }}', 'retro_button')">
@@ -261,7 +265,7 @@
             <h5 class="card-title">Robohash</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ robohash }}" width="90%">
+            <img src="{{ robohash }}" class="w-100" alt="robodash">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
                     onclick="useGravatar('{{ robohash }}', 'robohash_button')">
@@ -286,35 +290,8 @@
   </div>
 </div>
 
+<script src="{% static 'vanlevy/files/js/accounts.js' %}"></script>
 <script>
-function enableAllButtons () {
-  document.getElementById('gravatar_button').disabled = false;
-  document.getElementById('identicon_button').disabled = false;
-  document.getElementById('monsterid_button').disabled = false;
-  document.getElementById('wavatar_button').disabled = false;
-  document.getElementById('retro_button').disabled = false;
-  document.getElementById('robohash_button').disabled = false;
-};
-function useGravatar(url, button) {
-  document.getElementById('image_url').value = url;
-  enableAllButtons();
-  document.getElementById(button).disabled = true;
-}
-function revertImageURL() {
-  var old_url = document.getElementById('initial_url').innerText;
-  document.getElementById('image_url').value = old_url;
-};
-function preview() {
-  var new_url = document.getElementById('image_url').value;
-  var new_first_name = document.getElementById('name').value;
-  var new_description_text = document.getElementById('description').value;
-
-  img_element = $('#new_image');
-  img_element.attr('src', new_url);
-
-  $('#new_name').text(new_first_name);
-  $('#new_description').text(new_description_text);
-};
 var $myForm = $("#editAvatar");
 $myForm.submit(function(){
   $myForm.submit(function(){

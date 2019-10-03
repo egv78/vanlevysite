@@ -277,11 +277,20 @@ class ViewAvatar(FormMixin, TemplateView):
         # get avatar choices for enter room forms
         kwargs = super().get_form_kwargs()
         current_user_id = self.request.user.id
-        my_pdfs = PDFCharSheet.objects.filter(user=current_user_id, archived=False)
+        my_pdfs = PDFCharSheet.objects.filter(user=current_user_id)
+        try:
+            this_avatar = Avatar.objects.get(id=self.kwargs['avatar_id'])
+            has_no_pdfs = this_avatar.char_pdf is None
+        except ValueError:
+            pass
         if len(my_pdfs) > 0:
-            pdfs_list = [(0, 'Remove PDF')]
+            if has_no_pdfs:
+                pdfs_list = [(0, 'Select a PDF')]
+            else:
+                pdfs_list = [(0, 'Remove PDF')]
             for pdf in my_pdfs:
-                pdfs_list.append((pdf.id, pdf.pdf_name))
+                if not pdf.archived:
+                    pdfs_list.append((pdf.id, pdf.pdf_name))
         else:
             pdfs_list = [(0, 'no saved pdfs')]
         kwargs['select_pdf'] = pdfs_list
@@ -289,6 +298,8 @@ class ViewAvatar(FormMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         kwargs = self.get_form_kwargs()
+        pdfs_list = kwargs['select_pdf']
+        no_pdfs = pdfs_list[0][1] == 'no saved pdfs'
         dropdown_form = SelectPDF(**kwargs)
         current_user_id = request.user.id
         try:
@@ -309,7 +320,7 @@ class ViewAvatar(FormMixin, TemplateView):
         new_pdf_form = NewPDFForm()
         has_no_sheet = (this_avatar.use_char_sheet == 0)
         args = {'this_avatar': this_avatar, 'new_pdf_form': new_pdf_form, 'pdf_dropdown': dropdown_form,
-                'has_no_sheet': has_no_sheet}
+                'has_no_sheet': has_no_sheet, 'no_pdfs': no_pdfs}
         template_name = 'accounts/profile_avatar_view.html'
 
         return render(request, template_name, args)

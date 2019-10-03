@@ -26,7 +26,7 @@
             <h4 class="card-header">
               <button class="btn btn-outline-success btn-sm align-right" type="button" data-toggle="collapse"
                     data-target=".multi-collapse" aria-expanded="false" aria-controls="current_profile edited_profile"
-                    onclick="preview()">
+                    onclick="previewProfile()">
                 Show edits
               </button>
               <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
@@ -36,7 +36,7 @@
               <div class="row">
                 <div class="col-6">
                   {% if user.userprofile.user_url_image %}
-                    <p><img src="{{ user.userprofile.user_url_image }}" width="100%"></p>
+                    <p><img src="{{ user.userprofile.user_url_image }}" class="w-100" alt="Current Profile Image"></p>
                   {% else %}
                     <p><strong>No image uploaded</strong></p>
                   {% endif %}
@@ -90,14 +90,14 @@
               </button>
               <img src="{% static '/vanlevy/images/Profile_32.png' %}" height="32" width="32" title="Profile">
               {{user}}<br>Edited Profile
-              <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="preview()">
+              <button class="btn btn-outline-success btn-sm align-right" type="button" onclick="previewProfile()">
                 Refresh
               </button>
             </h4>
             <div class="card-body">
               <div class="row">
                 <div class="col-6">
-                  <img src="{{ user.userprofile.user_url_image }}" width="100%" id="new_image">
+                  <img src="{{ user.userprofile.user_url_image }}" class="w-100" id="new_image" alt="New Image">
                 </div>
                 <div class="col-6">
                   <p style="font-size: 1.33em">
@@ -180,10 +180,9 @@
             <td></td>
             <td>
               <button type="submit" class="btn btn-success">Submit Changes</button>
-              <a href="{% url 'accounts:view_profile' %}">
-                <button type="button" class="btn btn-outline-danger btn-sm align-right">
-                  Cancel <strong>&#12299</strong>
-                </button>
+              <a href="{% url 'accounts:view_profile' %}" role="button"
+                 class="btn btn-outline-danger btn-sm align-right">
+                Cancel <strong>&#12299;</strong>
               </a>
             </td>
           </tr>
@@ -201,7 +200,7 @@
             <h5 class="card-title">Your <a href="https://en.gravatar.com/">Gravatar</a></h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ gravatar }}" width="90%">
+            <img src="{{ gravatar }}" class="w-100" alt="Your Gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="gravatar_button"
                     onclick="useGravatar('{{ gravatar }}', 'gravatar_button')">
@@ -214,7 +213,7 @@
             <h5 class="card-title">Identicon</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ identicon }}" width="90%">
+            <img src="{{ identicon }}" class="w-100" alt="Identicon Gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="identicon_button"
                     onclick="useGravatar('{{ identicon }}', 'identicon_button')">
@@ -227,7 +226,7 @@
             <h5 class="card-title">Monster</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ monsterid }}" width="90%">
+            <img src="{{ monsterid }}" class="w-100" alt="Monster Gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="monsterid_button"
                     onclick="useGravatar('{{ monsterid }}', 'monsterid_button')">
@@ -240,7 +239,7 @@
             <h5 class="card-title">Wavatar</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ wavatar }}" width="90%">
+            <img src="{{ wavatar }}" class="w-100" alt="Wavatar Gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="wavatar_button"
                     onclick="useGravatar('{{ wavatar }}', 'wavatar_button')">
@@ -253,7 +252,7 @@
             <h5 class="card-title">Retro</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ retro }}" width="90%">
+            <img src="{{ retro }}" class="w-100" alt="Retro Gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="retro_button"
                     onclick="useGravatar('{{ retro }}', 'retro_button')">
@@ -266,7 +265,7 @@
             <h5 class="card-title">Robohash</h5>
           </div>
           <div class="card-body text-dark">
-            <img src="{{ robohash }}" width="90%">
+            <img src="{{ robohash }}" class="w-100" alt="Robo Gravatar">
             <p></p>
             <button type="button" class="btn btn-outline-dark btn-sm" id="robohash_button"
                     onclick="useGravatar('{{ robohash }}', 'robohash_button')">
@@ -291,42 +290,9 @@
   </div>
 </div>
 
-<script>
-function enableAllButtons () {
-  document.getElementById('gravatar_button').disabled = false;
-  document.getElementById('identicon_button').disabled = false;
-  document.getElementById('monsterid_button').disabled = false;
-  document.getElementById('wavatar_button').disabled = false;
-  document.getElementById('retro_button').disabled = false;
-  document.getElementById('robohash_button').disabled = false;
-};
-function useGravatar(url, button) {
-  document.getElementById('image_url').value = url;
-  enableAllButtons();
-  document.getElementById(button).disabled = true;
-};
-function revertImageURL() {
-  var old_url = document.getElementById('initial_url').innerText;
-  document.getElementById('image_url').value = old_url;
-};
-function preview() {
-  var new_url = document.getElementById('image_url').value;
-  var new_first = document.getElementById('first_name').value;
-  var new_last = document.getElementById('last_name').value;
-  var new_about = document.getElementById('about_me').value;
-  var new_gaming = document.getElementById('gaming_interests').value;
-  var new_location = document.getElementById('location').value;
 
-  img_element = $('#new_image');
-  img_element.attr('src', new_url);
+<script src="{% static 'vanlevy/files/js/accounts.js' %}"></script>
 
-  $('#new_first_name').text(new_first);
-  $('#new_last_name').text(new_last);
-  $('#new_about_me').text(new_about);
-  $('#new_gaming_interests').text(new_gaming);
-  $('#new_location').text(new_location);
-};
-</script>
 <script>
 var $myForm = $("#editProfile");
 $myForm.submit(function(){
