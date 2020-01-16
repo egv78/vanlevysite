@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
-# from django.http import Http404
 from django.views.generic import FormView, TemplateView
 from django.views.generic.edit import FormMixin
-from django.template.defaulttags import register
 
 from accounts.models import VanLevyUser, Avatar
 from swdice.dice import *
@@ -12,23 +10,6 @@ from swdice.views import make_user_room_link, get_chat_carryover, read_chat, Upd
 
 from .forms import PolyDicePoolForm
 from .models import PolyDicePool
-
-
-# Filters for Jinja2
-@register.filter
-def get_item(dictionary, key):
-    return dictionary.get(key)
-
-
-@register.filter
-def get_range(value):
-    return range(value)
-
-
-@register.filter
-def split_string(string):
-    faces_list = string.split(",")
-    return faces_list
 
 
 # Methods for use in view classes

@@ -1,33 +1,14 @@
 from django.shortcuts import render, redirect
-# from django.http import Http404
 from django.views.generic import FormView, TemplateView, View
 from django.views.generic.edit import FormMixin
-from django.template.defaulttags import register
 
 from accounts.models import VanLevyUser, Avatar
 from .models import SWRoomToUser, SWRoomChat, SWRoom, SWRoomDestiny, SWDicePool
 from .forms import Make_SW_Room, Enter_SW_Room, Enter_SW_Direct, SW_Room_Chat_Form, SW_Dice_Roll
 from .dice import *
+from .mixins import AjaxFormMixin
 
 import datetime
-
-
-# Filters
-
-@register.filter
-def get_item(dictionary, key):
-    return dictionary.get(key)
-
-
-@register.filter
-def get_range(value):
-    return range(value)
-
-
-@register.filter
-def split_string(string):
-    faces_list = string.split(",")
-    return faces_list
 
 
 # Methods used in views
@@ -671,7 +652,7 @@ class HubView(FormMixin, TemplateView):
             return redirect(hub_url)
 
 
-class SWRoomViews(FormMixin, TemplateView):
+class SWRoomViews(FormMixin, AjaxFormMixin, TemplateView):
 
     def get_form_kwargs(self):
         swroom_id = self.kwargs['swroom_id']
@@ -776,6 +757,7 @@ class SWRoomViews(FormMixin, TemplateView):
             else:
                 return redirect(room_url, swroom_id)
         elif request.method == "POST" and "add_dark" in request.POST:
+            print(request.POST)
             # grab any chat stuff not submitted and keep around
             kwargs = self.get_form_kwargs()
             chat_form = SW_Room_Chat_Form(**kwargs)
@@ -814,6 +796,7 @@ class SWRoomViews(FormMixin, TemplateView):
             change_destiny(**kwargs)
             return redirect(room_url, swroom_id)
         elif request.method == "POST" and "use_dark" in request.POST:
+            print(request.POST)
             # grab any chat stuff not submitted and keep around
             kwargs = self.get_form_kwargs()
             chat_form = SW_Room_Chat_Form(**kwargs)
@@ -942,6 +925,8 @@ class SWRoomViews(FormMixin, TemplateView):
                 return redirect(room_url, swroom_id)
 
             return redirect(room_url, swroom_id)
+        else:
+            print(request.POST)
 
     def get(self, request, *args, **kwargs):
         # kwargs = self.get_form_kwargs()

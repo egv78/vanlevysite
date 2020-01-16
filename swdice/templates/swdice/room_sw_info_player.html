@@ -31,12 +31,12 @@
   <table id="users_table" style="width: 100%">
     <tr>
       <th style="width:80px">User<br> Image</th>
-      <th style="width:300px">&nbsp<br>Playing as</th>
+      <th style="width:300px">&nbsp;<br>Playing as</th>
       <th style="width:80px">Avatar<br> Image</th>
-      <th style="width:80px">&nbsp<br>Role</th>
+      <th style="width:80px">&nbsp;<br>Role</th>
       {% if player_is_gm %}
-        <th style="text-align:right; width:100px">&nbsp<br>GM</th>
-        <th style="width:80px">&nbsp<br>Actions</th>
+        <th style="text-align:right; width:100px">&nbsp;<br>GM</th>
+        <th style="width:80px">&nbsp;<br>Actions</th>
       {% endif %}
     </tr>
       {% for player in users_in_room %}
@@ -45,7 +45,8 @@
       <tr>
         <td>
           {% if player.user_id.userprofile.user_url_image %}
-            <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
+            <img src="{{ player.user_id.userprofile.user_url_image }}" width="40"
+                 alt="{{ player.user_id.username }}'s pic">
           {% else %}
             <em>no image</em>
           {% endif %}
@@ -59,13 +60,15 @@
         <td>
           {% if player.avatar_id %}
             {% if player.avatar_id.avatar_url_image %}
-              <img src="{{ player.avatar_id.avatar_url_image }}" width="40">
+              <img src="{{ player.avatar_id.avatar_url_image }}" width="40"
+                   alt="{{ player.avatar_id.avatar_name }}'s pic">
             {% else %}
               <em>no image</em>
             {% endif %}
           {% else %}
             {% if player.user_id.userprofile.user_url_image %}
-              <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
+              <img src="{{ player.user_id.userprofile.user_url_image }}" width="40"
+                   alt="{{ player.user_id.username }}'s pic">
             {% else %}
               <em>no image</em>
             {% endif %}
@@ -137,10 +140,12 @@
       <h5>GM Information</h5>
       <p>
         As the GM for this room, you are the only one who can see this page.  From here, you can:
+      </p>
         <ul style="margin-top: -10px; margin-bottom: 5px;">
           <li>Transfer the GM title to another (non-banned) player</li>
           <li>Ban (or unban) this player</li>
         </ul>
+      <p>
         Transferring the GM role back to you can only be done by the new GM.  You will lose all
         GM abilities that you now have.
       </p>
@@ -155,6 +160,7 @@
       {% endfor %}.
       Only they will be able to undo this change.<br>
       <strong>Are you sure you want to do this?</strong><br>
+      </p>
       <form id="make_gm_form" method="POST">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary" name="make_gm_real">
@@ -167,7 +173,6 @@
           GM
         </button>
       </form>
-      </p>
       </div>
       <div class="container-fluid" id="ban_area" style="display:none">
         {% for player in users_in_room %}
@@ -216,15 +221,15 @@
 <div class="container-fluid">
   <p>
     <a href="{% url 'swdice:swroom' room_number %}" role="button"
-           class="btn btn-info align-right" name="back to page">
-      <strong>&#12298</strong> Back to Live Page
+           class="btn btn-info align-right">
+      <strong>&#12298;</strong> Back to Live Page
     </a>
     <br>
   </p>
   <p>
     <a href="{% url 'swdice:swroom_info' room_number %}" role="button"
-           class="btn btn-outline-info align-right" name="back to info page">
-      <strong>&#12298</strong> Back to Info Page
+           class="btn btn-outline-info align-right">
+      <strong>&#12298;</strong> Back to Info Page
     </a>
   </p>
 </div>

@@ -1,11 +1,12 @@
 {% extends 'sw_base.html' %}
+{% load static %}
+{% load diceroomtags %}
 
 {% block head %}
     <meta charset="UTF-8">
     <title>SW Room</title>
 {% endblock %}
 
-{% load static %}
 {% block brand %}
   <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
     <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
@@ -65,66 +66,77 @@
           {% block destiny %}
             <div class="dice-box" id="destiny_area">
               <div class="row no-gutters">
-                <div class="col-4 col-sm-3 col-md-2">
-                  <table class="destiny_table">
+                <div class="col-1"> <!-- col-4 col-sm-3 col-md-2 -->
+                  <table class="destiny_table_new">
                     <tr>
                       <td style="width:12px;">
-                        <button type="submit" class="btn btn-light btn-sm" name="add_dark"
+                        <button type="submit" class="btn btn-dark btn-sm dark-pip-btn" name="add_dark"
                                 title="Add a Dark Destiny Point">
-                          &#9650;
+                          &#10010;
                         </button>
                         <br>
-                        <button type="submit" class="btn btn-light btn-sm" name="rem_dark"
-                                title="Remove a Dark Destiny Point">
-                          &#9660;
-                        </button>
-                      </td>
-                      <td style="width:33px;">
-                        <button type="submit" class="btn btn-secondary outline-me" name="use_dark"
-                                id="use_dark" title="Flip a Destiny Point from Dark to Light"
-                                {% if dark_pips == 0 %}disabled{% endif %}>
-                          Use<br>Dark
+                        <button type="submit" name="rem_dark"
+                                {% if dark_pips == 0 %}
+                                class="btn btn-sm btn-light light-pip-btn"
+                                disabled title="There are no Dark Destiny Points"
+                                {% else %}
+                                class="btn btn-dark btn-sm dark-pip-btn"
+                                title="Remove a Dark Destiny Point"
+                                {% endif %}>
+                          &#9866;
                         </button>
                       </td>
                     </tr>
                   </table>
                 </div>
-                <div class="col-4 col-sm-3 col-md-2 offset-4 offset-sm-0 order-sm-last">
-                  <table class="destiny_table">
-                    <tr>
-                      <td style="width:36px;">
-                        <button type="submit" class="btn btn-outline-dark" name="use_light"
-                                id="use_light" title="Flip a Destiny Point from Light to Dark"
-                                {% if light_pips == 0 %}disabled{% endif %}>
-                          Use<br>Light
-                        </button>
-                      </td>
-                      <td style="width:12px;">
-                        <button type="submit" class="btn btn-light btn-sm" name="add_light"
-                                title="Add a Light Destiny Point">
-                          &#9650;
-                        </button>
-                        <br>
-                        <button type="submit" class="btn btn-light btn-sm" name="rem_light"
-                                title="Remove a Light Destiny Point">
-                          &#9660;
-                        </button>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="col-12 col-sm-6 col-md-8 order-first order-sm-3">
-                  <span class="container-fluid" id="destiny_box">
+                <div class="col-10 "> <!-- col-sm-6 col-md-8 order-first order-sm-3 -->
+                  <span class="container-fluid" id="destiny_box" style="margin: auto;">
                     {% if dark_pips == 0  and light_pips == 0 %}
                       There are no Destiny Points
+                    {% else %}
+                      {% if dark_pips != 0 %}
+                        <button type="submit" class="btn btn-sm btn-light" name="use_dark"
+                                style="padding: 2px; border-radius: 25px;"
+                                id="use_dark" title="Flip a Destiny Point from Dark to Light">
+                          {% for i in dark_pips|get_range %}
+                          <img src="{% static 'swdice/Pips/black.png' %}" width="40" alt="Black Pip"
+                               title="Flip a Destiny Point from Dark to Light">
+                          {% endfor %}
+                        </button>
+                      {% endif %}
+                      {% if light_pips != 0 %}
+                        <button type="submit" class="btn btn-sm btn-light" name="use_light"
+                                style="padding: 2px; border-radius: 25px;"
+                                id="use_light" title="Flip a Destiny Point from Light to Dark">
+                          {% for i in light_pips|get_range %}
+                            <img src="{% static 'swdice/Pips/white.png' %}" width="40" alt="White Pip"
+                                 title="Flip a Destiny Point from Light to Dark">
+                          {% endfor %}
+                        </button>
+                      {% endif %}
                     {% endif %}
-                    {% for i in dark_pips|get_range %}
-                      <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Dark" alt="Black Pip">
-                    {% endfor %}
-                    {% for i in light_pips|get_range %}
-                      <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Light" alt="White Pip">
-                    {% endfor %}
                   </span>
+                </div>
+                <div class="col-1 "> <!-- offset-4 offset-sm-0 order-sm-last -->
+                  <table class="destiny_table_new align-right">
+                    <tr>
+                      <td style="width:12px;">
+                        <button type="submit" class="btn btn-sm btn-light light-pip-btn" name="add_light"
+                                title="Add a Light Destiny Point">
+                          &#10010;
+                        </button>
+                        <br>
+                        <button type="submit" class="btn btn-sm btn-light light-pip-btn" name="rem_light"
+                                {% if light_pips == 0 %}
+                                disabled title="There are no Light Destiny Points"
+                                {% else %}
+                                title="Remove a Light Destiny Point"
+                                {% endif %}>
+                          &#9866;
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </div>
             </div>
@@ -641,7 +653,7 @@
                         <strong>{{ name_in_room }}</strong>
                       </td>
                     {% else %}
-                      <td colspan="2">
+                      <td>
                         <span style="color:gray">You are signed in as: </span>
                         <br>
                         <strong>{{ name_in_room }}</strong>
@@ -741,14 +753,18 @@
                         <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
                              title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
                              width="40">
+                      {% else %}
+                        <strong>
+                          {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
+                          {% else %}{{ action.user.username|split_name|wordwrap:9 }}
+                          {% endif %}
+                        </strong>
                       {% endif %}
                     </td>
                     <td>
                       {% if action.secret_roll %}
                         <em>secret roll</em><br>
                       {% endif %}
-                        <strong>{% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}
-                            {{ action.user.username }}{% endif %}</strong>:
                       {{ action.caption }}
                     </td>
                   {% else %}
@@ -756,11 +772,11 @@
                       {% if action.image_url %}
                         <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
                              title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                             width="40">
+                             width="40" style="margin: auto;">
                       {% else %}
                         <strong>
-                          {% if action.avatar %}{{ action.avatar.avatar_name|truncatechars:12|wordwrap:6 }}
-                          {% else %}{{ action.user.username|truncatechars:12|wordwrap:6 }}
+                          {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
+                          {% else %}{{ action.user.username|split_name|wordwrap:9 }}
                           {% endif %}
                         </strong>
                       {% endif %}
@@ -1156,9 +1172,9 @@ myThirdForm.submit(function(){
 });
 function refresh_action_log(){
     var url_actions = document.URL + ' #action_log';
-    var url_destiny = document.URL + ' #destiny_box';
+    var url_destiny = document.URL + ' #destiny_area';
     $('#action_log').load(url_actions);
-    $('#destiny_box').load(url_destiny);
+    $('#destiny_area').load(url_destiny);
 };
 function refresh_chat_log() {
     var url_chat_log = document.URL + ' #chat_log';

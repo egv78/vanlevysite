@@ -1,223 +1,243 @@
 {% extends 'gendice/room_gen.html' %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>Gen Room Info</title>
+  <meta charset="UTF-8">
+  <title>Gen Room Info</title>
 {% endblock %}
 
 {% block brand %}
-{% load static %}
-    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-        <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
-    </a>
-<span class="d-inline-block text-truncate" style="max-width: 700px; color:white; font-size: 150%; margin-right: 10px;">
+  {% load static %}
+  <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+    <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+  </a>
+  <span class="d-inline-block text-truncate" style="max-width: 700px; color:white; font-size: 150%; margin-right: 10px;">
     {{room.name}}
-</span>
-<a class="navbar-brand" style="color:white;" href="{% url 'gendice:confluence' %}">
+  </span>
+  <a class="navbar-brand" style="color:white;" href="{% url 'gendice:confluence' %}">
     <img src="{% static '/gendice/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
     {% block subtitle %}{% endblock %}
-</a>
-<span class="d-inline-block" style="color:white; font-size: 150%;"> Info Page </span>
+  </a>
+  <span class="d-inline-block" style="color:white; font-size: 150%;"> Info Page </span>
 {% endblock %}
 
 {% block other_navbar_right %}
 {% endblock %}
 
-{% load static %}
-
 {% block user_table %}
-<div class="container" id="current_users">
+  <div class="container" id="current_users">
     <h5>Player Information Table</h5>
     <table id="users_table" style="100%">
-        <tr>
-            <th style="width:80px">User <br>Image</th>
-            <th style="width:300px">&nbsp<br>Playing as</th>
-            <th style="width:80px">Avatar <br>Image</th>
-            <th style="width:80px">&nbsp<br>Role</th>
-            {% if player_is_gm %}
+      <tr>
+        <th style="width:80px">User <br>Image</th>
+        <th style="width:300px">&nbsp;<br>Playing as</th>
+        <th style="width:80px">Avatar <br>Image</th>
+        <th style="width:80px">&nbsp;<br>Role</th>
+          {% if player_is_gm %}
             <th style="width:180px">Player <br>Info</th>
-            {% endif %}
-        </tr>
+          {% endif %}
+      </tr>
         {% for player in users_in_room %}
-        {% if not player.banned or player_is_gm %}
-        <tr>
-            <td>
+          {% if not player.banned or player_is_gm %}
+            <tr>
+              <td>
                 {% if player.user_id.userprofile.user_url_image %}
-                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
+                  <img src="{{ player.user_id.userprofile.user_url_image }}" width="40"
+                       alt="{{ player.user_id.username }}'s pic">
                 {% else %}
-                    <em>no image</em>
+                  <em>no image</em>
                 {% endif %}
-            </td>
-            <td>
+              </td>
+              <td>
                 <strong>{{ player.user_id.username }}</strong> playing as:
                 <strong>
-                    {% if player.avatar_id %}{{ player.avatar_id.avatar_name }}{% else %}theirself{% endif %}
+                  {% if player.avatar_id %}{{ player.avatar_id.avatar_name }}{% else %}theirself{% endif %}
                 </strong>
-            </td>
-            <td>
+              </td>
+              <td>
                 {% if player.avatar_id %}
-                    {% if player.avatar_id.avatar_url_image %}
-                        <img src="{{ player.avatar_id.avatar_url_image }}" width="40">
-                    {% else %}
-                        <em>no image</em>
-                    {% endif %}
+                  {% if player.avatar_id.avatar_url_image %}
+                    <img src="{{ player.avatar_id.avatar_url_image }}" width="40"
+                         alt="{{ player.avatar_id.avatar_name }}'s pic">
+                  {% else %}
+                    <em>no image</em>
+                  {% endif %}
                 {% else %}
-                    {% if player.user_id.userprofile.user_url_image %}
-                        <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
-                    {% else %}
-                        <em>no image</em>
-                    {% endif %}
+                  {% if player.user_id.userprofile.user_url_image %}
+                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40"
+                         alt="{{ player.user_id.username }}'s pic">
+                  {% else %}
+                    <em>no image</em>
+                  {% endif %}
                 {% endif %}
-            </td>
-            <td>
+              </td>
+              <td>
                 {% if player.banned %}<em>banned</em>
                 {% elif player.game_master %}<strong>GM</strong>
                 {% else %}Player
                 {% endif %}
-            </td>
-            {% if player_is_gm %}
-            <td>
-                <a href="{% url 'gendice:genroom_player_info' room_number player.user_id_id%}">
-                <button type="button" class="btn btn-sm btn-outline-info" name="Player_Info">
+              </td>
+              {% if player_is_gm %}
+                <td>
+                  <a href="{% url 'gendice:genroom_player_info' room_number player.user_id_id%}" role="button"
+                        class="btn btn-sm btn-outline-info">
                     Player Info
-                </button>
-                </a>
-            </td>
-            {% endif %}
-        </tr>
-        {% endif %}
+                  </a>
+                </td>
+              {% endif %}
+            </tr>
+          {% endif %}
         {% endfor %}
     </table>
-</div>
+  </div>
 {% endblock %}
 
 {% block gm_stuff %}
 {% if player_is_gm %}
-    <div class="container-fluid" id="gm_message">
-        <div class="row">
-            <div class="col">
-                <h5>GM-only Information:</h5>
-            </div>
+  <div class="container-fluid" id="gm_message">
+    <div class="collapse multi-collapse show" id="infoGM">
+      <div class="row">
+        <div class="col">
+          <h5>
+            <button type="button" class="btn btn-sm btn-outline-info"
+                    data-toggle="collapse" data-target=".multi-collapse"
+                    aria-expanded="false" aria-controls="infoPanelGM infoGM">
+              &#10010;
+            </button>
+            GM-only Information
+          </h5>
         </div>
-        <div class="row no-gutters">
-            <div class="col-md-6">
-                <h6>Room Details</h6>
-                <ul style="margin-left: -15px; margin-top: -5px">
-                    <li><strong>Created on:</strong> {{ room.created_on }}</li>
-                    <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
-                    <li><strong>Direct Link:</strong>
-                        <button type="button" style="padding: 0;margin-left: 10px;"
-                                onclick="copyURL(link_{{room.id}})">
-                          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
-                        </button>
-                        <span style="word-wrap: break-word;" id="link_{{room.id}}">
-                            www.vanlevy.com{% url 'gendice:genroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
-                        </span>
-                    </li>
-                    <li><strong>Room ID:</strong> <u>{{room.id}}</u></li>
-                    {% if not room.open_to_all %}
-                    <li><strong>Passcode:</strong>
-                        {% if room.passcode %}
-                            "{{ room.passcode }}"
-                        {% else %}
-                            this room's passcode has been left <em>blank</em>.
-                        {% endif %}
-                    </li>
-                    {% else %}
-                    <li>This room is <strong>open to all</strong></li>
-                    {% endif %}
-                </ul>
-                {% if not room.disabled %}
-                <a href="{% url 'gendice:change_passcode_gen' room_number %}">
-                  <button type="button" class="btn btn-sm btn-outline-info" id="changePasscode"
-                        style="margin-right: 15px;">
-                    {% if not room.open_to_all %}
-                        Change Passcode
-                    {% else %}
-                        Add Passcode
-                    {% endif %}
-                    <strong>&#12299</strong>
-                  </button>
-                </a>
-                {% endif %}
-            </div>
-            <div class="col-md-6">
-                {% if room.disabled %}
-                <h5><span style="color: darkred;">This room has been <strong>archived</strong>.</span></h5>
-                <p>
-                    No rolls or chats can be made in this room. On the Docking Bay page, this room is only visible on the
-                    Archived Rooms tab.
-                </p>
+      </div>
+    </div>
+    <div class="collapse multi-collapse" id="infoPanelGM">
+      <div class="row">
+        <div class="col">
+          <h5>
+            <button type="button" class="btn btn-sm btn-outline-info"
+                    data-toggle="collapse" data-target=".multi-collapse"
+                    aria-expanded="false" aria-controls="infoPanelGM infoGM">
+              &#9866;
+            </button>
+            GM-only Information
+          </h5>
+        </div>
+      </div>
+      <div class="row no-gutters">
+        <div class="col-md-6">
+          <h6>Room Details</h6>
+          <ul style="margin-left: -15px; margin-top: -5px">
+            <li><strong>Created on:</strong> {{ room.created_on }}</li>
+            <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
+            <li><strong>Direct Link:</strong>
+              <button type="button" style="padding: 0;margin-left: 10px;"
+                      onclick="copyURL(link_{{room.id}})">
+                <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+              </button>
+              <span style="word-wrap: break-word;" id="link_{{room.id}}">
+                www.vanlevy.com{% url 'gendice:genroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
+              </span>
+            </li>
+            <li><strong>Room ID:</strong> <u>{{room.id}}</u></li>
+            {% if not room.open_to_all %}
+              <li><strong>Passcode:</strong>
+                {% if room.passcode %}
+                  "{{ room.passcode }}"
                 {% else %}
-                <p>
-                    As GM, you can choose to <em>archive</em> this room.<br>
-                    Once a room has been <em>archived</em>, players will not be able to make any more rolls or chats, and
-                    the room will only be visible on the Archived Rooms tab on the Docking Bay page.
-                </p>
+                  this room's passcode has been left <em>blank</em>.
                 {% endif %}
-                <div class="row no-gutters" id="disable_button" style="padding: 0px 3px">
-                    <div class="col-sm-3">
-                      {% if room.disabled %}
-                        <button type="button" class="btn btn-sm btn-outline-warning" id="restore"
-                                onclick="showRestore()">
-                        Restore Room?
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-warning" id="cancel_restore"
-                                style="display:none" onclick="hideRestore()">
-                        Cancel
-                        </button>
-                      {% else %}
-                        <button type="button" class="btn btn-sm btn-outline-danger" id="disable"
-                                onclick="showDisable()">
-                        Archive Room?
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-danger" id="cancel_disable"
-                                style="display:none" onclick="hideDisable()">
-                        Cancel
-                        </button>
-                      {% endif %} <!--archive/restore button -->
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="container-fluid" id="are_you_sure" style="display: none;">
-                            {% if room.disabled %}
-                                Are you sure you want to RESTORE this room?
-                                <form id="restore_form" method="POST">
-                                {% csrf_token %}
-                                    <button type="submit" class="btn btn-warning" name="restore_real">
-                                        <strong>Yes. RESTORE this room.</strong>
-                                    </button>
-                                </form>
-                            {% else %}
-                                Are you sure you want to ARCHIVE this room?
-                                <form id="archive_form" method="POST">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger" name="archive_real">
-                                        <strong>Yes. ARCHIVE this room..</strong>
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
+              </li>
+            {% else %}
+              <li>This room is <strong>open to all</strong></li>
+            {% endif %}
+          </ul>
+          {% if not room.disabled %}
+            <a href="{% url 'gendice:change_passcode_gen' room_number %}" role="button"
+               class="btn btn-sm btn-outline-info" id="changePasscode" style="margin-right: 15px;">
+              {% if not room.open_to_all %}
+                Change Passcode
+              {% else %}
+                Add Passcode
+              {% endif %}
+              <strong>&#12299;</strong>
+            </a>
+          {% endif %}
         </div>
+        <div class="col-md-6">
+              {% if room.disabled %}
+              <h5><span style="color: darkred;">This room has been <strong>archived</strong>.</span></h5>
+              <p>
+                  No rolls or chats can be made in this room. On the Confluence page, this room is only visible on the
+                  Archived Rooms tab.
+              </p>
+              {% else %}
+              <p>
+                  As GM, you can choose to <em>archive</em> this room.<br>
+                  Once a room has been <em>archived</em>, players will not be able to make any more rolls or chats, and
+                  the room will only be visible on the Archived Rooms tab on the Confluence page.
+              </p>
+              {% endif %}
+              <div class="row no-gutters" id="disable_button" style="padding: 0px 3px">
+                  <div class="col-sm-3">
+                    {% if room.disabled %}
+                      <button type="button" class="btn btn-sm btn-outline-warning" id="restore"
+                              onclick="showRestore()">
+                      Restore Room?
+                      </button>
+                      <button type="button" class="btn btn-sm btn-outline-warning" id="cancel_restore"
+                              style="display:none" onclick="hideRestore()">
+                      Cancel
+                      </button>
+                    {% else %}
+                      <button type="button" class="btn btn-sm btn-outline-danger" id="disable"
+                              onclick="showDisable()">
+                      Archive Room?
+                      </button>
+                      <button type="button" class="btn btn-sm btn-outline-danger" id="cancel_disable"
+                              style="display:none" onclick="hideDisable()">
+                      Cancel
+                      </button>
+                    {% endif %} <!--archive/restore button -->
+                  </div>
+                  <div class="col-sm-9">
+                      <div class="container-fluid" id="are_you_sure" style="display: none;">
+                          {% if room.disabled %}
+                              Are you sure you want to RESTORE this room?
+                              <form id="restore_form" method="POST">
+                              {% csrf_token %}
+                                  <button type="submit" class="btn btn-warning" name="restore_real">
+                                      <strong>Yes. RESTORE this room.</strong>
+                                  </button>
+                              </form>
+                          {% else %}
+                              Are you sure you want to ARCHIVE this room?
+                              <form id="archive_form" method="POST">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-danger" name="archive_real">
+                                      <strong>Yes. ARCHIVE this room..</strong>
+                                  </button>
+                              </form>
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
     </div>
 {% endif %}
 {% endblock %}
 
 {% block room_header %}
 <div class="container-fluid" style="background-color: #B5D4EF">
-    <h4>This page does not automatically update.</h4>
-    <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
-    <p>
-        However, this page loads <em>all</em> actions and chats, while the main page shows only the 100 most
-        recent actions and 100 most recent chats.
-    </p>
-    <a href="{% url 'gendice:genroom' room_number %}">
-    <button type="button" class="btn btn-info align-right" name="back to page">
-        <strong>&#12298</strong> Back to Live Page
-    </button>
-    </a>
+  <h4>This page does not automatically update.</h4>
+  <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
+  <p>
+    However, this page loads <em>all</em> actions and chats, while the main page shows only the 50 most
+    recent actions and 50 most recent chats.
+  </p>
+  <a href="{% url 'gendice:genroom' room_number %}" role="button"
+     class="btn btn-info align-right" id="back_to_page">
+    <strong>&#12298;</strong> Back to Live Page
+  </a>
 </div>
 {% endblock %}
 
@@ -226,26 +246,26 @@
 {% endblock %}
 
 {% block alt_destiny %}
-    <div class="container-fluid" id="destiny_area">
-        <h5>Current Destiny</h5>
-        <table id="destiny_table">
-            <tr>
-                <td>
-                    <span class="container-fluid" id="destiny_box">
-                    {% if dark_pips == 0  and light_pips == 0 %}
-                    There are no Destiny Points
-                    {% endif %}
-                    {% for i in dark_pips|get_range %}
-                        <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Use Dark">
-                    {% endfor %}
-                    {% for i in light_pips|get_range %}
-                        <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Use Light">
-                    {% endfor %}
-                    </span>
-                </td>
-            </tr>
-        </table>
-    </div>
+  <div class="container-fluid" id="destiny_area">
+    <h5>Current Destiny</h5>
+    <table id="destiny_table">
+      <tr>
+        <td>
+          <span class="container-fluid" id="destiny_box">
+            {% if dark_pips == 0  and light_pips == 0 %}
+              There are no Destiny Points
+            {% endif %}
+            {% for i in dark_pips|get_range %}
+              <img src="{% static 'swdice/Pips/black.png' %}" width="40" title="Dark">
+            {% endfor %}
+            {% for i in light_pips|get_range %}
+              <img src="{% static 'swdice/Pips/white.png' %}" width="40" title="Light">
+            {% endfor %}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </div>
 {% endblock %}
 {% block actions_header %}
 <hr>

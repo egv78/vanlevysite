@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load diceroomtags %}
+{% load static %}
 
 {% block navbar_characteristics %}
     <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #252525">
 {% endblock %}
 
 {% block brand %}
-  {% load static %}
   <h4>
     <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
         <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">

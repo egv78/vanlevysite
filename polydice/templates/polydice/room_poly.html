@@ -1,4 +1,6 @@
 {% extends 'poly_base.html' %}
+{% load static %}
+{% load diceroomtags %}
 
 {% block head %}
     <meta charset="UTF-8">
@@ -9,7 +11,6 @@
 <!--exclude space-->
 <!-- endblock -->
 
-{% load static %}
 {% block brand %}
   <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
     <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
@@ -387,44 +388,35 @@
                   {% if action.is_just_caption %}
                     <td>
                       {% if action.image_url %}
-                        <img src="{{ action.image_url }}"
+                        <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
                              title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
                              width="40">
                       {% else %}
-                        {% if action.avatar %}
-                          <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
-                            <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                            <strong>{{ action.avatar.avatar_name }}</strong></span>
-                        {% else %}
-                          <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                          <strong>{{ action.user.username }}</strong></span>
-                          </div>
-                        {% endif %}
+                        <strong>
+                          {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
+                          {% else %}{{ action.user.username|split_name|wordwrap:9 }}
+                          {% endif %}
+                        </strong>
                       {% endif %}
                     </td>
                       <td>
                         {% if action.secret_roll %}
                           <em>secret roll</em><br>
                         {% endif %}
-                          <em>says: </em>
                       {{ action.caption }}
                       </td>
                   {% else %}
                     <td>
                       {% if action.image_url %}
-                        <img src="{{ action.image_url }}"
+                        <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
                              title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                             width="40">
+                             width="40" style="margin: auto;">
                       {% else %}
-                        {% if action.avatar %}
-                          <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
-                            <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                            <strong>{{ action.avatar.avatar_name }}</strong></span>
-                        {% else %}
-                            <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                            <strong>{{ action.user.username }}</strong></span>
-                          </div>
-                        {% endif %}
+                        <strong>
+                          {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
+                          {% else %}{{ action.user.username|split_name|wordwrap:9 }}
+                          {% endif %}
+                        </strong>
                       {% endif %}
                     </td>
                     <td>
