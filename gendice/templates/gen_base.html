@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load diceroomtags %}
 
 {% block navbar_characteristics %}
-{% load static %}
     <nav class="navbar navbar-expand-sm navbar-dark"
          style="background-color: #252525;
                 background-image:   url({% static '/gendice/gen_background_side_3.jpg' %}),
@@ -20,7 +20,7 @@
             Van Levy
         </a>
         <a class="navbar-brand" style="color: #fb911d;">
-            <img src="{% static '/gendice/Genesys_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+            <img src="{% static '/gendice/Genesys_32.png' %}" alt="Genesys Dice Roller" height="32" width="32">
             {% block subtitle %}{% endblock %}
         </a>
 
@@ -29,7 +29,7 @@
 
 {% block other_navbar_right %}
     <a class="navbar-brand" href="{% url 'gendice:about' %}">
-        <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="SW Dice Roller" height="32" width="32">
+        <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="About Page" height="32" width="32">
         {% block info_label %}
             <span style="font-size: 0.67em; color: #fb911d;">
                 About

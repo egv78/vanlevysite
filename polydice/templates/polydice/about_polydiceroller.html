@@ -1,457 +1,456 @@
 {% extends 'poly_base.html' %}
+{% load static %}
+{% load diceroomtags %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>About Polyhedral Dice Roller</title>
+  <meta charset="UTF-8">
+  <title>About Polyhedral Dice Roller</title>
 {% endblock %}
 
-{% load static %}
-
-{% block subtitle %} About{% endblock %}
+{% block brand %}
+  <h4>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+      Van Levy
+    </a>
+    <a class="navbar-brand" style="color:white;" href="{% url 'polydice:dungeon' %}">
+      <img src="{% static '/polydice/d20_color.png' %}" alt="Polyhedral Dice Roller" height="32" width="32">
+      {% block subtitle %} About - Polyhedral Dice{% endblock %}
+    </a>
+  </h4>
+{% endblock %}
 
 {% block body %}
 {% block other_navbar_right %}
 {% endblock %}
 <div class="container">
-    <p></p>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p><h4>Using the Dice Roller</h4></div>
+  <div class="row no-gutters" style="margin-top: 24px; min-height: 60px;">
+    <div class="card text-center text-white bg-dark mb-3 col-lg-3 col-sm-6">
+      <a href="{% url 'swdice:about' %}" style="color: #b6baf4">
+        <img class="card-img" src="{% static '/swdice/DockingBay2_BW_BW.png' %}" alt="Docking Bay Banner">
+        <div class="card-img-overlay">
+          <h5 class="card-title" style="text-decoration: underline;">
+            <strong>Star Wars</strong>
+          </h5>
         </div>
+      </a>
     </div>
-    <div class="row no-gutters"  style="min-height: 280px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#JoiningRoom" aria-expanded="false" aria-controls="JoiningRoom">
-                Joining a Room
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#MakingRoom" aria-expanded="false" aria-controls="MakingRoom">
-                Making a Room
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#RoomInfo" aria-expanded="false" aria-controls="RoomInfo">
-                Getting Room Info
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#GMControls" aria-expanded="false" aria-controls="GMControls">
-                GM Controls
-            </button>
-          </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+      <a href="{% url 'gendice:about' %}" style="color: #fb911d;">
+        <img class="card-img" src="{% static '/gendice/GenesysMashConfluence_BW_BW.png' %}" alt="Confluence Banner">
+        <div class="card-img-overlay">
+          <h5 class="card-title" style="text-decoration: underline;">Genesys</h5>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="DiceRoller">
-              <div class="collapse show" id="JoiningRoom" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Joining a Room</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      There are two ways to join a room: Use a Direct Link or the Room ID and Passcode.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>
-                            If you have a Direct Link, paste it into your browser.
-                        </li>
-                        <li>
-                            If you know the Room ID and Passcode, you can enter them (and choose your Avatar) while in
-                            the <a href="{% url 'polydice:dungeon' %}">Dungeon</a>.
-                        </li>
-                    </ul>
-                    <p class="card-text">
-                      Once inside a room, a player can change their Avatar by using the Switch Avatar button.
-                    </p>
-                  </div>
-                </div>
+      </a>
+    </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+      <a href="{% url 'myzdice:about' %}" style="color: #f1d56a;">
+        <img class="card-img" src="{% static '/myzdice/MYZ_Banner_BW_BW.png' %}" alt="The Zone Banner">
+        <div class="card-img-overlay">
+          <h5 class="card-title" style="text-decoration: underline;">Mutant: Year Zero</h5>
+        </div>
+      </a>
+    </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+      <img class="card-img" src="{% static '/polydice/hub_dungeon_green.png' %}" alt="Dungeon Banner" >
+      <div class="card-img-overlay">
+        <h3 class="card-img-overlay" style="color: #92C777; margin-top: -8px;">Polyhedral</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters card-roller" id="card-roller-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%;">
+      <div class="card-header bg-dark text-white ">
+        <h4>
+          Using the Polyhedral Dice Roller
+          <button class="btn btn-outline-light align-right" type="button" id="card-roller-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#DiceRollerCard', '#card-roller-all', 'card-roller',
+                                               '#card-roller-btn-hide', '#card-roller-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-roller-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#DiceRollerCard', '#card-roller-all', 'card-roller',
+                                          '#card-roller-btn-show', '#card-roller-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="DiceRollerCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="DiceRoller">
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div class="collapse show" id="JoinRoom" data-parent="#DiceRoller">
+                <h5>Joining a Room</h5>
+                <p class="card-text">
+                  There are two ways to join a room: Use a Direct Link or the Room ID and Passcode.
+                </p>
+                <ul style="margin-left: -20px;">
+                    <li>
+                        If you have a Direct Link, paste it into your browser.
+                    </li>
+                    <li>
+                        If you know the Room ID and Passcode, you can enter them (and choose your Avatar) while in
+                        the <a href="{% url 'polydice:dungeon' %}">Dungeon</a>.
+                    </li>
+                </ul>
+                <p class="card-text">
+                  Once inside a room, a player can change their Avatar by using the Switch Avatar button.
+                </p>
               </div>
-              <div class="collapse" id="MakingRoom" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Making a Room</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      To make a new room, you must be in the <a href="{% url 'polydice:dungeon' %}">Dungeon</a>,
-                        and then click on the button (bottom right) to make a new room.
-                        You will be asked to give the room a Name and choose to have the room Open or Closed.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>Open Rooms can be joined by anyone who knows (or guesses) the Room ID.</li>
-                        <li>
-                            Restricted Rooms require a Passcode to enter; when you create one, you will be
-                            prompted for a Passcode.
-                        </li>
-                        <li>
-                            If you send the Direct Link to your players, it will have the Passcode embedded.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+              <div class="collapse" id="MakeRoom" data-parent="#DiceRoller">
+                <h5>Making a Room</h5>
+                <p class="card-text">
+                  To make a new room, you must be in the <a href="{% url 'polydice:dungeon' %}">Dungeon</a>,
+                    and then click on the button (bottom right) to make a new room.
+                    You will be asked to give the room a Name and choose to have the room Open or Closed.
+                </p>
+                <ul style="margin-left: -20px;">
+                    <li>Open Rooms can be joined by anyone who knows (or guesses) the Room ID.</li>
+                    <li>
+                      Restricted Rooms require a Passcode to enter; when you create one, you will be
+                      prompted for a Passcode.
+                    </li>
+                    <li>
+                      If you send the Direct Link to your players, it will have the Passcode embedded.
+                    </li>
+                  </ul>
               </div>
               <div class="collapse" id="RoomInfo" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Getting Room Info</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      There are two places you can go to find Room Info.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>
-                            Inside each Dice Room is an info link (
-                            <span style="background: #252525"><img src="{% static '/swdice/RoomInfoSmall_32.png' %}"
-                                                                    alt="Room Info" height="20" width="20" style="margin-bottom: 3px"></span>
-                            ) found on the top right of the page (next to the Profile Drop-down).
-                            Both Players and GMs can use this link, but GMs have access to more information.
-                        </li>
-                        <li>
-                            (GMs only) Once you're on the Hub Page, look for a plus button (
-                            <button type="button" style="padding: 0;">
-                                <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
-                            </button>
-                            ) for your room;
-                            clicking that reveals info that only GM's can see.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Getting Room Info</h5>
+                <p class="card-text">
+                  There are two places you can go to find Room Info.
+                </p>
+                <ul style="margin-left: -20px;">
+                  <li>
+                    Inside each Dice Room is an info link (
+                    <span style="background: #252525"><img src="{% static '/swdice/RoomInfoSmall_32.png' %}"
+                                                            alt="Room Info" height="20" width="20" style="margin-bottom: 3px"></span>
+                    ) found on the top right of the page (next to the Profile Drop-down).
+                    Both Players and GMs can use this link, but GMs have access to more information.
+                  </li>
+                  <li>
+                    (GMs only) Once you're on the Hub Page, look for a plus button (
+                    <button type="button" style="padding: 0;">
+                        <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
+                    </button>
+                    ) for your room;
+                    clicking that reveals info that only GM's can see.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="GMControls" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>GM Controls</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      GMs have additional privileges in their rooms.  (The user who creates a room is GM by default.)
-                      GMs can...
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>See more information about the room (including Direct Links, Passcode, etc.)</li>
-                        <li>Ban/Unban players; GMs can also make a player the GM for that room.</li>
-                        <li>
-                            Archive a room.  Archived Rooms are hidden (but still accessible) on the
-                            <a href="{% url 'polydice:dungeon' %}">Dungeon</a>;
-                            they also have Dice and Chat turned off.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>GM Controls</h5>
+                <p class="card-text">
+                  GMs have additional privileges in their rooms.  (The user who creates a room is GM by default.)
+                  GMs can:
+                </p>
+                <ul style="margin-left: -20px;">
+                  <li>See more information about the room (including Direct Links, Passcode, etc.)</li>
+                  <li>Ban/Unban players; GMs can also make a player the GM for that room.</li>
+                  <li>
+                    Archive a room.  Archived Rooms are hidden (but still accessible) on the
+                    <a href="{% url 'polydice:dungeon' %}">Dungeon</a>;
+                    they also have Dice and Chat turned off.
+                  </li>
+                </ul>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p><h4>Dice Mechanics</h4></div>
-        </div>
-    </div>
-    <div class="row no-gutters" style="min-height: 320px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#DiceTypes" aria-expanded="false" aria-controls="DiceTypes">
-                Dice Types
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Success" aria-expanded="false" aria-controls="Success">
-                Basic Results
-            </button>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-dark" type="button" id="btnJoinRoom" disabled
+                        onClick="return switchAndCollapse('#btnJoinRoom',
+                                                          ['#btnMakeRoom','#btnRoomInfo', '#btnGmControls'],
+                                                          '#JoinRoom', ['#MakeRoom', '#RoomInfo', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Joining a Room
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnMakeRoom"
+                        onClick="return switchAndCollapse('#btnMakeRoom',
+                                                          ['#btnJoinRoom','#btnRoomInfo', '#btnGmControls'],
+                                                          '#MakeRoom', ['#JoinRoom', '#RoomInfo', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Making a Room
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnRoomInfo"
+                        onClick="return switchAndCollapse('#btnRoomInfo',
+                                                          ['#btnJoinRoom', '#btnMakeRoom', '#btnGmControls'],
+                                                          '#RoomInfo', ['#MakeRoom', '#JoinRoom', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Getting Room Info
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnGmControls"
+                        onClick="return switchAndCollapse('#btnGmControls',
+                                                          ['#btnJoinRoom', '#btnMakeRoom','#btnRoomInfo'],
+                                                          '#GMControls', ['#MakeRoom', '#JoinRoom', '#RoomInfo'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    GM Controls
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="DiceMechanics">
+      </div>
+    </div>
+  </div>
+
+   <div class="row no-gutters card-dice" id="card-dice-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%;">
+      <div class="card-header bg-primary text-white ">
+        <h4>
+          Dice Mechanics
+          <button class="btn btn-outline-light align-right" type="button" id="card-dice-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#DiceMechanicsCard', '#card-dice-all', 'card-dice',
+                                               '#card-dice-btn-hide', '#card-dice-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-dice-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#DiceMechanicsCard', '#card-dice-all', 'card-dice',
+                                          '#card-dice-btn-show', '#card-dice-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="DiceMechanicsCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="DiceMechanics">
+            <div class="col-lg-10 col-md-9 col-sm-8">
               <div class="collapse show" id="DiceTypes" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Dice Types</h5>
+                <h5>Dice Types</h5>
+                <p class="card-text">
+                  The Polyhedral Dice Roller uses eight different dice, plus a bonus.
+                </p>
+                <div class="row">
+                  <div class="col-3">
+                    <ul style="list-style-type:none;">
+                      <li><img src="{% static 'polydice/Dice/die_d4.png' %}" width="32" height="32" alt="d4">
+                          d4</li>
+                      <li><img src="{% static 'polydice/Dice/die_d6.png' %}" width="32" height="32" alt="d6">
+                          d6</li>
+                      <li><img src="{% static 'polydice/Dice/die_d8.png' %}" width="32" height="32" alt="d8">
+                          d8</li>
+                    </ul>
                   </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      The Polyhedral Dice Roller uses eight different dice, plus a bonus.
-                    </p>
-                    <div class="row">
-                        <div class="col-3">
-                            <ul style="list-style-type:none;">
-                                <li><img src="{% static 'polydice/Dice/die_d4.png' %}" width="32" height="32">
-                                    d4</li>
-                                <li><img src="{% static 'polydice/Dice/die_d6.png' %}" width="32" height="32">
-                                    d6</li>
-                                <li><img src="{% static 'polydice/Dice/die_d8.png' %}" width="32" height="32">
-                                    d8</li>
-                            </ul>
-                        </div>
-                        <div class="col-3">
-                            <ul style="list-style-type:none;">
-                                <li><img src="{% static 'polydice/Dice/die_d10.png' %}" width="32" height="32">
-                                    d10</li>
-                                <li><img src="{% static 'polydice/Dice/die_d12.png' %}" width="32" height="32">
-                                    d12</li>
-                                <li><img src="{% static 'polydice/Dice/die_d20.png' %}" width="32" height="32">
-                                    d20</li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul style="list-style-type:none;">
-                                <li><img src="{% static 'polydice/Dice/plus_minus.png' %}"
-                                         style="margin-left: 8px;" height="32">
-                                    Bonus</li>
-                                <li><img src="{% static 'polydice/Dice/die_d100.png' %}"
-                                         style="margin-left: -32px;" width="64" height="32">
-                                    d100</li>
-                                <li><img src="{% static 'polydice/Dice/die_numerical.png' %}"
-                                         style="margin-left: -32px;" width="64" height="32">
-                                    Numerical (any number from 1-999)</li>
-                            </ul>
-                        </div>
-                    </div>
+                  <div class="col-3">
+                    <ul style="list-style-type:none;">
+                      <li><img src="{% static 'polydice/Dice/die_d10.png' %}" width="32" height="32" alt="d10">
+                          d10</li>
+                      <li><img src="{% static 'polydice/Dice/die_d12.png' %}" width="32" height="32" alt="d12">
+                          d12</li>
+                      <li><img src="{% static 'polydice/Dice/die_d20.png' %}" width="32" height="32" alt="d20">
+                          d20</li>
+                    </ul>
                   </div>
-                </div>
-              </div>
-              <div class="collapse" id="Success" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Dice Results</h5>
-                  </div>
-                  <div class="card card-body">
-                      <p>
-                          Basic dice results are displayed as a face, and are always shown in order rolled and in order
-                          of dice type (d4, d6, d8, d10, d12, d20, d100).
-                          The face shown matches the shape and color of the die.  E.g.:
-                      </p>
-                      <div style="display: inline">
-                      <div style="display: inline-block; height: 48px; width: 48px;
-                                background-image: url('{% static 'polydice/Results/d004.png' %}');
-                                background-position: center; background-repeat: no-repeat;
-                                background-size: 48px 48px; text-align: center; line-height: 48px"
-                            title="d4">
-                          <strong>4</strong>
-                      </div>
-                      <div style="display: inline-block; height: 48px; width: 48px;
-                                background-image: url('{% static 'polydice/Results/d006.png' %}');
-                                background-position: center; background-repeat: no-repeat;
-                                background-size: 48px 48px; text-align: center; line-height: 48px"
-                            title="d6">
-                          <strong>6</strong>
-                      </div>
-                      <div style="display: inline-block; height: 48px; width: 48px;
-                                background-image: url('{% static 'polydice/Results/d008.png' %}');
-                                background-position: center; background-repeat: no-repeat;
-                                background-size: 48px 48px; text-align: center; line-height: 48px"
-                            title="d8">
-                          <strong>8</strong>
-                      </div>
-                      <div style="display: inline-block; height: 48px; width: 48px;
-                                background-image: url('{% static 'polydice/Results/d010.png' %}');
-                                background-position: center; background-repeat: no-repeat;
-                                background-size: 48px 48px; text-align: center; line-height: 48px"
-                            title="d10">
-                          <strong>10</strong>
-                      </div>
-                      <div style="display: inline-block; height: 48px; width: 48px;
-                                background-image: url('{% static 'polydice/Results/d012.png' %}');
-                                background-position: center; background-repeat: no-repeat;
-                                background-size: 48px 48px; text-align: center; line-height: 48px"
-                            title="d12">
-                          <strong>12</strong>
-                      </div>
-                      <div style="display: inline-block; height: 48px; width: 48px;
-                                background-image: url('{% static 'polydice/Results/d020.png' %}');
-                                background-position: center; background-repeat: no-repeat;
-                                background-size: 48px 48px; text-align: center; line-height: 48px"
-                            title="d20">
-                          <strong>20</strong>
-                      </div>
-                      <div style="display: inline-block; height: 48px; width: 48px;
-                                background-image: url('{% static 'polydice/Results/d100_2.png' %}');
-                                background-position: center; background-repeat: no-repeat;
-                                background-size: 48px 48px; text-align: center; line-height: 48px"
-                            title="d4">
-                          <strong>100</strong>
-                      </div>
-                      (
-                        <span style="border-style: solid; border-color: black; border-width: 1px;
-                            display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;">
-                            123
-                        </span>
-                        /
-                        <span style="border-style: groove; border-color: black; border-width: 1px;
-                            display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;
-                            border-radius: 10px">
-                          d 999
-                        </span>
-                      )
-                      </div>
-                  </div>
-                </div>
-              </div>
-              <div class="collapse" id="Triumph" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Triumph and Despair</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul>
-                      <li>
-                        Triumph
-                        <img src="{% static 'swdice/Results/Tri01.png' %}" width="20" height="20" title="Triumph">
-                        and Despair
-                        <img src="{% static 'swdice/Results/Des01.png' %}" width="20" height="20" title="Despair">
-                        pips <strong>do not</strong> cancel each other.
-                      </li>
-                      <li>
-                        The effects of a Triumph can be compared to a "critical hit" that you may have seen in another system.
-                        Likewise, a Despair can be thought of as a "critical failure".
-                      </li>
-                      <li>
-                        In addition to these effects, each Triumph "includes" a Success, and each Despair "includes" a failure.
-                        These additional pips are accounted for by the dice roller.
-                      </li>
-                      <li>
-                        It is possible to fail a roll with Triumph, or succeed with Despair.
-                      </li>
-                      <li>
-                        See the Core Rulebooks for how these results play out narratively.
-                      </li>
+                  <div class="col-6">
+                    <ul style="list-style-type:none;">
+                      <li><img src="{% static 'polydice/Dice/plus_minus.png' %}" alt="bonus"
+                               style="margin-left: 8px;" height="32">
+                          Bonus</li>
+                      <li><img src="{% static 'polydice/Dice/die_d100.png' %}" alt="d100"
+                               style="margin-left: -32px;" width="64" height="32">
+                          d100</li>
+                      <li><img src="{% static 'polydice/Dice/die_numerical.png' %}" alt="Numerical"
+                               style="margin-left: -32px;" width="64" height="32">
+                          Numerical (any number from 1-999)</li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="collapse" id="Force" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Force Pips</h5>
+              <div class="collapse" id="Results" data-parent="#DiceMechanics">
+                <h5>Basic Results</h5>
+                <p>
+                  Basic dice results are displayed as a face, and are always shown in order rolled and in order
+                  of dice type (d4, d6, d8, d10, d12, d20, d100).
+                  The face shown matches the shape and color of the die.  E.g.:
+                </p>
+                <div style="display: inline">
+                  <div style="display: inline-block; height: 48px; width: 48px;
+                            background-image: url('{% static 'polydice/Results/d004.png' %}');
+                            background-position: center; background-repeat: no-repeat;
+                            background-size: 48px 48px; text-align: center; line-height: 48px"
+                        title="d4">
+                    <strong>4</strong>
                   </div>
-                  <div class="card card-body">
-                    <ul>
-                      <li>
-                        Light side
-                        <img src="{% static 'swdice/Results/Lig01.png' %}" width="20" height="20" title="Light">
-                        force pips and Dark side
-                        <img src="{% static 'swdice/Results/Dar01.png' %}" width="20" height="20" title="Dark">
-                        force pips <em>do not</em> cancel each other.
-                      </li>
-                      <li>
-                        They have their own unique rules for use.
-                      </li>
-                      <li>
-                        See one of the Core Rulebooks for how they are used.
-                      </li>
-                    </ul>
+                  <div style="display: inline-block; height: 48px; width: 48px;
+                            background-image: url('{% static 'polydice/Results/d006.png' %}');
+                            background-position: center; background-repeat: no-repeat;
+                            background-size: 48px 48px; text-align: center; line-height: 48px"
+                        title="d6">
+                    <strong>6</strong>
                   </div>
-                </div>
-              </div>
-              <div class="collapse" id="Numerical" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Numerical Dice</h5>
+                  <div style="display: inline-block; height: 48px; width: 48px;
+                            background-image: url('{% static 'polydice/Results/d008.png' %}');
+                            background-position: center; background-repeat: no-repeat;
+                            background-size: 48px 48px; text-align: center; line-height: 48px"
+                        title="d8">
+                    <strong>8</strong>
                   </div>
-                  <div class="card card-body">
-                    <ul>
-                      <li>
-                        In the Star Wars Role Playing Games, the Numerical dice tend to only be used in the
-                          determination of critical injuries to characters or ships.
-                      </li>
-                      <li>
-                        By default, the Numerical Dice are set as d100.
-                      </li>
-                      <li>
-                        You can change the number of sides by selecting the "100" and typing the desired value.
-                      </li>
-                    </ul>
+                  <div style="display: inline-block; height: 48px; width: 48px;
+                            background-image: url('{% static 'polydice/Results/d010.png' %}');
+                            background-position: center; background-repeat: no-repeat;
+                            background-size: 48px 48px; text-align: center; line-height: 48px"
+                        title="d10">
+                    <strong>10</strong>
                   </div>
+                  <div style="display: inline-block; height: 48px; width: 48px;
+                            background-image: url('{% static 'polydice/Results/d012.png' %}');
+                            background-position: center; background-repeat: no-repeat;
+                            background-size: 48px 48px; text-align: center; line-height: 48px"
+                        title="d12">
+                    <strong>12</strong>
+                  </div>
+                  <div style="display: inline-block; height: 48px; width: 48px;
+                            background-image: url('{% static 'polydice/Results/d020.png' %}');
+                            background-position: center; background-repeat: no-repeat;
+                            background-size: 48px 48px; text-align: center; line-height: 48px"
+                        title="d20">
+                    <strong>20</strong>
+                  </div>
+                  <div style="display: inline-block; height: 48px; width: 48px;
+                            background-image: url('{% static 'polydice/Results/d100_2.png' %}');
+                            background-position: center; background-repeat: no-repeat;
+                            background-size: 48px 48px; text-align: center; line-height: 48px"
+                        title="d4">
+                      <strong>100</strong>
+                  </div>
+                (
+                  <span style="border-style: solid; border-color: black; border-width: 1px;
+                      display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;">
+                      123
+                  </span>
+                  /
+                  <span style="border-style: groove; border-color: black; border-width: 1px;
+                      display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;
+                      border-radius: 10px">
+                    d 999
+                  </span>
+                )
                 </div>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><h4>Resources</h4></div>
-        </div>
-    </div>
-    <div class="row no-gutters" style="min-height: 240px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#CoreRuleBooks" aria-expanded="false" aria-controls="CoreRuleBooks">
-                Dungeons & Dragons
-            </button>
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#Supplements" aria-expanded="false" aria-controls="Supplements">
-                Pathfinder
-            </button>
+
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-primary" type="button" id="btnDiceTypes" disabled
+                        onClick="return switchAndCollapse('#btnDiceTypes',
+                                                          ['#btnResults', '#btnTriumph', '#btnForce', '#btnNumerical'],
+                                                          '#DiceTypes', ['#Results', '#Triumph', '#Force', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Dice Types
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnResults"
+                        onClick="return switchAndCollapse('#btnResults',
+                                                          ['#btnDiceTypes', '#btnTriumph', '#btnForce', '#btnNumerical'],
+                                                          '#Results', ['#DiceTypes', '#Triumph', '#Force', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Basic Results
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="Resources">
-              <div class="collapse show" id="CoreRuleBooks" data-parent="#Resources">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Dungeons and Dragons</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                        <li><a href="http://dnd.wizards.com/">
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters card-resources" id="card-resources-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%">
+      <div class="card-header bg-info text-white ">
+        <h4>
+          Resources
+          <button class="btn btn-outline-light align-right" type="button" id="card-resources-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#ResourcesCard', '#card-resources-all', 'card-resources',
+                                               '#card-resources-btn-hide', '#card-resources-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-resources-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#ResourcesCard', '#card-resources-all', 'card-resources',
+                                          '#card-resources-btn-show', '#card-resources-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="ResourcesCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="Resources">
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div class="collapse show" id="Rulebooks" data-parent="#Resources">
+                <h5>Dungeons and Dragons</h5>
+                <ul>
+                  <li><a href="http://dnd.wizards.com/">
                                 Official Website</a>
                              - Wizards of the Coast's website.  Find all things D&D here.
-                        </li>
-                        <li><a href="http://www.d20srd.org/index.htm">
-                                SRD for 3.5</a>
-                             - (System Reference Document) A fan run site with tons of resources
-                        </li>
-                        <li><a href="https://5thsrd.org/">
-                                SRD for 5E</a>
-                            - "3.5"? "5E"?  Being the original, D&D has been around so long there are a plethora of
-                            editions to choose from.  5E is the current.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                  </li>
+                  <li><a href="http://www.d20srd.org/index.htm">
+                          SRD for 3.5</a>
+                       - (System Reference Document) A fan run site with tons of resources
+                  </li>
+                  <li><a href="https://5thsrd.org/">
+                          SRD for 5E</a>
+                      - "3.5"? "5E"?  Being the original, D&D has been around so long there are a plethora of
+                      editions to choose from.  5E is the current.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="Supplements" data-parent="#Resources">
-                <div class="card border-info mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Pathfinder</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                        <li><a href="https://paizo.com/pathfinder/rpg">
-                                Official Pathfinder Site</a>
-                            - You can also find info about <a href="https://paizo.com/starfinder">Starfinder</a>.
-                        </li>
-                        <li><a href="https://www.d20pfsrd.com/">
-                                d20 Pathfinder SRD</a>
-                             - Basically, think of this as a Wiki for Pathfinder, except you're not allowed to edit it.
-                        </li>
-                        <li><a href="https://aonprd.com/">
-                            Archives of Nethys</a>
-                            - Another really useful fan site with Pathfinder (and Starfinder) resources.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Pathfinder</h5>
+                <ul style="margin-left: -20px;">
+                  <li><a href="https://paizo.com/pathfinder/rpg">
+                          Official Pathfinder Site</a>
+                      - You can also find info about <a href="https://paizo.com/starfinder">Starfinder</a>.
+                  </li>
+                  <li><a href="https://www.d20pfsrd.com/">
+                          d20 Pathfinder SRD</a>
+                       - Basically, think of this as a Wiki for Pathfinder, except you're not allowed to edit it.
+                  </li>
+                  <li><a href="https://aonprd.com/">
+                      Archives of Nethys</a>
+                      - Another really useful fan site with Pathfinder (and Starfinder) resources.
+                  </li>
+                </ul>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p>
-                <p style="font-size: 0.75em;">
-                <strong>Disclaimer:</strong>
-                <br>
-                The Polyhedral Dice Roller was not made with any input or coordination from any content holder.
-                </p>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-info" type="button" id="btnRulebooks" disabled
+                        onClick="return switchAndCollapse('#btnRulebooks',
+                                                          ['#btnSupplements', '#btnAdditional'],
+                                                          '#Rulebooks', ['#Supplements', '#Additional'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Dungeons & Dragons
+                </button>
+                <button class="btn btn-outline-info" type="button" id="btnSupplements"
+                        onClick="return switchAndCollapse('#btnSupplements',
+                                                          ['#btnRulebooks', '#btnAdditional'],
+                                                          '#Supplements', ['#Rulebooks', '#Additional'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Pathfinder
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="container">
+      <p style="font-size: 0.75em; margin-top: 20px;">
+        <strong>Disclaimer:</strong>
+        <br>
+        The Polyhedral Dice Roller was not made with any input or coordination from any content holder.
+      </p>
+    </div>
+  </div>
+
 </div>
+
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 {% endblock %}

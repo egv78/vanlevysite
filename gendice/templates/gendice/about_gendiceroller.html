@@ -1,245 +1,364 @@
 {% extends 'gen_base.html' %}
+{% load static %}
+{% load diceroomtags %}
 
 {% block head %}
     <meta charset="UTF-8">
     <title>About Gen Dice Roller</title>
 {% endblock %}
 
-{% block subtitle %} About{% endblock %}
+{% block local_style %}
+  <style>
+  /* xs */
+  @media (max-width: 575px) {
+    .card-roller {
+      min-height: 0px;
+    }
+    .card-dice {
+      min-height: 0px;
+    }
+    .card-resources {
+      min-height: 0px;
+    }
+  }
+  /* sm */
+  @media (min-width: 576px) {
+    .card-roller {
+      min-height: 0px;
+    }
+    .card-dice {
+      min-height: 0px;
+    }
+    .card-resources {
+      min-height: 0px;
+    }
+  }
+  /* md */
+  @media (min-width: 768px) {
+    .card-roller {
+      min-height: 425px;
+    }
+    .card-dice {
+      min-height: 440px;
+    }
+    .card-resources {
+      min-height: 320px;
+    }
+  }
+  /* lg */
+  @media (min-width: 992px) {
+    .card-roller {
+      min-height: 360px;
+    }
+    .card-dice {
+      min-height: 390px;
+    }
+    .card-resources {
+      min-height: 280px;
+    }
+  }
+  /* xl */
+  @media (min-width: 1200px) {
+    .card-roller {
+      min-height: 320px;
+    }
+    .card-dice {
+      min-height: 360px;
+    }
+    .card-resources {
+      min-height: 280px;
+    }
+  }
+  </style>
+{% endblock %}
+
+{% block brand %}
+  <h4>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+      Van Levy
+    </a>
+    <a class="navbar-brand" style="color: #fb911d;" href="{% url 'gendice:confluence' %}">
+      <img src="{% static '/gendice/Genesys_32.png' %}" alt="Genesys Dice Roller" height="32" width="32">
+      {% block subtitle %} About - Genesys Dice{% endblock %}
+    </a>
+  </h4>
+{% endblock %}
 
 {% block body %}
 {% block other_navbar_right %}
 {% endblock %}
-{% load static %}
 <div class="container">
-    <p></p>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p><h4>Using the Dice Roller</h4></div>
+  <div class="row no-gutters" style="margin-top: 24px; min-height: 60px;">
+    <div class="card text-center text-white bg-dark mb-3 col-lg-3 col-sm-6">
+      <a href="{% url 'swdice:about' %}" style="color: #b6baf4;">
+        <img class="card-img" src="{% static '/swdice/DockingBay2_BW_BW.png' %}" alt="Docking Bay Banner">
+        <div class="card-img-overlay">
+          <h5 class="card-title" style="text-decoration: underline;">
+            <strong>Star Wars</strong>
+          </h5>
         </div>
+      </a>
     </div>
-    <div class="row no-gutters"  style="min-height: 280px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#JoiningRoom" aria-expanded="false" aria-controls="JoiningRoom">
-                Joining a Room
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#MakingRoom" aria-expanded="false" aria-controls="MakingRoom">
-                Making a Room
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#RoomInfo" aria-expanded="false" aria-controls="RoomInfo">
-                Getting Room Info
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#GMControls" aria-expanded="false" aria-controls="GMControls">
-                GM Controls
-            </button>
-          </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+      <img class="card-img" src="{% static '/gendice/GenesysMashConfluence.png' %}" alt="Confluence Banner">
+      <div class="card-img-overlay">
+        <h3 class="card-title" style=" color: #fb911d; margin-top: -8px;">Genesys</h3>
+      </div>
+    </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+      <a href="{% url 'myzdice:about' %}" style="color: #f1d56a;">
+        <img class="card-img" src="{% static '/myzdice/MYZ_Banner_BW_BW.png' %}" alt="The Zone Banner">
+        <div class="card-img-overlay">
+          <h5 class="card-title" style="text-decoration: underline;">Mutant: Year Zero</h5>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="DiceRoller">
-              <div class="collapse show" id="JoiningRoom" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Joining a Room</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      There are two ways to join a room: Use a Direct Link or the Room ID and Passcode.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>
-                            If you have a Direct Link, paste it into your browser.
-                        </li>
-                        <li>
-                            If you know the Room ID and Passcode, you can enter them (and choose your Avatar) while in
-                            the <a href="{% url 'gendice:confluence' %}">Confluence</a>.
-                        </li>
-                    </ul>
-                    <p class="card-text">
-                      Once inside a room, a player can change their Avatar by using the Switch Avatar button.
-                    </p>
-                  </div>
-                </div>
+      </a>
+    </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+        <a href="{% url 'polydice:about' %}" style="color: #92C777;">
+          <img class="card-img" src="{% static '/polydice/hub_dungeon_BW_BW.png' %}" alt="Dungeon Banner" >
+          <div class="card-img-overlay">
+            <h5 class="card-img-overlay" style="text-decoration: underline;">Polyhedral</h5>
+          </div>
+        </a>
+      </div>
+  </div>
+
+  <div class="row no-gutters card-roller" id="card-roller-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%;">
+      <div class="card-header bg-dark text-white ">
+        <h4>
+          Using the Genesys Dice Roller
+          <button class="btn btn-outline-light align-right" type="button" id="card-roller-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#DiceRollerCard', '#card-roller-all', 'card-roller',
+                                               '#card-roller-btn-hide', '#card-roller-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-roller-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#DiceRollerCard', '#card-roller-all', 'card-roller',
+                                          '#card-roller-btn-show', '#card-roller-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="DiceRollerCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="DiceRoller">
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div class="collapse show" id="JoinRoom" data-parent="#DiceRoller">
+                <h5>Joining a Room</h5>
+                <p class="card-text">
+                  There are two ways to join a room: Use a Direct Link or the Room ID and Passcode.
+                </p>
+                <ul style="margin-left: -20px;">
+                    <li>
+                        If you have a Direct Link, paste it into your browser.
+                    </li>
+                    <li>
+                        If you know the Room ID and Passcode, you can enter them (and choose your Avatar) while in
+                        the <a href="{% url 'gendice:confluence' %}">Confluence</a>.
+                    </li>
+                </ul>
+                <p class="card-text">
+                  Once inside a room, a player can change their Avatar by using the Switch Avatar button.
+                </p>
               </div>
-              <div class="collapse" id="MakingRoom" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Making a Room</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      To make a new room, you must be in the <a href="{% url 'gendice:confluence' %}">Confluence</a>,
-                        and then click on the button (bottom right) to make a new room.
-                        You will be asked to give the room a Name and choose to have the room Open or Closed.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>Open Rooms can be joined by anyone who knows (or guesses) the Room ID.</li>
-                        <li>
-                            Restricted Rooms require a Passcode to enter; when you create one, you will be
-                            prompted for a Passcode.
-                        </li>
-                        <li>
-                            If you send the Direct Link to your players, it will have the Passcode embedded.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+              <div class="collapse" id="MakeRoom" data-parent="#DiceRoller">
+                <h5>Making a Room</h5>
+                <p class="card-text">
+                  To make a new room, you must be in the <a href="{% url 'gendice:confluence' %}">Confluence</a>,
+                    and then click on the button (bottom right) to make a new room.
+                    You will be asked to give the room a Name and choose to have the room Open or Closed.
+                </p>
+                <ul style="margin-left: -20px;">
+                    <li>Open Rooms can be joined by anyone who knows (or guesses) the Room ID.</li>
+                    <li>
+                      Restricted Rooms require a Passcode to enter; when you create one, you will be
+                      prompted for a Passcode.
+                    </li>
+                    <li>
+                      If you send the Direct Link to your players, it will have the Passcode embedded.
+                    </li>
+                  </ul>
               </div>
               <div class="collapse" id="RoomInfo" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Getting Room Info</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      There are two places you can go to find Room Info.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>
-                            Inside each Dice Room is an info link (
-                            <span style="background: #252525"><img src="{% static '/swdice/RoomInfoSmall_32.png' %}"
-                                                                    alt="Room Info" height="20" width="20" style="margin-bottom: 3px"></span>
-                            ) found on the top right of the page (next to the Profile Drop-down).
-                            Both Players and GMs can use this link, but GMs have access to more information.
-                        </li>
-                        <li>
-                            (GMs only) Once you're on the Hub Page, look for a plus button (
-                            <button type="button" style="padding: 0;">
-                                <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
-                            </button>
-                            ) for your room;
-                            clicking that reveals info that only GM's can see.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Getting Room Info</h5>
+                <p class="card-text">
+                  There are two places you can go to find Room Info.
+                </p>
+                <ul style="margin-left: -20px;">
+                  <li>
+                    Inside each Dice Room is an info link (
+                    <span style="background: #252525"><img src="{% static '/swdice/RoomInfoSmall_32.png' %}"
+                                                            alt="Room Info" height="20" width="20" style="margin-bottom: 3px"></span>
+                    ) found on the top right of the page (next to the Profile Drop-down).
+                    Both Players and GMs can use this link, but GMs have access to more information.
+                  </li>
+                  <li>
+                    (GMs only) Once you're on the Hub Page, look for a plus button (
+                    <button type="button" style="padding: 0;">
+                        <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
+                    </button>
+                    ) for your room;
+                    clicking that reveals info that only GM's can see.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="GMControls" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>GM Controls</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      GMs have additional privileges in their rooms.  (The user who creates a room is GM by default.)
-                      GMs can...
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>See more information about the room (including Direct Links, Passcode, etc.)</li>
-                        <li>Ban/Unban players; GMs can also make a player the GM for that room.</li>
-                        <li>
-                            Archive a room.  Archived Rooms are hidden (but still accessible) on the
-                            <a href="{% url 'gendice:confluence' %}">Confluence</a>;
-                            they also have Dice and Chat turned off.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>GM Controls</h5>
+                <p class="card-text">
+                  GMs have additional privileges in their rooms.  (The user who creates a room is GM by default.)
+                  GMs can:
+                </p>
+                <ul style="margin-left: -20px;">
+                  <li>See more information about the room (including Direct Links, Passcode, etc.)</li>
+                  <li>Ban/Unban players; GMs can also make a player the GM for that room.</li>
+                  <li>
+                    Archive a room.  Archived Rooms are hidden (but still accessible) on the
+                    <a href="{% url 'gendice:confluence' %}">Confluence</a>;
+                    they also have Dice and Chat turned off.
+                  </li>
+                </ul>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p><h4>Dice Mechanics</h4></div>
-        </div>
-    </div>
-    <div class="row no-gutters" style="min-height: 320px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#DiceTypes" aria-expanded="false" aria-controls="DiceTypes">
-                Dice Types
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Success" aria-expanded="false" aria-controls="Success">
-                Basic Results
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Triumph" aria-expanded="false" aria-controls="Triumph">
-                Triumph & Despair
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Numerical" aria-expanded="false" aria-controls="Numerical">
-                Numerical Dice
-            </button>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-dark" type="button" id="btnJoinRoom" disabled
+                        onClick="return switchAndCollapse('#btnJoinRoom',
+                                                          ['#btnMakeRoom','#btnRoomInfo', '#btnGmControls'],
+                                                          '#JoinRoom', ['#MakeRoom', '#RoomInfo', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Joining a Room
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnMakeRoom"
+                        onClick="return switchAndCollapse('#btnMakeRoom',
+                                                          ['#btnJoinRoom','#btnRoomInfo', '#btnGmControls'],
+                                                          '#MakeRoom', ['#JoinRoom', '#RoomInfo', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Making a Room
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnRoomInfo"
+                        onClick="return switchAndCollapse('#btnRoomInfo',
+                                                          ['#btnJoinRoom', '#btnMakeRoom', '#btnGmControls'],
+                                                          '#RoomInfo', ['#MakeRoom', '#JoinRoom', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Getting Room Info
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnGmControls"
+                        onClick="return switchAndCollapse('#btnGmControls',
+                                                          ['#btnJoinRoom', '#btnMakeRoom','#btnRoomInfo'],
+                                                          '#GMControls', ['#MakeRoom', '#JoinRoom', '#RoomInfo'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    GM Controls
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="DiceMechanics">
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters card-dice" id="card-dice-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%;">
+      <div class="card-header bg-primary text-white ">
+        <h4>
+          Dice Mechanics
+          <button class="btn btn-outline-light align-right" type="button" id="card-dice-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#DiceMechanicsCard', '#card-dice-all', 'card-dice',
+                                               '#card-dice-btn-hide', '#card-dice-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-dice-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#DiceMechanicsCard', '#card-dice-all', 'card-dice',
+                                          '#card-dice-btn-show', '#card-dice-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="DiceMechanicsCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="DiceMechanics">
+            <div class="col-lg-10 col-md-9 col-sm-8">
               <div class="collapse show" id="DiceTypes" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Dice Types</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      The Genesys Dice Roller uses seven different dice.
-                    </p>
-                    <div class="row">
-                        <div class="col">
-                            <ul style="list-style-type:none;">
-                                <li><img src="{% static 'gendice/Dice/gen_boost.png' %}" width="32" height="32">
-                                    Boost</li>
-                                <li><img src="{% static 'gendice/Dice/gen_ability.png' %}" width="32" height="32">
-                                    Ability</li>
-                                <li><img src="{% static 'gendice/Dice/gen_proficiency.png' %}" width="32" height="32">
-                                    Proficiency</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul style="list-style-type:none;">
-                                <li><img src="{% static 'gendice/Dice/gen_setback.png' %}" width="32" height="32">
-                                    Setback</li>
-                                <li><img src="{% static 'gendice/Dice/gen_difficulty.png' %}" width="32" height="32">
-                                    Difficulty</li>
-                                <li><img src="{% static 'gendice/Dice/gen_challenge.png' %}" width="32" height="32">
-                                    Challenge</li>
-                                <li><img src="{% static 'gendice/Dice/gen_D100.png' %}"
-                                         style="margin-left: -32px;" width="64" height="32">
-                                    Numerical</li>
-                            </ul>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="collapse" id="Success" data-parent="#DiceMechanics">
-                <div class="card-group">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Successes and Failures</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                      <li>Success
-                        <img src="{% static 'gendice/Results/Suc01.png' %}" width="20" height="20" title="Success">
-                        and Failure
-                        <img src="{% static 'gendice/Results/Fai01.png' %}" width="20" height="20" title="Failure">
-                        pips cancel each other.
+                <h5>Dice Types</h5>
+                <p class="card-text">
+                  The Genesys Dice Roller uses seven different dice.
+                </p>
+                <div class="row">
+                  <div class="col">
+                    <ul style="list-style-type:none;">
+                      <li>
+                        <img src="{% static 'gendice/Dice/gen_boost.png' %}" width="32" height="32" alt="boost die">
+                        Boost
                       </li>
-                      <li>In order to succeed in a roll, the results must have (at least) one more Success pip than Failures.</li>
-                      <li>A roll with no uncancelled success pips is a failure. (E.g. a roll with two successes and two failures.)</li>
+                      <li>
+                        <img src="{% static 'gendice/Dice/gen_ability.png' %}" width="32" height="32" alt="ability die">
+                        Ability
+                      </li>
+                      <li>
+                        <img src="{% static 'gendice/Dice/gen_proficiency.png' %}" width="32" height="32" alt="proficiency die">
+                        Proficiency
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col">
+                    <ul style="list-style-type:none;">
+                      <li>
+                        <img src="{% static 'gendice/Dice/gen_setback.png' %}" width="32" height="32" alt="setback die">
+                        Setback
+                      </li>
+                      <li>
+                        <img src="{% static 'gendice/Dice/gen_difficulty.png' %}" width="32" height="32" alt="difficulty die">
+                        Difficulty
+                      </li>
+                      <li>
+                        <img src="{% static 'gendice/Dice/gen_challenge.png' %}" width="32" height="32" alt="challenge die">
+                        Challenge
+                      </li>
+                      <li>
+                        <img src="{% static 'gendice/Dice/gen_D100.png' %}" style="margin-left: -32px;"
+                             width="64" height="32" alt="numerical dice">
+                        Numerical
+                      </li>
                     </ul>
                   </div>
                 </div>
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Advantage and Threat</h5>
+              </div>
+              <div class="collapse" id="Results" data-parent="#DiceMechanics">
+                <h5>Basic Results</h5>
+                <div class="row">
+                  <div class="col">
+                    <h6>Successes and Failures</h6>
+                    <ul style="margin-left: -20px;">
+                      <li>Success
+                        <img src="{% static 'gendice/Results/Suc01.png' %}" width="20" height="20" alt="Success">
+                        and Failure
+                        <img src="{% static 'gendice/Results/Fai01.png' %}" width="20" height="20" alt="Failure">
+                        pips cancel each other.
+                      </li>
+                      <li>
+                        In order to succeed in a roll, the results must have (at least) one more Success pip than
+                        Failures.
+                      </li>
+                      <li>
+                        A roll with no uncancelled success pips is a failure. (E.g. a roll with two successes and two
+                        failures.)
+                      </li>
+                    </ul>
                   </div>
-                  <div class="card card-body">
+                  <div class="col">
+                    <h6>Advantage and Threat</h6>
                     <ul style="margin-left: -20px;">
                       <li>
                         Advantage
-                        <img src="{% static 'gendice/Results/Adv01.png' %}" width="20" height="20" title="Advantage">
+                        <img src="{% static 'gendice/Results/Adv01.png' %}" width="20" height="20" alt="Advantage">
                         and Threat
-                        <img src="{% static 'gendice/Results/Thr01.png' %}" width="20" height="20" title="Threat">
+                        <img src="{% static 'gendice/Results/Thr01.png' %}" width="20" height="20" alt="Threat">
                         pips cancel each other.
                       </li>
                       <li>
@@ -248,179 +367,229 @@
                       <li>
                         See the Core Rulebooks for how these results play out narratively.
                       </li>
-                    </ul>
+                      </ul>
                   </div>
-                </div>
                 </div>
               </div>
               <div class="collapse" id="Triumph" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Triumph and Despair</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul>
-                      <li>
-                        Triumph
-                        <img src="{% static 'gendice/Results/Tri01.png' %}" width="20" height="20" title="Triumph">
-                        and Despair
-                        <img src="{% static 'gendice/Results/Des01.png' %}" width="20" height="20" title="Despair">
-                        pips <strong>do not</strong> cancel each other.
-                      </li>
-                      <li>
-                        The effects of a Triumph can be compared to a "critical hit" that you may have seen in another system.
-                        Likewise, a Despair can be thought of as a "critical failure".
-                      </li>
-                      <li>
-                        In addition to these effects, each Triumph "includes" a Success, and each Despair "includes" a failure.
-                        These additional pips are accounted for by the dice roller.
-                      </li>
-                      <li>
-                        It is possible to fail a roll with Triumph, or succeed with Despair.
-                      </li>
-                      <li>
-                        See the Core Rulebooks for how these results play out narratively.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Triumph and Despair</h5>
+                <ul>
+                  <li>
+                    Triumph
+                    <img src="{% static 'gendice/Results/Tri01.png' %}" width="20" height="20" title="Triumph">
+                    and Despair
+                    <img src="{% static 'gendice/Results/Des01.png' %}" width="20" height="20" title="Despair">
+                    pips <strong>do not</strong> cancel each other.
+                  </li>
+                  <li>
+                    The effects of a Triumph can be compared to a "critical hit" that you may have seen in another system.
+                    Likewise, a Despair can be thought of as a "critical failure".
+                  </li>
+                  <li>
+                    In addition to these effects, each Triumph "includes" a Success, and each Despair "includes" a failure.
+                    These additional pips are accounted for by the dice roller.
+                  </li>
+                  <li>
+                    It is possible to fail a roll with Triumph, or succeed with Despair.
+                  </li>
+                  <li>
+                    See the Core Rulebooks for how these results play out narratively.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="Numerical" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Numerical Dice</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul>
-                      <li>
-                        In the Genesys Role Playing System, Numerical dice tend to only be used in the
-                          determination of critical injuries to characters or vehicles.
-                      </li>
-                      <li>
-                        By default, the Numerical Dice are set as d100.
-                      </li>
-                      <li>
-                        You can change the number of sides by selecting the "100" and typing the desired value.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Numerical Dice</h5>
+                <ul>
+                  <li>
+                    In the Genesys Role Playing Games, the Numerical dice tend to only be used in the
+                      determination of critical injuries to characters or vehicles.
+                  </li>
+                  <li>
+                    By default, the Numerical Dice are set as d100.
+                  </li>
+                  <li>
+                    You can change the number of sides by selecting the "100" and typing the desired value.
+                  </li>
+                </ul>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><h4>Resources</h4></div>
-        </div>
-    </div>
-    <div class="row no-gutters" style="min-height: 240px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#CoreRuleBooks" aria-expanded="false" aria-controls="CoreRuleBooks">
-                Core Rulebooks
-            </button>
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#Supplements" aria-expanded="false" aria-controls="Supplements">
-                Supplements
-            </button>
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#Additional" aria-expanded="false" aria-controls="Additional">
-                Additional
-            </button>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-primary" type="button" id="btnDiceTypes" disabled
+                        onClick="return switchAndCollapse('#btnDiceTypes',
+                                                          ['#btnResults', '#btnTriumph', '#btnNumerical'],
+                                                          '#DiceTypes', ['#Results', '#Triumph', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Dice Types
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnResults"
+                        onClick="return switchAndCollapse('#btnResults',
+                                                          ['#btnDiceTypes', '#btnTriumph', '#btnNumerical'],
+                                                          '#Results', ['#DiceTypes', '#Triumph', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Basic Results
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnTriumph"
+                        onClick="return switchAndCollapse('#btnTriumph',
+                                                          ['#btnDiceTypes','#btnResults', '#btnNumerical'],
+                                                          '#Triumph', ['#DiceTypes', '#Results', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Triumph & Despair
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnNumerical"
+                        onClick="return switchAndCollapse('#btnNumerical',
+                                                          ['#btnDiceTypes','#btnResults', '#btnTriumph'],
+                                                          '#Numerical', ['#DiceTypes', '#Results', '#Triumph'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Numerical Dice
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="Resources">
-              <div class="collapse show" id="CoreRuleBooks" data-parent="#Resources">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Core Rule Books (CRBs)</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/genesys-core-rulebook/">
-                                Genesys Core Rulebook</a>
-                             - Genesys isn't a realm so much as a set of mechanics to develop your own realm.
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/realms-terrinoth/">
-                                Realms of Terrinoth</a>
-                             - This is the first "world-book" of Genesys.  Classic high-medieval fantasy.
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/shadow-beanstalk/">
-                            Shadow of the Beanstalk</a>
-                            - Set in the Android universe, this "world-book" is set in a near-future Earth.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters card-resources" id="card-resources-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%">
+      <div class="card-header bg-info text-white ">
+        <h4>
+          Resources
+          <button class="btn btn-outline-light align-right" type="button" id="card-resources-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#ResourcesCard', '#card-resources-all', 'card-resources',
+                                               '#card-resources-btn-hide', '#card-resources-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-resources-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#ResourcesCard', '#card-resources-all', 'card-resources',
+                                          '#card-resources-btn-show', '#card-resources-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="ResourcesCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="Resources">
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div class="collapse show" id="Rulebooks" data-parent="#Resources">
+                <h5>Core Rule Books (CRBs)</h5>
+                <ul>
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/genesys-core-rulebook/">
+                      Genesys Core Rulebook
+                    </a>
+                    - Genesys isn't a realm so much as a set of mechanics to develop your own realm.
+                  </li>
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/realms-terrinoth/">
+                      Realms of Terrinoth
+                    </a>
+                    - This is the first "world-book" of Genesys.  Classic high-medieval fantasy.
+                  </li>
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/shadow-beanstalk/">
+                      Shadow of the Beanstalk
+                    </a>
+                    - Set in the Android universe, this "world-book" is set in a near-future Earth.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="Supplements" data-parent="#Resources">
-                <div class="card border-info mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Supplements</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/runners-mercs-and-criminals/">
-                                Runners, Mercs, and Criminals</a>
-                             - Adversary Deck for Shadow of the Beanstalk
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/citizens-new-angeles/">
-                                Citizens of New Angeles</a>
-                             - Adversary Deck for Shadow of the Beanstalk
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/androids-drones-and-synthetics-adversary-deck/">
-                                Androids, Drones, and Synthetics</a>
-                             - Adversary Deck for Shadow of the Beanstalk
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Supplements</h5>
+                <ul style="margin-left: -20px;">
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/runners-mercs-and-criminals/">
+                      Runners, Mercs, and Criminals
+                    </a>
+                    - Adversary Deck for Shadow of the Beanstalk
+                  </li>
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/citizens-new-angeles/">
+                      Citizens of New Angeles
+                    </a>
+                    - Adversary Deck for Shadow of the Beanstalk
+                  </li>
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/androids-drones-and-synthetics-adversary-deck/">
+                      Androids, Drones, and Synthetics
+                    </a>
+                    - Adversary Deck for Shadow of the Beanstalk
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="Additional" data-parent="#Resources">
-                <div class="card border-info mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Additional</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/denizens-terrinoth/">
-                                Denizens of Terrinoth</a>
-                             - Adversary Deck for Realms of Terrinoth
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/foes-terrinoth/">
-                            Foes of Terrintoh</a>
-                            - Adversary Deck for Realms of Terrinoth
-                        </li>
-                        <li><a href="https://www.fantasyflightgames.com/en/products/genesys/products/genesys-dice-pack/">
-                            Dice</a>
-                            - You know how this is a virtual dice roller website?  Well, buying those dice will let you
-                            roll <em>in real life!</em>  Crazy!
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Additional</h5>
+                <ul style="margin-left: -20px;">
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/denizens-terrinoth/">
+                      Denizens of Terrinoth
+                    </a>
+                    - Adversary Deck for Realms of Terrinoth
+                  </li>
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/foes-terrinoth/">
+                      Foes of Terrintoh
+                    </a>
+                    - Adversary Deck for Realms of Terrinoth
+                  </li>
+                  <li>
+                    <a href="https://www.fantasyflightgames.com/en/products/genesys/products/genesys-dice-pack/">
+                      Dice
+                    </a>
+                    - You know how this is a virtual dice roller website?  Well, buying those dice will let you
+                    roll <em>in real life!</em>  Crazy!
+                  </li>
+                </ul>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p>
-                <p style="font-size: 0.75em;">
-                <strong>Disclaimer:</strong>
-                <br>
-                The Genesys Dice Roller is designed to be used in conjunction with
-                <a href="https://www.fantasyflightgames.com/en/products/genesys/">Fantasy Flight Games'</a>
-                Genesys Role Playing System. This website is not made with any input or coordination from Fantasy
-                Flights, which still holds the copyright to all of their original content.
-                </p>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-info" type="button" id="btnRulebooks" disabled
+                        onClick="return switchAndCollapse('#btnRulebooks',
+                                                          ['#btnSupplements', '#btnAdditional'],
+                                                          '#Rulebooks', ['#Supplements', '#Additional'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Core Rulebooks
+                </button>
+                <button class="btn btn-outline-info" type="button" id="btnSupplements"
+                        onClick="return switchAndCollapse('#btnSupplements',
+                                                          ['#btnRulebooks', '#btnAdditional'],
+                                                          '#Supplements', ['#Rulebooks', '#Additional'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Supplements
+                </button>
+                <button class="btn btn-outline-info" type="button" id="btnAdditional"
+                        onClick="return switchAndCollapse('#btnAdditional',
+                                                          ['#btnRulebooks','#btnSupplements'],
+                                                          '#Additional', ['#Rulebooks', '#Supplements'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Additional
+                </button>
             </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+
+
+  <div class="row no-gutters">
+    <div class="container"><p></p>
+      <p style="font-size: 0.75em;">
+        <strong>Disclaimer:</strong>
+        <br>
+        The Genesys Dice Roller is designed to be used in conjunction with
+        <a href="https://www.fantasyflightgames.com/en/products/genesys/">Fantasy Flight Games'</a>
+        Genesys Role Playing System. This website is not made with any input or coordination from Fantasy
+        Flights, which still holds the copyright to all of their original content.
+      </p>
+    </div>
+  </div>
 </div>
+
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 {% endblock %}

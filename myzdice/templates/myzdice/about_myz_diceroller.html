@@ -1,290 +1,324 @@
 {% extends 'myz_base.html' %}
 {% load static %}
+{% load diceroomtags %}
 
 {% block head %}
     <meta charset="UTF-8">
     <title>About MYZ Dice Roller</title>
 {% endblock %}
 
-{% block subtitle %} About{% endblock %}
+{% block brand %}
+  <h4>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+      Van Levy
+    </a>
+    <a class="navbar-brand" style="color: #f1d56a;" href="{% url 'myzdice:the_zone' %}">
+      <img src="{% static '/myzdice/MutantYearZero_32.png' %}" alt="MYZ Dice Roller" height="32" width="32">
+      {% block subtitle %} About - Mutant: Year Zero Dice{% endblock %}
+    </a>
+  </h4>
+{% endblock %}
 
 {% block body %}
 {% block other_navbar_right %}
 {% endblock %}
 <div class="container">
-    <p></p>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p><h4>Using the Dice Roller</h4></div>
+
+  <div class="row no-gutters" style="margin-top: 24px; min-height: 60px;">
+    <div class="card text-center text-white bg-dark mb-3 col-lg-3 col-sm-6">
+      <a href="{% url 'swdice:about' %}" style="color: #b6baf4;">
+        <img class="card-img" src="{% static '/swdice/DockingBay2_BW_BW.png' %}" alt="Docking Bay Banner">
+        <div class="card-img-overlay">
+          <h5 class="card-title" style="text-decoration: underline;">
+            <strong>Star Wars</strong>
+          </h5>
         </div>
+      </a>
     </div>
-    <div class="row no-gutters"  style="min-height: 280px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#JoiningRoom" aria-expanded="false" aria-controls="JoiningRoom">
-                Joining a Room
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#MakingRoom" aria-expanded="false" aria-controls="MakingRoom">
-                Making a Room
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#RoomInfo" aria-expanded="false" aria-controls="RoomInfo">
-                Getting Room Info
-            </button>
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse"
-                    data-target="#GMControls" aria-expanded="false" aria-controls="GMControls">
-                GM Controls
-            </button>
-          </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+      <a href="{% url 'gendice:about' %}" style="color: #fb911d;">
+        <img class="card-img" src="{% static '/gendice/GenesysMashConfluence_BW_BW.png' %}" alt="Confluence Banner">
+        <div class="card-img-overlay">
+          <h5 class="card-title" style="text-decoration: underline;">Genesys</h5>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="DiceRoller">
-              <div class="collapse show" id="JoiningRoom" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Joining a Room</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      There are two ways to join a room: Use a Direct Link or the Room ID and Passcode.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>
-                            If you have a Direct Link, paste it into your browser.
-                        </li>
-                        <li>
-                            If you know the Room ID and Passcode, you can enter them (and choose your Avatar) while in
-                            the <a href="{% url 'myzdice:the_zone' %}">The Zone</a>.
-                        </li>
-                    </ul>
-                    <p class="card-text">
-                      Once inside a room, a player can change their Avatar by using the Switch Avatar button.
-                    </p>
-                  </div>
-                </div>
+      </a>
+    </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+      <a href="{% url 'myzdice:about' %}" style="color: #f1d56a;">
+        <img class="card-img" src="{% static '/myzdice/MYZ_Banner.png' %}" alt="The Zone Banner">
+        <div class="card-img-overlay">
+          <h3 class="card-title" style="color: #f1d56a; margin-top: -8px;">Mutant: Year Zero</h3>
+        </div>
+      </a>
+    </div>
+    <div class="card text-center border-dark mb-3 text-white col-lg-3 col-sm-6">
+        <a href="{% url 'polydice:about' %}" style="color: #92C777;">
+          <img class="card-img" src="{% static '/polydice/hub_dungeon_BW_BW.png' %}" alt="Dungeon Banner" >
+          <div class="card-img-overlay">
+            <h5 class="card-img-overlay" style="text-decoration: underline;">Polyhedral</h5>
+          </div>
+        </a>
+      </div>
+  </div>
+
+  <div class="row no-gutters card-roller" id="card-roller-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%;">
+      <div class="card-header bg-dark text-white ">
+        <h4>
+          Using the Mutant: Year Zero Dice Roller
+          <button class="btn btn-outline-light align-right" type="button" id="card-roller-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#DiceRollerCard', '#card-roller-all', 'card-roller',
+                                               '#card-roller-btn-hide', '#card-roller-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-roller-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#DiceRollerCard', '#card-roller-all', 'card-roller',
+                                          '#card-roller-btn-show', '#card-roller-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="DiceRollerCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="DiceRoller">
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div class="collapse show" id="JoinRoom" data-parent="#DiceRoller">
+                <h5>Joining a Room</h5>
+                <p class="card-text">
+                  There are two ways to join a room: Use a Direct Link or the Room ID and Passcode.
+                </p>
+                <ul style="margin-left: -20px;">
+                    <li>
+                        If you have a Direct Link, paste it into your browser.
+                    </li>
+                    <li>
+                        If you know the Room ID and Passcode, you can enter them (and choose your Avatar) while in
+                        the <a href="{% url 'myzdice:the_zone' %}">The Zone</a>.
+                    </li>
+                </ul>
+                <p class="card-text">
+                  Once inside a room, a player can change their Avatar by using the Switch Avatar button.
+                </p>
               </div>
-              <div class="collapse" id="MakingRoom" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Making a Room</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      To make a new room, you must be in the <a href="{% url 'myzdice:the_zone' %}">The Zone</a>,
-                        and then click on the button (bottom right) to make a new room.
-                        You will be asked to give the room a Name and choose to have the room Open or Closed.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>Open Rooms can be joined by anyone who knows (or guesses) the Room ID.</li>
-                        <li>
-                            Restricted Rooms require a Passcode to enter; when you create one, you will be
-                            prompted for a Passcode.
-                        </li>
-                        <li>
-                            If you send the Direct Link to your players, it will have the Passcode embedded.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+              <div class="collapse" id="MakeRoom" data-parent="#DiceRoller">
+                <h5>Making a Room</h5>
+                <p class="card-text">
+                  To make a new room, you must be in the <a href="{% url 'myzdice:the_zone' %}">The Zone</a>,
+                    and then click on the button (bottom right) to make a new room.
+                    You will be asked to give the room a Name and choose to have the room Open or Closed.
+                </p>
+                <ul style="margin-left: -20px;">
+                    <li>Open Rooms can be joined by anyone who knows (or guesses) the Room ID.</li>
+                    <li>
+                      Restricted Rooms require a Passcode to enter; when you create one, you will be
+                      prompted for a Passcode.
+                    </li>
+                    <li>
+                      If you send the Direct Link to your players, it will have the Passcode embedded.
+                    </li>
+                  </ul>
               </div>
               <div class="collapse" id="RoomInfo" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>Getting Room Info</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      There are two places you can go to find Room Info.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>
-                            Inside each Dice Room is an info link (
-                            <span style="background: #252525"><img src="{% static '/swdice/RoomInfoSmall_32.png' %}"
-                                                                    alt="Room Info" height="20" width="20" style="margin-bottom: 3px"></span>
-                            ) found on the top right of the page (next to the Profile Drop-down).
-                            Both Players and GMs can use this link, but GMs have access to more information.
-                        </li>
-                        <li>
-                            (GMs only) Once you're on the Hub Page, look for a plus button (
-                            <button type="button" style="padding: 0;">
-                                <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
-                            </button>
-                            ) for your room;
-                            clicking that reveals info that only GM's can see.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Getting Room Info</h5>
+                <p class="card-text">
+                  There are two places you can go to find Room Info.
+                </p>
+                <ul style="margin-left: -20px;">
+                  <li>
+                    Inside each Dice Room is an info link (
+                    <span style="background: #252525"><img src="{% static '/swdice/RoomInfoSmall_32.png' %}"
+                                                            alt="Room Info" height="20" width="20" style="margin-bottom: 3px"></span>
+                    ) found on the top right of the page (next to the Profile Drop-down).
+                    Both Players and GMs can use this link, but GMs have access to more information.
+                  </li>
+                  <li>
+                    (GMs only) Once you're on the Hub Page, look for a plus button (
+                    <button type="button" style="padding: 0;">
+                        <img src="{% static '/vanlevy/images/plus_clear_40.png' %}" alt="info" width="16" height="16">
+                    </button>
+                    ) for your room;
+                    clicking that reveals info that only GM's can see.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="GMControls" data-parent="#DiceRoller">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-dark text-white ">
-                    <h5>GM Controls</h5>
+                <h5>GM Controls</h5>
+                <p class="card-text">
+                  GMs have additional privileges in their rooms.  (The user who creates a room is GM by default.)
+                  GMs can:
+                </p>
+                <ul style="margin-left: -20px;">
+                  <li>See more information about the room (including Direct Links, Passcode, etc.)</li>
+                  <li>Ban/Unban players; GMs can also make a player the GM for that room.</li>
+                  <li>
+                    Archive a room.  Archived Rooms are hidden (but still accessible) on the
+                    <a href="{% url 'myzdice:the_zone' %}">The Zone</a>;
+                    they also have Dice and Chat turned off.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-dark" type="button" id="btnJoinRoom" disabled
+                        onClick="return switchAndCollapse('#btnJoinRoom',
+                                                          ['#btnMakeRoom','#btnRoomInfo', '#btnGmControls'],
+                                                          '#JoinRoom', ['#MakeRoom', '#RoomInfo', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Joining a Room
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnMakeRoom"
+                        onClick="return switchAndCollapse('#btnMakeRoom',
+                                                          ['#btnJoinRoom','#btnRoomInfo', '#btnGmControls'],
+                                                          '#MakeRoom', ['#JoinRoom', '#RoomInfo', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Making a Room
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnRoomInfo"
+                        onClick="return switchAndCollapse('#btnRoomInfo',
+                                                          ['#btnJoinRoom', '#btnMakeRoom', '#btnGmControls'],
+                                                          '#RoomInfo', ['#MakeRoom', '#JoinRoom', '#GMControls'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    Getting Room Info
+                </button>
+                <button class="btn btn-outline-dark" type="button" id="btnGmControls"
+                        onClick="return switchAndCollapse('#btnGmControls',
+                                                          ['#btnJoinRoom', '#btnMakeRoom','#btnRoomInfo'],
+                                                          '#GMControls', ['#MakeRoom', '#JoinRoom', '#RoomInfo'],
+                                                          'btn-outline-dark', 'btn-dark')">
+                    GM Controls
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters card-myz-dice" id="card-dice-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%;">
+      <div class="card-header bg-primary text-white ">
+        <h4>
+          Dice Mechanics
+          <button class="btn btn-outline-light align-right" type="button" id="card-dice-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#DiceMechanicsCard', '#card-dice-all', 'card-myz-dice',
+                                               '#card-dice-btn-hide', '#card-dice-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-dice-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#DiceMechanicsCard', '#card-dice-all', 'card-myz-dice',
+                                          '#card-dice-btn-show', '#card-dice-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="DiceMechanicsCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="DiceMechanics">
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div class="collapse show" id="DiceTypes" data-parent="#DiceMechanics">
+                <div class="row">
+                  <div class="col">
+                    <h5>Skill Check Dice</h5>
+                    <ul style="list-style-type:none; margin-left: -30px; margin-bottom = -16px;">
+                      <li>
+                        <img src="{% static 'myzdice/Dice/Die_Base.png' %}" width="32" height="32" alt="Base Die"
+                               style="vertical-align:bottom">
+                        <strong>Base Die</strong> - The number you roll is based on the Attribute tied to
+                        this check.
+                      </li>
+                      <li style="margin-top: 8px;">
+                        <img src="{% static 'myzdice/Dice/Die_Skill.png' %}" width="32" height="32" alt="Skill Die"
+                             style="vertical-align:bottom">
+                        <strong>Skill Die</strong> - Based on Skill Level, but can be modified, based on the
+                        difficulty of the action.
+                      </li>
+                      <li style="margin-top: 8px;">
+                        <img src="{% static 'myzdice/Dice/Die_Neg_Skill.png' %}" width="32" height="32"
+                             alt="Negative Skill Die" style="vertical-align:bottom">
+                        <strong>Negative Skill Die</strong> - If modifications take the number of
+                        skill dice negative, this die is used instead.
+                      </li>
+                      <li style="margin-top: 8px; margin-bottom = -16px;">
+                        <img src="{% static 'myzdice/Dice/Die_Gear.png' %}" width="32" height="32" alt="Gear Die"
+                             style="vertical-align:bottom">
+                        <strong>Gear Die</strong> - Based on the gear you're using.
+                      </li>
+                    </ul>
                   </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      GMs have additional privileges in their rooms.  (The user who creates a room is GM by default.)
-                      GMs can...
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li>See more information about the room (including Direct Links, Passcode, etc.)</li>
-                        <li>Ban/Unban players; GMs can also make a player the GM for that room.</li>
-                        <li>
-                            Archive a room.  Archived Rooms are hidden (but still accessible) on the
-                            <a href="{% url 'myzdice:the_zone' %}">The Zone</a>;
-                            they also have Dice and Chat turned off.
-                        </li>
+                  <div class="col">
+                    <h5>Other Dice</h5>
+                    <ul style="list-style-type:none; margin-left: -30px; margin-bottom = -16px;">
+                      <li>
+                        <img src="{% static 'myzdice/Dice/d6.png' %}" width="36" alt="D6"
+                               style="vertical-align:bottom">
+                        <strong>D6</strong> - Outputs 1-6
+                      </li>
+                      <li>
+                        <img src="{% static 'myzdice/Dice/d66.png' %}" width="64" alt="D66"
+                               style="vertical-align:bottom">
+                        <strong>D66</strong> - Outputs 11 - 66
+                      </li>
+                      <li>
+                        <img src="{% static 'myzdice/Dice/d666.png' %}" width="64" alt="D666"
+                               style="vertical-align:bottom">
+                        <strong>D666</strong> - Outputs 111 - 666
+                      </li>
+                      <li style="margin-top: 16px; margin-bottom = -16px;">
+                        <img src="{% static 'swdice/Dice/D100.png' %}" width="64" height="32" alt="Numerical Dice"
+                             style="vertical-align:bottom">
+                        <strong>Numerical</strong>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
-            </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p><h4>Dice Mechanics</h4></div>
-        </div>
-    </div>
-    <div class="row no-gutters" style="min-height: 360px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#DiceTypes" aria-expanded="false" aria-controls="DiceTypes">
-                Dice Types
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Success" aria-expanded="false" aria-controls="Success">
-                Basic Results
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Pushing" aria-expanded="false" aria-controls="Pushing">
-                Pushing Rolls
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Negative" aria-expanded="false" aria-controls="Negative">
-                Negative Skill Dice
-            </button>
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse"
-                    data-target="#Numerical" aria-expanded="false" aria-controls="Numerical">
-                Numerical Dice
-            </button>
-          </div>
-        </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="DiceMechanics">
-              <div class="collapse show" id="DiceTypes" data-parent="#DiceMechanics">
-                <div class="card-group">
-                    <div class="card border-dark mb-3" style="max-width: 60%;">
-                      <div class="card-header bg-primary text-white ">
-                        <h5>Skill Check Dice</h5>
-                      </div>
-                      <div class="card card-body">
-                        <ul style="list-style-type:none; margin-left: -30px; margin-bottom = -16px;">
-                            <li><img src="{% static 'myzdice/Dice/Die_Base.png' %}" width="32" height="32"
-                                     style="vertical-align:bottom">
-                                <strong>Base Die</strong> - The number you roll is based on the Attribute tied to
-                                this check.
-                            </li>
-                            <li style="margin-top: 8px;">
-                                <img src="{% static 'myzdice/Dice/Die_Skill.png' %}" width="32" height="32"
-                                     style="vertical-align:bottom">
-                                <strong>Skill Die</strong> - Based on Skill Level, but can be modified, based on the
-                                difficulty of the action.
-                            </li>
-                            <li style="margin-top: 8px;">
-                                <img src="{% static 'myzdice/Dice/Die_Neg_Skill.png' %}" width="32" height="32"
-                                     style="vertical-align:bottom">
-                                <strong>Negative Skill Die</strong> - If modifications take the number of
-                                skill dice negative, this die is used instead.
-                            </li>
-                            <li style="margin-top: 8px; margin-bottom = -16px;">
-                                <img src="{% static 'myzdice/Dice/Die_Gear.png' %}" width="32" height="32"
-                                     style="vertical-align:bottom">
-                                <strong>Gear</strong> - Based on gear you are using for this roll.
-                            </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="card border-dark mb-3" style="max-width: 40%;">
-                      <div class="card-header bg-primary text-white ">
-                        <h5>Other Dice</h5>
-                      </div>
-                      <div class="card card-body">
-                        <ul style="list-style-type:none; margin-left: -30px; margin-bottom = -16px;">
-                            <li><img src="{% static 'myzdice/Dice/d6.png' %}" width="36"
-                                     style="vertical-align:bottom">
-                                <strong>D6</strong> - Outputs 1-6
-                            </li>
-                            <li><img src="{% static 'myzdice/Dice/d66.png' %}" width="64"
-                                     style="vertical-align:bottom">
-                                <strong>D66</strong> - Outputs 11 - 66
-                            </li>
-                            <li><img src="{% static 'myzdice/Dice/d666.png' %}" width="64"
-                                     style="vertical-align:bottom">
-                                <strong>D666</strong> - Outputs 111 - 666
-                            </li>
-                            <li style="margin-top: 16px; margin-bottom = -16px;">
-                                <img src="{% static 'swdice/Dice/D100.png' %}" width="64" height="32"
-                                     style="vertical-align:bottom">
-                                <strong>Numerical</strong>
-                            </li>
-                        </ul>
-                      </div>
-                    </div>
-                </div>
-              </div>
-              <div class="collapse" id="Success" data-parent="#DiceMechanics">
-                <div class="card-group">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
+              <div class="collapse" id="Results" data-parent="#DiceMechanics">
+                <div class="row">
+                  <div class="col">
                     <h5>Successes and "Negative Successes"</h5>
-                  </div>
-                  <div class="card card-body">
                     <p class="card-text">
                       In order to succeed in a roll, there must be (at least) one uncancelled Success
-                      <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" title="Success">
+                      <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" alt="Success">
                       pip.
                     </p>
                     <ul style="margin-left: -20px;">
                       <li>
-                          "Negative Success"
-                        <img src="{% static 'myzdice/Results/neg_suc.png' %}" width="20" height="20" title="Negative Success">
+                        "Negative Success"
+                        <img src="{% static 'myzdice/Results/neg_suc.png' %}" width="20" height="20" alt="Negative Success">
                         pips cancel success pips one-for-one.
                       </li>
                       <li>
-                          If there are multiple (uncancelled) Success
-                          <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" title="Success">
-                          pips, any (beyond the first) may activate "stunts".
+                        If there are multiple (uncancelled) Success
+                        <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" alt="Success">
+                        pips, any (beyond the first) may activate "stunts".
                       </li>
                       <li>
-                          A roll with no uncancelled success pips is a failure. (E.g. two successes and two
-                          negative successes.)
+                        A roll with no uncancelled success pips is a failure. (E.g. two successes and two
+                        negative successes.)
                       </li>
                     </ul>
                   </div>
-                </div>
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
+                  <div class="col">
                     <h5>Trauma and (Gear) Damage</h5>
-                  </div>
-                  <div class="card card-body">
                     <p class="card-text">
                       Trauma and Damage pips only count if a roll has been <em>pushed</em>.
                     </p>
                     <ul style="margin-left: -20px;">
                       <li>
                         Trauma
-                        <img src="{% static 'myzdice/Results/trauma.png' %}" width="20" height="20" title="Trauma">
+                        <img src="{% static 'myzdice/Results/trauma.png' %}" width="20" height="20" alt="Trauma">
                         pips are found on the Base Die; they impact one of the character's basic Attributes.
                       </li>
                       <li>
                         Damage
-                        <img src="{% static 'myzdice/Results/damage.png' %}" width="20" height="20" title="Damage">
+                        <img src="{% static 'myzdice/Results/damage.png' %}" width="20" height="20" alt="Damage">
                         pips are found on the Gear Die; they reduce the bonus from a piece of Gear.
                       </li>
                       <li>
@@ -293,240 +327,291 @@
                     </ul>
                   </div>
                 </div>
-                </div>
               </div>
               <div class="collapse" id="Pushing" data-parent="#DiceMechanics">
-                <div class="card-group">
-                    <div class="card border-dark mb-3" style="max-width: 100%;">
-                      <div class="card-header bg-primary text-white ">
-                        <h5>Regular Rolls</h5>
-                      </div>
-                      <div class="card card-body">
-                        <p class="card-text">
-                          On a player's first roll, there is no inherent danger (other than failing the roll).
-                        </p>
-                        <p class="card-text">
-                            The "1" face on the base and gear die (
-                            <img src="{% static 'myzdice/Faces/BA01.png' %}" width="20" height="20" title="Base 1">
-                            and
-                            <img src="{% static 'myzdice/Faces/GE01.png' %}" width="20" height="20" title="Gear 1">
-                            ) have no further meaning, other than not being a success.
-                        </p>
-                        <p class="card-text">
-                            If a player chooses to <em>push</em> the roll, only dice showing just numbers are re-rolled.
-                        </p>
-                      </div>
-                    </div>
-                  <div class="card border-dark mb-3" style="max-width: 100%;">
-                      <div class="card-header bg-primary text-white ">
-                        <h5>Pushed Rolls</h5>
-                      </div>
-                      <div class="card card-body">
-                        <p class="card-text">
-                          Players usually <em>push</em> a roll to try to gain more successes, however, the risks increase.
-                        </p>
-                        <p class="card-text">
-                            Base and Gear faces that were "1" (
-                            <img src="{% static 'myzdice/Faces/BA01.png' %}" width="20" height="20" title="Base 1">
-                            and
-                            <img src="{% static 'myzdice/Faces/GE01.png' %}" width="20" height="20" title="Gear 1">
-                            ) now count against the player, and are shown as
-                            <img src="{% static 'myzdice/Faces/PU_BA01.png' %}" width="20" height="20" title="Pushed Base 1">
-                            and
-                            <img src="{% static 'myzdice/Faces/PU_GE01.png' %}" width="20" height="20" title="Pushed Gear 1">.
-                        </p>
-                        <p class="card-text">
-                            In addition, any new base or gear die that rolls a "1" automatically counts against the player.
-                        </p>
-                      </div>
+                <div class="row">
+                  <div class="col">
+                    <h5>First Roll</h5>
+                    <p class="card-text">
+                      On a player's first roll, there is no inherent danger (other than failing the roll).
+                    </p>
+                    <p class="card-text">
+                      The "1" face on the base and gear die (
+                      <img src="{% static 'myzdice/Faces/BA01.png' %}" width="20" height="20" alt="Base 1">
+                      and
+                      <img src="{% static 'myzdice/Faces/GE01.png' %}" width="20" height="20" alt="Gear 1">
+                      ) have no further meaning, other than not being a success.
+                    </p>
+                    <p class="card-text">
+                      If a player chooses to <em>push</em> the roll, only dice showing just numbers are re-rolled.
+                    </p>
+                  </div>
+                  <div class="col">
+                    <h5>Pushed Roll</h5>
+                    <p class="card-text">
+                      After resolving the first roll, players may <em>push</em> the roll to try to gain more successes.
+                      However, the risks of Trauma and Damage increase.
+                    </p>
+                    <p class="card-text">
+                        Base and Gear faces that were "1" (
+                        <img src="{% static 'myzdice/Faces/BA01.png' %}" width="20" height="20" alt="Base 1">
+                        and
+                        <img src="{% static 'myzdice/Faces/GE01.png' %}" width="20" height="20" alt="Gear 1">
+                        ) now count against the player, and are shown as
+                        <img src="{% static 'myzdice/Faces/PU_BA01.png' %}" width="20" height="20" alt="Pushed Base 1">
+                        and
+                        <img src="{% static 'myzdice/Faces/PU_GE01.png' %}" width="20" height="20" alt="Pushed Gear 1">.
+                    </p>
+                    <p class="card-text">
+                        In addition, any new base or gear die that rolls a "1" automatically counts against the player.
+                    </p>
                   </div>
                 </div>
 
               </div>
-              <div class="collapse" id="Negative" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Negative Skill Dice</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                        Based on the difficulty of the attempted action, the number of Skill Dice can be <em>modified</em>.
-                        Tasks that are very easy can <em>gain</em> Skill Dice, while those that are hard can have
-                        Skill Dice removed, even going into the negative range.
-                    </p>
-                    <p class="card-text">
-                        If, after the modification of the roll, there are a negative number of Skill Dice, instead of
-                        rolling standard Skill Dice
-                        <img src="{% static 'myzdice/Dice/Die_Skill.png' %}" width="20" height="20"
-                                     style="vertical-align:bottom" title="Skill Die">,
-                        <strong>Negative Skill Dice</strong>
-                        <img src="{% static 'myzdice/Dice/Die_Neg_Skill.png' %}" width="20" height="20"
-                                     style="vertical-align:bottom" title="Negative Skill Die">
-                        are used.
-                        While Regular Skill Dice give a Success
-                        <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" title="Success">
-                        pip (on a roll of 6), Negative Skill Dice give a <em>Negative Success</em>
-                        <img src="{% static 'myzdice/Results/neg_suc.png' %}" width="20" height="20" title="Negative Success">
-                        pip.
-                    </p>
-                    <p class="card-text">
-                        Each Negative Success
-                        <img src="{% static 'myzdice/Results/neg_suc.png' %}" width="20" height="20" title="Negative Success">
-                        pip cancels one Success
-                        <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" title="Success">
-                        pip.
-                    </p>
-                  </div>
-                </div>
+              <div class="collapse" id="NegSkill" data-parent="#DiceMechanics">
+                <h5>Negative Skill Dice</h5>
+                <p class="card-text">
+                  Based on the difficulty of the attempted action, the number of Skill Dice can be <em>modified</em>.
+                  Tasks that are very easy can <em>gain</em> Skill Dice, while those that are hard can have
+                  Skill Dice removed, even going into the negative range.
+                </p>
+                <p class="card-text">
+                  If, after the modification of the roll, there are a negative number of Skill Dice, instead of
+                  rolling standard Skill Dice
+                  <img src="{% static 'myzdice/Dice/Die_Skill.png' %}" width="20" height="20"
+                               style="vertical-align:bottom" title="Skill Die">,
+                  <strong>Negative Skill Dice</strong>
+                  <img src="{% static 'myzdice/Dice/Die_Neg_Skill.png' %}" width="20" height="20"
+                               style="vertical-align:bottom" title="Negative Skill Die">
+                  are used.
+                  While Regular Skill Dice give a Success
+                  <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" alt="Success">
+                  pip (on a roll of 6), Negative Skill Dice give a <em>Negative Success</em>
+                  <img src="{% static 'myzdice/Results/neg_suc.png' %}" width="20" height="20" alt="Negative Success">
+                  pip.
+                </p>
+                <p class="card-text">
+                  Each Negative Success
+                  <img src="{% static 'myzdice/Results/neg_suc.png' %}" width="20" height="20" alt="Negative Success">
+                  pip cancels one Success
+                  <img src="{% static 'myzdice/Results/success.png' %}" width="20" height="20" alt="Success">
+                  pip.
+                </p>
               </div>
               <div class="collapse" id="Numerical" data-parent="#DiceMechanics">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-primary text-white ">
-                    <h5>Numerical Dice</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul>
-                      <li>
-                        In the Mutant Year Zero, Numerical dice are not used, except as a GM sees fit.
-                      </li>
-                      <li>
-                        By default, the Numerical Dice are set as d100.
-                      </li>
-                      <li>
-                        You can change the number of sides by selecting the "100" and typing the desired value.
-                      </li>
-                    </ul>
-                    <p class="card-text">
-                        <img src="{% static 'myzdice/Dice/myz_d100.png' %}" width="128" height="64" title="D100"
-                                style="vertical-align:bottom">
-                        <span style="font-size: 0.67em;">This card is too small.  Here's a picture of the D100, in case
-                            you haven't seen one before.</span>
-                    </p>
-                    <p class="card-text">
-                        <span style="font-size: 0.5em;" class="align-right">
-                            That's better.
-                        </span>
-                    </p>
-                  </div>
-                </div>
+                <h5>Numerical Dice</h5>
+                <ul>
+                  <li>
+                    In the Mutant Year Zero, Numerical dice are not used, except as a GM sees fit.
+                  </li>
+                  <li>
+                    By default, the Numerical Dice are set as d100.
+                  </li>
+                  <li>
+                    You can change the number of sides by selecting the "100" and typing the desired value.
+                  </li>
+                </ul>
+                <p><br></p>
+                <p class="card-text">
+                  <img src="{% static 'myzdice/Dice/myz_d100.png' %}" width="128" height="64" title="D100"
+                          style="vertical-align:bottom">
+                  <span style="font-size: 0.67em;">
+                    This info card doesn't have enough info.  Here's a picture of the D100, in case
+                      you haven't seen one before.
+                  </span>
+                </p>
+                <p class="card-text">
+                  <span style="font-size: 0.5em;">
+                    That's better.
+                  </span>
+                </p>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><h4>Resources</h4></div>
-        </div>
-    </div>
-    <div class="row no-gutters" style="min-height: 250px;">
-        <div class="col-lg-2 col-md-3 col-sm-4">
-          <div class="btn-group-vertical align-right" style="width: 100%;">
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#CoreRuleBooks" aria-expanded="false" aria-controls="CoreRuleBooks">
-                Core Rulebooks
-            </button>
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#Supplements" aria-expanded="false" aria-controls="Supplements">
-                Supplements
-            </button>
-            <button class="btn btn-outline-info" type="button" data-toggle="collapse"
-                    data-target="#Additional" aria-expanded="false" aria-controls="Additional">
-                Additional
-            </button>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-primary" type="button" id="btnDiceTypes" disabled
+                        onClick="return switchAndCollapse('#btnDiceTypes',
+                                                          ['#btnResults', '#btnPushing', '#btnNegSkill', '#btnNumerical'],
+                                                          '#DiceTypes', ['#Results', '#Pushing', '#NegSkill', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Dice Types
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnResults"
+                        onClick="return switchAndCollapse('#btnResults',
+                                                          ['#btnDiceTypes', '#btnPushing', '#btnNegSkill', '#btnNumerical'],
+                                                          '#Results', ['#DiceTypes', '#Pushing', '#NegSkill', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Basic Results
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnPushing"
+                        onClick="return switchAndCollapse('#btnPushing',
+                                                          ['#btnDiceTypes','#btnResults', '#btnNegSkill', '#btnNumerical'],
+                                                          '#Pushing', ['#DiceTypes', '#Results', , '#NegSkill', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Pushing Rolls
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnNegSkill"
+                        onClick="return switchAndCollapse('#btnNegSkill',
+                                                          ['#btnDiceTypes','#btnResults', '#btnPushing', '#btnNumerical'],
+                                                          '#NegSkill', ['#DiceTypes', '#Results', '#Pushing', '#Numerical'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Negative Skill Dice
+                </button>
+                <button class="btn btn-outline-primary" type="button" id="btnNumerical"
+                        onClick="return switchAndCollapse('#btnNumerical',
+                                                          ['#btnDiceTypes','#btnResults', '#btnPushing', '#btnNegSkill'],
+                                                          '#Numerical', ['#DiceTypes', '#Results', '#Pushing', '#NegSkill'],
+                                                          'btn-outline-primary', 'btn-primary')">
+                    Numerical Dice
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container-fluid" id="Resources">
-              <div class="collapse show" id="CoreRuleBooks" data-parent="#Resources">
-                <div class="card border-dark mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Core Rule Books (CRBs)</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul>
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-corebook-map">
-                                Mutant: Year Zero</a>
-                             - This is where it all starts.  Or ends, if you roll badly enough.
-                        </li>
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-genlab-alpha-core-book-print-pdf">
-                                Genlab Alpha</a>
-                             - Mutant Animals.  Furry jokes not included.
-                        </li>
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-mechatron">
-                            Mechatron</a>
-                            - Robots. Batteries and Morals not included.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters card-resources" id="card-resources-all">
+    <div class="card border-dark mb-3" style="max-width: 100%; width: 100%">
+      <div class="card-header bg-info text-white ">
+        <h4>
+          Resources
+          <button class="btn btn-outline-light align-right" type="button" id="card-resources-btn-hide"
+                  style="display: inline;"
+                  onClick="return collapseCard('#ResourcesCard', '#card-resources-all', 'card-resources',
+                                               '#card-resources-btn-hide', '#card-resources-btn-show')">
+            &#9866;
+          </button>
+          <button class="btn btn-outline-light align-right" type="button" id="card-resources-btn-show"
+                  style="display: none;"
+                  onClick="return showCard('#ResourcesCard', '#card-resources-all', 'card-resources',
+                                          '#card-resources-btn-show', '#card-resources-btn-hide')">
+            &#10010;
+          </button>
+        </h4>
+      </div>
+      <div class="collapse show" id="ResourcesCard">
+        <div class="card card-body border-0" style="width: 100%;">
+          <div class="row no-gutters" id="Resources">
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div class="collapse show" id="Rulebooks" data-parent="#Resources">
+                <h5>Core Rule Books (CRBs)</h5>
+                <ul>
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-corebook-map">
+                      Mutant: Year Zero
+                    </a>
+                    - This is where it all starts.  Or ends, if you roll badly enough.
+                  </li>
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-genlab-alpha-core-book-print-pdf">
+                      Genlab Alpha
+                    </a>
+                    - Mutant Animals.  Furry jokes not included.
+                  </li>
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-mechatron">
+                      Mechatron
+                    </a>
+                    - Robots. Batteries and Morals not included.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="Supplements" data-parent="#Resources">
-                <div class="card border-info mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Supplements</h5>
-                  </div>
-                  <div class="card card-body">
-                    <p class="card-text">
-                      These are just a few examples.
-                    </p>
-                    <ul style="margin-left: -20px;">
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-lair-of-the-saurians-print-pdf">
-                                Lair of the Saurians</a>
-                             - First Compendium for MYZ. Warning: Contains Big. Damn. Lizards.
-                        </li>
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-dead-blue-sea-pdf-1">
-                            Dead Blue Sea (PDF)</a>
-                            - You think our water is terrifying?
-                        </li>
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-zone-compendium-3-die-meat-eaters-die-print-pdf">
-                            Die, Meat-Eaters, Die! (PDF)</a>
-                            - True Rabbits don't hand out eggs.
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Supplements</h5>
+                <p class="card-text">
+                  These are just a few examples.
+                </p>
+                <ul style="margin-left: -20px;">
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-lair-of-the-saurians-print-pdf">
+                      Lair of the Saurians
+                    </a>
+                    - First Compendium for MYZ. Warning: Contains Big. Damn. Lizards.
+                  </li>
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-dead-blue-sea-pdf-1">
+                      Dead Blue Sea (PDF)
+                    </a>
+                    - You think our water is terrifying?
+                  </li>
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-zone-compendium-3-die-meat-eaters-die-print-pdf">
+                      Die, Meat-Eaters, Die! (PDF)
+                    </a>
+                    - True Rabbits don't hand out eggs.
+                  </li>
+                </ul>
               </div>
               <div class="collapse" id="Additional" data-parent="#Resources">
-                <div class="card border-info mb-3" style="max-width: 100%;">
-                  <div class="card-header bg-info text-white ">
-                    <h5>Additional</h5>
-                  </div>
-                  <div class="card card-body">
-                    <ul style="margin-left: -20px;">
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-genlab-alpha-card-deck">
-                            Genlab Alpha Card Deck</a>
-                             - Randomized Power, Artifact, and Mutation cards.
-                        </li>
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-mechatron-card-deck">
-                            Mechatron Card Deck</a>
-                            - Cards speed up play; they're handy for reference; they're cool-looking!
-                        </li>
-                        <li><a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-maps-markers-pack">
-                            Maps</a>
-                            - You could just make your own, but will it ever look as cool as this one?
-                        </li>
-                    </ul>
-                  </div>
-                </div>
+                <h5>Additional</h5>
+                <ul style="margin-left: -20px;">
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-genlab-alpha-card-deck">
+                      Genlab Alpha Card Deck
+                    </a>
+                    - Randomized Power, Artifact, and Mutation cards.
+                  </li>
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-mechatron-card-deck">
+                      Mechatron Card Deck
+                    </a>
+                    - Cards speed up play; they're handy for reference; they're cool-looking!
+                  </li>
+                  <li>
+                    <a href="https://www.modiphius.net/collections/mutant-year-zero/products/mutant-year-zero-maps-markers-pack">
+                      Maps
+                    </a>
+                    - You could just make your own, but will it ever look as cool as this one?
+                  </li>
+                </ul>
               </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-2 col-md-3 col-sm-4"></div>
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="container"><p></p>
-                <p style="font-size: 0.75em;">
-                <strong>Disclaimer:</strong>
-                <br>
-                The Mutant Year Zero Dice Roller is designed to be used in conjunction with
-                <a href="https://www.modiphius.com/mutant.html">M&omacr;diphi&uuml;s</a> Mutant Year Zero Role Playing Game.
-                This website is not made with any input or coordination from M&omacr;diphi&uuml;s, which still holds the
-                copyright to all of their original content.
-                </p>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="btn-group-vertical align-right" style="width: 100%;">
+                <button class="btn btn-info" type="button" id="btnRulebooks" disabled
+                        onClick="return switchAndCollapse('#btnRulebooks',
+                                                          ['#btnSupplements', '#btnAdditional'],
+                                                          '#Rulebooks', ['#Supplements', '#Additional'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Core Rulebooks
+                </button>
+                <button class="btn btn-outline-info" type="button" id="btnSupplements"
+                        onClick="return switchAndCollapse('#btnSupplements',
+                                                          ['#btnRulebooks', '#btnAdditional'],
+                                                          '#Supplements', ['#Rulebooks', '#Additional'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Supplements
+                </button>
+                <button class="btn btn-outline-info" type="button" id="btnAdditional"
+                        onClick="return switchAndCollapse('#btnAdditional',
+                                                          ['#btnRulebooks','#btnSupplements'],
+                                                          '#Additional', ['#Rulebooks', '#Supplements'],
+                                                          'btn-outline-info', 'btn-info')">
+                  Additional
+                </button>
             </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="container"><p></p>
+      <p style="font-size: 0.75em;">
+        <strong>Disclaimer:</strong>
+        <br>
+        The Mutant Year Zero Dice Roller is designed to be used in conjunction with
+        <a href="https://www.modiphius.com/mutant.html">M&omacr;diphi&uuml;s</a> Mutant Year Zero Role Playing Game.
+        This website is not made with any input or coordination from M&omacr;diphi&uuml;s, which still holds the
+        copyright to all of their original content.
+      </p>
     </div>
 </div>
+
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 {% endblock %}
