@@ -29,14 +29,14 @@
 {% endblock brand %}
 
 {% block other_navbar_right %}
-<a href="{% url 'polydice:polyroom_info' room_number %}">
-  <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
-  {% block info_label %}
-    <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
-      Info
-    </span>
-  {% endblock info_label %}
-</a>
+  <a href="{% url 'polydice:polyroom_info' room_number %}">
+    <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
+    {% block info_label %}
+      <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
+        Info
+      </span>
+    {% endblock info_label %}
+  </a>
 {% endblock other_navbar_right %}
 
 
@@ -45,23 +45,11 @@
 <!-- endblock -->
 
 {% block body %}
-
-{% load static %}
-<div class="container">
-<br>
+<div class="container" style="padding: 0px;">
+  <br>
   {% if not viewing_basic_room %}
-    <div class="row no-gutters">
-      <div class="col-md-9">
-        {% block user_table %}
-        {% endblock %}
-        {% block gm_stuff %}
-        {% endblock %}
-      </div>
-      <div class="col-md-3">
-        {% block room_header %}
-        {% endblock %}
-      </div>
-    </div>
+    {% block info_page %}
+    {% endblock %}
   {% endif %}
   {% block form_inputs %}
     {% if not room.disabled %}
@@ -81,11 +69,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('d4')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('d4')" class="btn btn-light btn-sm">
-                            &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -100,11 +88,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('d6')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('d6')" class="btn btn-light btn-sm">
-                            &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -119,11 +107,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('d8')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('d8')" class="btn btn-light btn-sm">
-                            &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -138,11 +126,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('d10')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('d10')" class="btn btn-light btn-sm">
-                            &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -157,11 +145,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('d12')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('d12')" class="btn btn-light btn-sm">
-                            &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -176,11 +164,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('d20')" class="btn btn-light btn-sm">
-                              &#9650
+                              &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('d20')" class="btn btn-light btn-sm">
-                              &#9660
+                              &#9660;
                           </button>
                         </td>
                       </tr>
@@ -195,11 +183,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('d100')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('d100')" class="btn btn-light btn-sm">
-                            &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -214,11 +202,11 @@
                         </td>
                         <td>
                           <button type="button" onclick="addOne('bonus')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('bonus')" class="btn btn-light btn-sm">
-                            &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -234,11 +222,11 @@
                           {{ dice_form.num_numerical_dice }}
                         <td>
                           <button type="button" onclick="addOne('numerical')" class="btn btn-light btn-sm">
-                            &#9650
+                            &#9650;
                           </button>
                           <br>
                           <button type="button" onclick="subtractOne('numerical')" class="btn btn-light btn-sm">
-                              &#9660
+                            &#9660;
                           </button>
                         </td>
                       </tr>
@@ -333,7 +321,7 @@
                     <td>
                       <a href="{% url 'polydice:switch_avatar_room' room_number %}">
                         <button type="button" class="btn btn-light btn-sm" name="switch_avatar">
-                          Switch Avatar <strong>&#12299</strong>
+                          Switch Avatar <strong>&#12299;</strong>
                         </button>
                       </a>
                     </td>
@@ -362,7 +350,7 @@
       <p>No new rolls or chats may be made in it.</p>
     {% endif %}
   {% endblock form_inputs %}
-  <div class="row no-gutters">
+  <div class="row">
     <div class="col-md-9 col-lg-8">
       <hr>
       {% block alt_destiny %}
@@ -639,11 +627,12 @@
       {% endblock action_log %}
     </div>
     <div class="col-md-3 col-lg-4" style="padding:0;">
+      <hr>
       {% block alt_chat_header %}
       {% endblock %}
       {% block chat_log %}
         <div class="container-fluid" id="chat_log" style="padding:0">
-        <hr>
+
         {% block glossary %}
           <input type="checkbox" id="showblock">
           <div id="slideout">

@@ -1,235 +1,268 @@
 {% extends 'polydice/room_poly.html' %}
+{% load static %}
+{% load diceroomtags %}
 
 {% block head %}
-    <meta charset="UTF-8">
-    <title>Polyhedral Room Player Info</title>
+  <meta charset="UTF-8">
+  <title>Polyhedral Room Player Info</title>
 {% endblock %}
 
 {% block brand %}
-{% load static %}
-    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-        <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
-    </a>
-<span class="d-inline-block text-truncate" style="max-width: 650px; color:white; font-size: 150%; margin-right: 10px;">
+  <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+    <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+  </a>
+  <span class="d-inline-block text-truncate"
+        style="max-width: 650px; color:white; font-size: 150%; margin-right: 10px;">
     {{room.name}}
-</span>
-<a class="navbar-brand" style="color:white;" href="{% url 'polydice:dungeon' %}">
+  </span>
+  <a class="navbar-brand" style="color:white;" href="{% url 'polydice:dungeon' %}">
     <img src="{% static '/polydice/d20_color.png' %}" alt="Polyhedral Dice Roller" height="32" width="32">
     {% block subtitle %}{% endblock %}
-</a>
-<span class="d-inline-block" style="color:white; font-size: 150%;"> Player Info Page</span>
+  </a>
+  <span class="d-inline-block" style="color:white; font-size: 150%;"> Player Info Page</span>
 {% endblock %}
 
 {% block other_navbar_right %}
 {% endblock %}
 
-{% load static %}
+{% block info_page %}
+  <div class="row" style="min-width: 100%">
+    <div class="col-xl-10 col-lg-10 col-md-9 col-sm-8 col-xs">
+      {% if not room.disabled %}
+        <h4 style="min-width: 100%;">
+          This page does not automatically update.&nbsp;
+          <button type="button" class="btn btn-sm btn-outline-info" style="display: none; margin-top: -8px;"
+                  id="btn_Header_minus"
+                  onClick="return switchButtonsToggleDiv('#btn_Header_minus', '#btn_Header_plus', '#headerInfo')">
+            &#9866;
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-info" style="display: inline; margin-top: -8px;"
+                  id="btn_Header_plus"
+                  onClick="return switchButtonsToggleDiv('#btn_Header_plus', '#btn_Header_minus', '#headerInfo')">
+            &#10010;
+          </button>
+        </h4>
+      {% else %}
+        <h4 style="min-width: 100%;">
+          This room has been <span style="color: darkred;">archived</span>.
+        </h4>
+      {% endif %}
+      <div class="collapse" id="headerInfo" >
+        <p>
+          You must manually refresh to see changes to destiny, rolls, or chats.
+        </p>
+        <p>
+          However, this page loads <em>all</em> actions and chats made by
+          {% for player in users_in_room %}
+          {% if player.user_id_id == player_id %}
+              <strong>{{ player.user_id.username }}</strong>.
+          {% endif %}
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs">
+      {% if not room.disabled %}
+        <a href="{% url 'polydice:polyroom' room_number %}" role="button" class="btn btn-info align-right"
+               name="back to page">
+          <strong>&#12298;</strong> To Live Page
+        </a>
+      {% else %}
+        <a href="{% url 'polydice:polyroom' room_number %}" role="button" class="btn btn-secondary align-right"
+              name="back to page">
+          <strong>&#12298;</strong> To Archived Page
+        </a>
+      {% endif %}
+      <br>
+      <a href="{% url 'polydice:polyroom_info' room_number %}" role="button"
+         class="btn btn-outline-info align-right" name="back to info page">
+          <strong>&#12298;</strong> To Info Page
+      </a>
+    </div>
+  </div>
 
-{% block user_table %}
-<div class="container" id="current_users">
+  <div class="container" id="current_users">
     <h5>Player Information Table</h5>
     <table id="users_table" style="width: 100%">
-        <tr>
-            <th style="width:80px">User<br> Image</th>
-            <th style="width:300px">&nbsp<br>Playing as</th>
-            <th style="width:80px">Avatar<br> Image</th>
-            <th style="width:80px">&nbsp<br>Role</th>
-            {% if player_is_gm %}
-                <th style="text-align:right; width:100px">&nbsp<br>GM</th>
-                <th style="width:80px">&nbsp<br>Actions</th>
-            {% endif %}
-        </tr>
-        {% for player in users_in_room %}
+      <tr>
+        <th style="width:80px">User<br>Image</th>
+        <th style="width:300px">&nbsp;<br>Playing as</th>
+        <th style="width:80px">Avatar<br> Image</th>
+        <th style="width:80px">&nbsp<br>Role</th>
+        {% if player_is_gm %}
+          <th style="text-align:right; width:100px">&nbsp;<br>GM</th>
+          <th style="width:80px">&nbsp;<br>Actions</th>
+        {% endif %}
+      </tr>
+      {% for player in users_in_room %}
         {% if not player.banned or player_is_gm %}
-        {% if player.user_id_id == player_id %}
-        <tr>
-            <td>
+          {% if player.user_id_id == player_id %}
+            <tr>
+              <td>
                 {% if player.user_id.userprofile.user_url_image %}
-                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
+                  <img src="{{ player.user_id.userprofile.user_url_image }}" width="40" alt="Player Image">
                 {% else %}
-                    <em>no image</em>
+                  <em>no image</em>
                 {% endif %}
-            </td>
-            <td>
+              </td>
+              <td>
                 <strong>{{ player.user_id.username }}</strong> playing as:
                 <strong>
-                    {% if player.avatar_id %}{{ player.avatar_id.avatar_name }}{% else %}theirself{% endif %}
+                  {% if player.avatar_id %}{{ player.avatar_id.avatar_name }}{% else %}theirself{% endif %}
                 </strong>
-            </td>
-            <td>
+              </td>
+              <td>
                 {% if player.avatar_id %}
-                    {% if player.avatar_id.avatar_url_image %}
-                        <img src="{{ player.avatar_id.avatar_url_image }}" width="40">
-                    {% else %}
-                        <em>no image</em>
-                    {% endif %}
+                  {% if player.avatar_id.avatar_url_image %}
+                    <img src="{{ player.avatar_id.avatar_url_image }}" width="40" alt="Avatar Image">
+                  {% else %}
+                    <em>no image</em>
+                  {% endif %}
                 {% else %}
-                    {% if player.user_id.userprofile.user_url_image %}
-                        <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
-                    {% else %}
-                        <em>no image</em>
-                    {% endif %}
+                  {% if player.user_id.userprofile.user_url_image %}
+                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40" alt="Player Image">
+                  {% else %}
+                    <em>no image</em>
+                  {% endif %}
                 {% endif %}
-            </td>
-            <td>
+              </td>
+              <td>
                 {% if player.banned %}<em>banned</em>
                 {% elif player.game_master %}<strong>GM</strong>
                 {% else %}Player
                 {% endif %}
-            </td>
-            {% if player_is_gm %} <!-- this is the page viewer is gm-->
+              </td>
+              {% if player_is_gm %} <!-- this is the page viewer is gm-->
                 {% if player.game_master %} <!-- this is the player in table info is gm-->
-                    <td colspan="2" style="text-align:center;">
-                        <em>You are the GM</em>
-                    </td>
+                  <td colspan="2" style="text-align:center;">
+                    <em>You are the GM</em>
+                  </td>
                 {% else %}
-                    <td>
-                        <div class="container-fluid" id="gm_button" style="padding: 0px 3px">
-                        {% if not player.banned %}
+                  <td>
+                    <div class="container-fluid" id="gm_button" style="padding: 0px 3px">
+                      {% if not player.banned %}
                         <button type="button" class="btn btn-sm btn-outline-primary align-right"
                                 id="make_gm" onclick="showMakeGM()">
-                        Make GM
+                          Make GM
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-primary align-right"
                                 id="cancel_make_gm" style="display: none;" onclick="hideMakeGM()">
-                        Cancel
+                          Cancel
                         </button>
-                        {% endif %}
-                        </div>
-                    </td>
+                      {% endif %}
+                    </div>
+                  </td>
                     <td>
-                        <div class="container-fluid" id="ban_button" style="padding: 0px 3px">
+                      <div class="container-fluid" id="ban_button" style="padding: 0px 3px">
                         {% if player.banned %}
-                            <button type="button" class="btn btn-sm btn-outline-warning" id="unban"
-                                    onclick="showUnban()">
+                          <button type="button" class="btn btn-sm btn-outline-warning" id="unban"
+                                  onclick="showUnban()">
                             Unban
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-warning" id="cancel_unban"
-                                    style="display:none" onclick="hideUnban()">
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-warning" id="cancel_unban"
+                                  style="display:none" onclick="hideUnban()">
                             Cancel
-                            </button>
+                          </button>
                         {% else %}
-                            <button type="button" class="btn btn-sm btn-outline-danger" id="ban"
-                                    onclick="showBan()">
+                          <button type="button" class="btn btn-sm btn-outline-danger" id="ban"
+                                  onclick="showBan()">
                             Ban
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" id="cancel_ban"
-                                    style="display:none" onclick="hideBan()">
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" id="cancel_ban"
+                                  style="display:none" onclick="hideBan()">
                             Cancel
-                            </button>
+                          </button>
                         {% endif %} <!--ban/unban button -->
-                        </div>
+                      </div>
                     </td>
                 {% endif %} <!--buttons removed if player is GM -->
-            {% endif %} <!--only GM's see these buttons when viewing the page, just in case -->
-        </tr>
+              {% endif %} <!--only GM's see these buttons when viewing the page, just in case -->
+            </tr>
+          {% endif %}
         {% endif %}
-        {% endif %}
-        {% endfor %}
+      {% endfor %}
     </table>
-</div>
-{% endblock %}
+  </div>
 
-{% block gm_stuff %}
-    {% if player_is_gm %}
-        <div class="container" id="gm_instructions">
-        <br>
-        <h5>GM Information</h5>
+  {% if player_is_gm %}
+    <div class="container-fluid" style="margin-top: 12px;" id="gm_instructions">
+      <h5>
+        GM Information
+        <button type="button" class="btn btn-sm btn-outline-info" style="display: none;" id="btn_GM_minus"
+              onClick="return switchButtonsToggleDiv('#btn_GM_minus', '#btn_GM_plus', '#infoPanelGM')">
+          &#9866;
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-info" style="display: inline;" id="btn_GM_plus"
+                onClick="return switchButtonsToggleDiv('#btn_GM_plus', '#btn_GM_minus', '#infoPanelGM')">
+          &#10010;
+        </button>
+      </h5>
+      <div class="collapse" id="infoPanelGM">
         <p>
-            As the GM for this room, you are the only one who can see this page.  From here, you can:
-            <ul style="margin-top: -10px; margin-bottom: 5px;">
-                <li>Transfer the GM title to another (non-banned) player</li>
-                <li>Ban (or unban) this player</li>
-            </ul>
-            Transferring the GM role back to you can only be done by the new GM.  You will lose all
-            GM abilities that you now have.
+          As the GM for this room, you are the only one who can see this page.  From here, you can:
+          <ul style="margin-top: -10px; margin-bottom: 5px;">
+            <li>Transfer the GM title to another (non-banned) player</li>
+            <li>Ban (or unban) this player</li>
+          </ul>
+          Transferring the GM role back to you can only be done by the new GM.  You will lose all
+          GM abilities that you now have.
         </p>
-        </div>
-        <div class="container-fluid" id="gm_transfer" style="display: none">
-        <p>
+      </div>
+    </div>
+    <div class="container-fluid" id="gm_transfer" style="display: none">
+      <p>
         You are about to transfer your role and privileges as GM to
         {% for player in users_in_room %}
-            {% if player.user_id_id == player_id %}
-        <strong>{{ player.user_id.username }}</strong>
-            {% endif %}
+          {% if player.user_id_id == player_id %}
+            <strong>{{ player.user_id.username }}</strong>
+          {% endif %}
         {% endfor %}. Only they will be able to undo this change.<br>
         <strong>Are you sure you want to do this?</strong><br>
-            <form id="make_gm_form" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary" name="make_gm_real">
-                    Yes, make
-                    {% for player in users_in_room %}
-                        {% if player.user_id_id == player_id %}
-                            <strong>{{ player.user_id.username }}</strong>
-                        {% endif %}
-                    {% endfor %}
-                    GM
-                </button>
-            </form>
-        </p>
-        </div>
-        <div class="container-fluid" id="ban_area" style="display:none">
+        <form id="make_gm_form" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary" name="make_gm_real">
+            Yes, make
             {% for player in users_in_room %}
-            {% if player.user_id_id == player_id %}
-                {% if player.banned %}
-                    Are you certain that you want to unban <strong>{{player.user_id.username}}</strong>?<br>
-                    Once you unban <strong>{{player.user_id.username}}</strong>, all of their actions and
-                    chats will be visible again.<br>
-                    <form id="unban_form" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-warning" name="unban_real">
-                            <strong>Yes. Unban {{player.user_id.username}}.</strong>
-                        </button>
-                    </form>
-                {% else %}
-                    Are you certain that you want to ban <strong>{{player.user_id.username}}</strong>?<br>
-                    While <strong>{{player.user_id.username}}</strong> is banned, all actions and chats
-                    from them will be invisible.<br>
-                    You <em>can</em> undo this at a later point.<br>
-                    <form id="ban_form" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger" name="ban_real">
-                            <strong>Yes. BAN {{player.user_id.username}}.</strong>
-                        </button>
-                    </form>
-                {% endif %}
-            {% endif %}
+              {% if player.user_id_id == player_id %}
+                <strong>{{ player.user_id.username }}</strong>
+              {% endif %}
             {% endfor %}
-        </div>
-    {% endif %}
+            GM
+          </button>
+        </form>
+      </p>
+    </div>
+    <div class="container-fluid" id="ban_area" style="display:none">
+      {% for player in users_in_room %}
+        {% if player.user_id_id == player_id %}
+          {% if player.banned %}
+            Are you certain that you want to unban <strong>{{player.user_id.username}}</strong>?<br>
+            Once you unban <strong>{{player.user_id.username}}</strong>, all of their actions and
+            chats will be visible again.<br>
+            <form id="unban_form" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-warning" name="unban_real">
+                <strong>Yes. Unban {{player.user_id.username}}.</strong>
+              </button>
+            </form>
+          {% else %}
+            Are you certain that you want to ban <strong>{{player.user_id.username}}</strong>?<br>
+            While <strong>{{player.user_id.username}}</strong> is banned, all actions and chats
+            from them will be invisible.<br>
+            You <em>can</em> undo this at a later point.<br>
+            <form id="ban_form" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger" name="ban_real">
+                <strong>Yes. BAN {{player.user_id.username}}.</strong>
+              </button>
+            </form>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endblock %}
 
-{% block room_header %}
-<div class="container-fluid" style="background-color: #B5D4EF">
-    <h4>This page does not automatically update.</h4>
-    <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
-    <p>
-        However, this page loads <em>all</em> actions and chats made by
-        {% for player in users_in_room %}
-        {% if player.user_id_id == player_id %}
-            <strong>{{ player.user_id.username }}</strong>.
-        {% endif %}
-        {% endfor %}
-    </p>
-</div>
-<div class="container-fluid">
-    <p>
-    <a href="{% url 'polydice:polyroom' room_number %}">
-        <button type="button" class="btn btn-info align-right" name="back to page">
-            <strong>&#12298</strong> Back to Live Page
-        </button>
-    </a>
-        <br>
-    </p>
-    <p>
-    <a href="{% url 'polydice:polyroom_info' room_number %}">
-        <button type="button" class="btn btn-outline-info align-right" name="back to info page">
-            <strong>&#12298</strong> Back to Info Page
-        </button>
-    </a>
-    </p>
-</div>
-{% endblock %}
 {% block form_inputs %}
 <!-- remove inputs, destiny, and standard user information space -->
 {% endblock %}
@@ -239,24 +272,23 @@
 
 {% block actions_header %}
 <h5>Actions by
-    {% for player in users_in_room %}
-        {% if player.user_id_id == player_id %}
-            <strong>{{ player.user_id.username }}</strong>:
-        {% endif %}
-    {% endfor %}
+  {% for player in users_in_room %}
+    {% if player.user_id_id == player_id %}
+      <strong>{{ player.user_id.username }}</strong>:
+    {% endif %}
+  {% endfor %}
 </h5>
 {% endblock %}
 <!-- include block action_log -->
 <!-- include block player_info -->
 
 {% block alt_chat_header %}
-<hr>
 <h5>Chats by
-    {% for player in users_in_room %}
-        {% if player.user_id_id == player_id %}
-            <strong>{{ player.user_id.username }}</strong>:
-        {% endif %}
-    {% endfor %}
+  {% for player in users_in_room %}
+    {% if player.user_id_id == player_id %}
+      <strong>{{ player.user_id.username }}</strong>:
+    {% endif %}
+  {% endfor %}
 </h5>
 {% endblock %}
 {% block glossary %}
@@ -266,47 +298,6 @@
 
 
 {% block page_scripts %}
-<script>
-function showMakeGM() {
-    document.getElementById('make_gm').style.display='none';
-    document.getElementById('cancel_make_gm').style.display='block';
-    document.getElementById('gm_instructions').style.display='none';
-    document.getElementById('gm_transfer').style.display='block';
-    document.getElementById('ban_button').style.display='none';
-}
-function hideMakeGM() {
-    document.getElementById('make_gm').style.display='block';
-    document.getElementById('cancel_make_gm').style.display='none';
-    document.getElementById('gm_instructions').style.display='block';
-    document.getElementById('gm_transfer').style.display='none';
-    document.getElementById('ban_button').style.display='block';
-}
-function showBan() {
-    document.getElementById('ban').style.display='none';
-    document.getElementById('cancel_ban').style.display='block';
-    document.getElementById('gm_instructions').style.display='none';
-    document.getElementById('ban_area').style.display='block';
-    document.getElementById('gm_button').style.display='none';
-}
-function hideBan() {
-    document.getElementById('ban').style.display='block';
-    document.getElementById('cancel_ban').style.display='none';
-    document.getElementById('gm_instructions').style.display='block';
-    document.getElementById('ban_area').style.display='none';
-    document.getElementById('gm_button').style.display='block';
-}
-function showUnban() {
-    document.getElementById('unban').style.display='none';
-    document.getElementById('cancel_unban').style.display='block';
-    document.getElementById('gm_instructions').style.display='none';
-    document.getElementById('ban_area').style.display='block';
-}
-function hideUnban() {
-    document.getElementById('unban').style.display='block';
-    document.getElementById('cancel_unban').style.display='none';
-    document.getElementById('gm_instructions').style.display='block';
-    document.getElementById('ban_area').style.display='none';
-}
-</script>
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 {% endblock %} <!--page_scripts-->
 

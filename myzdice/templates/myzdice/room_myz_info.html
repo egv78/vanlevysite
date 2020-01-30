@@ -1,4 +1,6 @@
 {% extends 'myzdice/room_myz.html' %}
+{% load static %}
+{% load diceroomtags %}
 
 {% block head %}
     <meta charset="UTF-8">
@@ -7,224 +9,306 @@
 
 {% block brand %}
 {% load static %}
-    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
-        <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
-    </a>
-<span class="d-inline-block text-truncate" style="max-width: 700px; color:white; font-size: 150%; margin-right: 10px;">
+  <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+    <img src="{% static '/vanlevy/images/IconReverse_32.png' %}" alt="Van Levy Icon" height="32" width="32">
+  </a>
+  <span class="d-inline-block text-truncate" style="max-width: 700px; color:white; font-size: 150%; margin-right: 10px;">
     {{room.name}}
-</span>
-<a class="navbar-brand" style="color:white;" href="{% url 'myzdice:the_zone' %}">
+  </span>
+  <a class="navbar-brand" style="color:white;" href="{% url 'myzdice:the_zone' %}">
     <img src="{% static '/myzdice/MutantYearZero_32.png' %}" alt="MYZ Dice Roller" height="32" width="32">
     {% block subtitle %}{% endblock %}
-</a>
-<span class="d-inline-block" style="color:white; font-size: 150%;"> Info Page </span>
+  </a>
+  <span class="d-inline-block" style="color:white; font-size: 150%;"> Info Page </span>
 {% endblock %}
 
 {% block other_navbar_right %}
 {% endblock %}
 
-{% load static %}
+{% block info_page %}
+  <div class="container">
+    <div class="row" style="min-width: 100%">
+      {% if not room.disabled %}
+        <h4 style="min-width: 100%;">
+          This page does not automatically update.&nbsp;
+          <button type="button" class="btn btn-sm btn-outline-info" style="display: none; margin-top: -8px;"
+                  id="btn_Header_minus"
+                  onClick="return switchButtonsToggleDiv('#btn_Header_minus', '#btn_Header_plus', '#headerInfo')">
+            &#9866;
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-info" style="display: inline; margin-top: -8px;"
+                  id="btn_Header_plus"
+                  onClick="return switchButtonsToggleDiv('#btn_Header_plus', '#btn_Header_minus', '#headerInfo')">
+            &#10010;
+          </button>
+          <a href="{% url 'myzdice:myzroom' room_number %}" role="button" class="btn btn-info align-right"
+             id="back_to_live_page">
+            <strong>&#12298;</strong> To Live Page
+          </a>
+        </h4>
+      {% else %}
+        <h4 style="min-width: 100%;">
+          This room has been <span style="color: darkred;">archived</span>.
+          <a href="{% url 'myzdice:myzroom' room_number %}" role="button" class="btn btn-secondary align-right"
+             id="back_to_archived_page">
+            <strong>&#12298;</strong> To Archived Page
+          </a>
+        </h4>
+      {% endif %}
+      <div class="collapse" id="headerInfo" >
+        <p>
+          You must manually refresh to see changes to destiny, rolls, or chats.
+          However, this page loads <em>all</em> actions and chats, while the main page shows only the 50 most
+          recent actions and 50 most recent chats.
+        </p>
+      </div>
+    </div>
 
-{% block user_table %}
-<div class="container" id="current_users">
-    <h5>Player Information Table</h5>
-    <table id="users_table" style="100%">
+    <div class="row" id="current_users">
+      <h5>Player Information Table</h5>
+      <table id="users_table" style="100%">
         <tr>
-            <th style="width:80px">User <br>Image</th>
-            <th style="width:300px">&nbsp<br>Playing as</th>
-            <th style="width:80px">Avatar <br>Image</th>
-            <th style="width:80px">&nbsp<br>Role</th>
+          <th style="width:80px">User <br>Image</th>
+          <th style="width:300px">&nbsp;<br>Playing as</th>
+          <th style="width:80px">Avatar <br>Image</th>
+          <th style="width:80px">&nbsp;<br>Role</th>
             {% if player_is_gm %}
-            <th style="width:180px">Player <br>Info</th>
+              <th style="width:180px">Player <br>Info</th>
             {% endif %}
         </tr>
         {% for player in users_in_room %}
-        {% if not player.banned or player_is_gm %}
-        <tr>
-            <td>
+          {% if not player.banned or player_is_gm %}
+            <tr>
+              <td>
                 {% if player.user_id.userprofile.user_url_image %}
-                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
+                  <img src="{{ player.user_id.userprofile.user_url_image }}" width="40"
+                       alt="{{ player.user_id.username }}'s pic">
                 {% else %}
-                    <em>no image</em>
+                  <em>no image</em>
                 {% endif %}
-            </td>
-            <td>
+              </td>
+              <td>
                 <strong>{{ player.user_id.username }}</strong> playing as:
                 <strong>
-                    {% if player.avatar_id %}{{ player.avatar_id.avatar_name }}{% else %}theirself{% endif %}
+                  {% if player.avatar_id %}{{ player.avatar_id.avatar_name }}{% else %}theirself{% endif %}
                 </strong>
-            </td>
-            <td>
+              </td>
+              <td>
                 {% if player.avatar_id %}
-                    {% if player.avatar_id.avatar_url_image %}
-                        <img src="{{ player.avatar_id.avatar_url_image }}" width="40">
-                    {% else %}
-                        <em>no image</em>
-                    {% endif %}
+                  {% if player.avatar_id.avatar_url_image %}
+                    <img src="{{ player.avatar_id.avatar_url_image }}" width="40"
+                         alt="{{ player.avatar_id.avatar_name }}'s pic">
+                  {% else %}
+                    <em>no image</em>
+                  {% endif %}
                 {% else %}
-                    {% if player.user_id.userprofile.user_url_image %}
-                        <img src="{{ player.user_id.userprofile.user_url_image }}" width="40">
-                    {% else %}
-                        <em>no image</em>
-                    {% endif %}
+                  {% if player.user_id.userprofile.user_url_image %}
+                    <img src="{{ player.user_id.userprofile.user_url_image }}" width="40"
+                         alt="{{ player.user_id.username }}'s pic">
+                  {% else %}
+                    <em>no image</em>
+                  {% endif %}
                 {% endif %}
-            </td>
-            <td>
+              </td>
+              <td>
                 {% if player.banned %}<em>banned</em>
                 {% elif player.game_master %}<strong>GM</strong>
                 {% else %}Player
                 {% endif %}
-            </td>
-            {% if player_is_gm %}
-            <td>
-                <a href="{% url 'myzdice:myzroom_player_info' room_number player.user_id_id%}">
-                <button type="button" class="btn btn-sm btn-outline-info" name="Player_Info">
+              </td>
+              {% if player_is_gm %}
+                <td>
+                  <a href="{% url 'myzdice:myzroom_player_info' room_number player.user_id_id%}" role="button"
+                        class="btn btn-sm btn-outline-info" id="Player_Info_{{player.user_id}}">
                     Player Info
-                </button>
-                </a>
-            </td>
-            {% endif %}
-        </tr>
-        {% endif %}
+                  </a>
+                </td>
+              {% endif %}
+            </tr>
+          {% endif %}
         {% endfor %}
-    </table>
-</div>
-{% endblock %}
-
-{% block gm_stuff %}
-{% if player_is_gm %}
-    <div class="container-fluid" id="gm_message">
-        <div class="row">
-            <div class="col">
-                <h5>GM-only Information:</h5>
-            </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-md-6">
-                <h6>
-                    Room Details
-
-                </h6>
-                <ul style="margin-left: -15px; margin-top: -5px">
-                    <li><strong>Created on:</strong> {{ room.created_on }}</li>
-                    <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
-                    <li><strong>Direct Link:</strong>
-                        <button type="button" style="padding: 0;margin-left: 10px;"
-                                onclick="copyURL(link_{{room.id}})">
-                          <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
-                        </button>
-                        <br>
-                        <span style="word-wrap: break-word;" id="link_{{room.id}}">
-                            www.vanlevy.com{% url 'myzdice:myzroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
-                        </span>
-                    </li>
-                    <li>
-                        <strong>Room ID:</strong> <u>{{room.id}}</u>
-                    </li>
-                    {% if not room.open_to_all %}
-                    <li><strong>Passcode:</strong>
-                        {% if room.passcode %}
-                            "{{ room.passcode }}"
-                        {% else %}
-                            this room's passcode has been left <em>blank</em>.
-                        {% endif %}
-                    </li>
-                    {% else %}
-                    <li>This room is <strong>open to all</strong></li>
-                    {% endif %}
-                </ul>
-                {% if not room.disabled %}
-                <a href="{% url 'myzdice:change_passcode' room_number %}">
-                  <button type="button" class="btn btn-sm btn-outline-info" id="changePasscode"
-                        style="margin-right: 15px;">
-                    {% if not room.open_to_all %}
-                        Change Passcode
-                    {% else %}
-                        Add Passcode
-                    {% endif %}
-                    <strong>&#12299</strong>
-                  </button>
-                </a>
-                {% endif %}
-            </div>
-            <div class="col-md-6">
-                {% if room.disabled %}
-                <h5><span style="color: darkred;">This room has been <strong>archived</strong>.</span></h5>
-                <p>
-                    No rolls or chats can be made in this room. On the Docking Bay page, this room is only visible on the
-                    Archived Rooms tab.
-                </p>
-                {% else %}
-                <p>
-                    As GM, you can choose to <em>archive</em> this room.<br>
-                    Once a room has been <em>archived</em>, players will not be able to make any more rolls or chats, and
-                    the room will only be visible on the Archived Rooms tab on the Docking Bay page.
-                </p>
-                {% endif %}
-                <div class="row no-gutters" id="disable_button" style="padding: 0px 3px">
-                    <div class="col-sm-3">
-                      {% if room.disabled %}
-                        <button type="button" class="btn btn-sm btn-outline-warning" id="restore"
-                                onclick="showRestore()">
-                        Restore Room?
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-warning" id="cancel_restore"
-                                style="display:none" onclick="hideRestore()">
-                        Cancel
-                        </button>
-                      {% else %}
-                        <button type="button" class="btn btn-sm btn-outline-danger" id="disable"
-                                onclick="showDisable()">
-                        Archive Room?
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-danger" id="cancel_disable"
-                                style="display:none" onclick="hideDisable()">
-                        Cancel
-                        </button>
-                      {% endif %} <!--archive/restore button -->
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="container-fluid" id="are_you_sure" style="display: none;">
-                            {% if room.disabled %}
-                                Are you sure you want to RESTORE this room?
-                                <form id="restore_form" method="POST">
-                                {% csrf_token %}
-                                    <button type="submit" class="btn btn-warning" name="restore_real">
-                                        <strong>Yes. RESTORE this room.</strong>
-                                    </button>
-                                </form>
-                            {% else %}
-                                Are you sure you want to ARCHIVE this room?
-                                <form id="archive_form" method="POST">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger" name="archive_real">
-                                        <strong>Yes. ARCHIVE this room..</strong>
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </table>
     </div>
-{% endif %}
-{% endblock %}
 
-{% block room_header %}
-<div class="container-fluid" style="background-color: #B5D4EF">
-    <h4>This page does not automatically update.</h4>
-    <p>You must manually refresh to see changes to destiny, new rolls, or new chats.</p>
-    <p>
-        However, this page loads <em>all</em> actions and chats, while the main page shows only the 100 most
-        recent actions and 100 most recent chats.
-    </p>
-    <a href="{% url 'myzdice:myzroom' room_number %}">
-    <button type="button" class="btn btn-info align-right" name="back to page">
-        <strong>&#12298</strong> Back to Live Page
-    </button>
-    </a>
-</div>
+    {% if player_is_gm %}
+      <div class="row" style="margin-top: 6px;">
+        <h5>
+          GM-only Information
+          <button type="button" class="btn btn-sm btn-outline-info" style="display: none;" id="btn_GM_minus"
+                  onClick="return switchButtonsToggleDiv('#btn_GM_minus', '#btn_GM_plus', '#infoPanelGM')">
+            &#9866;
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-info" style="display: inline;" id="btn_GM_plus"
+                  onClick="return switchButtonsToggleDiv('#btn_GM_plus', '#btn_GM_minus', '#infoPanelGM')">
+            &#10010;
+          </button>
+        </h5>
+      </div>
+      <div class="collapse" id="infoPanelGM">
+        {% if not room.disabled %}
+          <div class="row no-gutters" style="margin-bottom: 12px;">
+            <strong>Direct Link:</strong> &nbsp;
+              <span style="word-wrap: break-word;" id="link_{{room.id}}">
+                www.vanlevy.com{% url 'myzdice:myzroom' room_number %}direct/{% if room.open_to_all %}open{% else %}{{ room.passcode}}{% endif %}
+              </span>
+            <button type="button" style="padding: 0px; margin-left: 10px; margin-bottom: 6px; margin-top: -6px"
+                    onclick="copyURL(link_{{room.id}})">
+              <img src="{% static '/vanlevy/images/copy_button_40_clear.png' %}" alt="info" width="20" height="20">
+            </button>
+          </div>
+        {% endif %}
+        <div class="row no-gutters">
+          <div class="col-xl-4 col-lg-5 col-md-6 col-12">
+            <h6>Room Details</h6>
+            <ul style="margin-left: -15px; margin-top: 0px">
+              <li>
+                <strong>Room Status:</strong>
+                {% if room.disabled %}
+                  <span style="color: darkred;">archived.</span>
+                {% else %}
+                  <em>active</em>.
+                {% endif %}
+                <button type="button" class="btn btn-sm btn-outline-info" id="arcHide"
+                        style="padding: 4px 9px; border-radius: 16px; margin-top: -6px; display: none;"
+                        onclick="return switchButtonHideDiv('#arcHide', '#arcShow', '#archiveInfo')">
+                  <strong>X</strong>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-info" id="arcShow"
+                        style="padding: 4px 10px; border-radius: 16px; margin-top: -6px; display: inline;"
+                        onclick="return fourButtonTwoCollapse('#arcShow', '#arcHide', '#codeShow', '#codeHide',
+                                                              '#archiveInfo', '#codeInfo')">
+                  <strong>?</strong>
+                </button>
+              </li>
+              <li><strong>Created by:</strong> {{ room.created_by.username }}</li>
+              <li><strong>Created on:</strong> {{ room.created_on }}</li>
+              {% if not room.disabled %}
+                <li>
+                  <strong>Room ID:</strong> {{room.id}}
+                </li>
+                <li>
+                  <strong>Room Access: </strong>
+                  {% if not room.open_to_all %}
+                    passcode:
+                    {% if room.passcode %}
+                      "{{ room.passcode }}"
+                    {% else %}
+                      this room's passcode has been left <em>blank</em>.
+                    {% endif %}
+                  {% else %}
+                    open to all
+                  {% endif %}
+                  <button type="button" class="btn btn-sm btn-outline-info" id="codeHide"
+                        style="padding: 4px 9px; border-radius: 16px; margin-top: -6px; display: none;"
+                        onclick="return switchButtonHideDiv('#codeHide', '#codeShow', '#codeInfo')">
+                    <strong>X</strong>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-info" id="codeShow"
+                        style="padding: 4px 10px; border-radius: 16px; margin-top: -6px; display: inline;"
+                        onclick="return fourButtonTwoCollapse('#arcHide', '#arcShow', '#codeHide', '#codeShow',
+                                                              '#codeInfo', '#archiveInfo')">
+                    <strong>?</strong>
+                  </button>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+          <div class="col-xl-8 col-lg-7 col-md-6 col-12">
+            <div class="collapse multi-collapse" id="archiveInfo">
+              {% if room.disabled %}
+                <p>
+                  This room has been <strong>archived</strong>; no new rolls or chats can be made in it.
+                  On the Dungeon page, access to this room has been moved to the <strong>Archived Rooms</strong> tab.
+                </p>
+                <p>
+                  You can <strong>reactivate</strong> this room to allow new rolls and chats.
+                </p>
+              {% else %}
+                <p>
+                  This is an <em>active</em> room; new rolls and chats can be made by anyone with access to this
+                  room. As GM, you can choose to <em>archive</em> this room.
+                </p>
+                <p>
+                  Once a room has been archived, new rolls and chats are disabled and the room will only be visible on
+                  the Archived Rooms tab on the Dungeon page. You can later Reactivate an Archived room.
+                </p>
+              {% endif %}
+              <div class="row" style="padding: 0px 3px;">
+                <div class="col-sm-3">
+                  {% if room.disabled %}
+                    <button type="button" class="btn btn-sm btn-outline-warning" id="restore"
+                            onclick="return switchDisplays(['#cancel_restore', '#are_you_sure'],
+                                                           ['#restore'])">
+                      Reactivate Room?
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-warning" id="cancel_restore"
+                            style="display:none"
+                            onclick="return switchDisplays(['#restore'],
+                                                           ['#cancel_restore', '#are_you_sure'])">
+                      Cancel
+                    </button>
+                  {% else %}
+                    <button type="button" class="btn btn-sm btn-outline-danger" id="disable"
+                            onclick="return switchDisplays(['#cancel_disable', '#are_you_sure'],
+                                                           ['#disable'])">
+                      Archive Room?
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" id="cancel_disable"
+                            style="display:none"
+                            onclick="return switchDisplays(['#disable'],
+                                                           ['#cancel_disable', '#are_you_sure'])">
+                      Cancel
+                    </button>
+                  {% endif %} <!--archive/restore button -->
+                </div>
+                <div class="col-sm-9" id="are_you_sure" style="display: none;">
+                    {% if room.disabled %}
+                      Are you sure you want to REACTIVATE this room?
+                      <form id="restore_form" method="POST">
+                      {% csrf_token %}
+                        <button type="submit" class="btn btn-warning" name="restore_real">
+                          <strong>Yes. REACTIVATE this room.</strong>
+                        </button>
+                      </form>
+                    {% else %}
+                      Are you sure you want to ARCHIVE this room?
+                      <form id="archive_form" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" name="archive_real">
+                          <strong>Yes. ARCHIVE this room..</strong>
+                        </button>
+                      </form>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+            {% if not room.disabled %}
+              <div class="collapse multi-collapse" id="codeInfo">
+                {% if not room.open_to_all %}
+                  <p>
+                    This room has a <em>passcode</em>.  To get a new player into the room, you will need to provide them
+                    with either the Room ID and Passcode or give them the Direct Link.
+                  </p>
+                {% else %}
+                  <p>This room has no <em>passcode</em>.</p>
+                  <p>Anyone with the Room ID can enter this room.</p>
+                {% endif %}
+                <a href="{% url 'myzdice:change_passcode' room_number %}" role="button"
+                      class="btn btn-sm btn-outline-info" id="changePasscode" style="margin-right: 15px;">
+                  {% if not room.open_to_all %}
+                    Change / Remove Passcode
+                  {% else %}
+                    Add Passcode
+                  {% endif %}
+                  <strong>&#12299;</strong>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}
 
 {% block form_inputs %}
@@ -247,74 +331,5 @@
 
 
 {% block page_scripts %}
-<script>
-function showRestore() {
-    document.getElementById('restore').style.display='none';
-    document.getElementById('cancel_restore').style.display='block';
-    document.getElementById('are_you_sure').style.display='block';
-}
-function hideRestore() {
-    document.getElementById('restore').style.display='block';
-    document.getElementById('cancel_restore').style.display='none';
-    document.getElementById('are_you_sure').style.display='none';
-}
-function showDisable() {
-    document.getElementById('disable').style.display='none';
-    document.getElementById('cancel_disable').style.display='block';
-    document.getElementById('are_you_sure').style.display='block';
-}
-function hideDisable() {
-    document.getElementById('disable').style.display='block';
-    document.getElementById('cancel_disable').style.display='none';
-    document.getElementById('are_you_sure').style.display='none';
-}
-function copyTextToClipboard(text) {
-  var textArea = document.createElement("textarea");
-
-  // Place in top-left corner of screen regardless of scroll position.
-  textArea.style.position = 'fixed';
-  textArea.style.top = 0;
-  textArea.style.left = 0;
-
-  // Ensure it has a small width & height. Setting to 1px / 1em doesn't work as this gives a negative w/h on some browsers.
-  textArea.style.width = '2em';
-  textArea.style.height = '2em';
-
-  // We don't need padding, reducing the size if it does flash render.
-  textArea.style.padding = 0;
-
-  // Clean up any borders.
-  textArea.style.border = 'none';
-  textArea.style.outline = 'none';
-  textArea.style.boxShadow = 'none';
-
-  // Avoid flash of white box if rendered for any reason.
-  textArea.style.background = 'transparent';
-
-  textArea.value = text;
-
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-
-  try {
-    var successful = document.execCommand('copy');
-    var msg = successful ? 'successful' : 'unsuccessful';
-    console.log('Copying text command was ' + msg);
-  } catch (err) {
-    console.log('Oops, unable to copy');
-  }
-
-  document.body.removeChild(textArea);
-}
-
-function copyURL(element){
-    console.log(element.innerText);
-    var copyText = element.innerText;
-    copyTextToClipboard(copyText)
-    var msg = (copyText).concat(" copied to clipboard.")
-    alert(msg);
-}
-</script>
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 {% endblock %}
-

@@ -25,39 +25,29 @@
 {% endblock brand %}
 
 {% block other_navbar_right %}
-<button type="button" class="btn btn-sm btn-light" data-toggle="collapse" style="margin-right: 15px; display: none;"
-      data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
-      id="show_chat_input_navbar" onclick="hide('show_chat_input_navbar')">
-  Show Chat
-</button>
-<a href="{% url 'swdice:swroom_info' room_number %}">
-  <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
-  {% block info_label %}
-    <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
-      Info
-    </span>
-  {% endblock info_label %}
-</a>
+  <button type="button" class="btn btn-sm btn-light" data-toggle="collapse" style="margin-right: 15px; display: none;"
+        data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
+        id="show_chat_input_navbar" onclick="hide('show_chat_input_navbar')">
+    Show Chat
+  </button>
+  <a href="{% url 'swdice:swroom_info' room_number %}">
+    <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
+    {% block info_label %}
+      <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
+        Info
+      </span>
+    {% endblock info_label %}
+  </a>
 {% endblock other_navbar_right %}
 
 {% block body %}
 <div class="container" style="padding: 0px;">
 <br>
   {% if not viewing_basic_room %}
-    <div class="row no-gutters">
-      <div class="col-md-9">
-        {% block user_table %}
-        {% endblock %}
-        {% block gm_stuff %}
-        {% endblock %}
-      </div>
-      <div class="col-md-3">
-        {% block room_header %}
-        {% endblock %}
-      </div>
-    </div>
+    {% block info_page %}
+    {% endblock %}
   {% endif %}
-    {% block form_inputs %}
+  {% block form_inputs %}
     {% if not room.disabled %}
     <form id="destiny" method="POST" autocomplete="off">
       {% csrf_token %}
@@ -722,351 +712,351 @@
       <h3>This room has been archived by the GM.</h3>
       <p>No new rolls or chats may be made in it.</p>
     {% endif %}
-    {% endblock form_inputs %}
-    <div class="row">
-      <div class="col-12 col-lg-9 col-xl-8">
-        <hr>
-        {% block alt_destiny %}
-        {% endblock %}
-        {% block actions_header %}
-        {% endblock actions_header %}
-        {% block action_log %}
-        <div class="container-fluid" id="action_log" style="padding:0">
-          {% if action_log is empty %}
-            <p>This room has no actions.</p>
-          {% else %}
-            <table id="action_table">
-              <col style="width: 50px">
-              <col>
-              {% for action in action_log %}
-              {% if not action.secret_roll or player_is_gm or action.user == user %}
-                {% if not action.secret_roll %}
-                  <tr>
-                {% elif action.user == user %}
-                  <tr style="background-color:#C3EBCD;">
-                {% else %}
-                  <tr style="background-color:#D2FCDC;">
-                {% endif %}
-                  {% if action.is_just_caption %}
-                    <td>
-                      {% if action.image_url %}
-                        <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
-                             title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                             width="40">
-                      {% else %}
-                        <strong>
-                          {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
-                          {% else %}{{ action.user.username|split_name|wordwrap:9 }}
-                          {% endif %}
-                        </strong>
-                      {% endif %}
-                    </td>
-                    <td>
-                      {% if action.secret_roll %}
-                        <em>secret roll</em><br>
-                      {% endif %}
-                      {{ action.caption }}
-                    </td>
-                  {% else %}
-                    <td>
-                      {% if action.image_url %}
-                        <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
-                             title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                             width="40" style="margin: auto;">
-                      {% else %}
-                        <strong>
-                          {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
-                          {% else %}{{ action.user.username|split_name|wordwrap:9 }}
-                          {% endif %}
-                        </strong>
-                      {% endif %}
-                    </td>
-                    <td>
-                      <p style="padding: 0px; margin: 6px;">
-                        {% if action.secret_roll %}
-                          {% if action.user == user and player_is_gm %}
-                            <em>GM Roll: </em>
-                          {% else %}
-                            <em>Secret Roll: </em>
-                          {% endif %}
-                        {% else %}
-                          Rolled:
+  {% endblock form_inputs %}
+  <div class="row">
+    <div class="col-12 col-lg-9 col-xl-8">
+      <hr>
+      {% block alt_destiny %}
+      {% endblock %}
+      {% block actions_header %}
+      {% endblock actions_header %}
+      {% block action_log %}
+      <div class="container-fluid" id="action_log" style="padding:0">
+        {% if action_log is empty %}
+          <p>This room has no actions.</p>
+        {% else %}
+          <table id="action_table">
+            <col style="width: 50px">
+            <col>
+            {% for action in action_log %}
+            {% if not action.secret_roll or player_is_gm or action.user == user %}
+              {% if not action.secret_roll %}
+                <tr>
+              {% elif action.user == user %}
+                <tr style="background-color:#C3EBCD;">
+              {% else %}
+                <tr style="background-color:#D2FCDC;">
+              {% endif %}
+                {% if action.is_just_caption %}
+                  <td>
+                    {% if action.image_url %}
+                      <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
+                           title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                           width="40">
+                    {% else %}
+                      <strong>
+                        {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
+                        {% else %}{{ action.user.username|split_name|wordwrap:9 }}
                         {% endif %}
-                          <!--Individual Faces-->
-                        {% for face in action.faces_summary|split_string %}
-                          {% if face %}
-                            {% with 'swdice/Faces/'|add:face|add:'.png' as face_image %}
-                              <img src="{% static face_image %}" title="{{face}}" alt="{{face}}">
-                            {% endwith %}
+                      </strong>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if action.secret_roll %}
+                      <em>secret roll</em><br>
+                    {% endif %}
+                    {{ action.caption }}
+                  </td>
+                {% else %}
+                  <td>
+                    {% if action.image_url %}
+                      <img src="{{ action.image_url }}" alt="{{ action.user.username }}'s Pic"
+                           title="{{ action.user.username }} as {% if action.avatar %}{{ action.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                           width="40" style="margin: auto;">
+                    {% else %}
+                      <strong>
+                        {% if action.avatar %}{{ action.avatar.avatar_name|split_name|wordwrap:9 }}
+                        {% else %}{{ action.user.username|split_name|wordwrap:9 }}
+                        {% endif %}
+                      </strong>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <p style="padding: 0px; margin: 6px;">
+                      {% if action.secret_roll %}
+                        {% if action.user == user and player_is_gm %}
+                          <em>GM Roll: </em>
+                        {% else %}
+                          <em>Secret Roll: </em>
+                        {% endif %}
+                      {% else %}
+                        Rolled:
+                      {% endif %}
+                        <!--Individual Faces-->
+                      {% for face in action.faces_summary|split_string %}
+                        {% if face %}
+                          {% with 'swdice/Faces/'|add:face|add:'.png' as face_image %}
+                            <img src="{% static face_image %}" title="{{face}}" alt="{{face}}">
+                          {% endwith %}
+                        {% endif %}
+                      {% endfor %}
+                      {% if action.num_numerical_dice %}
+                        {% for i in action.num_numerical_dice|get_range %}
+                          <span style="border-style: groove; border-color: black; border-width: 1px;
+                                  display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;
+                                  border-radius: 10px">
+                              d {{ action.numerical_dice_sides }}
+                          </span>
+                        {% endfor %}
+                      {% endif %}
+                    </p>
+                    <p style="padding: 0px; margin: 6px;">
+                      {% if action.faces_summary != "" or action.num_numerical_dice > 0%}
+                        <strong>Results: </strong>
+                      {% endif %}
+                      {% if action.results_triumph > 0 %}
+                        {% for i in action.results_triumph|get_range %}
+                          <img src="{% static 'swdice/Results/Tri01.png' %}" alt="triumph"
+                               title="{{action.results_triumph}} Triumph">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_despair > 0 %}
+                        {% for i in action.results_despair|get_range %}
+                          <img src="{% static 'swdice/Results/Des01.png' %}" alt="despair"
+                               title="{{action.results_despair}} Despair">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_success > 0 %}
+                        {% for i in action.results_success|get_range %}
+                          <img src="{% static 'swdice/Results/Suc01.png' %}" alt="success"
+                               title="{{action.results_success}} Success">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_failure > 0 %}
+                        {% for i in action.results_failure|get_range %}
+                          <img src="{% static 'swdice/Results/Fai01.png' %}" alt="failure"
+                               title="{{action.results_failure}} Failure">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_advantage > 0 %}
+                        {% for i in action.results_advantage|get_range %}
+                          <img src="{% static 'swdice/Results/Adv01.png' %}" alt="advantage"
+                               title="{{action.results_advantage}} Advantage">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_threat > 0 %}
+                        {% for i in action.results_threat|get_range %}
+                          <img src="{% static 'swdice/Results/Thr01.png' %}" alt="threat"
+                               title="{{action.results_threat}} Threat">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_light_pips > 0 %}
+                        {% for i in action.results_light_pips|get_range %}
+                          <img src="{% static 'swdice/Results/Lig01.png' %}" alt="light pip"
+                               title="{{action.results_light_pips}} Light Pips">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_dark_pips > 0 %}
+                        {% for i in action.results_dark_pips|get_range %}
+                          <img src="{% static 'swdice/Results/Dar01.png' %}" alt="dark pip"
+                               title="{{action.results_dark_pips}} Dark Pips">
+                        {% endfor %}
+                      {% endif %}
+                      {% if action.results_numerical %}
+                        {% for number in action.results_numerical|split_string %}
+                          {% if number %}
+                            <span style="border-style: solid; border-color: black; border-width: 1px;
+                                display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;">
+                              {{ number }}
+                            </span>
                           {% endif %}
                         {% endfor %}
-                        {% if action.num_numerical_dice %}
-                          {% for i in action.num_numerical_dice|get_range %}
-                            <span style="border-style: groove; border-color: black; border-width: 1px;
-                                    display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;
-                                    border-radius: 10px">
-                                d {{ action.numerical_dice_sides }}
-                            </span>
-                          {% endfor %}
-                        {% endif %}
-                      </p>
-                      <p style="padding: 0px; margin: 6px;">
-                        {% if action.faces_summary != "" or action.num_numerical_dice > 0%}
-                          <strong>Results: </strong>
-                        {% endif %}
-                        {% if action.results_triumph > 0 %}
-                          {% for i in action.results_triumph|get_range %}
-                            <img src="{% static 'swdice/Results/Tri01.png' %}" alt="triumph"
-                                 title="{{action.results_triumph}} Triumph">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_despair > 0 %}
-                          {% for i in action.results_despair|get_range %}
-                            <img src="{% static 'swdice/Results/Des01.png' %}" alt="despair"
-                                 title="{{action.results_despair}} Despair">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_success > 0 %}
-                          {% for i in action.results_success|get_range %}
-                            <img src="{% static 'swdice/Results/Suc01.png' %}" alt="success"
-                                 title="{{action.results_success}} Success">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_failure > 0 %}
-                          {% for i in action.results_failure|get_range %}
-                            <img src="{% static 'swdice/Results/Fai01.png' %}" alt="failure"
-                                 title="{{action.results_failure}} Failure">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_advantage > 0 %}
-                          {% for i in action.results_advantage|get_range %}
-                            <img src="{% static 'swdice/Results/Adv01.png' %}" alt="advantage"
-                                 title="{{action.results_advantage}} Advantage">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_threat > 0 %}
-                          {% for i in action.results_threat|get_range %}
-                            <img src="{% static 'swdice/Results/Thr01.png' %}" alt="threat"
-                                 title="{{action.results_threat}} Threat">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_light_pips > 0 %}
-                          {% for i in action.results_light_pips|get_range %}
-                            <img src="{% static 'swdice/Results/Lig01.png' %}" alt="light pip"
-                                 title="{{action.results_light_pips}} Light Pips">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_dark_pips > 0 %}
-                          {% for i in action.results_dark_pips|get_range %}
-                            <img src="{% static 'swdice/Results/Dar01.png' %}" alt="dark pip"
-                                 title="{{action.results_dark_pips}} Dark Pips">
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_numerical %}
-                          {% for number in action.results_numerical|split_string %}
-                            {% if number %}
-                              <span style="border-style: solid; border-color: black; border-width: 1px;
-                                  display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;">
-                                {{ number }}
-                              </span>
-                            {% endif %}
-                          {% endfor %}
-                        {% endif %}
-                        {% if action.results_cancel %}
-                          <em>All dice have cancelled.</em>
-                        {% endif %}
-                      </p>
-                      {% if action.caption %}
-                        <p style="padding: 0px; margin: 6px;">
-                          <strong>Caption: </strong>
-                          {{ action.caption }}
-                        </p>
                       {% endif %}
-                      </td>
+                      {% if action.results_cancel %}
+                        <em>All dice have cancelled.</em>
+                      {% endif %}
+                    </p>
+                    {% if action.caption %}
+                      <p style="padding: 0px; margin: 6px;">
+                        <strong>Caption: </strong>
+                        {{ action.caption }}
+                      </p>
                     {% endif %}
-                  </tr>
-                {% endif %}
-              {% endfor %}
-            </table>
-          {% endif %}
-        </div>
-        {% endblock action_log %}
-      </div>
-      <div class="col-12 col-lg-3 col-xl-4" style="padding:0;">
-        {% block alt_chat_header %}
-        {% endblock %}
-        {% block chat_log %}
-          <div class="container-fluid" id="chat_log" style="padding:0">
-          <hr>
-          {% block glossary %}
-            {% if has_char %}
-              <input type="checkbox" id="showblock3">
-              <div id="slideout3">
-                <label id="slideout_tab3" for="showblock3" title="Character Sheet">
-                  <i>Char</i>
-                </label>
-                <div id="slideout_inner3">
-                  <p style="margin-left: 20px;">
-                    {% if not use_pdf_char %}
-                      <strong>Character Sheet - </strong>
-                    {% else %}
-                      <strong>Character Sheet - {{char_pdf.pdf_name}}</strong>
-                    {% endif %}
-                    <a href="{% url 'accounts:view_avatar' avatar_id %}" role="button"
-                       class="btn btn-sm btn-outline-dark align-right" style="margin-right: 40px;">
-                      Change Character Sheet
-                    </a>
-                  </p>
-                  {% if not use_pdf_char %}
-                  {% else %}
-                  <iframe src="{{ char_pdf.pdf_url }}" style="width: 100%; height: 900px;"></iframe>
+                    </td>
                   {% endif %}
-                </div>
-              </div>
-            {% endif %}
-              <input type="checkbox" id="showblock">
-              <div id="{% if has_char %}slideout_c{% else %}slideout{% endif %}">
-                <label id="slideout_tab" for="showblock" title="Dice Meanings">
-                  <i>Dice</i>
-                </label>
-                <div id="slideout_inner">
-                  <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                  <ul style="list-style-type:none; color: white;">
-                    <li>
-                      <img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost" alt="boost">
-                      Boost
-                    </li>
-                    <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability" alt="ability">
-                      Ability
-                    </li>
-                    <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency" alt="proficiency">
-                      Proficiency
-                    </li>
-                    <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback" alt="setback">
-                      Setback
-                    </li>
-                    <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty" alt="difficulty">
-                      Difficulty
-                    </li>
-                    <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge" alt="challenge">
-                      Challenge
-                    </li>
-                    <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical" alt="numerical">
-                      Numerical
-                    </li>
-                    <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force" alt="force">
-                      Force
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <input type="checkbox" id="showblock2">
-              <div id="{% if has_char %}slideout2_c{% else %}slideout2{% endif %}">
-                <label id="slideout_tab2" for="showblock2" title="Result Meanings">
-                  <i>Pips </i>
-                </label>
-                <div id="slideout_inner2">
-                  <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                  <ul style="list-style-type:none;">
-                    <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success" alt="success"> Success</li>
-                    <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure" alt="failure"> Failure</li>
-                    <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage" alt="advantage"> Advantage</li>
-                    <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat" alt="threat"> Threat</li>
-                    <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph" alt="triumph"> Triumph</li>
-                    <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair" alt="despair"> Despair</li>
-                    <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light" alt="light pip"> Light</li>
-                    <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark" alt="dark pip"> Dark</li>
-                  </ul>
-                </div>
-              </div>
-          {% endblock glossary %}
-          {% if chat_log is empty %}
-            <p>This room has no chats</p>
-          {% else %}
-            <table id="chat_table">
-              <col style="width: 50px">
-              <col>
-                {% for chat in chat_log %}
-                  {% if chat.is_private %}
-                    {% if chat.recipient == user %}
-                      <tr style="background-color:#B1DAF2;">
-                        <td>
-                          {% if chat.image_url %}
-                            <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
-                                 title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                                 width="40">
-                          {% endif %}
-                        </td>
-                        <td>
-                          {% if chat.avatar %}
-                            <em>{{ chat.avatar.avatar_name }} whispers to you:</em>
-                          {% else %}
-                            <em>{{ chat.user.username }} whispers to you:</em>
-                          {% endif %}
-                          <br>{{chat.chat_text}}
-                        </td>
-                      </tr>
-                    {% elif chat.user == user %}
-                      <tr style="background-color:#9EC3D9;">
-                        <td>
-                          {% if chat.image_url %}
-                            <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
-                                 title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
-                                 width="40">
-                          {% endif %}
-                        </td>
-                        <td>
-                          <em>You whisper to
-                            {% if chat.recipient_avatar %}
-                              {{ chat.recipient_avatar.avatar_name }}:
-                            {% else %}
-                              {{ chat.recipient.username }}:
-                            {% endif %}
-                          </em>
-                          <br>{{chat.chat_text}}
-                        </td>
-                      </tr>
-                    {% endif %}
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+        {% endif %}
+      </div>
+      {% endblock action_log %}
+    </div>
+    <div class="col-12 col-lg-3 col-xl-4" style="padding:0;">
+      <hr>
+      {% block alt_chat_header %}
+      {% endblock %}
+      {% block chat_log %}
+        <div class="container-fluid" id="chat_log" style="padding:0">
+        {% block glossary %}
+          {% if has_char %}
+            <input type="checkbox" id="showblock3">
+            <div id="slideout3">
+              <label id="slideout_tab3" for="showblock3" title="Character Sheet">
+                <i>Char</i>
+              </label>
+              <div id="slideout_inner3">
+                <p style="margin-left: 20px;">
+                  {% if not use_pdf_char %}
+                    <strong>Character Sheet - </strong>
                   {% else %}
-                    <tr>
+                    <strong>Character Sheet - {{char_pdf.pdf_name}}</strong>
+                  {% endif %}
+                  <a href="{% url 'accounts:view_avatar' avatar_id %}" role="button"
+                     class="btn btn-sm btn-outline-dark align-right" style="margin-right: 40px;">
+                    Change Character Sheet
+                  </a>
+                </p>
+                {% if not use_pdf_char %}
+                {% else %}
+                <iframe src="{{ char_pdf.pdf_url }}" style="width: 100%; height: 900px;"></iframe>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+            <input type="checkbox" id="showblock">
+            <div id="{% if has_char %}slideout_c{% else %}slideout{% endif %}">
+              <label id="slideout_tab" for="showblock" title="Dice Meanings">
+                <i>Dice</i>
+              </label>
+              <div id="slideout_inner">
+                <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
+                <ul style="list-style-type:none; color: white;">
+                  <li>
+                    <img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost" alt="boost">
+                    Boost
+                  </li>
+                  <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability" alt="ability">
+                    Ability
+                  </li>
+                  <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency" alt="proficiency">
+                    Proficiency
+                  </li>
+                  <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback" alt="setback">
+                    Setback
+                  </li>
+                  <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty" alt="difficulty">
+                    Difficulty
+                  </li>
+                  <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge" alt="challenge">
+                    Challenge
+                  </li>
+                  <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical" alt="numerical">
+                    Numerical
+                  </li>
+                  <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force" alt="force">
+                    Force
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <input type="checkbox" id="showblock2">
+            <div id="{% if has_char %}slideout2_c{% else %}slideout2{% endif %}">
+              <label id="slideout_tab2" for="showblock2" title="Result Meanings">
+                <i>Pips </i>
+              </label>
+              <div id="slideout_inner2">
+                <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
+                <ul style="list-style-type:none;">
+                  <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success" alt="success"> Success</li>
+                  <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure" alt="failure"> Failure</li>
+                  <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage" alt="advantage"> Advantage</li>
+                  <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat" alt="threat"> Threat</li>
+                  <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph" alt="triumph"> Triumph</li>
+                  <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair" alt="despair"> Despair</li>
+                  <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light" alt="light pip"> Light</li>
+                  <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark" alt="dark pip"> Dark</li>
+                </ul>
+              </div>
+            </div>
+        {% endblock glossary %}
+        {% if chat_log is empty %}
+          <p>This room has no chats</p>
+        {% else %}
+          <table id="chat_table">
+            <col style="width: 50px">
+            <col>
+              {% for chat in chat_log %}
+                {% if chat.is_private %}
+                  {% if chat.recipient == user %}
+                    <tr style="background-color:#B1DAF2;">
                       <td>
                         {% if chat.image_url %}
                           <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
                                title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
                                width="40">
-                        {% else %}
-                          {% if chat.avatar %}
-                            <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
-                              <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                              <strong>{{ chat.avatar.avatar_name }}</strong></span>
-                          {% else %}
-                              <span style="width:40px; word-wrap:break-word; display:inline-block;">
-                              <strong>{{ chat.user.username }}</strong></span>
-                          {% endif %}
-                            </div>
                         {% endif %}
                       </td>
                       <td>
-                        {{chat.chat_text}}
+                        {% if chat.avatar %}
+                          <em>{{ chat.avatar.avatar_name }} whispers to you:</em>
+                        {% else %}
+                          <em>{{ chat.user.username }} whispers to you:</em>
+                        {% endif %}
+                        <br>{{chat.chat_text}}
+                      </td>
+                    </tr>
+                  {% elif chat.user == user %}
+                    <tr style="background-color:#9EC3D9;">
+                      <td>
+                        {% if chat.image_url %}
+                          <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
+                               title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                               width="40">
+                        {% endif %}
+                      </td>
+                      <td>
+                        <em>You whisper to
+                          {% if chat.recipient_avatar %}
+                            {{ chat.recipient_avatar.avatar_name }}:
+                          {% else %}
+                            {{ chat.recipient.username }}:
+                          {% endif %}
+                        </em>
+                        <br>{{chat.chat_text}}
                       </td>
                     </tr>
                   {% endif %}
-              {% endfor %}
-              </table>
-          {% endif %}
+                {% else %}
+                  <tr>
+                    <td>
+                      {% if chat.image_url %}
+                        <img src="{{ chat.image_url }}" alt="{{ chat.user.username }}'s Pic"
+                             title="{{ chat.user.username }} as {% if chat.avatar %}{{ chat.avatar.avatar_name }}{% else %}theirself{% endif %}"
+                             width="40">
+                      {% else %}
+                        {% if chat.avatar %}
+                          <div class="container-fluid" style="overflow: hidden; max-height: 70px; margin: 0px; padding: 0px;">
+                            <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                            <strong>{{ chat.avatar.avatar_name }}</strong></span>
+                        {% else %}
+                            <span style="width:40px; word-wrap:break-word; display:inline-block;">
+                            <strong>{{ chat.user.username }}</strong></span>
+                        {% endif %}
+                          </div>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {{chat.chat_text}}
+                    </td>
+                  </tr>
+                {% endif %}
+            {% endfor %}
+            </table>
+        {% endif %}
+        </div>
+        {% endblock %}
+        {% block page_updates %}
+          <div class="container-fluid" id="last_times">
+            <p style="display: none">Last action taken: <span id="actionTime">{{ update_times.action.isoformat }}</span></p>
+            <p style="display: none">Last chat made: <span id="chatTime">{{ update_times.chat.isoformat }}</span></p>
           </div>
-          {% endblock %}
-          {% block page_updates %}
-            <div class="container-fluid" id="last_times">
-              <p style="display: none">Last action taken: <span id="actionTime">{{ update_times.action.isoformat }}</span></p>
-              <p style="display: none">Last chat made: <span id="chatTime">{{ update_times.chat.isoformat }}</span></p>
-            </div>
-            <div class="container-fluid">
-              <p style="display: none">Page last updated: <span id="updateTime"></span></p>
-            </div>
-          {% endblock %}
-      </div>
+          <div class="container-fluid">
+            <p style="display: none">Page last updated: <span id="updateTime"></span></p>
+          </div>
+        {% endblock %}
     </div>
+  </div>
 </div>
 
 {% block page_scripts %}

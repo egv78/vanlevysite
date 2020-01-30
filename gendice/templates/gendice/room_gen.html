@@ -1,7 +1,6 @@
 {% extends 'gen_base.html' %}
-
-{% load diceroomtags %}
 {% load static %}
+{% load diceroomtags %}
 
 {% block head %}
   <meta charset="UTF-8">
@@ -30,19 +29,19 @@
 {% endblock brand %}
 
 {% block other_navbar_right %}
-<button type="button" class="btn btn-sm btn-light" data-toggle="collapse" style="margin-right: 15px; display: none;"
-      data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
-      id="show_chat_input_navbar" onclick="hide('show_chat_input_navbar')">
-  Show Chat
-</button>
-<a href="{% url 'gendice:genroom_info' room_number %}">
-  <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
-  {% block info_label %}
-    <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
-      Info
-    </span>
-  {% endblock %}
-</a>
+  <button type="button" class="btn btn-sm btn-light" data-toggle="collapse" style="margin-right: 15px; display: none;"
+        data-target="#chatAndInfo" aria-expanded="false"  aria-controls="chatAndInfo"
+        id="show_chat_input_navbar" onclick="hide('show_chat_input_navbar')">
+    Show Chat
+  </button>
+  <a href="{% url 'gendice:genroom_info' room_number %}">
+    <img src="{% static '/swdice/RoomInfoSmall_32.png' %}" alt="Room Info" height="32" width="32">
+    {% block info_label %}
+      <span style="font-size: 0.67em; color: white; margin-right: 10px; margin-left: -5px;">
+        Info
+      </span>
+    {% endblock %}
+  </a>
 {% endblock other_navbar_right %}
 
 <!-- block navbar_space_part_2 -->
@@ -51,20 +50,10 @@
 
 {% block body %}
 <div class="container" style="padding: 0px;">
-<br>
+  <br>
   {% if not viewing_basic_room %}
-    <div class="row no-gutters">
-      <div class="col-md-9">
-        {% block user_table %}
-        {% endblock %}
-        {% block gm_stuff %}
-        {% endblock %}
-      </div>
-      <div class="col-md-3">
-        {% block room_header %}
-        {% endblock %}
-      </div>
-    </div>
+    {% block info_page %}
+    {% endblock %}
   {% endif %}
   {% block form_inputs %}
   {% if not room.disabled %}
