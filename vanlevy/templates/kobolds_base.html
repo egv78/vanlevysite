@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+  {% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static '/vanlevy/files/css/vanlevy_base_19_06_13.css' %}" />
+  {% endblock %}
+
+{% block navbar_characteristics %}
+  <nav class="navbar navbar-blend navbar-expand-sm navbar-dark" style="background-color: #001452">
+{% endblock %}
+
+{% block brand %}
+  <h3>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/images/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+    </a>
+  </h3>
+{% endblock %}
+{% block navbar_buttons %}
+  <a href="{% url 'vanlevy:kobolds_about' %}">
+    <span style="color: white; margin-right: 18px; font-size: x-large"><strong>Kobolds</strong></span>
+    <img src="{% static 'vanlevy/images/Kobolds/KEC_Logo_48.png' %}" alt="About Kobolds" height="40" width="40">
+  </a>
+{% endblock %}
+
+{% block navbar_end %}
+  </nav>
+{% endblock %}
+
+{% block bottom_navbar %}
+<div class="container" {% block bottom_navbar_padding %}style="padding: 80px 10px 0px 0px"{% endblock %}>
+  <div class="container" {% block bottom_navbar_style %}
+                          style="position: fixed; bottom: 0; "
+                          {% endblock %} >
+    <nav class="navbar bottom navbar-expand-md navbar-dark" style="background-color: #000F3D">
+      <div class="collapse navbar-collapse" id="navbarToggler">
+        {% block bottom_navbar_links %}
+          <ul class="navbar-nav mr-auto">
+            {% block bottom_home %}
+            {% endblock %}
+            {% block bottom_about %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'vanlevy:kobolds_about' %}">About Kobolds Easy Char</a>
+              </li>
+            {% endblock %}
+            {% block bottom_privacy %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'vanlevy:kobolds_privacy' %}">Privacy Policy</a>
+              </li>
+            {% endblock %}
+            {% block bottom_terms %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'vanlevy:kobolds_terms' %}">Terms of Service</a>
+              </li>
+            {% endblock %}
+          </ul>
+        {% endblock %}
+      </div>
+      <span class="navbar-text">
+        &copy; Van Levy Consultants, <span class="show-md"><br></span> All Rights Reserved.
+      </span>
+    </nav>
+  </div>
+</div>
+
+
+{% block scripts %}
+  <script src="{% static '/vanlevy/files/js/base.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

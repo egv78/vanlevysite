@@ -1,0 +1,52 @@
+{% extends 'kobolds_base.html' %}
+
+{% block head %}
+  <meta charset="UTF-8">
+  <title>Terms and Conditions</title>
+{% endblock %}
+
+{% load static %}
+{% block brand %}
+  <h3>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/images/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+    </a>
+  </h3>
+{% endblock %}
+{% block bottom_navbar_padding %}
+  style="padding: 20px 0px 0px 0px"
+{% endblock %}
+{% block bottom_navbar_style %}
+    style="bottom: 0; "
+{% endblock %}
+{% block bottom_privacy %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <br>
+  <h3>
+    Privacy Policy
+    <img src="{% static 'vanlevy/images/Kobolds/EasyChar_220_140.png' %}" class="align-right">
+  </h3>
+  <br>
+  <div class="row">
+    <div class="col">
+      <p>
+        This privacy policy applies to the Kobolds Easy Char Add-On for Google Sheets.
+      </p>
+      <p>
+        This add-on does not read, ask for, or collect any personal information or data whatsoever from their users,
+        nor does it modify any personal data outside of the Google Sheet the add-on is being used in.
+      </p>
+      <p>
+        The developer(s) reserve the right to modify this privacy policy at any time,
+        although it is very unlikely that this will need to be done.
+      </p>
+      <br>
+      <img src="{% static 'vanlevy/images/Kobolds/ScreenShot4.png' %}"
+           alt="Easy Char in use" width="960" height="600">
+    </div>
+  </div>
+</div>
+{% endblock %}

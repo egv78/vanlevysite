@@ -1,0 +1,62 @@
+{% extends 'kobolds_base.html' %}
+
+{% block head %}
+  <meta charset="UTF-8">
+  <title>Terms and Conditions</title>
+{% endblock %}
+
+{% load static %}
+
+{% block bottom_navbar_padding %}
+  style="padding: 20px 0px 0px 0px"
+{% endblock %}
+
+{% block bottom_navbar_style %}
+    style="bottom: 0; "
+{% endblock %}
+{% block bottom_terms %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <br>
+  <h3>
+    Terms and Conditions for Kobolds Easy Char
+    <img src="{% static 'vanlevy/images/Kobolds/EasyChar_220_140.png' %}" alt="Kobolds Easy Char" class="align-right">
+  </h3>
+  <br>
+  <div class="row">
+    <div class="col">
+      <p>
+        These terms of service apply to all Google Docs add-ons the developer(s) have created.
+      </p>
+      <p>
+        By using these add-ons, you agree to be bound by the following terms and conditions for the usage these add-ons.
+      </p>
+      <ul>
+        <li>
+          These add-ons offer no warranties or guarantees whatsoever.
+        </li>
+        <li>
+          The developer(s) of these add-ons will under no circumstances be held liable for any losses, damage, or other
+        misfortunes related to the usage of the add-on (including loss of profit, loss of data, or personal injury)
+        experienced by the the party using the add-on.
+        </li>
+        <li>
+          The developer(s) of these add-ons reserve the right to modify these terms and conditions at any time.
+        </li>
+      </ul>
+      <p>
+        By using one of these add-ons, you agree to be bound by the then latest version of these terms and conditions.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <img src="{% static 'vanlevy/images/Kobolds/ScreenShot3.png' %}"
+           alt="Easy Char in use" width="640" height="400">
+    </div>
+  </div>
+
+</div>
+{% endblock %}

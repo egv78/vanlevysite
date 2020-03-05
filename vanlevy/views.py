@@ -216,3 +216,21 @@ class ContactPage(TemplateView, FormView):
             args = {'contact_form': form}
             template_name = 'vanlevy/vl_contact.html'
             return render(request, template_name, args)
+
+
+def kobolds_about_view(request):
+    template_name = 'kobolds/kobolds_about.html'
+    return render(request, template_name)
+
+
+def kobolds_terms_view(request):
+    template_name = 'kobolds/kobolds_terms.html'
+    return render(request, template_name)
+
+
+def kobolds_privacy_view(request):
+    template_name = 'kobolds/kobolds_privacy.html'
+    return render(request, template_name)
+
+
+

@@ -1,0 +1,232 @@
+{% extends 'kobolds_base.html' %}
+{% load static %}
+{% block brand %}
+  <h3>
+    <a class="navbar-brand" href="{% url 'vanlevy:home' %}">
+      <img src="{% static '/vanlevy/images/IconReverse_40.png' %}" alt="Van Levy Icon"  height="40" width="40">
+    </a>
+  </h3>
+{% endblock %}
+{% block bottom_navbar_padding %}
+  style="padding: 20px 0px 0px 0px"
+{% endblock %}
+{% block bottom_navbar_style %}
+    style="bottom: 0; "
+{% endblock %}
+{% block bottom_about %}
+{% endblock %}
+
+{% block head %}
+<meta charset="UTF-8">
+<title>Kobolds Easy Character</title>
+<style>
+  .faqs {
+    margin-left: -20px;
+    list-style-type: none;
+  }
+  .faqs li {
+    margin: 10px 0px;
+  }
+</style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <br>
+  <h2>
+    Kobolds Easy Char Google Sheets Add-On
+  </h2>
+  <p><br></p>
+  <div class="row">
+    <div class="col-4">
+      <h5>Turn this boring old thing...</h5>
+      <img src="{% static 'vanlevy/images/Kobolds/ScreenShot0.png' %}"
+           alt="Easy Char NOT in use" width="95%">
+    </div>
+    <div class="col-8">
+      <h4>...into this <strong>Exciting</strong> <em>New</em> Thing!</h4>
+      <img src="{% static 'vanlevy/images/Kobolds/ScreenShot2.png' %}"
+           alt="Easy Char in use" width="95%">
+    </div>
+  </div>
+  <hr>
+  <p></p>
+  <div class="row">
+    <div class="col-md-3 col-lg-4">
+      <img src="{% static 'vanlevy/images/Kobolds/EasyChar_220_140.png' %}" class="align-right">
+    </div>
+    <div class="col-md-9 col-lg-8">
+      <p></p>
+      <h3 id="faq_top">F.A.Q.s</h3>
+      <p style="margin-top: -10px;"><sub>Frequently Asked Questions</sub></p>
+      <ul class="faqs">
+        <li><a href="#what">What is the Kobolds Easy Char?</a></li>
+        <li><a href="#how">How do I Use the Easy Char</a></li>
+        <li><a href="#why">Why should I play Kobolds Ate My Baby?</a></li>
+        <li><a href="#can">Can I play Kobolds Ate My Baby with this Add-On, but without the rulebooks?</a></li>
+        <li><a href="#isthis">Is this Google Sheets AddOn an official 9th Level Games product?</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <hr>
+      <h4 id="what">What is the Kobolds Easy Char?</h4>
+      <p></p>
+      <p>Kobolds Easy Char is a Google Sheets Add-on.
+        This means you start up Google Sheets, and Add the Easy Char.
+      </p>
+      <p>
+        Kobolds Easy Char is designed to be used with a rulebook from the RPG "Kobolds Ate My Baby" (KAMB).
+        If you don't have the rulebook, you can't play the game.
+        And you should <a href="#why">really want to play the game</a>!
+      </p>
+      <p>
+        This Add-On will make it easier for you to make and keep track of the Kobolds you play.
+        It's also pretty, and colored, and organized for you to see how things all go together.
+      </p>
+      <p>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <hr>
+      <h4 id="how">How do I use Kobolds Easy Char</h4>
+      <p></p>
+      <p>
+        Kobolds Easy Char is a Google Sheets Add-On.  You can find it in the G Suite Marketplace.
+      </p>
+      <p>
+        Once you've installed the Add-On, you will see the submenu for Kobolds Easy Char in the Add-Ons Menu.<br><br>
+        <img src="{% static 'vanlevy/images/Kobolds/AddOnMenu.png' %}" style="max-width: 100%;">
+      </p>
+      <p>
+        Once you've clicked on the "<strong>Kobold Creation Panel</strong>" link, you will see ...
+        the Kobold Creation Panel. (This ain't exactly rocket science, here, folks.)
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <img src="{% static 'vanlevy/images/Kobolds/Panel_Format_Shorter.png' %}"
+           class="align-right" style="max-width: 100%;">
+    </div>
+    <div class="col-md-4">
+      <h4>Click on the "Format" button.</h4>
+      <p>
+        And the plain, drab, boring buttons will suddenly (eh, within ~ 20 seconds) turn into bright, colorful, and
+        exciting buttons!
+      </p>
+      <p>
+        And actually, patience is the once thing I suggest when you use the AddOn.
+        It's pretty darn good (if I do say so myself - and I do!), BUT it can take a little while for the buttons to
+        do their things.
+      </p>
+      <p>
+        (Personally, I blame the gerbils we trained to do the work.
+        They're well trained, they just have a tendency to get dist... OO shiny!)
+      </p>
+      <p>
+        Anyway, the Add On should do what it says.  Click the buttons.  Make Kobolds.  Get your Kobolds killed.
+        Make more Kobolds.
+      </p>
+    </div>
+    <div class="col-md-4">
+      <img src="{% static 'vanlevy/images/Kobolds/Panel_Formatted_Shorter.png' %}"
+           style="max-width: 100%;">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <hr>
+      <h4 id="why">Why should I play KAMB?</h4>
+      <p></p>
+      <p>
+        You should play KAMB (Kobolds Ate My Baby) if you want to have a good time, and don't want to have to be
+        bothered by concepts like "Character" or "Development", or even "Sanity".
+      </p>
+      <p>
+        You know how in most RPG's, you play the Heroes going out and saving the world from horrible monsters?
+        Yeah, well with KAMB, you're not either of those.
+        You're the horrible <em>little</em> monsters, who are weak, pathetic, awful, stupid, HUNGRY, and stupid.
+        But always hungry.
+      </p>
+      <p>
+        Want to play a game where you're the heroes? ... Wrong game.<br>
+        Want to play a game where you're powerful wizards? ... Wrong game.<br>
+        Want to play a game that doesn't insult you and your character? ... <em>Wrong Game.</em><br>
+        Want to play a game where you're not going to get your character killed? ...
+        <em><strong>Really</strong> Wrong Game.</em>
+      </p>
+      <p>
+        And that's the point of this Add-On.
+        You're going to kill <strong>so many</strong> Kobolds that you'll need help making all the Character Sheets.
+      </p>
+      <p>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <hr>
+      <h4 id="can">Can I play KAMB without the Rulebook?</h4>
+      <p>
+        <strong>NO!</strong>
+      </p>
+      <p>
+        You know who tries to play games without owning the official books?
+        Horrible little gremlins, who are even worse people than Kobolds.
+        And, <em>Bad Vor Alnaughty!</em> if you're even worse than a Kobold, you are ... just awful!
+      </p>
+      <p>
+        Go buy the
+        <a href="https://www.9thlevel.com/kobolds-ate-my-baby">dang rulebook</a>!
+      </p>
+      <p>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <hr>
+      <h4 id="isthis">Is this AddOn Official?</h4>
+      <p>
+        Also <strong>NO!</strong>
+      </p>
+      <p>
+        The folks at 9LG have given me their blessing to publish this Add-On, but it is entirely fan-made.
+      </p>
+      <p>
+        Go buy the
+        <a href="https://www.9thlevel.com/kobolds-ate-my-baby">dang rulebook</a>!
+      </p>
+      <p>
+        <a href="#faq_top" class="btn btn-sm btn-outline-info align-right" role="button">
+          &#12298; top
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

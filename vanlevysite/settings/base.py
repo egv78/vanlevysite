@@ -159,7 +159,10 @@ LOGIN_EXEMPT_URLS = (
     '/swdice/',
     '/gendice/',
     '/polydice/',
-    '/myzdice/'
+    '/myzdice/',
+    '/kobolds/',
+    '/kobolds/terms/',
+    '/kobolds/privacy/'
 )
 
 

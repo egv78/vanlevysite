@@ -16,7 +16,10 @@ urlpatterns = [
     path('portal/', views.personal_portal, name='portal'),
     path('terms/', views.vl_terms_view, name='terms'),
     path('contact/', views.ContactPage.as_view(), name='contact'),
-    path('404/', views.vl_error, name='404')
+    path('404/', views.vl_error, name='404'),
+    path('kobolds/', views.kobolds_about_view, name='kobolds_about'),
+    path('kobolds/terms/', views.kobolds_terms_view, name='kobolds_terms'),
+    path('kobolds/privacy/', views.kobolds_privacy_view, name='kobolds_privacy'),
 ]
 
 handler404 = views.vl_error
