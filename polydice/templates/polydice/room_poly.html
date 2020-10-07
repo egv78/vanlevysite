@@ -45,6 +45,78 @@
 <!-- endblock -->
 
 {% block body %}
+<div id="slideout_parent">
+  <input type="checkbox" id="showblock">
+  {% if viewing_basic_room %}
+  <div id="{% if has_char %}slideout_c{% else %}slideout{% endif %}">
+    <label id="slideout_tab" for="showblock" title="Dice Meanings">
+      <i>Glossary</i>
+    </label>
+    <div id="slideout_inner_MYZ">
+      <div class="btn-group" style="padding-bottom: 10px; padding-left: 20px;">
+        <button class="btn btn-sm btn-light" type="button" id="btnDice" disabled
+                onClick="return switchAndCollapse('#btnDice',
+                                                  ['#btnFaces'],
+                                                  '#glossary1',
+                                                  ['#glossary3'],
+                                                  'btn-outline-light', 'btn-light')">
+          Dice
+        </button>
+        <button class="btn btn-sm btn-outline-light " type="button" id="btnFaces"
+                onClick="return switchAndCollapse('#btnFaces',
+                                                  ['#btnDice'],
+                                                  '#glossary3',
+                                                  ['#glossary1'],
+                                                  'btn-outline-light', 'btn-light')">
+          Results Displays
+        </button>
+      </div>
+
+      <div class="row no-gutters" id="Glossaries">
+        <div class="collapse show" id="glossary1" data-parent="#Glossaries">
+          <hr style="border: 1px solid white; margin-left: 20px;">
+          <p style="color: white; margin-left: 35px;"><strong>Dice</strong></p>
+          <ul class="glossaryMYZ">
+            <li><img src="{% static 'polydice/Dice/die_d4.png' %}" width="32" title="d4"> d4</li>
+            <li><img src="{% static 'polydice/Dice/die_d6.png' %}" width="32" title="d6"> d6</li>
+            <li><img src="{% static 'polydice/Dice/die_d8.png' %}" width="32" title="d8"> d8</li>
+            <li><img src="{% static 'polydice/Dice/die_d10.png' %}" width="32" title="d10"> d10</li>
+            <li><img src="{% static 'polydice/Dice/die_d12.png' %}" width="32" title="d12"> d12</li>
+            <li><img src="{% static 'polydice/Dice/die_d20.png' %}" width="32" title="d20"> d20</li>
+            <li><img src="{% static 'polydice/Dice/die_d100.png' %}" width="32" title="d100"> d100</li>
+            <li><img src="{% static 'polydice/Dice/die_numerical.png' %}" width="32" title="Numerical"> Numerical</li>
+          </ul>
+        </div>
+
+        <div class="collapse" id="glossary3" data-parent="#Glossaries">
+          <hr style="border: 1px solid white; margin-left: 20px;">
+          <p style="color: white; margin-left: 35px; margin-bottom: 5px;"><strong>Results Displays</strong></p>
+          <ul class="glossaryMYZ">
+            <li><img src="{% static 'polydice/Results/d004.png' %}" width="32" title="d4"> d4</li>
+            <li><img src="{% static 'polydice/Results/d006.png' %}" width="32" title="d6"> d6</li>
+            <li><img src="{% static 'polydice/Results/d008_v3.png' %}" width="32" title="d8"> d8</li>
+            <li><img src="{% static 'polydice/Results/d010_2.png' %}" width="32" title="d10"> d10</li>
+            <li><img src="{% static 'polydice/Results/d012.png' %}" width="32" title="d12"> d12</li>
+            <li><img src="{% static 'polydice/Results/d020_v6.png' %}" width="32" title="d20"> d20</li>
+            <li><img src="{% static 'polydice/Results/d100_v3.png' %}" width="32" title="d100"> d100</li>
+            <li style="margin-left: -25px;">
+              <span style="border-style: solid; border-color: black; border-width: 1px;
+                    display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px;">
+                <em>Results</em>
+              </span>
+                /
+              <span style="border-style: groove; border-color: black; border-width: 1px;
+                     display: inline; margin: 5px; padding: 2px; width: 40px; height: 40px; border-radius: 10px">
+                d <em>faces</em>
+              </span>
+              Numerical</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
 <div class="container" style="padding: 0px;">
   <br>
   {% if not viewing_basic_room %}
@@ -287,7 +359,7 @@
                       <tr>
                         <td>
                           <button type="button" id="reset_dice" class="btn btn-outline-secondary btn-sm"
-                                  onclick="resetDice()" style="margin: auto;">
+                                  onclick="resetDicePoly()" style="margin: auto;">
                             Reset Dice
                           </button>
                         </td>
@@ -634,25 +706,7 @@
         <div class="container-fluid" id="chat_log" style="padding:0">
 
         {% block glossary %}
-          <input type="checkbox" id="showblock">
-          <div id="slideout">
-            <label id="slideout_tab" for="showblock" title="Dice Meanings">
-              <i>Dice</i>
-            </label>
-              <div id="slideout_inner">
-                <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                <ul style="list-style-type:none; color: white;">
-                  <li><img src="{% static 'polydice/Dice/die_d4.png' %}" width="32" title="d4"> d4</li>
-                  <li><img src="{% static 'polydice/Dice/die_d6.png' %}" width="32" title="d6"> d6</li>
-                  <li><img src="{% static 'polydice/Dice/die_d8.png' %}" width="32" title="d8"> d8</li>
-                  <li><img src="{% static 'polydice/Dice/die_d10.png' %}" width="32" title="d10"> d10</li>
-                  <li><img src="{% static 'polydice/Dice/die_d12.png' %}" width="32" title="d12"> d12</li>
-                  <li><img src="{% static 'polydice/Dice/die_d20.png' %}" width="32" title="d20"> d20</li>
-                  <li><img src="{% static 'polydice/Dice/die_d100.png' %}" width="32" title="d100"> d100</li>
-                  <li><img src="{% static 'polydice/Dice/die_numerical.png' %}" width="32" title="Numerical"> Numerical</li>
-                </ul>
-              </div>
-          </div>
+
         {% endblock glossary %}
         {% if chat_log is empty %}
           <p>This room has no chats</p>
@@ -743,6 +797,7 @@
 </div>
 
 {% block page_scripts %}
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 <script>
 $(function () {
     var dt = new Date();
@@ -759,122 +814,8 @@ function subtractOne(id) {
 };
 </script>
 <script>
-function showSecretRoll() {
-    document.getElementById('secret_warning').style.display='block';
-    document.getElementById('show_secret_roll_button').style.display='none';
-    document.getElementById('hide_secret_roll_button').style.display='block';
-    document.getElementById('roll_dice_button').style.display='none';
-    document.getElementById('roll_dice_secret_button').style.display='block';
-};
-function hideSecretRoll() {
-    document.getElementById('secret_warning').style.display='none';
-    document.getElementById('show_secret_roll_button').style.display='block';
-    document.getElementById('hide_secret_roll_button').style.display='none';
-    document.getElementById('roll_dice_button').style.display='block';
-    document.getElementById('roll_dice_secret_button').style.display='none';
-};
+
 </script>
-<script>
-function resetDice() {
-    document.getElementById('d4').value = 0;
-    document.getElementById('d6').value = 0;
-    document.getElementById('d8').value = 0;
-    document.getElementById('d10').value = 0;
-    document.getElementById('d12').value = 0;
-    document.getElementById('d20').value = 0;
-    document.getElementById('d100').value = 0;
-    document.getElementById('numerical').value = 0;
-    document.getElementById('sides').value = 999;
-    document.getElementById('bonus').value = 0;
-};
-</script>
-<script>
-function highlightChat() {
-  var number = document.getElementById("id_recipient").selectedIndex;
-  var button = document.getElementById("chat_submit");
-  var chat_area = document.getElementById("chat_text");
-  if (number > 0) {
-    button.classList.remove('btn-outline-dark');
-    button.classList.add('btn-outline-warning');
-    button.textContent = 'Whisper';
-    chat_area.classList.add('chat_whisper');
-    chat_area.classList.remove('chat_regular');
-  } else {
-    button.classList.remove('btn-outline-warning');
-    button.classList.add('btn-outline-dark');
-    button.textContent = 'Add Chat';
-    chat_area.classList.remove('chat_whisper');
-    chat_area.classList.add('chat_regular');
-  };
-};
-</script>
-<script>
-$(function () {
-  var number = document.getElementById("id_recipient").selectedIndex;
-  var button = document.getElementById("chat_submit");
-  var chat_area = document.getElementById("chat_text");
-  if (number > 0) {
-    chat_area.classList.add('chat_whisper');
-    chat_area.classList.remove('chat_regular');
-  };
-});
-</script>
-<script>
-var myForm = $("#destiny");
-myForm.submit(function(){
-    myForm.submit(function(){
-        return false;
-    });
-});
-var mySecondForm = $("#dice");
-mySecondForm.submit(function(){
-    mySecondForm.submit(function(){
-        return false;
-    });
-});
-var myThirdForm = $("#chat");
-myThirdForm.submit(function(){
-    myThirdForm.submit(function(){
-        return false;
-    });
-});
-</script>
-<script>
-function refresh_action_log(){
-    var url_actions = document.URL + ' #action_log';
-    var url_destiny = document.URL + ' #destiny_box';
-    $('#action_log').load(url_actions);
-    $('#destiny_box').load(url_destiny);
-};
-function refresh_chat_log() {
-    var url_chat_log = document.URL + ' #chat_log';
-    $('#chat_log').load(url_chat_log);
-};
-function check_and_update() {
-    var pageUpdate = new Date(document.getElementById('updateTime').innerText);
-    var actionUpdate = new Date($("#actionTime").text());
-    var chatUpdate = new Date($("#chatTime").text());
-    var now = new Date();
-    if (actionUpdate > pageUpdate && chatUpdate > pageUpdate) {
-        refresh_action_log();
-        refresh_chat_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    } else if (actionUpdate > pageUpdate) {
-        refresh_action_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    } else if (chatUpdate > pageUpdate) {
-        refresh_chat_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    };
-};
-function update_times() {
-    var url_action_time = document.URL + ' #last_times';
-    $('#last_times').load(url_action_time, function () {
-        // When it loads, schedule the next request for 1s later
-        setTimeout(update_times, 1000)
-    });
-    check_and_update();
-};
-</script>
+
 {% endblock page_scripts %}
 {% endblock body %}

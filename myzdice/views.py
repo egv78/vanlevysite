@@ -169,11 +169,19 @@ class MYZRoomViews(FormMixin, TemplateView):
             recipients_list = [(self.request.user.id, "Send to all")]  # self as recipient = key for not private
             for user_in_room in room_users_link_list:
                 if not user_in_room.banned:
-                    user_name = user_in_room.user_id.username
+                    if len(user_in_room.user_id.username) > 14:
+                        user_name = user_in_room.user_id.username[:11] + "..."
+                        name_length = 14
+                    else:
+                        user_name = user_in_room.user_id.username
+                        name_length = len(user_name)
                     if user_in_room.default_avatar_is_user:
                         name_in_room = "themself"
                     else:
-                        name_in_room = user_in_room.avatar_id.avatar_name
+                        if len(user_in_room.avatar_id.avatar_name) > 34-name_length:
+                            name_in_room = user_in_room.avatar_id.avatar_name[:(31-name_length)] + "..."
+                        else:
+                            name_in_room = user_in_room.avatar_id.avatar_name
                     display_name = user_name + " as " + name_in_room
                     recipients_list.append((user_in_room.user_id_id, display_name))
 

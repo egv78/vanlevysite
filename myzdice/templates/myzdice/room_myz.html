@@ -45,6 +45,223 @@
 <!-- endblock -->
 
 {% block body %}
+<div id="slideout_parent">
+  <input type="checkbox" id="showblock">
+  {% if viewing_basic_room %}
+  <div id="{% if has_char %}slideout_c{% else %}slideout{% endif %}">
+    <label id="slideout_tab" for="showblock" title="Dice Meanings">
+      <i>Glossary</i>
+    </label>
+    <div id="slideout_inner_MYZ">
+      <div class="btn-group" style="padding-bottom: 10px; padding-left: 20px;">
+        <button class="btn btn-sm btn-light" type="button" id="btnDice" disabled
+                onClick="return switchAndCollapse('#btnDice',
+                                                  ['#btnPips'],
+                                                  '#glossary1',
+                                                  ['#glossary2'],
+                                                  'btn-outline-light', 'btn-light')">
+          Dice
+        </button>
+        <button class="btn btn-sm btn-outline-light " type="button" id="btnPips"
+                onClick="return switchAndCollapse('#btnPips',
+                                                  ['#btnDice'],
+                                                  '#glossary2',
+                                                  ['#glossary1'],
+                                                  'btn-outline-light', 'btn-light')">
+          Pips
+        </button>
+        <!--<button class="btn btn-sm btn-outline-light" type="button" id="btnActive"-->
+                <!--onClick="return switchAndCollapse('#btnActive',-->
+                                                  <!--['#btnDice', '#btnStatus', '#btnPassive'],-->
+                                                  <!--'#glossary4',-->
+                                                  <!--['#glossary1', '#glossary3', '#glossary5'],-->
+                                                  <!--'btn-outline-light', 'btn-light')">-->
+          <!--Active-->
+        <!--</button>-->
+        <!--<button class="btn btn-sm btn-outline-light" type="button" id="btnPassive"-->
+                <!--onClick="return switchAndCollapse('#btnPassive',-->
+                                                  <!--['#btnDice', '#btnStatus', '#btnActive'],-->
+                                                  <!--'#glossary5',-->
+                                                  <!--['#glossary1', '#glossary3', '#glossary4'],-->
+                                                  <!--'btn-outline-light', 'btn-light')">-->
+          <!--Passive-->
+        <!--</button>-->
+      </div>
+
+      <div class="row no-gutters" id="Glossaries">
+
+        <div class="collapse show" id="glossary1" data-parent="#Glossaries">
+          <hr style="border: 1px solid white; margin-left: 20px;">
+          <p style="color: white; margin-left: 35px;"><strong>Dice</strong></p>
+          <ul class="glossaryMYZ">
+            <li><img src="{% static 'myzdice/Dice/Die_Base.png' %}" width="32" title="Base Die"> Base</li>
+            <li><img src="{% static 'myzdice/Dice/Die_Skill.png' %}" width="32" title="Skill Die"> Skill</li>
+            <li><img src="{% static 'myzdice/Dice/Die_Neg_Skill.png' %}" width="32" title="Negative Skill Die">
+              Negative Skill</li>
+            <li><img src="{% static 'myzdice/Dice/Die_Gear.png' %}" width="32" title="Gear_Die"> Gear</li>
+            <br><span style="font-size: 0.8em;">&#8659; Found in "Extras" &#8659;</span>
+            <li><img src="{% static 'myzdice/Dice/d6.png' %}" width="32" title="D6"> D6</li>
+            <li><img src="{% static 'myzdice/Dice/d66.png' %}" width="32" title="D66"> D66</li>
+            <li><img src="{% static 'myzdice/Dice/d666.png' %}" width="32" title="D666"> D666</li>
+            <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
+          </ul>
+        </div>
+
+        <div class="collapse" id="glossary2" data-parent="#Glossaries">
+          <hr style="border: 1px solid white; margin-left: 20px; margin-right: 20px;">
+          <p style="color: white; margin-left: 35px;"><strong>Pips</strong></p>
+          <ul class="glossaryMYZ">
+            <li style="padding-bottom: 10px;">
+              <span class="glossaryDieBG">
+              <img src="{% static 'myzdice/Results/success.png' %}" width="24" title="Success"></span>
+              <strong>Success</strong>
+              <br><span style="font-size: 0.8em;"> - Found on Base, Skill, or Gear dice</span>
+            </li>
+            <li>
+              <span class="glossaryDieBG">
+                <img src="{% static 'myzdice/Results/trauma.png' %}" width="24" title="Trauma"></span>
+              <strong>Trauma</strong>
+              <br><span style="font-size: 0.8em;"> - Wound to stat used for base dice</span>
+            </li>
+            <li><span class="glossaryDieBG">
+              <img src="{% static 'myzdice/Results/damage.png' %}" width="24" title="Damage"></span>
+              <strong>Damage</strong>
+              <br><span style="font-size: 0.8em;"> - Reduces Gear/Armor Bonus</span>
+            </li>
+            <li>
+              <span class="glossaryDieBG">
+                <img src="{% static 'myzdice/Results/neg_suc.png' %}" width="24" title="Negative Success"></span>
+              <strong>Negative Success</strong>
+              <br><span style="font-size: 0.8em;"> - Only found on Negative Skill Dice; cancels a Success</span>
+            </li>
+          </ul>
+        </div>
+
+        <!--<div class="collapse" id="glossary4" data-parent="#Glossaries">-->
+          <!--<p style="color: white; margin-left: 15px; margin-bottom: 5px;"><strong>Weapon Qualities - Active</strong></p>-->
+          <!--<ul class="glossaryList">-->
+            <!--<li><strong><u>Auto-fire</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--(add +1-->
+              <!--<span class="glossaryDieDiff" title="Difficulty"><strong>&#9830;</strong></span>-->
+              <!--to roll)-->
+              <!--<br>-->
+              <!--Add add'n'l dam. (weapon base + <span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Suc01.png' %}" width="16" title="Success"></span>'s)-->
+              <!--[rating] times (may be diff. targets)-->
+            <!--</li>-->
+            <!--<li><strong><u>Blast</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span> /-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--(if unsuc.)-->
+              <!--<br>All engaged with target take Damage = [rating] plus <span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Suc01.png' %}" width="16" title="Success"></span>'s.-->
+            <!--</li>-->
+            <!--<li><strong><u>Burn</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>-->
+              <!--Base weap. dam. for [rating] rounds-->
+            <!--</li>-->
+            <!--<li><strong><u>Concussive</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>Target <em>Staggered</em> for [rating] rounds</li>-->
+            <!--<li><strong><u>Disorient</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>-->
+              <!--Target <em>Disoriented</em> for [rating] rounds-->
+            <!--</li>-->
+            <!--<li><strong><u>Ensnare</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>Target <em>Immobilized</em> [rating] rounds.-->
+              <!--<br><span class="glossaryDieDiff" title="Difficulty"><strong>&#9830; &#9830; &#9830;</strong></span>-->
+              <!--Athletics check to escape-->
+            <!--</li>-->
+            <!--<li><strong><u>Guided</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>End of round incidental;-->
+              <!--<span class="glossaryDieDiff" title="Difficulty"><strong>&#9830; &#9830;</strong></span> vs [rating]-->
+              <!--<span class="glossaryDieAbil" title="Ability"><strong>&#9830;</strong></span>-->
+              <!--for add'n'l attack-->
+            <!--</li>-->
+            <!--<li><strong><u>Knockdown</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--(+ for sil. > 1)-->
+              <!--<br>Target knocked <em>Prone</em>-->
+            <!--</li>-->
+            <!--<li><strong><u>Linked</u></strong>-->
+              <!--<span class="glossaryDieBG"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>Additional hits / [rating] to one target</li>-->
+            <!--<li><strong><u>Stun</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"><img-->
+              <!--src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>Cause <em>Strain</em> / [rating]; no Soak</li>-->
+            <!--<li><strong><u>Sunder</u></strong>-->
+              <!--<span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--<br>One item/turn; may dam. mult. steps</li>-->
+          <!--</ul>-->
+        <!--</div>-->
+
+        <!--<div class="collapse" id="glossary5" data-parent="#Glossaries">-->
+          <!--<p style="color: white; margin-left: 15px; margin-bottom: 5px;"><strong>Weapon Qualities - Passive</strong></p>-->
+          <!--<ul class="glossaryList">-->
+            <!--<li><strong><u>Accurate</u></strong> - Add-->
+              <!--<span class="glossaryDieBoo" title="Boost">&#9632;</span> / [rating]</li>-->
+            <!--<li><strong><u>Breach</u></strong> - Ignore <strong>10</strong> Soak / [rating]</li>-->
+            <!--<li><strong><u>Cumbersome</u></strong> - Increase difficulty / Brawn < [rating]</li>-->
+            <!--<li><strong><u>Defensive</u></strong> - Inc. Melee Def. / [rating]</li>-->
+            <!--<li><strong><u>Deflection</u></strong> - Inc. Rang. Def. / [rating]</li>-->
+            <!--<li><strong><u>Inaccurate</u></strong> - Add-->
+              <!--<span class="glossaryDieSet" title="Setback">&#9632;</span> / [rating]</li>-->
+            <!--<li><strong><u>Inferior</u></strong> - Auto. <span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Thr01.png' %}" width="16" title="Threat"></span>-->
+              <!--on check</li>-->
+            <!--<li><strong><u>Limited Ammo</u></strong> - Weapon can only be used [rating] times before reloading</li>-->
+            <!--<li><strong><u>Pierce</u></strong> - Ignore 1 Soak / [rating]</li>-->
+            <!--<li><strong><u>Prepare</u></strong> - Requires maneuver to ready</li>-->
+            <!--<li><strong><u>Reinforced</u></strong> - Immune to Sunder</li>-->
+            <!--<li><strong><u>Slow-firing</u></strong> - Wait rounds / [rating] between uses</li>-->
+            <!--<li><strong><u>Stun-damage</u></strong> - Weapon only deals damage to Strain (soak applies)</li>-->
+            <!--<li><strong><u>Superior</u></strong> - Auto <span class="glossaryDieBG"-->
+              <!--&gt;<img src="{% static 'gendice/Results/Adv01.png' %}" width="16" title="Advantage"></span>-->
+              <!--to checks</li>-->
+            <!--<li><strong><u>Tractor</u></strong> - Immobilizes people; Piloting check against-->
+              <!--<span class="glossaryDieDiff" title="Difficulty"><strong>&#9830;</strong></span> / [rating]</li>-->
+            <!--<li><strong><u>Unwieldy</u></strong> - Increase difficulty / Agility < [rating]</li>-->
+            <!--<li><strong><u>Vicious</u></strong> - Adds +10 / [rating] to Crit Rolls</li>-->
+          <!--</ul>-->
+        <!--</div>-->
+
+      </div>
+
+    </div>
+  </div>
+  {% endif %}
+</div>
+
 <div class="container">
   <br>
   {% if not viewing_basic_room %}
@@ -126,11 +343,11 @@
                   <table class="dice_table_sml">
                     <tr><td>
                       <button type="button" id="show_pips_button" class="btn btn-outline-secondary btn-sm"
-                                  onclick="showAutoPips()" style="margin: auto; display: block;">
+                                  onclick="showAutoPipsMYZ()" style="margin: auto; display: block;">
                         Show Extras
                       </button>
                       <button type="button" id="hide_pips_button" class="btn btn-outline-secondary btn-sm"
-                              onclick="hideAutoPips()" style="margin: auto; display: none">
+                              onclick="hideAutoPipsMYZ()" style="margin: auto; display: none">
                         Hide Extras
                       </button>
                     </td></tr>
@@ -408,11 +625,11 @@
                         <div id="push_button">
                           {% if allow_push %}
                             <button type="button" id="reset_dice" class="btn btn-outline-secondary btn-sm"
-                                  onclick="resetDice()" style="margin: auto; display: none">
+                                  onclick="resetDiceMYZ()" style="margin: auto; display: none">
                               Reset Dice
                             </button>
                             <button type="button" id="setup_push" class="btn btn-outline-success btn-sm"
-                                  onclick="setupPush()" style="margin: auto; display: block">
+                                  onclick="setupPushMYZ()" style="margin: auto; display: block">
                               Setup Push
                             </button>
                           {% endif %}
@@ -676,53 +893,6 @@
           <div class="container-fluid" id="chat_log" style="padding:0">
             <hr>
             {% block glossary %}
-              <input type="checkbox" id="showblock">
-              <div id="slideout">
-                <label id="slideout_tab" for="showblock" title="Dice Meanings">
-                  <i>Dice</i>
-                </label>
-                <div id="slideout_inner">
-                  <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                  <ul style="list-style-type:none; color: white; margin-left: -10px;">
-                    <li><img src="{% static 'myzdice/Dice/Die_Base.png' %}" width="32" title="Base Die"> Base</li>
-                    <li><img src="{% static 'myzdice/Dice/Die_Skill.png' %}" width="32" title="Skill Die"> Skill</li>
-                    <li><img src="{% static 'myzdice/Dice/Die_Neg_Skill.png' %}" width="32" title="Negative Skill Die"> Negative Skill</li>
-                    <li><img src="{% static 'myzdice/Dice/Die_Gear.png' %}" width="32" title="Gear_Die"> Gear</li>
-                    <li><img src="{% static 'myzdice/Dice/d6.png' %}" width="32" title="D6"> D6</li>
-                    <li><img src="{% static 'myzdice/Dice/d66.png' %}" width="32" title="D66"> D66</li>
-                    <li><img src="{% static 'myzdice/Dice/d666.png' %}" width="32" title="D666"> D666</li>
-                    <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
-                  </ul>
-                </div>
-              </div>
-              <input type="checkbox" id="showblock2">
-              <div id="slideout2">
-                <label id="slideout_tab2" for="showblock2" title="Result Meanings">
-                  <i>Pips </i>
-                </label>
-                <div id="slideout_inner2">
-                  <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                  <ul style="list-style-type:none; margin-left: -20px;">
-                    <li><img src="{% static 'myzdice/Results/success.png' %}"
-                             width="24" title="Success"> Success -
-                      <span style="font-size: 0.8em;">Found on Base, Skill, or Gear dice</span>
-                    </li>
-                    <li><img src="{% static 'myzdice/Results/trauma.png' %}"
-                             width="24" title="Trauma"> Trauma -
-                      <span style="font-size: 0.8em;">Wound to stat used for base dice</span>
-                    </li>
-                    <li><img src="{% static 'myzdice/Results/damage.png' %}"
-                             width="24" title="Damage"> Damage -
-                      <span style="font-size: 0.8em;">Reduces Gear/Armor Bonus</span>
-                    </li>
-                    <li><img src="{% static 'myzdice/Results/neg_suc.png' %}"
-                             width="24" title="Negative Success"> Negative Success
-                      <span style="font-size: 0.8em;">
-                      Only found on Negative Skill Dice; cancels a Success</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
             {% endblock glossary %}
             {% if chat_log is empty %}
               <p>This room has no chats</p>
@@ -812,41 +982,7 @@
 </div>
 
 {% block page_scripts %}
-<script>
-$(function () {
-    var dt = new Date();
-    document.getElementById('updateTime').innerText = dt.toISOString();
-    update_times();
-});
-</script>
-<script>
-function showAutoPips() {
-    document.getElementById('hidden_fields_1').style.display='flex';
-    document.getElementById('hidden_fields_2').style.display='flex';
-    document.getElementById('show_pips_button').style.display='none';
-    document.getElementById('hide_pips_button').style.display='block';
-};
-function hideAutoPips() {
-    document.getElementById('hidden_fields_1').style.display='none';
-    document.getElementById('hidden_fields_2').style.display='none';
-    document.getElementById('show_pips_button').style.display='block';
-    document.getElementById('hide_pips_button').style.display='none';
-};
-function showSecretRoll() {
-    document.getElementById('secret_warning').style.display='block';
-    document.getElementById('show_secret_roll_button').style.display='none';
-    document.getElementById('hide_secret_roll_button').style.display='block';
-    document.getElementById('roll_dice_button').style.display='none';
-    document.getElementById('roll_dice_secret_button').style.display='block';
-};
-function hideSecretRoll() {
-    document.getElementById('secret_warning').style.display='none';
-    document.getElementById('show_secret_roll_button').style.display='block';
-    document.getElementById('hide_secret_roll_button').style.display='none';
-    document.getElementById('roll_dice_button').style.display='block';
-    document.getElementById('roll_dice_secret_button').style.display='none';
-};
-</script>
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 <script>
 function addOne(id) {
     document.getElementById(id).stepUp(1);
@@ -854,8 +990,6 @@ function addOne(id) {
 function subtractOne(id) {
     document.getElementById(id).stepDown(1);
 };
-</script>
-<script>
 function changeSkillImage() {
     var skill_dice = document.getElementById('skill').value;
     var skill_url = "{% static 'myzdice/Dice/Die_Skill.png' %}";
@@ -874,27 +1008,7 @@ function subtractOneSkill() {
     document.getElementById('skill').stepDown(1);
     changeSkillImage();
 };
-function resetDice() {
-    document.getElementById('base').value = 0;
-    document.getElementById('skill').value = 0;
-    document.getElementById('gear').value = 0;
-    document.getElementById('d6').value = 0;
-    document.getElementById('d66').value = 0;
-    document.getElementById('d666').value = 0;
-    document.getElementById('is_pushed').checked = false;
-    document.getElementById('numerical').value = 0;
-    document.getElementById('sides').value = 100;
-    document.getElementById('trauma').value = 0;
-    document.getElementById('failure').value = 0;
-    document.getElementById('damage').value = 0;
-    document.getElementById('success_base').value = 0;
-    document.getElementById('success_skill').value = 0;
-    document.getElementById('success_gear').value = 0;
-    document.getElementById('reset_dice').style.display='none';
-    document.getElementById('setup_push').style.display='block';
-    changeSkillImage();
-};
-function setupPush() {
+function setupPushMYZ() {
     document.getElementById('base').value = {{ push_base }};
     document.getElementById('skill').value = {{ push_skill }};
     document.getElementById('gear').value = {{ push_gear }};
@@ -909,96 +1023,19 @@ function setupPush() {
     document.getElementById('setup_push').style.display='none';
     changeSkillImage();
 };
-</script>
-<script>
-function highlightChat() {
-  var number = document.getElementById("id_recipient").selectedIndex;
-  var button = document.getElementById("chat_submit");
-  var chat_area = document.getElementById("chat_text");
-  if (number > 0) {
-    button.classList.remove('btn-outline-dark');
-    button.classList.add('btn-outline-warning');
-    button.textContent = 'Whisper';
-    chat_area.classList.add('chat_whisper');
-    chat_area.classList.remove('chat_regular');
-  } else {
-    button.classList.remove('btn-outline-warning');
-    button.classList.add('btn-outline-dark');
-    button.textContent = 'Add Chat';
-    chat_area.classList.remove('chat_whisper');
-    chat_area.classList.add('chat_regular');
-  };
+function showAutoPipsMYZ() {
+    document.getElementById('hidden_fields_1').style.display='flex';
+    document.getElementById('hidden_fields_2').style.display='flex';
+    document.getElementById('show_pips_button').style.display='none';
+    document.getElementById('hide_pips_button').style.display='block';
 };
-</script>
-<script>
-$(function () {
-  var number = document.getElementById("id_recipient").selectedIndex;
-  var button = document.getElementById("chat_submit");
-  var chat_area = document.getElementById("chat_text");
-  if (number > 0) {
-    chat_area.classList.add('chat_whisper');
-    chat_area.classList.remove('chat_regular');
-  };
-});
-</script>
-<script>
-var myForm = $("#destiny");
-myForm.submit(function(){
-    myForm.submit(function(){
-        return false;
-    });
-});
-var mySecondForm = $("#dice");
-mySecondForm.submit(function(){
-    mySecondForm.submit(function(){
-        return false;
-    });
-});
-var myThirdForm = $("#chat");
-myThirdForm.submit(function(){
-    myThirdForm.submit(function(){
-        return false;
-    });
-});
-</script>
-<script>
-function refresh_action_log(){
-    var url_actions = document.URL + ' #action_log';
-    var url_destiny = document.URL + ' #destiny_box';
-    var url_push_button = document.URL + ' #push_button';
-    $('#action_log').load(url_actions);
-    $('#destiny_box').load(url_destiny);
-    $('#push_button').load(url_push_button);
+function hideAutoPipsMYZ() {
+    document.getElementById('hidden_fields_1').style.display='none';
+    document.getElementById('hidden_fields_2').style.display='none';
+    document.getElementById('show_pips_button').style.display='block';
+    document.getElementById('hide_pips_button').style.display='none';
 };
-function refresh_chat_log() {
-    var url_chat_log = document.URL + ' #chat_log';
-    $('#chat_log').load(url_chat_log);
-};
-function check_and_update() {
-    var pageUpdate = new Date(document.getElementById('updateTime').innerText);
-    var actionUpdate = new Date($("#actionTime").text());
-    var chatUpdate = new Date($("#chatTime").text());
-    var now = new Date();
-    if (actionUpdate > pageUpdate && chatUpdate > pageUpdate) {
-        refresh_action_log();
-        refresh_chat_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    } else if (actionUpdate > pageUpdate) {
-        refresh_action_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    } else if (chatUpdate > pageUpdate) {
-        refresh_chat_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    };
-};
-function update_times() {
-    var url_action_time = document.URL + ' #last_times';
-    $('#last_times').load(url_action_time, function () {
-        // When it loads, schedule the next request for 1s later
-        setTimeout(update_times, 1000)
-    });
-    check_and_update();
-};
+
 </script>
 {% endblock page_scripts %}
 {% endblock body %}

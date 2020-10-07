@@ -5,7 +5,8 @@ from vanlevysite.settings.base import *
 DEBUG = False
 
 # change ALLOWED_HOSTS on launch
-ALLOWED_HOSTS = ['35.175.146.205', 'www.vanlevy.com', '.vanlevy.com']
+ALLOWED_HOSTS = ['184.73.138.122', 'www.vanlevy.com', '.vanlevy.com']
+# 35.175.146.205
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 

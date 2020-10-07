@@ -40,7 +40,234 @@
   </a>
 {% endblock other_navbar_right %}
 
-{% block body %}
+{% block body %}<div id="slideout_parent">
+  <input type="checkbox" id="showblock">
+  {% if viewing_basic_room %}
+  <div id="{% if has_char %}slideout_c{% else %}slideout{% endif %}">
+    <label id="slideout_tab" for="showblock" title="Dice Meanings">
+      <i>Glossary</i>
+    </label>
+    <div id="slideout_inner">
+      <div class="btn-group" style="padding-bottom: 10px; padding-left: 20px;">
+        <button class="btn btn-sm btn-light" type="button" id="btnDice" disabled
+                onClick="return switchAndCollapse('#btnDice',
+                                                  ['#btnStatus', '#btnActive', '#btnPassive'],
+                                                  '#glossary1',
+                                                  ['#glossary3', '#glossary4', '#glossary5'],
+                                                  'btn-outline-light', 'btn-light')">
+          Dice & Pips
+        </button>
+        <button class="btn btn-sm btn-outline-light " type="button" id="btnStatus"
+                onClick="return switchAndCollapse('#btnStatus',
+                                                  ['#btnDice', '#btnActive', '#btnPassive'],
+                                                  '#glossary3',
+                                                  ['#glossary1', '#glossary4', '#glossary5'],
+                                                  'btn-outline-light', 'btn-light')">
+          Status
+        </button>
+        <button class="btn btn-sm btn-outline-light" type="button" id="btnActive"
+                onClick="return switchAndCollapse('#btnActive',
+                                                  ['#btnDice', '#btnStatus', '#btnPassive'],
+                                                  '#glossary4',
+                                                  ['#glossary1', '#glossary3', '#glossary5'],
+                                                  'btn-outline-light', 'btn-light')">
+          Active
+        </button>
+        <button class="btn btn-sm btn-outline-light" type="button" id="btnPassive"
+                onClick="return switchAndCollapse('#btnPassive',
+                                                  ['#btnDice', '#btnStatus', '#btnActive'],
+                                                  '#glossary5',
+                                                  ['#glossary1', '#glossary3', '#glossary4'],
+                                                  'btn-outline-light', 'btn-light')">
+          Passive
+        </button>
+      </div>
+      <div class="row no-gutters" id="Glossaries">
+        <div class="collapse show" id="glossary1" data-parent="#Glossaries">
+          <p style="color: white; margin-left: 35px;"><strong>Dice</strong></p>
+          <ul style="list-style-type:none; color: white;">
+            <li><img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost"> Boost</li>
+            <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability"> Ability</li>
+            <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency"> Proficiency</li>
+            <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback"> Setback</li>
+            <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty"> Difficulty</li>
+            <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge"> Challenge</li>
+            <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical"> Numerical</li>
+          </ul>
+          <hr style="border: 1px solid white; margin-left: 20px;">
+          <p style="color: white; margin-left: 35px;"><strong>Pips</strong></p>
+          <ul style="list-style-type:none;">
+            <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success"> Success</li>
+            <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure"> Failure</li>
+            <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage"> Advantage</li>
+            <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat"> Threat</li>
+            <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph"> Triumph</li>
+            <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair"> Despair</li>
+            <li style="padding-top: 15px;"><img src="{% static 'swdice/Pips/black.png' %}" width="32" title="GM Pip"> Black Pip</li>
+            <li><img src="{% static 'swdice/Pips/white.png' %}" width="32" title="Player Pip"> White Pip</li>
+          </ul>
+        </div>
+
+        <div class="collapse" id="glossary3" data-parent="#Glossaries">
+          <p style="color: white; margin-left: 15px; margin-bottom: 5px;"><strong>Status</strong></p>
+          <ul class="glossaryList">
+            <li><strong><u>Disoriented</u></strong><br>Adds
+              <span class="glossaryDieSet" title="Setback">&#9632;</span>
+              to all checks.
+            </li>
+            <li><strong><u>Incapacitated</u></strong><br>Cannot perform maneuvers or actions.</li>
+            <li><strong><u>Immobilized</u></strong><br>annot perform <em>any</em> maneuvers.</li>
+            <li><strong><u>Staggered</u></strong><br>Cannot perform actions.</li>
+            <li><strong><u>Cover</u></strong><br>Gains
+              <span class="glossaryDieSet" title="Setback">&#9632;</span>
+              to attacks made on this char (like Defence).
+            </li>
+            <li><strong><u>Prone</u></strong><br>Melee against char gains a
+              <span class="glossaryDieBoo" title="Boost">&#9632;</span>.<br>
+              Ranged gains a
+              <span class="glossaryDieSet" title="Setback">&#9632;</span>.
+            </li>
+            <li><strong><u>Increased Difficulty</u></strong><br>Adds
+              <span class="glossaryDieDiff" title="Difficulty"><strong>&#9830;</strong></span>
+              to a check.
+            </li>
+            <li><strong><u>Upgraded Difficulty</u></strong><br>
+              Converts a
+              <span class="glossaryDieDiff" title="Difficulty"><strong>&#9830;</strong></span>
+              to a
+              <span class="glossaryDieChal" title="Challenge">&#x2B22;</span>
+              (or adds <br> a
+              <span class="glossaryDieDiff" title="Difficulty"><strong>&#9830;</strong></span>
+              if all other dice are
+              <span class="glossaryDieChal" title="Challenge">&#x2B22;</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="collapse" id="glossary4" data-parent="#Glossaries">
+          <p style="color: white; margin-left: 15px; margin-bottom: 5px;"><strong>Weapon Qualities - Active</strong></p>
+          <ul class="glossaryList">
+            <li><strong><u>Auto-fire</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              (add +1
+              <span class="glossaryDieDiff" title="Difficulty"><strong>&#9830;</strong></span>
+              to roll)
+              <br>
+              Add add'n'l dam. (weapon base + <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Suc01.png' %}" width="16" title="Success"></span>'s)
+              [rating] times (may be diff. targets)
+            </li>
+            <li><strong><u>Blast</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span> /
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              (if unsuc.)
+              <br>All engaged with target take Damage = [rating] plus <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Suc01.png' %}" width="16" title="Success"></span>'s.
+            </li>
+            <li><strong><u>Burn</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>
+              Base weap. dam. for [rating] rounds
+            </li>
+            <li><strong><u>Concussive</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>Target <em>Staggered</em> for [rating] rounds</li>
+            <li><strong><u>Disorient</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>
+              Target <em>Disoriented</em> for [rating] rounds
+            </li>
+            <li><strong><u>Ensnare</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>Target <em>Immobilized</em> [rating] rounds.
+              <br><span class="glossaryDieDiff" title="Difficulty"><strong>&#9830; &#9830; &#9830;</strong></span>
+              Athletics check to escape
+            </li>
+            <li><strong><u>Guided</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>End of round incidental;
+              <span class="glossaryDieDiff" title="Difficulty"><strong>&#9830; &#9830;</strong></span> vs [rating]
+              <span class="glossaryDieAbil" title="Ability"><strong>&#9830;</strong></span>
+              for add'n'l attack
+            </li>
+            <li><strong><u>Knockdown</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              (+ for sil. > 1)
+              <br>Target knocked <em>Prone</em>
+            </li>
+            <li><strong><u>Linked</u></strong>
+              <span class="glossaryDieBG"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>Additional hits / [rating] to one target</li>
+            <li><strong><u>Stun</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"><img
+              src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>Cause <em>Strain</em> / [rating]; no Soak</li>
+            <li><strong><u>Sunder</u></strong>
+              <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              <br>One item/turn; may dam. mult. steps</li>
+          </ul>
+        </div>
+
+        <div class="collapse" id="glossary5" data-parent="#Glossaries">
+          <p style="color: white; margin-left: 15px; margin-bottom: 5px;"><strong>Weapon Qualities - Passive</strong></p>
+          <ul class="glossaryList">
+            <li><strong><u>Accurate</u></strong> - Add
+              <span class="glossaryDieBoo" title="Boost">&#9632;</span> / [rating]</li>
+            <li><strong><u>Breach</u></strong> - Ignore <strong>10</strong> Soak / [rating]</li>
+            <li><strong><u>Cumbersome</u></strong> - Increase difficulty / Brawn < [rating]</li>
+            <li><strong><u>Defensive</u></strong> - Inc. Melee Def. / [rating]</li>
+            <li><strong><u>Deflection</u></strong> - Inc. Rang. Def. / [rating]</li>
+            <li><strong><u>Inaccurate</u></strong> - Add
+              <span class="glossaryDieSet" title="Setback">&#9632;</span> / [rating]</li>
+            <li><strong><u>Inferior</u></strong> - Auto. <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Thr01.png' %}" width="16" title="Threat"></span>
+              on check</li>
+            <li><strong><u>Limited Ammo</u></strong> - Weapon can only be used [rating] times before reloading</li>
+            <li><strong><u>Pierce</u></strong> - Ignore 1 Soak / [rating]</li>
+            <li><strong><u>Prepare</u></strong> - Requires maneuver to ready</li>
+            <li><strong><u>Reinforced</u></strong> - Immune to Sunder</li>
+            <li><strong><u>Slow-firing</u></strong> - Wait rounds / [rating] between uses</li>
+            <li><strong><u>Stun-damage</u></strong> - Weapon only deals damage to Strain (soak applies)</li>
+            <li><strong><u>Superior</u></strong> - Auto <span class="glossaryDieBG"
+              ><img src="{% static 'swdice/Results/Adv01.png' %}" width="16" title="Advantage"></span>
+              to checks</li>
+            <li><strong><u>Tractor</u></strong> - Immobilizes people; Piloting check against
+              <span class="glossaryDieDiff" title="Difficulty"><strong>&#9830;</strong></span> / [rating]</li>
+            <li><strong><u>Unwieldy</u></strong> - Increase difficulty / Agility < [rating]</li>
+            <li><strong><u>Vicious</u></strong> - Adds +10 / [rating] to Crit Rolls</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  {% endif %}
+</div>
 <div class="container" style="padding: 0px;">
 <br>
   {% if not viewing_basic_room %}
@@ -526,11 +753,11 @@
                     <tr>
                       <td>
                         <button type="button" id="show_pips_button" class="btn btn-outline-secondary btn-sm"
-                                onclick="showAutoPips()" style="margin: auto; display: block;">
+                                onclick="showAutoPipsGenSW()" style="margin: auto; display: block;">
                           Show Extras
                         </button>
                         <button type="button" id="hide_pips_button" class="btn btn-outline-secondary btn-sm"
-                                onclick="hideAutoPips()" style="margin: auto; display: none">
+                                onclick="hideAutoPipsGenSW()" style="margin: auto; display: none">
                           Hide Extras
                         </button>
                       </td>
@@ -558,7 +785,7 @@
                     <tr>
                       <td>
                         <button type="button" id="reset_dice" class="btn btn-outline-secondary btn-sm"
-                                onclick="resetDice()" style="margin: auto;">
+                                onclick="resetDiceSW()" style="margin: auto;">
                           Reset Dice
                         </button>
                       </td>
@@ -893,7 +1120,7 @@
             <input type="checkbox" id="showblock3">
             <div id="slideout3">
               <label id="slideout_tab3" for="showblock3" title="Character Sheet">
-                <i>Char</i>
+                <i>Char. Sh.</i>
               </label>
               <div id="slideout_inner3">
                 <p style="margin-left: 20px;">
@@ -914,61 +1141,6 @@
               </div>
             </div>
           {% endif %}
-            <input type="checkbox" id="showblock">
-            <div id="{% if has_char %}slideout_c{% else %}slideout{% endif %}">
-              <label id="slideout_tab" for="showblock" title="Dice Meanings">
-                <i>Dice</i>
-              </label>
-              <div id="slideout_inner">
-                <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                <ul style="list-style-type:none; color: white;">
-                  <li>
-                    <img src="{% static 'swdice/Dice/boost.png' %}" width="32" title="Boost" alt="boost">
-                    Boost
-                  </li>
-                  <li><img src="{% static 'swdice/Dice/ability.png' %}" width="32" title="Ability" alt="ability">
-                    Ability
-                  </li>
-                  <li><img src="{% static 'swdice/Dice/proficiency.png' %}" width="32" title="Proficiency" alt="proficiency">
-                    Proficiency
-                  </li>
-                  <li><img src="{% static 'swdice/Dice/setback.png' %}" width="32" title="Setback" alt="setback">
-                    Setback
-                  </li>
-                  <li><img src="{% static 'swdice/Dice/difficulty.png' %}" width="32" title="Difficulty" alt="difficulty">
-                    Difficulty
-                  </li>
-                  <li><img src="{% static 'swdice/Dice/challenge.png' %}" width="32" title="Challenge" alt="challenge">
-                    Challenge
-                  </li>
-                  <li><img src="{% static 'swdice/Dice/D100.png' %}" width="32" title="Numerical" alt="numerical">
-                    Numerical
-                  </li>
-                  <li><img src="{% static 'swdice/Dice/force.png' %}" width="32" title="Force" alt="force">
-                    Force
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <input type="checkbox" id="showblock2">
-            <div id="{% if has_char %}slideout2_c{% else %}slideout2{% endif %}">
-              <label id="slideout_tab2" for="showblock2" title="Result Meanings">
-                <i>Pips </i>
-              </label>
-              <div id="slideout_inner2">
-                <p style="color: white; margin-left: 45px;"><strong>Glossary</strong></p>
-                <ul style="list-style-type:none;">
-                  <li><img src="{% static 'swdice/Results/Suc01.png' %}" title="Success" alt="success"> Success</li>
-                  <li><img src="{% static 'swdice/Results/Fai01.png' %}" title="Failure" alt="failure"> Failure</li>
-                  <li><img src="{% static 'swdice/Results/Adv01.png' %}" title="Advantage" alt="advantage"> Advantage</li>
-                  <li><img src="{% static 'swdice/Results/Thr01.png' %}" title="Threat" alt="threat"> Threat</li>
-                  <li><img src="{% static 'swdice/Results/Tri01.png' %}" title="Triumph" alt="triumph"> Triumph</li>
-                  <li><img src="{% static 'swdice/Results/Des01.png' %}" title="Despair" alt="despair"> Despair</li>
-                  <li><img src="{% static 'swdice/Results/Lig01.png' %}" title="Light" alt="light pip"> Light</li>
-                  <li><img src="{% static 'swdice/Results/Dar01.png' %}" title="Dark" alt="dark pip"> Dark</li>
-                </ul>
-              </div>
-            </div>
         {% endblock glossary %}
         {% if chat_log is empty %}
           <p>This room has no chats</p>
@@ -1060,147 +1232,7 @@
 </div>
 
 {% block page_scripts %}
-<script>
-$(function () {
-    var dt = new Date();
-    document.getElementById('updateTime').innerText = dt.toISOString();
-    update_times();
-});
-function showAutoPips() {
-    document.getElementById('hidden_fields_1').style.display='flex';
-    document.getElementById('show_pips_button').style.display='none';
-    document.getElementById('hide_pips_button').style.display='block';
-};
-function hideAutoPips() {
-    document.getElementById('hidden_fields_1').style.display='none';
-    document.getElementById('show_pips_button').style.display='block';
-    document.getElementById('hide_pips_button').style.display='none';
-};
-function showSecretRoll() {
-    document.getElementById('secret_warning').style.display='block';
-    document.getElementById('show_secret_roll_button').style.display='none';
-    document.getElementById('hide_secret_roll_button').style.display='block';
-    document.getElementById('roll_dice_button').style.display='none';
-    document.getElementById('roll_dice_secret_button').style.display='block';
-};
-function hideSecretRoll() {
-    document.getElementById('secret_warning').style.display='none';
-    document.getElementById('show_secret_roll_button').style.display='block';
-    document.getElementById('hide_secret_roll_button').style.display='none';
-    document.getElementById('roll_dice_button').style.display='block';
-    document.getElementById('roll_dice_secret_button').style.display='none';
-};
-function addOne(id) {
-    document.getElementById(id).stepUp(1);
-};
-function subtractOne(id) {
-    document.getElementById(id).stepDown(1);
-};
-function resetDice() {
-    document.getElementById('boost').value = 0;
-    document.getElementById('setback').value = 0;
-    document.getElementById('ability').value = 0;
-    document.getElementById('difficulty').value = 0;
-    document.getElementById('proficiency').value = 0;
-    document.getElementById('challenge').value = 0;
-    document.getElementById('force').value = 0;
-    document.getElementById('numerical').value = 0;
-    document.getElementById('sides').value = 100;
-    document.getElementById('triumph').value = 0;
-    document.getElementById('despair').value = 0;
-    document.getElementById('success').value = 0;
-    document.getElementById('failure').value = 0;
-    document.getElementById('advantage').value = 0;
-    document.getElementById('threat').value = 0;
-    document.getElementById('lightpip').value = 0;
-    document.getElementById('darkpip').value = 0;
-};
-function highlightChat() {
-  var number = document.getElementById("id_recipient").selectedIndex;
-  var button = document.getElementById("chat_submit");
-  var chat_area = document.getElementById("chat_text");
-  if (number > 0) {
-    button.classList.remove('btn-outline-dark');
-    button.classList.add('btn-outline-warning');
-    button.textContent = 'Whisper';
-    chat_area.classList.add('chat_whisper');
-    chat_area.classList.remove('chat_regular');
-  } else {
-    button.classList.remove('btn-outline-warning');
-    button.classList.add('btn-outline-dark');
-    button.textContent = 'Add Chat';
-    chat_area.classList.remove('chat_whisper');
-    chat_area.classList.add('chat_regular');
-  };
-};
-$(function () {
-  var number = document.getElementById("id_recipient").selectedIndex;
-  var button = document.getElementById("chat_submit");
-  var chat_area = document.getElementById("chat_text");
-  if (number > 0) {
-    chat_area.classList.add('chat_whisper');
-    chat_area.classList.remove('chat_regular');
-  };
-});
-var myForm = $("#destiny");
-myForm.submit(function(){
-    myForm.submit(function(){
-        return false;
-    });
-});
-var mySecondForm = $("#dice");
-mySecondForm.submit(function(){
-    mySecondForm.submit(function(){
-        return false;
-    });
-});
-var myThirdForm = $("#chat");
-myThirdForm.submit(function(){
-    myThirdForm.submit(function(){
-        return false;
-    });
-});
-function refresh_action_log(){
-    var url_actions = document.URL + ' #action_log';
-    var url_destiny = document.URL + ' #destiny_area';
-    $('#action_log').load(url_actions);
-    $('#destiny_area').load(url_destiny);
-};
-function refresh_chat_log() {
-    var url_chat_log = document.URL + ' #chat_log';
-    $('#chat_log').load(url_chat_log);
-};
-function check_and_update() {
-    var pageUpdate = new Date(document.getElementById('updateTime').innerText);
-    var actionUpdate = new Date($("#actionTime").text());
-    var chatUpdate = new Date($("#chatTime").text());
-    var now = new Date();
-    if (actionUpdate > pageUpdate && chatUpdate > pageUpdate) {
-        refresh_action_log();
-        refresh_chat_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    } else if (actionUpdate > pageUpdate) {
-        refresh_action_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    } else if (chatUpdate > pageUpdate) {
-        refresh_chat_log();
-        document.getElementById('updateTime').innerText = now.toISOString();
-    };
-};
-function update_times() {
-    var url_action_time = document.URL + ' #last_times';
-    $('#last_times').load(url_action_time, function () {
-        // When it loads, schedule the next request for 1s later
-        setTimeout(update_times, 1000)
-    });
-    check_and_update();
-};
-function show(id) {
-    document.getElementById(id).style.display='inline';
-};
-function hide(id) {
-    document.getElementById(id).style.display='none';
-};
-</script>
+<script src="{% static 'vanlevy/files/js/dice_common.js' %}"></script>
 {% endblock page_scripts %}
+
 {% endblock body %}

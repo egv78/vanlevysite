@@ -1,5 +1,8 @@
 /* universal elements, size-independent */
-body {overflow-y: scroll;}
+body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -94,23 +97,38 @@ input[type=number] { -moz-appearance:textfield;}
     overflow: hidden;
 }
 
+.glossaryMYZ {
+    list-style-type:none;
+    color: white;
+    padding-right: 15px;
+}
+.glossaryMYZ li {
+    padding-bottom: 10px;
+}
+
 /* SLIDE OUTS - universal - dice rooms */
 #slideout_c {
     position: fixed;
     /*position: absolute;*/
     top: 140px;
-    right: 0;
-    width: 41px;
+    right: -15px;
+    width: 81px;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
     transition-duration: 0.3s;
 }
+#slideout_parent {
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    z-index: 1;
+}
 #slideout {
-    position: fixed;
-    top: 90px;
-    right: 0;
-    width: 41px;
+    position: relative;
+    top: 50px;
+    right: -15px;
+    width: 81px;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
@@ -132,20 +150,89 @@ input[type=number] { -moz-appearance:textfield;}
 #slideout_inner {
     position: absolute;
     top: -5px;
-    left: 41px;
+    left: 70px;
     background: #073863;
     color: #fff;
-    width: 200px;
+    width: 325px;
     padding: 15px 0px 0px 0px;
-    height: 325px;
+    height: 750px;
     cursor:auto;
     -webkit-border-radius: 5px 0 0 5px;
     -moz-border-radius: 5px 0 0 5px;
     border-radius: 5px 0 0 5px;
 }
-#showblock:checked + #slideout{right: 200px;}
-#showblock:checked + #slideout_c{right: 200px;}
+#slideout_inner_MYZ {
+    position: absolute;
+    top: -5px;
+    left: 70px;
+    background: #073863;
+    color: #fff;
+    width: 325px;
+    padding: 15px 0px 0px 0px;
+    height: 600px;
+    cursor:auto;
+    -webkit-border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+}
+#showblock:checked + #slideout{right: 315px;}
+#showblock:checked + #slideout_c{right: 315px;}
 #showblock{display:none;}
+
+.glossaryList {
+    list-style-type: circle;
+    color: white;
+    padding-left: 35px;
+    padding-right: 15px;
+}
+
+.glossaryList li {
+    padding-bottom: 12px;
+    line-height: 120%;
+}
+.glossaryDieBG {
+    background-color: #a1b9e1;
+    padding: 0px 4px 4px 4px;
+    border-radius: 4px;
+}
+.glossaryDieSet {
+    background-color: #a1b9e1;
+    padding: 0px 4px 2px 4px;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 80%;
+}
+.glossaryDieDiff {
+    background-color: #a1b9e1;
+    padding: 0px 4px 2px 4px;
+    border-radius: 4px;
+    color: #660084;
+    font-size: 125%;
+    vertical-align: sub;
+}
+.glossaryDieChal {
+    background-color: #a1b9e1;
+    padding: 0px 4px 2px 4px;
+    border-radius: 4px;
+    color: #7C141D;
+    font-size: 125%;
+    vertical-align: sub;
+}
+.glossaryDieBoo {
+    background-color: #a1b9e1;
+    padding: 0px 4px 2px 4px;
+    border-radius: 4px;
+    color: #5585A8;
+    font-size: 80%;
+}
+.glossaryDieAbil {
+    background-color: #a1b9e1;
+    padding: 0px 4px 2px 4px;
+    border-radius: 4px;
+    color: #167416;
+    font-size: 125%;
+    vertical-align: sub;
+}
 
 #slideout2_c {
     position: fixed;
@@ -201,8 +288,8 @@ input[type=number] { -moz-appearance:textfield;}
 #slideout3 {
     position: fixed;
     top: 90px;
-    right: 0;
-    width: 41px;
+    right: -15px;
+    width: 81px;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
@@ -224,7 +311,7 @@ input[type=number] { -moz-appearance:textfield;}
 #slideout_inner3 {
     position: absolute;
     top: -5px;
-    left: 41px;
+    left: 70px;
     background: #FA911C;
     color: #000;
     width: 800px;  /* modified in sizes */
@@ -239,6 +326,7 @@ input[type=number] { -moz-appearance:textfield;}
 }
 #showblock3:checked + #slideout3{right: 800px;} /* modified in sizes */
 #showblock3{display:none;}
+
 /* end slide show */
 /* end universal */
 
