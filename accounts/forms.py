@@ -142,12 +142,14 @@ class DeleteAvatarForm(forms.ModelForm):
 class NewPDFForm(forms.ModelForm):
     pdf_name = forms.CharField(required=False, label='name',
                                widget=forms.Textarea(
-                                      attrs={'rows': 1, 'cols': 60, 'placeholder': 'You must give this pdf a name.'}
+                                      attrs={'rows': 1, 'cols': 60, 'id': 'pdf_name', 'onkeyup': 'checkForm()',
+                                             'placeholder': 'You must give this pdf a name.'
+                                             }
                                       )
                                )
     pdf_url = forms.URLField(required=False, label='URL for PDF',
                              widget=forms.Textarea(
-                                    attrs={'rows': 3, 'cols': 60, 'id': 'image_url',
+                                    attrs={'rows': 3, 'cols': 60, 'id': 'pdf_url', 'onkeyup': 'checkForm()',
                                            'placeholder': 'PDFs need to be valid URLs to a web-hosted file.\r'
                                                           'You can use PDFs from your Google Drive.  '
                                                           'Right click, select "Get shareable link", and paste the '

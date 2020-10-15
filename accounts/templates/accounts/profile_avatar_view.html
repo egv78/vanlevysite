@@ -124,7 +124,9 @@
               <td>
                   <p>{{ new_pdf_form.pdf_name }}</p>
                   <p>{{ new_pdf_form.pdf_url }}</p>
-                  <button type="submit" class="btn btn-outline-success btn-sm align-right" name="new_pdf">
+                  <button type="submit" class="btn btn-outline-success btn-sm align-right" name="new_pdf"
+                          id="new_pdf_btn" title="Any new PDF must have a name and a URL"
+                          disabled>
                     New PDF
                   </button>
                 <br>
@@ -204,10 +206,29 @@ function switchToHide () {
   document.getElementById('addButton').style.display='none';
   document.getElementById('cancelButton').style.display='inline';
 };
+
 function switchToShow () {
   document.getElementById('addButton').style.display='inline';
   document.getElementById('cancelButton').style.display='none';
 };
+
+function checkForm() {
+  var pdf_name = document.getElementById("pdf_name").value;
+  var pdf_url = document.getElementById("pdf_url").value;
+  var btn_text_1 = "Any new PDF must have a name and a URL";
+  var btn_text_2 = "Click to submit new PDF";
+  var canSubmit = true;
+
+  if((pdf_name.length == 0) || (pdf_url.length == 0)){
+    canSubmit = false;
+  }
+  document.getElementById("new_pdf_btn").disabled = !canSubmit;
+  if(canSubmit){
+    document.getElementById("new_pdf_btn").title = btn_text_2;
+  } else {
+    document.getElementById("new_pdf_btn").title = btn_text_1;
+  }
+}
 </script>
 
 {% endblock %}
